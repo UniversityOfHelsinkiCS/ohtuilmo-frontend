@@ -3,3 +3,7 @@ install:
   - npm install
 script: 
   - npm run build
+after_succes:
+  - "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+  - "docker build -t ohtuprojektiilmo/ohtufront"
+  - "docker push ohtuprojektiilmo/ohtufront"
