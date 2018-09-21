@@ -9,8 +9,10 @@ Ohjelmistotuotantoprojektien ilmoittautumissovellus
 
 Clone and run:
 
+```
 $ npm install
 $ npm start
+```
 
 ## Docker instructions 
 [Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)
