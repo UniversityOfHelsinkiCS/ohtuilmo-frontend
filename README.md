@@ -2,8 +2,6 @@
 
 ## Description
 
-Ohjelmistotuotantoprojektien ilmoittautumissovellus
-
 Sign up tool for a software production course
 
 - [Backlog](https://trello.com/b/Wv50WMSA/backlog)
