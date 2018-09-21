@@ -2,7 +2,7 @@
 
 ## Description
 
-Sign up tool for a software production course
+Sign up tool for University of Helsinki's software production course
 
 - [Backlog](https://trello.com/b/Wv50WMSA/backlog)
 - [Backend](https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend)
