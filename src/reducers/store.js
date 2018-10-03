@@ -3,10 +3,12 @@ import thunk from 'redux-thunk'
 
 // Import all reducers here
 import testReducer from './testReducer'
+import loginPageReducer from './loginPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
-    test: testReducer
+    test: testReducer,
+    loginPage: loginPageReducer
 })
  
 const store = createStore(

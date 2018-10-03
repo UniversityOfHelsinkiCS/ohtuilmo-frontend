@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import loginService from './services/login' 
 import { testIncrement } from './reducers/actions/testActions'
+import loginPageActions from './reducers/actions/loginPageActions'
 import { connect } from 'react-redux'
 
 class App extends Component {
@@ -11,9 +12,10 @@ class App extends Component {
       username: this.state.username,
       password: this.state.password
     })
+    this.props.clearForm()
   }
 
-  handleFieldChange = (event) => {
+  handlePasswordChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
@@ -28,16 +30,16 @@ class App extends Component {
               name='username'
               placeholder='username'
               value={this.props.username}
-              onChange={this.handleFieldChange}
+              onChange={e => this.props.updateUsername(e.target.value)}
             />
           </div>
           <div>
             <input
-              type='password'
+              type='text'
               name='password'
               placeholder='password'
               value={this.props.password}
-              onChange={this.handleFieldChange}
+              onChange={e => this.props.updatePassword(e.target.value)}
             />
           </div>
           <button type='submit'>Login</button>
@@ -50,13 +52,14 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    username: '',
-    password: '',
+    username: state.username,
+    password: state.password
   }
 }
 
 const mapDispatchToProps = {
-  testIncrement
+  testIncrement,
+  ...loginPageActions
 }
 
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
