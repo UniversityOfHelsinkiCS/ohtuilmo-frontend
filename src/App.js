@@ -12,10 +12,15 @@ class App extends Component {
 
   login = async (event) => {
     event.preventDefault()
-    await loginService.login({
-      username: this.state.username,
-      password: this.state.password
-    })
+    try {
+      const user = await loginService.login({
+        username: this.state.username,
+        password: this.state.password
+      })
+      console.log('success!!!', user)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   handleFieldChange = (event) => {
