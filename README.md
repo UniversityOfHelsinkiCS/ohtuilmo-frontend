@@ -9,7 +9,14 @@ Sign up tool for University of Helsinki's software production course
 
 ## Instructions
 
-Clone and run:
+- Clone project
+- Create .env file to the project root and add address to backend server (ie. `http://localhost:3001` if you're running backend in port 3001)
+
+```
+REACT_APP_BACKEND_URI='backend server address'
+```
+
+- Run project
 
 ```
 $ npm install

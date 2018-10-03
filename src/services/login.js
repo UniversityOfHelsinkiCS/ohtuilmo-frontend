@@ -1,12 +1,13 @@
 import axios from 'axios'
 
-const baseUrl = "http://localhost:3001/api/login"
+const url = `${process.env.REACT_APP_BACKEND_URI}/api/login`
 
 const login = async (credentials) => {
-    await console.log("logging in with: ", credentials)
-
+    console.log("logging in with: ", credentials)
+    console.log('logging to', url)
+    
     // post credentials to backend, return response
-    const response = await axios.post(baseUrl, credentials)
+    const response = await axios.post(url, credentials)
     return response.data
 }
 
