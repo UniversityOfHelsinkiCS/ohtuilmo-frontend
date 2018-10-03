@@ -7,6 +7,7 @@ const testReducer = ( state = 0, action ) => {
             return state - 1
         case 'ZERO':
             return 0
+        default:
     }
     return state
 }

@@ -20,6 +20,7 @@ const loginPageReducer = (state = initialState, action) => {
                 username: '',
                 password: ''
             }
+        default:
     }
     return state
 }
