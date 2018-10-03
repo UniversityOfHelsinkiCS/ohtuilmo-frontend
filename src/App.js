@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
 import loginService from './services/login' 
+import { testIncrement } from './reducers/actions/testActions'
+import { connect } from 'react-redux'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
 
   login = async (event) => {
     event.preventDefault()
@@ -32,7 +27,7 @@ class App extends Component {
               type='text'
               name='username'
               placeholder='username'
-              value={this.state.username}
+              value={this.props.username}
               onChange={this.handleFieldChange}
             />
           </div>
@@ -41,15 +36,29 @@ class App extends Component {
               type='password'
               name='password'
               placeholder='password'
-              value={this.state.password}
+              value={this.props.password}
               onChange={this.handleFieldChange}
             />
           </div>
           <button type='submit'>Login</button>
         </form>
+        <button onClick={e => this.props.testIncrement()}>Reducer test</button>
       </div>
     )
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    username: '',
+    password: '',
+  }
+}
+
+const mapDispatchToProps = {
+  testIncrement
+}
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
+
+export default ConnectedApp
