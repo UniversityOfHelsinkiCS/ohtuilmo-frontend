@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import loginService from './services/login' 
+import loginService from './services/login'
 
 class App extends Component {
   constructor(props) {
@@ -34,23 +34,23 @@ class App extends Component {
         <form onSubmit={this.login}>
           <div>
             <input
-              type='text'
-              name='username'
-              placeholder='username'
+              type="text"
+              name="username"
+              placeholder="username"
               value={this.state.username}
               onChange={this.handleFieldChange}
             />
           </div>
           <div>
             <input
-              type='password'
-              name='password'
-              placeholder='password'
+              type="password"
+              name="password"
+              placeholder="password"
               value={this.state.password}
               onChange={this.handleFieldChange}
             />
           </div>
-          <button type='submit'>Login</button>
+          <button type="submit">Login</button>
         </form>
       </div>
     )
