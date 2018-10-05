@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
-import loginService from './services/login' 
+import loginService from './services/login'
 import { testIncrement } from './reducers/actions/testActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import { connect } from 'react-redux'
 
 class App extends Component {
-
   login = async (event) => {
     event.preventDefault()
-    await loginService.login({
-      username: this.state.username,
-      password: this.state.password
-    })
-    this.props.clearForm()
+    try {
+      const user = await loginService.login({
+        username: this.props.username,
+        password: this.props.password
+      })
+      console.log('success!!!', user)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   handlePasswordChange = (event) => {
@@ -26,25 +29,27 @@ class App extends Component {
         <form onSubmit={this.login}>
           <div>
             <input
-              type='text'
-              name='username'
-              placeholder='username'
+              type="text"
+              name="username"
+              placeholder="username"
               value={this.props.username}
-              onChange={e => this.props.updateUsername(e.target.value)}
+              onChange={(e) => this.props.updateUsername(e.target.value)}
             />
           </div>
           <div>
             <input
-              type='text'
-              name='password'
-              placeholder='password'
+              type="password"
+              name="password"
+              placeholder="password"
               value={this.props.password}
-              onChange={e => this.props.updatePassword(e.target.value)}
+              onChange={(e) => this.props.updatePassword(e.target.value)}
             />
           </div>
-          <button type='submit'>Login</button>
+          <button type="submit">Login</button>
         </form>
-        <button onClick={e => this.props.testIncrement()}>Reducer test</button>
+        <button onClick={() => this.props.testIncrement()}>
+          Reducer test
+        </button>
       </div>
     )
   }
@@ -52,8 +57,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.username,
-    password: state.password
+    username: state.loginPage.username,
+    password: state.loginPage.password
   }
 }
 
@@ -62,6 +67,9 @@ const mapDispatchToProps = {
   ...loginPageActions
 }
 
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
 
 export default ConnectedApp
