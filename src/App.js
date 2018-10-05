@@ -1,21 +1,16 @@
 import React, { Component } from 'react'
 import loginService from './services/login'
+import { testIncrement } from './reducers/actions/testActions'
+import loginPageActions from './reducers/actions/loginPageActions'
+import { connect } from 'react-redux'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
-
   login = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username: this.state.username,
-        password: this.state.password
+        username: this.props.username,
+        password: this.props.password
       })
       console.log('success!!!', user)
     } catch (e) {
@@ -23,7 +18,7 @@ class App extends Component {
     }
   }
 
-  handleFieldChange = (event) => {
+  handlePasswordChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
@@ -37,8 +32,8 @@ class App extends Component {
               type="text"
               name="username"
               placeholder="username"
-              value={this.state.username}
-              onChange={this.handleFieldChange}
+              value={this.props.username}
+              onChange={(e) => this.props.updateUsername(e.target.value)}
             />
           </div>
           <div>
@@ -46,15 +41,35 @@ class App extends Component {
               type="password"
               name="password"
               placeholder="password"
-              value={this.state.password}
-              onChange={this.handleFieldChange}
+              value={this.props.password}
+              onChange={(e) => this.props.updatePassword(e.target.value)}
             />
           </div>
           <button type="submit">Login</button>
         </form>
+        <button onClick={() => this.props.testIncrement()}>
+          Reducer test
+        </button>
       </div>
     )
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    username: state.loginPage.username,
+    password: state.loginPage.password
+  }
+}
+
+const mapDispatchToProps = {
+  testIncrement,
+  ...loginPageActions
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default ConnectedApp
