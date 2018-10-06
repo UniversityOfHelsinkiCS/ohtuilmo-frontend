@@ -15,13 +15,19 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "npm run lint",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.6.1",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^1.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   }
 }
