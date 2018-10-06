@@ -1,6 +1,7 @@
 import axios from 'axios'
+import { BACKEND_URI } from '../utils/config'
 
-const url = `${process.env.REACT_APP_BACKEND_URI}/api/login`
+const url = `${BACKEND_URI}/api/login`
 
 const login = async (credentials) => {
   console.log('logging in with: ', credentials)
