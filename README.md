@@ -23,6 +23,16 @@ $ npm install
 $ npm start
 ```
 
-## Docker instructions 
-[Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)  
-The frontend image expects the backend to be available at localhost:7001
+## Docker instructions
+
+[Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)
+
+### For running locally
+
+- Create file docker-compose.yml and copy content from [here](https://docs.google.com/document/d/1mKKaYJzuDH94uW6L78fLpfyCV9_ETWjh6JslvPurKho/edit?usp=sharing)
+- Make sure docker and docker-compose are installed, and run `docker-compose up` in the same directory where you placed the docker-compose.yml file
+- The app should be running at localhost:7000
+
+### Running on a server
+
+At the moment, the frontend assumes the backend is running at localhost:7001, so you need to port forward your localhost:7001 to whatever port the backend is running in on the server.
