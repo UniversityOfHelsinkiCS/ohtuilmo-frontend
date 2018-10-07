@@ -24,4 +24,5 @@ $ npm start
 ```
 
 ## Docker instructions 
-[Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)
+[Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)  
+The frontend image expects the backend to be available at localhost:7001

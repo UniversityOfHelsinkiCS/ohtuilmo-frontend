@@ -16,7 +16,7 @@ RUN npm run build
 RUN npm install -g serve
 
 # start server
-CMD serve -s build
+CMD serve -s build -p 3000
 
 # specify which port to expose
 EXPOSE 3000
