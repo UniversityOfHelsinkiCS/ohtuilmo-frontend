@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import loginService from './services/login'
-import { testIncrement } from './reducers/actions/testActions'
-import loginPageActions from './reducers/actions/loginPageActions'
 import { connect } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import loginService from './services/login'
+import loginPageActions from './reducers/actions/loginPageActions'
+import LoginPage from './components/LoginPage'
 
 class App extends Component {
   login = async (event) => {
@@ -18,39 +19,25 @@ class App extends Component {
     }
   }
 
-  handlePasswordChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
   render() {
     return (
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={this.login}>
-          <div>
-            <input
-              type="text"
-              name="username"
-              placeholder="username"
-              value={this.props.username}
-              onChange={(e) => this.props.updateUsername(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="password"
-              value={this.props.password}
-              onChange={(e) => this.props.updatePassword(e.target.value)}
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-        <button onClick={() => this.props.testIncrement()}>
-          Reducer test
-        </button>
-      </div>
+      <Router>
+        <div>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <LoginPage
+                username={this.props.username}
+                password={this.props.password}
+                updateUsername={this.props.updateUsername}
+                updatePassword={this.props.updatePassword}
+                login={this.login}
+              />
+            )}
+          />
+        </div>
+      </Router>
     )
   }
 }
@@ -63,7 +50,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  testIncrement,
   ...loginPageActions
 }
 
