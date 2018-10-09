@@ -12,7 +12,13 @@ class App extends Component {
         username: this.props.username,
         password: this.props.password
       })
-      console.log('success!!!', user)
+      if (user.first_names === undefined) {
+        console.log('Login failed')
+        alert('Login failed!')
+      } else {
+        console.log('success!!!', user)
+        alert('Login successful!')
+      }
     } catch (e) {
       console.log(e)
     }
