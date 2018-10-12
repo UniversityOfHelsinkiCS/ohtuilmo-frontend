@@ -7,15 +7,26 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="Wrapper" style={wrapperStyle}>
           <ButtonAppBar />
-          <Switch>
-            <Route exact path='/' render={() => <LoginPage />} />
-          </Switch>
+          <div className="Content" style={contentStyle}>
+            <Switch>
+              <Route exact path='/' render={() => <LoginPage />} />
+            </Switch>
+          </div>
         </div>
       </Router>
     )
   }
+}
+
+const wrapperStyle = {
+  display: 'flex',
+  flexDirection: 'column'
+}
+
+const contentStyle = {
+  padding: '20px'
 }
 
 export default App
