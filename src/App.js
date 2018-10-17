@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginPage from './components/LoginPage'
+import NewTopicForm from './components/NewTopicForm'
 import ButtonAppBar from './components/common/ButtonAppBar'
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
           <div className="Content" style={contentStyle}>
             <Switch>
               <Route exact path='/' render={() => <LoginPage />} />
+              <Route path='/create/topic' render={() => <NewTopicForm />} />
             </Switch>
           </div>
         </div>
