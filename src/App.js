@@ -13,7 +13,7 @@ class App extends Component {
           <div className="Content" style={contentStyle}>
             <Switch>
               <Route exact path='/' render={() => <LoginPage />} />
-              <Route path='/topic' render={() => <NewTopicForm />} />
+              <Route path='/create/topic' render={() => <NewTopicForm />} />
             </Switch>
           </div>
         </div>

@@ -1,6 +1,11 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormLabel from '@material-ui/core/FormLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 const NewTopicForm = () => {
   const submitForm = (event) => {
@@ -63,6 +68,7 @@ const NewTopicForm = () => {
             margin="normal"
           />
         </div>
+        <Temporary />
         <Button type="submit" variant="contained" color="primary">
           Submit proposal
         </Button>
@@ -70,5 +76,18 @@ const NewTopicForm = () => {
     </div>
   )
 }
+
+const Temporary = () => (
+  <div>
+    <FormControl component="fieldset" margin="normal">
+      <FormLabel component="legend">sopivat ajankohdat / possible timeframes</FormLabel>
+      <FormGroup>
+        <FormControlLabel control={<Checkbox checked={false} />} label="kevät" />
+        <FormControlLabel control={<Checkbox checked={false} />} label="kesä" />
+        <FormControlLabel control={<Checkbox checked={true} />} label="syksy" />
+      </FormGroup>
+    </FormControl>
+  </div>
+)
 
 export default NewTopicForm
