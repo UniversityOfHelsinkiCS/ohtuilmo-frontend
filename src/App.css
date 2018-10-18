@@ -1,0 +1,8 @@
+#app-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#app-content {
+  padding: 20px;
+}
