@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import loginService from '../services/login'
 import loginPageActions from '../reducers/actions/loginPageActions'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
 const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
   const login = async (event) => {
@@ -25,18 +25,20 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
       <form onSubmit={login}>
         <div>
           <TextField
-            type="text"
-            name="username"
-            placeholder="username"
+            error={username.length > 20 ? true : false}
+            type='text'
+            name='username'
+            label="Username"
             value={username}
             onChange={(e) => updateUsername(e.target.value)}
           />
         </div>
         <div>
           <TextField
-            type="password"
-            name="password"
-            placeholder="password"
+            error={password.length > 20 ? true : false}
+            type='password'
+            name='password'
+            label='Password'
             value={password}
             onChange={(e) => updatePassword(e.target.value)}
           />

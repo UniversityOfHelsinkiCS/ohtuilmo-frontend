@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginPage from './components/LoginPage'
 import ButtonAppBar from './components/common/ButtonAppBar'
+import './App.css'
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <div className="Wrapper" style={wrapperStyle}>
+        <div id="app-wrapper">
           <ButtonAppBar />
-          <div className="Content" style={contentStyle}>
+          <div id="app-content">
             <Switch>
               <Route exact path='/' render={() => <LoginPage />} />
             </Switch>
@@ -18,15 +19,6 @@ class App extends Component {
       </Router>
     )
   }
-}
-
-const wrapperStyle = {
-  display: 'flex',
-  flexDirection: 'column'
-}
-
-const contentStyle = {
-  padding: '20px'
 }
 
 export default App
