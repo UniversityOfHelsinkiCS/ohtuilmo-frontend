@@ -45,6 +45,7 @@ const topicFormPageReducer = (state = initialState, action) => {
       ...state,
       additionalInfo: action.data
     }
+  default:
   }
   return state
 }
