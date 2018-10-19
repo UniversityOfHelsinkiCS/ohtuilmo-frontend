@@ -60,6 +60,6 @@ export default {
   updateDescription,
   updateEnvironment,
   updateSpecialRequests,
-  updateAdditionalInfo, 
+  updateAdditionalInfo,
   clearForm
 }
