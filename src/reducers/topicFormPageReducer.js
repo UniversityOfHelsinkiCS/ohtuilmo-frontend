@@ -45,6 +45,16 @@ const topicFormPageReducer = (state = initialState, action) => {
       ...state,
       additionalInfo: action.data
     }
+  case 'CLEAR_FORM':
+    return {
+      title: '',
+      customerName: '',
+      email: '',
+      description: '',
+      environment: '',
+      specialRequests: '',
+      additionalInfo: ''
+    }
   default:
   }
   return state

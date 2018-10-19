@@ -7,7 +7,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
-const NewTopicForm = () => {
+const TopicFormPage = () => {
   const submitForm = (event) => {
     event.preventDefault()
     console.log('submitting proposal')
@@ -90,4 +90,4 @@ const Temporary = () => (
   </div>
 )
 
-export default NewTopicForm
+export default TopicFormPage
