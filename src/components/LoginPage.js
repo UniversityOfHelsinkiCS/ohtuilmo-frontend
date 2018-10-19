@@ -4,6 +4,7 @@ import loginService from '../services/login'
 import loginPageActions from '../reducers/actions/loginPageActions'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import './LoginPage.css'
 
 const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
   const login = async (event) => {
@@ -20,30 +21,31 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="loginpage-container">
+      <h1 className="loginpage-header">Kirjaudu sisään</h1>
+      <p className="loginpage-information">Kirjautuminen vaatii Helsingin yliopiston käyttäjätunnuksen</p>
       <form onSubmit={login}>
         <div>
-          <TextField
+          <TextField className="username-field"
             error={username.length > 20 ? true : false}
             type='text'
             name='username'
-            label="Username"
+            label="Käyttäjätunnus"
             value={username}
             onChange={(e) => updateUsername(e.target.value)}
           />
         </div>
         <div>
-          <TextField
+          <TextField className="password-field"
             error={password.length > 20 ? true : false}
             type='password'
             name='password'
-            label='Password'
+            label='Salasana'
             value={password}
             onChange={(e) => updatePassword(e.target.value)}
           />
         </div>
-        <Button color="primary" type="submit">Login</Button>
+        <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Login</Button>
       </form>
     </div>
   )
