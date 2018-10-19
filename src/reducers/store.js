@@ -10,7 +10,7 @@ import topicFormPageReducer from './topicFormPageReducer'
 const reducer = combineReducers({
   test: testReducer,
   loginPage: loginPageReducer,
-  topicForm: topicFormPageReducer
+  topicFormPage: topicFormPageReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
