@@ -47,6 +47,12 @@ const updateAdditionalInfo = (additionalInfo) => {
   }
 }
 
+const clearForm = () => {
+  return {
+    type: 'CLEAR_FORM'
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -54,5 +60,6 @@ export default {
   updateDescription,
   updateEnvironment,
   updateSpecialRequests,
-  updateAdditionalInfo
+  updateAdditionalInfo, 
+  clearForm
 }
