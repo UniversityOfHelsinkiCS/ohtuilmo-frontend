@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginPage from './components/LoginPage'
-import TopicFormPage from './components/topicFormPage'
+import TopicFormPage from './components/TopicFormPage'
 import NavigationBar from './components/common/NavigationBar'
 import './App.css'
 
