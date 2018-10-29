@@ -11,7 +11,7 @@ function NavigationBar() {
     <div className='navigation-bar-container'>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className='grow'>
+          <Typography variant="h6" color="inherit" className='grow' style={{ marginLeft: '9px' }}>
             Ohjelmistotuotantoprojekti / Software engineering project
           </Typography>
         </Toolbar>

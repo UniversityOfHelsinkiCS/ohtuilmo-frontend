@@ -45,7 +45,7 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
             onChange={(e) => updatePassword(e.target.value)}
           />
         </div>
-        <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Login</Button>
+        <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Kirjaudu</Button>
       </form>
     </div>
   )
