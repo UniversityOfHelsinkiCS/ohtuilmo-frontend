@@ -16,7 +16,7 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
       })
       console.log('success!!!', user)
     } catch (e) {
-      console.log(e)
+      console.log(e.response.data)
     }
   }
 

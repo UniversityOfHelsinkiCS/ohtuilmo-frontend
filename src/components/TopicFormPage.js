@@ -8,12 +8,18 @@ import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import topicService from '../services/topic'
 
 const TopicFormPage = (props) => {
-  const submitForm = (event) => {
+  const submitForm = async (event) => {
     event.preventDefault()
-    console.log('submitting proposal')
-    console.log('content: ', props.content)
+    try {
+      const content = { content: props.content }
+      const response = await topicService.create(content)
+      console.log(response)
+    } catch (e) {
+      console.log(e.response.data)
+    }
   }
 
   return (
