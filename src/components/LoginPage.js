@@ -14,6 +14,7 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
         username,
         password
       })
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       console.log('success!!!', user)
     } catch (e) {
       console.log(e.response.data)
