@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import loginService from '../services/login'
 import loginPageActions from '../reducers/actions/loginPageActions'
+import notificationActions from '../reducers/actions/notificationActions'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import './LoginPage.css'
 
-const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
+const LoginPage = ({ username, password, updateUsername, updatePassword, setError, clearNotifications }) => {
   const login = async (event) => {
     event.preventDefault()
     try {
@@ -16,7 +17,17 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
       })
       console.log('success!!!', user)
     } catch (e) {
-      console.log(e.response.data)
+      console.log('error happened', e.response)
+      if (e.response.status === 400) {
+        setError('Username or password is missing!')
+      } else if (e.response.status === 401) {
+        setError('Incorrect username or password!')
+      } else {
+        setError('Some error happened, could not log in')
+      }
+      setTimeout(() => {
+        clearNotifications()
+      }, 3000)
     }
   }
 
@@ -54,12 +65,14 @@ const LoginPage = ({ username, password, updateUsername, updatePassword }) => {
 const mapStateToProps = (state) => {
   return {
     username: state.loginPage.username,
-    password: state.loginPage.password
+    password: state.loginPage.password,
+    error: state.notifications.error
   }
 }
 
 const mapDispatchToProps = {
-  ...loginPageActions
+  ...loginPageActions,
+  ...notificationActions
 }
 
 const ConnectedLoginPage = connect(

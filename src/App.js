@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginPage from './components/LoginPage'
 import TopicFormPage from './components/TopicFormPage'
 import NavigationBar from './components/common/NavigationBar'
+import Notification from './components/common/Notification'
+import notificationActions from './reducers/actions/notificationActions'
 import './App.css'
 
 class App extends Component {
@@ -11,6 +14,7 @@ class App extends Component {
       <Router>
         <div id="app-wrapper">
           <NavigationBar />
+          <Notification message={this.props.error} open={this.props.open}/>
           <div id="app-content">
             <Switch>
               <Route exact path='/' render={() => <LoginPage />} />
@@ -23,4 +27,20 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    error: state.notifications.error,
+    open: state.notifications.open
+  }
+}
+
+const mapDispatchToProps = {
+  ...notificationActions
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default ConnectedApp
