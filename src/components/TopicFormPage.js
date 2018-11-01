@@ -18,6 +18,11 @@ const TopicFormPage = (props) => {
       const content = { content: props.content }
       const response = await topicService.create(content)
       console.log(response)
+      props.setSuccess('Topic proposal submitted succesfully!')
+      setTimeout(() => {
+        props.clearNotifications()
+      }, 3000)
+      props.clearForm()
     } catch (e) {
       console.log('error happened', e.response)
       props.setError('Some error happened')
