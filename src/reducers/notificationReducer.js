@@ -1,5 +1,6 @@
 const initialState = {
-  error: '',
+  type: '',
+  message: '',
   open: false
 }
 
@@ -8,12 +9,28 @@ const notificationReducer = (state = initialState, action) => {
   case 'SET_ERROR':
     return {
       ...state,
-      error: action.payload,
+      type: 'error',
+      message: action.payload,
+      open: true
+    }
+  case 'SET_SUCCESS':
+    return {
+      ...state,
+      type: 'success',
+      message: action.payload,
+      open: true
+    }
+  case 'SET_INFO':
+    return {
+      ...state,
+      type: 'info',
+      message: action.payload,
       open: true
     }
   case 'CLEAR_NOTIFICATIONS':
     return {
-      error: '',
+      type: '',
+      message: '',
       open: false
     }
   default:

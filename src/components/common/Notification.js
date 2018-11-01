@@ -2,10 +2,33 @@ import React from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 
-const Notification = ({ message, open }) => {
+const Notification = ({ type, message, open }) => {
   if ((message === null) | (message === '')) {
     return null
   }
+
+  var style = {
+    margin: '10px',
+    borderRadius: '4px'
+  }
+
+  if (type === 'error') {
+    style = {
+      ...style,
+      backgroundColor: 'red'
+    }
+  } else if (type === 'success') {
+    style = {
+      ...style,
+      backgroundColor: 'green'
+    }
+  } else {
+    style = {
+      ...style,
+      backgroundColor: 'skyblue'
+    }
+  }
+
   return (
     <div>
       <Snackbar
@@ -26,12 +49,6 @@ const Notification = ({ message, open }) => {
       </Snackbar>
     </div>
   )
-}
-
-const style = {
-  backgroundColor: 'red',
-  margin: '10px',
-  borderRadius: '4px'
 }
 
 export default Notification

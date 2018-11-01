@@ -14,7 +14,7 @@ class App extends Component {
       <Router>
         <div id="app-wrapper">
           <NavigationBar />
-          <Notification message={this.props.error} open={this.props.open}/>
+          <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
           <div id="app-content">
             <Switch>
               <Route exact path='/' render={() => <LoginPage />} />
@@ -29,7 +29,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    error: state.notifications.error,
+    type: state.notifications.type,
+    message: state.notifications.message,
     open: state.notifications.open
   }
 }

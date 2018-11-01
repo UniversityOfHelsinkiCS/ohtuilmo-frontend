@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import './LoginPage.css'
 
-const LoginPage = ({ username, password, updateUsername, updatePassword, setError, clearNotifications }) => {
+const LoginPage = ({ username, password, updateUsername, updatePassword, clearForm, setError, setSuccess, clearNotifications }) => {
   const login = async (event) => {
     event.preventDefault()
     try {
@@ -15,7 +15,12 @@ const LoginPage = ({ username, password, updateUsername, updatePassword, setErro
         username,
         password
       })
-      console.log('success!!!', user)
+      console.log('succesful login', user)
+      setSuccess('Logged in succesfully!')
+      setTimeout(() => {
+        clearNotifications()
+      }, 3000)
+      clearForm()
     } catch (e) {
       console.log('error happened', e.response)
       if (e.response) {
