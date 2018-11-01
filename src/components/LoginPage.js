@@ -23,7 +23,7 @@ const LoginPage = ({ username, password, updateUsername, updatePassword, setErro
           setError('Username or password is missing!')
         } else if (e.response.status === 401) {
           setError('Incorrect username or password!')
-        } 
+        }
       } else {
         setError('Some error happened, could not log in')
       }

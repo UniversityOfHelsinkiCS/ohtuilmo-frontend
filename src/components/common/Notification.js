@@ -30,7 +30,8 @@ const Notification = ({ message, open }) => {
 
 const style = {
   backgroundColor: 'red',
-  margin: '10px'
+  margin: '10px',
+  borderRadius: '4px'
 }
 
 export default Notification
