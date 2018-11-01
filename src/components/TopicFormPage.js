@@ -133,7 +133,6 @@ const Temporary = () => (
 
 const mapStateToProps = (state) => {
   return {
-    error: state.notifications.error,
     content: state.topicFormPage,
     title: state.topicFormPage.title,
     customerName: state.topicFormPage.customerName,
