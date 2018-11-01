@@ -18,10 +18,12 @@ const LoginPage = ({ username, password, updateUsername, updatePassword, setErro
       console.log('success!!!', user)
     } catch (e) {
       console.log('error happened', e.response)
-      if (e.response.status === 400) {
-        setError('Username or password is missing!')
-      } else if (e.response.status === 401) {
-        setError('Incorrect username or password!')
+      if (e.response) {
+        if (e.response.status === 400) {
+          setError('Username or password is missing!')
+        } else if (e.response.status === 401) {
+          setError('Incorrect username or password!')
+        } 
       } else {
         setError('Some error happened, could not log in')
       }
