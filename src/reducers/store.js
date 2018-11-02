@@ -5,12 +5,14 @@ import thunk from 'redux-thunk'
 import testReducer from './testReducer'
 import loginPageReducer from './loginPageReducer'
 import topicFormPageReducer from './topicFormPageReducer'
+import notificationReducer from './notificationReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
   test: testReducer,
   loginPage: loginPageReducer,
-  topicFormPage: topicFormPageReducer
+  topicFormPage: topicFormPageReducer,
+  notifications: notificationReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

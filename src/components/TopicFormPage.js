@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
+import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -17,8 +18,17 @@ const TopicFormPage = (props) => {
       const content = { content: props.content }
       const response = await topicService.create(content)
       console.log(response)
+      props.setSuccess('Topic proposal submitted succesfully!')
+      setTimeout(() => {
+        props.clearNotifications()
+      }, 3000)
+      props.clearForm()
     } catch (e) {
-      console.log(e.response.data)
+      console.log('error happened', e.response)
+      props.setError('Some error happened')
+      setTimeout(() => {
+        props.clearNotifications()
+      }, 3000)
     }
   }
 
@@ -135,7 +145,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...topicFormPageActions
+  ...topicFormPageActions,
+  ...notificationActions
 }
 
 const ConnectedTopicFormPage = connect(
