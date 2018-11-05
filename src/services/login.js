@@ -4,7 +4,6 @@ import { BACKEND_URI } from '../utils/config'
 const url = `${BACKEND_URI}/api/login`
 
 const login = async (credentials) => {
-  console.log('logging in with: ', credentials)
   console.log('logging to', url)
 
   const response = await axios.post(url, credentials)

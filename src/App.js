@@ -5,6 +5,8 @@ import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import NavigationBar from './components/common/NavigationBar'
+import Notification from './components/common/Notification'
+import notificationActions from './reducers/actions/notificationActions'
 import './App.css'
 
 class App extends Component {
@@ -14,6 +16,7 @@ class App extends Component {
       <Router>
         <div id="app-wrapper">
           <NavigationBar />
+          <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
           <div id="app-content">
             <Switch>
               <Route exact path='/' render={() =>
@@ -32,10 +35,20 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.loginPage.user
+    user: state.loginPage.user,
+    type: state.notifications.type,
+    message: state.notifications.message,
+    open: state.notifications.open
   }
 }
 
-const ConnectedApp = connect(mapStateToProps)(App)
+const mapDispatchToProps = {
+  ...notificationActions
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
 
 export default ConnectedApp
