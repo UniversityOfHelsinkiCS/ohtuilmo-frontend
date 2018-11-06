@@ -7,72 +7,90 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import './LoginPage.css'
 
-const LoginPage = ({ username, password, updateUsername, updatePassword, clearForm, setError, setSuccess, clearNotifications }) => {
-  const login = async (event) => {
+class LoginPage extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.login = this.login.bind(this)
+  }
+
+  login = async (event) => {
     event.preventDefault()
+    let username = this.props.username
+    let password = this.props.password
+
     try {
       const user = await loginService.login({
         username,
         password
       })
-      console.log('succesful login', user)
-      setSuccess('Logged in succesfully!')
+
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
+      this.props.setSuccess('Logged in succesfully!')
+      this.props.clearForm()
+
       setTimeout(() => {
-        clearNotifications()
+        this.props.clearNotifications()
       }, 3000)
-      clearForm()
     } catch (e) {
       console.log('error happened', e.response)
+
       if (e.response) {
         if (e.response.status === 400) {
-          setError('Username or password is missing!')
+          this.props.setError('Username or password is missing!')
         } else if (e.response.status === 401) {
-          setError('Incorrect username or password!')
+          this.props.setError('Incorrect username or password!')
         }
       } else {
-        setError('Some error happened, could not log in')
+        this.props.setError('Some error happened, could not log in')
       }
-      setTimeout(() => {
-        clearNotifications()
+
+      this.props.setTimeout(() => {
+        this.props.clearNotifications()
       }, 3000)
     }
   }
 
-  return (
-    <div className="loginpage-container">
-      <h1 className="loginpage-header">Kirjaudu sisään</h1>
-      <p className="loginpage-information">Kirjautuminen vaatii Helsingin yliopiston käyttäjätunnuksen</p>
-      <form onSubmit={login}>
-        <div>
-          <TextField className="username-field"
-            error={username.length > 20 ? true : false}
-            type='text'
-            name='username'
-            label="Käyttäjätunnus"
-            value={username}
-            onChange={(e) => updateUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField className="password-field"
-            error={password.length > 20 ? true : false}
-            type='password'
-            name='password'
-            label='Salasana'
-            value={password}
-            onChange={(e) => updatePassword(e.target.value)}
-          />
-        </div>
-        <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Kirjaudu</Button>
-      </form>
-    </div>
-  )
+  render() {
+    return (
+      <div className="loginpage-container">
+        <h1 className="loginpage-header">Kirjaudu sisään</h1>
+        <p className="loginpage-information">Kirjautuminen vaatii Helsingin yliopiston käyttäjätunnuksen</p>
+        <form onSubmit={this.login}>
+          <div>
+            <TextField
+              className="username-field"
+              error={this.props.username.length > 20 ? true : false}
+              type='text'
+              name='username'
+              label="Käyttäjätunnus"
+              value={this.props.username}
+              onChange={(e) => this.props.updateUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField className="password-field"
+              error={this.props.password.length > 20 ? true : false}
+              type='password'
+              name='password'
+              label='Salasana'
+              value={this.props.password}
+              onChange={(e) => this.props.updatePassword(e.target.value)}
+            />
+          </div>
+          <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Kirjaudu</Button>
+        </form>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
     username: state.loginPage.username,
     password: state.loginPage.password,
+    user: state.loginPage.user
   }
 }
 
