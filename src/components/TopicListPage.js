@@ -7,10 +7,6 @@ import ListItem from '@material-ui/core/ListItemText'
 import topicService from '../services/topic'
 
 class TopicListPage extends React.Component {
-  constructor(props) {
-    super(props)
-
-  }
 
   async componentDidMount() {
     const fetchedTopics = await topicService.listAll().then(function(defs){
