@@ -23,11 +23,25 @@ class TopicListPage extends React.Component {
           <List key={topic.id}>
             <a href="/">
               <ListItem>
-                <ListItemText primary={topic.first} secondary={topic.second} />
+                <ListItemText primary={topic.content.title} secondary={topic.content.customerName} />
               </ListItem>
             </a>
           </List>
         ))}
+        <List>
+            <a href="/">
+              <ListItem>
+                <ListItemText primary='Static Topic Title' secondary='Static Customer Name' />
+              </ListItem>
+            </a>
+          </List>
+          <List>
+            <a href="/">
+              <ListItem>
+                <ListItemText primary='Secondary Topic' secondary='Secondary Customer' />
+              </ListItem>
+            </a>
+          </List>
       </div>
     )
   }
