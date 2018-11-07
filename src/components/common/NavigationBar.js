@@ -16,7 +16,7 @@ class NavigationBar extends React.Component {
     let username
     if (window.localStorage.getItem('loggedInUser')) {
       loggedIn = <AccountCircle />
-      username = <h4 className='navigation-bar-username'>{JSON.parse(window.localStorage.getItem('loggedInUser')).user.username}</h4>
+      username = <h4 className='navigation-bar-username tracking-in-expand'>{JSON.parse(window.localStorage.getItem('loggedInUser')).user.username}</h4>
     } else {
       loggedIn = ''
     }

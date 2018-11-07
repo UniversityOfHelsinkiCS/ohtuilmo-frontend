@@ -27,7 +27,7 @@ class LoginPage extends React.Component {
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
-      this.props.setSuccess('Logged in succesfully!')
+      this.props.setSuccess('Kirjautuminen sisään onnistui!')
       this.props.clearForm()
 
       setTimeout(() => {
@@ -38,15 +38,15 @@ class LoginPage extends React.Component {
 
       if (e.response) {
         if (e.response.status === 400) {
-          this.props.setError('Username or password is missing!')
+          this.props.setError('Käyttäjätunnus tai salasana puuttuu!')
         } else if (e.response.status === 401) {
-          this.props.setError('Incorrect username or password!')
+          this.props.setError('Väärä käyttäjätunnus tai salasana!')
         }
       } else {
-        this.props.setError('Some error happened, could not log in')
+        this.props.setError('Jokin virhe tapahtui, kirjautuminen sisään epäonnistui')
       }
 
-      this.props.setTimeout(() => {
+      setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
     }
