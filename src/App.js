@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
+import TopicListPage from './components/TopicListPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import notificationActions from './reducers/actions/notificationActions'
@@ -25,6 +26,7 @@ class App extends Component {
                   <LoginPage />
               } />
               <Route path='/create/topic' render={() => <TopicFormPage />} />
+              <Route path='/topics' render={() => <TopicListPage />} />
             </Switch>
           </div>
         </div>

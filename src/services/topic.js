@@ -11,4 +11,10 @@ const create = async (content) => {
   return response.data
 }
 
-export default { create }
+const listAll = async () => {
+  const response = await axios.get(url)
+  console.log(response)
+  return response.data
+}
+
+export default { create, listAll }
