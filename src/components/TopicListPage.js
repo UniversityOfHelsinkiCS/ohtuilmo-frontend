@@ -19,9 +19,6 @@ class TopicListPage extends React.Component {
     console.log(this.props.topics)
   }
 
-  // ListItemText primary and secondary should be changed as {topic.content.title} and {topic.content.customerName}
-  // when the fetch is wanted to be done from the database (instead of topic.title and topic.customerName).
-
   render() {
     return(
       <div>
@@ -29,7 +26,7 @@ class TopicListPage extends React.Component {
           <List key={topic.id}>
             <a href="/">
               <ListItem>
-                <ListItemText primary={topic.title} secondary={topic.customerName} />
+                <ListItemText primary={topic.content.title} secondary={topic.content.customerName} />
                 <ListItemSecondaryAction>
                   <Switch />
                 </ListItemSecondaryAction>
