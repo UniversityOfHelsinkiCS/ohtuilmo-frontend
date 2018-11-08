@@ -29,19 +29,19 @@ class TopicListPage extends React.Component {
           </List>
         ))}
         <List>
-            <a href="/">
-              <ListItem>
-                <ListItemText primary='Static Topic Title' secondary='Static Customer Name' />
-              </ListItem>
-            </a>
-          </List>
-          <List>
-            <a href="/">
-              <ListItem>
-                <ListItemText primary='Secondary Topic' secondary='Secondary Customer' />
-              </ListItem>
-            </a>
-          </List>
+          <a href="/">
+            <ListItem>
+              <ListItemText primary='Static Topic Title' secondary='Static Customer Name' />
+            </ListItem>
+          </a>
+        </List>
+        <List>
+          <a href="/">
+            <ListItem>
+              <ListItemText primary='Secondary Topic' secondary='Secondary Customer' />
+            </ListItem>
+          </a>
+        </List>
       </div>
     )
   }
