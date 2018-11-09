@@ -4,7 +4,7 @@ const initialState = {
 
 const topicListPageReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'FETCH_TOPICS':
+  case 'UPDATE_TOPICS':
     return {
       ...state,
       topics: action.payload

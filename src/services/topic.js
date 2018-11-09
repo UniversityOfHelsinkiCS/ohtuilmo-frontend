@@ -17,4 +17,19 @@ const listAll = async () => {
   return response.data
 }
 
-export default { create, listAll }
+const update = async (topic) => {
+  console.log('updating topic')
+  console.log('content: ', topic)
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  let token
+  if (loggedInUser) {
+    token = JSON.parse(loggedInUser).token
+  }
+  const config = {
+    headers: { 'Authorization': 'bearer ' + token }
+  }
+  const response = await axios.put(url + '/' + topic.topic_id, topic, config)
+  return response.data
+}
+
+export default { create, listAll, update }

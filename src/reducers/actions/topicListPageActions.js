@@ -1,10 +1,10 @@
-const fetchTopics = (topics) => {
+const updateTopics = (topics) => {
   return {
-    type: 'FETCH_TOPICS',
+    type: 'UPDATE_TOPICS',
     payload: topics
   }
 }
 
 export default {
-  fetchTopics
+  updateTopics
 }
