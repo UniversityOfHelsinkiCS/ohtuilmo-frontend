@@ -41,6 +41,7 @@ const TopicFormPage = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="aihe / title"
             margin="normal"
             value={props.title}
@@ -50,6 +51,7 @@ const TopicFormPage = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="asiakas / customer"
             margin="normal"
             value={props.customerName}
@@ -59,6 +61,7 @@ const TopicFormPage = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="yhteyshenkilön email / contact email"
             margin="normal"
             value={props.email}
@@ -68,6 +71,7 @@ const TopicFormPage = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="aiheen kuvaus / description"
             multiline
             rows="5"
@@ -79,6 +83,7 @@ const TopicFormPage = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="toteutusympäristö / implementation environment"
             multiline
             rows="5"
