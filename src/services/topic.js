@@ -32,4 +32,9 @@ const update = async (topic) => {
   return response.data
 }
 
-export default { create, listAll, update }
+const getOne = async (id) => {
+  const response = await axios.get(url + '/' + id)
+  return response.data
+}
+
+export default { create, listAll, getOne , update }
