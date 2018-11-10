@@ -16,30 +16,30 @@ class ViewTopicPage extends React.Component {
     //only try to render topic contents when state has been set
     const contents = this.props.topic ?
       <div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h2' id='title' >{this.props.topic.content.title}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Customer</Typography>
           <Typography variant='body1'>{this.props.topic.content.customerName}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Contact email</Typography>
           <Typography variant='body1'>{this.props.topic.content.email}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Description</Typography>
           <Typography variant='body1'>{this.props.topic.content.description}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Implementation environment</Typography>
           <Typography variant='body1'>{this.props.topic.content.environment}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Special requests</Typography>
           <Typography variant='body1'>{this.props.topic.content.specialRequests}</Typography>
         </div>
-        <div class='block'>
+        <div className='block'>
           <Typography variant='h4'>Additional info</Typography>
           <Typography variant='body1'>{this.props.topic.content.additionalInfo}</Typography>
         </div>
