@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
+import TopicEditPage from './components/TopicEditPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import notificationActions from './reducers/actions/notificationActions'
@@ -27,6 +28,7 @@ class App extends Component {
               } />
               <Route path='/create/topic' render={() => <TopicFormPage />} />
               <Route path='/topics' render={() => <TopicListPage />} />
+              <Route path='/edit/topic' render={() => <TopicEditPage />} />
             </Switch>
           </div>
         </div>
