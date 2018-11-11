@@ -47,7 +47,7 @@ class TopicListPage extends React.Component {
       <div>
         {this.props.topics.map(topic => (
           <List key={topic.topic_id}>
-            <a href="/">
+            <a href={'/topics/' + topic.topic_id}>
               <ListItem>
                 <ListItemText primary={topic.content.title} secondary={topic.content.customerName} />
                 <ListItemSecondaryAction>
