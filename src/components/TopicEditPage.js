@@ -4,7 +4,6 @@ import topicEditPageActions from '../reducers/actions/topicEditPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import topicService from '../services/topic'
 
 class TopicEditPage extends React.Component {
   submitForm = async (event) => {
@@ -15,7 +14,7 @@ class TopicEditPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>Topic edit</h1>
+        <h1>Edit topic proposal</h1>
         <form onSubmit={this.submitForm}>
           <div>
             <TextField
@@ -94,7 +93,7 @@ class TopicEditPage extends React.Component {
             />
           </div>
           <Button type="submit" variant="contained" color="primary">
-            Submit proposal
+            Save
           </Button>
         </form>
       </div>

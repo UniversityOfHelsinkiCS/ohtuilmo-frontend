@@ -11,130 +11,118 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import topicService from '../services/topic'
 
-const TopicFormPage = (props) => {
-  const submitForm = async (event) => {
+class TopicFormPage extends React.Component {
+  submitForm = async (event) => {
     event.preventDefault()
     try {
-      const content = { content: props.content }
+      const content = { content: this.props.content }
       const response = await topicService.create(content)
       console.log(response)
-      props.setSuccess('Topic proposal submitted succesfully!')
+      this.props.setSuccess('Topic proposal submitted succesfully!')
       setTimeout(() => {
-        props.clearNotifications()
+        this.props.clearNotifications()
       }, 3000)
-      props.clearForm()
+      this.props.clearForm()
     } catch (e) {
       console.log('error happened', e.response)
-      props.setError('Some error happened')
+      this.props.setError('Some error happened')
       setTimeout(() => {
-        props.clearNotifications()
+        this.props.clearNotifications()
       }, 3000)
     }
   }
 
-  return (
-    <div>
-      <h1>Give your proposal</h1>
-      <p>Projektin kuvaus voi olla myös suomeksi.</p>
+  render() {
+    return (
+      <div>
+        <h1>Give your proposal</h1>
+        <p>Projektin kuvaus voi olla myös suomeksi.</p>
 
-      <form onSubmit={submitForm}>
-        <div>
-          <TextField
-            fullWidth
-            required
-            label="aihe / title"
-            margin="normal"
-            value={props.title}
-            onChange={(e) => props.updateTitle(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            required
-            label="asiakas / customer"
-            margin="normal"
-            value={props.customerName}
-            onChange={(e) => props.updateCustomerName(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            required
-            label="yhteyshenkilön email / contact email"
-            margin="normal"
-            value={props.email}
-            onChange={(e) => props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            required
-            label="aiheen kuvaus / description"
-            multiline
-            rows="5"
-            margin="normal"
-            value={props.description}
-            onChange={(e) => props.updateDescription(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            required
-            label="toteutusympäristö / implementation environment"
-            multiline
-            rows="5"
-            margin="normal"
-            value={props.environment}
-            onChange={(e) => props.updateEnvironment(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="erityisvaatimukset / special requests"
-            multiline
-            rows="5"
-            margin="normal"
-            value={props.specialRequests}
-            onChange={(e) => props.updateSpecialRequests(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="lisätietoja / additional info"
-            multiline
-            rows="5"
-            margin="normal"
-            value={props.additionalInfo}
-            onChange={(e) => props.updateAdditionalInfo(e.target.value)}
-          />
-        </div>
-        <Temporary />
-        <Button type="submit" variant="contained" color="primary">
-          Submit proposal
-        </Button>
-      </form>
-    </div>
-  )
+        <form onSubmit={this.submitForm}>
+          <div>
+            <TextField
+              fullWidth
+              required
+              label="aihe / title"
+              margin="normal"
+              value={this.props.title}
+              onChange={(e) => this.props.updateTitle(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              required
+              label="asiakas / customer"
+              margin="normal"
+              value={this.props.customerName}
+              onChange={(e) => this.props.updateCustomerName(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              required
+              label="yhteyshenkilön email / contact email"
+              margin="normal"
+              value={this.props.email}
+              onChange={(e) => this.props.updateEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              required
+              label="aiheen kuvaus / description"
+              multiline
+              rows="5"
+              margin="normal"
+              value={this.props.description}
+              onChange={(e) => this.props.updateDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              required
+              label="toteutusympäristö / implementation environment"
+              multiline
+              rows="5"
+              margin="normal"
+              value={this.props.environment}
+              onChange={(e) => this.props.updateEnvironment(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              label="erityisvaatimukset / special requests"
+              multiline
+              rows="5"
+              margin="normal"
+              value={this.props.specialRequests}
+              onChange={(e) => this.props.updateSpecialRequests(e.target.value)}
+            />
+          </div>
+          <div>
+            <TextField
+              fullWidth
+              label="lisätietoja / additional info"
+              multiline
+              rows="5"
+              margin="normal"
+              value={this.props.additionalInfo}
+              onChange={(e) => this.props.updateAdditionalInfo(e.target.value)}
+            />
+          </div>
+          <Button type="submit" variant="contained" color="primary">
+            Submit proposal
+          </Button>
+        </form>
+      </div>
+    )
+  }
 }
-
-const Temporary = () => (
-  <div>
-    <FormControl component="fieldset" margin="normal">
-      <FormLabel component="legend">sopivat ajankohdat / possible timeframes</FormLabel>
-      <FormGroup>
-        <FormControlLabel control={<Checkbox checked={false} />} label="kevät" />
-        <FormControlLabel control={<Checkbox checked={false} />} label="kesä" />
-        <FormControlLabel control={<Checkbox checked={true} />} label="syksy" />
-      </FormGroup>
-    </FormControl>
-  </div>
-)
 
 const mapStateToProps = (state) => {
   return {
