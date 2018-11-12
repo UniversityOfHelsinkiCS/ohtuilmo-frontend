@@ -16,7 +16,11 @@ class TopicListPage extends React.Component {
     const fetchedTopics = await topicService.listAll().then(function (defs) {
       return defs
     })
-    this.props.updateTopics(fetchedTopics)
+    //sorts topics based on timestamp
+    const sortedTopics = fetchedTopics.sort((t1, t2) =>
+      t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0
+    )
+    this.props.updateTopics(sortedTopics)
     console.log(this.props.topics)
   }
 
@@ -47,42 +51,21 @@ class TopicListPage extends React.Component {
       <div>
         {this.props.topics.map(topic => (
           <List key={topic.topic_id}>
-            <a href={'/topics/' + topic.topic_id}>
-              <ListItem>
-                <ListItemText primary={topic.content.title} secondary={topic.content.customerName} />
-                <ListItemSecondaryAction>
-                  <Switch
-                    checked={topic.active}
-                    onChange={this.handleActiveChange(topic)}
-                  />
-                </ListItemSecondaryAction>
-              </ListItem>
-            </a>
+            <ListItem>
+              <a href={'/topics/' + topic.topic_id}>
+                <ListItemText primary={topic.content.title} />
+              </a>
+              <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={topic.createdAt} />
+              <ListItemSecondaryAction>
+                <Switch
+                  checked={topic.active}
+                  onChange={this.handleActiveChange(topic)}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
             <Divider inset />
           </List>
         ))}
-        <List>
-          <a href="/">
-            <ListItem>
-              <ListItemText primary='Static Topic Title' secondary='Static Customer Name' />
-              <ListItemSecondaryAction>
-                <Switch />
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider inset />
-          </a>
-        </List>
-        <List>
-          <a href="/">
-            <ListItem>
-              <ListItemText primary='Secondary Topic' secondary='Secondary Customer' />
-              <ListItemSecondaryAction>
-                <Switch />
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider inset />
-          </a>
-        </List>
       </div>
     )
   }
