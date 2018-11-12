@@ -4,11 +4,6 @@ import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormLabel from '@material-ui/core/FormLabel'
-import FormControl from '@material-ui/core/FormControl'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import topicService from '../services/topic'
 
 class TopicFormPage extends React.Component {
