@@ -7,6 +7,7 @@ import loginPageReducer from './loginPageReducer'
 import topicListPageReducer from './topicListPageReducer'
 import notificationReducer from './notificationReducer'
 import topicFormReducer from './topicFormReducer'
+import viewTopicPageReducer from './viewTopicPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -15,7 +16,8 @@ const reducer = combineReducers({
   topicFormPage: topicFormReducer('SUBMIT'),
   topicEditPage: topicFormReducer('EDIT'),
   topicListPage: topicListPageReducer,
-  notifications: notificationReducer
+  notifications: notificationReducer,
+  viewTopicPage: viewTopicPageReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
