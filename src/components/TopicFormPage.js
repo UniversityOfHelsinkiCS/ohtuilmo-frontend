@@ -23,6 +23,8 @@ const TopicFormPage = (props) => {
         props.clearNotifications()
       }, 3000)
       props.clearForm()
+      const idRedirect = response.topic.topic_id
+      window.location.href='/topics/'+idRedirect
     } catch (e) {
       console.log('error happened', e.response)
       props.setError('Some error happened')
