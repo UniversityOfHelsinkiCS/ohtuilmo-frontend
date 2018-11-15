@@ -18,6 +18,8 @@ class TopicFormPage extends React.Component {
         this.props.clearNotifications()
       }, 3000)
       this.props.clearForm()
+      const idRedirect = response.topic.topic_id
+      window.location.href='/topics/'+idRedirect
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Some error happened')
