@@ -4,16 +4,17 @@ import thunk from 'redux-thunk'
 // Import all reducers here
 import testReducer from './testReducer'
 import loginPageReducer from './loginPageReducer'
-import topicFormPageReducer from './topicFormPageReducer'
 import topicListPageReducer from './topicListPageReducer'
 import notificationReducer from './notificationReducer'
+import topicFormReducer from './topicFormReducer'
 import viewTopicPageReducer from './viewTopicPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
   test: testReducer,
   loginPage: loginPageReducer,
-  topicFormPage: topicFormPageReducer,
+  topicFormPage: topicFormReducer('SUBMIT'),
+  topicEditPage: topicFormReducer('EDIT'),
   topicListPage: topicListPageReducer,
   notifications: notificationReducer,
   viewTopicPage: viewTopicPageReducer
