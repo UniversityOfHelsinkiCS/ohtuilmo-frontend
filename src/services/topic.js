@@ -11,7 +11,7 @@ const create = async (content) => {
   return response.data
 }
 
-const listAll = async () => {
+const getAll = async () => {
   const response = await axios.get(url)
   console.log(response)
   return response.data
@@ -37,4 +37,4 @@ const getOne = async (id) => {
   return response.data
 }
 
-export default { create, listAll, getOne , update }
+export default { create, getAll, getOne , update }
