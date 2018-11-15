@@ -27,10 +27,10 @@ class App extends Component {
                   <LandingPage /> :
                   <LoginPage />
               } />
-              <Route path='/create/topic' render={() => <TopicFormPage />} />
-              <Route path='/topics/:id' render={(props) => <ViewTopicPage {...props} />} />
-              <Route path='/topics' render={() => <TopicListPage />} />
-              <Route path='/edit/topic' render={() => <TopicEditPage />} />
+              <Route exact path='/topics' render={() => <TopicListPage />} />
+              <Route exact path='/topics/create' render={() => <TopicFormPage />} />
+              <Route exact path='/topics/:id' render={(props) => <ViewTopicPage {...props} />} />
+              <Route path='/topics/:id/edit' render={(props) => <TopicEditPage {...props} />} />
             </Switch>
           </div>
         </div>

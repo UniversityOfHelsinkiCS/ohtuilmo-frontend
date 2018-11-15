@@ -56,6 +56,16 @@ const topicFormReducer = (name = '') => {
         specialRequests: '',
         additionalInfo: ''
       }
+    case `SET_TOPIC_${name}`:
+      return {
+        title: action.payload.title,
+        customerName: action.payload.customerName,
+        email: action.payload.email,
+        description: action.payload.description,
+        environment: action.payload.environment,
+        specialRequests: action.payload.specialRequests,
+        additionalInfo: action.payload.additionalInfo
+      }
     default:
     }
     return state

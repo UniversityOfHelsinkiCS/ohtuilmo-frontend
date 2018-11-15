@@ -53,6 +53,13 @@ const clearForm = () => {
   }
 }
 
+const setTopic = (topic) => {
+  return {
+    type: 'SET_TOPIC_EDIT',
+    payload: topic
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -61,5 +68,6 @@ export default {
   updateEnvironment,
   updateSpecialRequests,
   updateAdditionalInfo,
-  clearForm
+  clearForm,
+  setTopic
 }
