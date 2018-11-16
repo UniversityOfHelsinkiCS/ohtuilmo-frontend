@@ -1,5 +1,6 @@
 const initialState = {
-  topics: []
+  topics: [],
+  filter: 'all'
 }
 
 const topicListPageReducer = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const topicListPageReducer = (state = initialState, action) => {
     return {
       ...state,
       topics: action.payload
+    }
+  case 'UPDATE_FILTER':
+    return {
+      ...state,
+      filter: action.payload
     }
   default:
   }

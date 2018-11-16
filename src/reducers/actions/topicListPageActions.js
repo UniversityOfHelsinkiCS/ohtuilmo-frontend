@@ -4,7 +4,14 @@ const updateTopics = (topics) => {
     payload: topics
   }
 }
+const updateFilter = (filter) => {
+  return {
+    type: 'UPDATE_FILTER',
+    payload: filter
+  }
+}
 
 export default {
-  updateTopics
+  updateTopics,
+  updateFilter
 }
