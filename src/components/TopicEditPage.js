@@ -19,7 +19,20 @@ class TopicEditPage extends React.Component {
 
   submitForm = async (event) => {
     event.preventDefault()
-    console.log('editing post')
+    const topic = {
+      topic_id: this.props.match.params.id,
+      content: this.props.content
+    }
+    try {
+      topicService.update(topic)
+      this.props.history.push('/topics/' + topic.topic_id)
+      this.props.setSuccess('Aihe päivitetty')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
