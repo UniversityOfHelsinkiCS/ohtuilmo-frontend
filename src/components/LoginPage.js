@@ -10,7 +10,6 @@ import './LoginPage.css'
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
-
     this.login = this.login.bind(this)
   }
 
@@ -53,6 +52,7 @@ class LoginPage extends React.Component {
   }
 
   render() {
+
     return (
       <div className="loginpage-container">
         <h1 className="loginpage-header">Kirjaudu sisään</h1>

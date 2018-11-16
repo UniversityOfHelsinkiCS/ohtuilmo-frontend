@@ -23,6 +23,7 @@ const loginPageReducer = (state = initialState, action) => {
     }
   case 'CLEAR_FORM':
     return {
+      ...state,
       username: '',
       password: ''
     }
