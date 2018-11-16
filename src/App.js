@@ -91,6 +91,7 @@ const ConnectedApp = connect(
 
 export default ConnectedApp
 
+
 const AuthRoute = ({ component: Component, ...props }) => (
   <Route
     {...props}
