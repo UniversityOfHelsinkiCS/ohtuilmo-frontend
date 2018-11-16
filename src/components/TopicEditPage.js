@@ -4,8 +4,19 @@ import topicEditPageActions from '../reducers/actions/topicEditPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import topicService from '../services/topic'
 
 class TopicEditPage extends React.Component {
+  async componentDidMount() {
+    const id = this.props.match.params.id
+    try {
+      const topic = await topicService.getOne(id)
+      this.props.setTopic(topic.content)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   submitForm = async (event) => {
     event.preventDefault()
     console.log('editing post')
