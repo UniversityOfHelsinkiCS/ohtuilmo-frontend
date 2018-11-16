@@ -12,8 +12,23 @@ const create = async (content) => {
 }
 
 const getAll = async () => {
-  const response = await axios.get(url)
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  let token
+  if (loggedInUser) {
+    token = JSON.parse(loggedInUser).token
+  }
+  const config = {
+    headers: { 'Authorization': 'bearer ' + token }
+  }
+  const response = await axios.get(url, config)
   console.log(response)
+  return response.data
+}
+
+
+//available topics for students can be fetched with getActive
+const getActive = async () => {
+  const response = await axios.get(url + '/active')
   return response.data
 }
 
@@ -37,4 +52,4 @@ const getOne = async (id) => {
   return response.data
 }
 
-export default { create, getAll, getOne , update }
+export default { create, getAll, getOne , update, getActive }
