@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'
 import topicService from '../services/topic'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 import './ViewTopicPage.css'
 
 class ViewTopicPage extends React.Component {
@@ -42,6 +43,9 @@ class ViewTopicPage extends React.Component {
         <div className='block'>
           <Typography variant='h4'>Additional info</Typography>
           <Typography variant='body1'>{this.props.topic.content.additionalInfo}</Typography>
+        </div>
+        <div>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/topics/' + this.props.match.params.id + '/edit')}>Edit</Button>
         </div>
       </div>
       :
