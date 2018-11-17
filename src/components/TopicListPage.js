@@ -37,7 +37,7 @@ class TopicListPage extends React.Component {
     event.preventDefault()
     try {
       topic.active = !topic.active
-      const updatedTopics = this.props.topics.map(topic2 => { return topic2.topic_id === topic.topic_id ? topic : topic2 })
+      const updatedTopics = this.props.topics.map(topic2 => { return topic2.id === topic.id ? topic : topic2 })
       const response = await topicService.update(topic)
       console.log('Response: ', response)
       this.props.updateTopics(updatedTopics)
@@ -88,9 +88,9 @@ class TopicListPage extends React.Component {
         {this.props.topics.map(topic => {
           if (this.showTopic(topic)) {
             return (
-              <List key={topic.topic_id}>
+              <List key={topic.id}>
                 <ListItem>
-                  <a href={'/topics/' + topic.topic_id}>
+                  <a href={'/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />
                   </a>
                   <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
