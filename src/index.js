@@ -5,16 +5,16 @@ import { Provider } from 'react-redux'
 import App from './App'
 import store from './reducers/store'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
+import amber from '@material-ui/core/colors/amber'
 
 console.log(store.getState())
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0288d1'
+      main: '#fdd835'
     },
-    secondary: green,
+    secondary: amber,
   },
   typography: {
     useNextVariants: true,
