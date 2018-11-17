@@ -22,6 +22,11 @@ import tokenCheckService from './services/tokenCheck'
 
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.logout = this.logout.bind(this)
+  }
 
   componentWillMount() {
     if (window.localStorage.getItem('loggedInUser')) {
@@ -45,6 +50,14 @@ class App extends Component {
     }
   }
 
+  logout() {
+    this.props.updateIsLoading(true)
+    window.localStorage.clear()
+    this.props.updateUser('')
+    window.location.reload()
+    this.props.updateIsLoading(false)
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
@@ -56,7 +69,7 @@ class App extends Component {
     return (
       <Router>
         <div id="app-wrapper">
-          <NavigationBar />
+          <NavigationBar logout={this.logout}/>
           <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
           <div id="app-content">
             <Switch>
