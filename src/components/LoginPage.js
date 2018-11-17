@@ -52,7 +52,6 @@ class LoginPage extends React.Component {
   }
 
   render() {
-
     return (
       <div className="loginpage-container">
         <h1 className="loginpage-header">Kirjaudu sisään</h1>

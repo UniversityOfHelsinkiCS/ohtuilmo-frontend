@@ -1,29 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import './App.css'
+
+// Components
 import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
+import LoadingSpinner from './components/common/LoadingSpinner'
+
+// Actions
+import appActions from './reducers/actions/appActions'
 import notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import tokenCheckService from './services/tokenCheck'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import './App.css'
+
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoading: false
-    }
-  }
 
   componentWillMount() {
     if (window.localStorage.getItem('loggedInUser')) {
-      this.setState({ isLoading: true })
+      this.props.updateIsLoading(true)
       this.userCheck()
     }
   }
@@ -34,7 +34,7 @@ class App extends Component {
       token = JSON.parse(window.localStorage.getItem('loggedInUser')).token
       await tokenCheckService.userCheck(token)
       this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
-      this.setState({ isLoading: false })
+      this.props.updateIsLoading(false)
       return true
     } catch (e) {
       console.log(e.response)
@@ -44,9 +44,9 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       return (
-        <div><CircularProgress/></div>
+        <LoadingSpinner />
       )
     }
     console.log(this.props.user)
@@ -58,7 +58,11 @@ class App extends Component {
           <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
           <div id="app-content">
             <Switch>
-              <Route path='/login' render={() => <LoginPage />} />
+              <Route path='/login' render={() => (
+                this.props.user?
+                  <Redirect to='/' /> :
+                  <LoginPage />
+              )} />
               <Route path='/topics/create' render={() => <TopicFormPage />} />
               <Route path='/topics' render={() => <TopicListPage />} />
               <AuthRoute path='/' user={this.props.user} component={LandingPage} />
@@ -72,6 +76,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    isLoading: state.app.isLoading,
     user: state.loginPage.user,
     type: state.notifications.type,
     message: state.notifications.message,
@@ -81,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...notificationActions,
-  ...loginPageActions
+  ...loginPageActions,
+  ...appActions
 }
 
 const ConnectedApp = connect(
