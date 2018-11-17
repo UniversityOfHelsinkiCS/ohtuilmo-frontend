@@ -1,40 +1,44 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import topicFormPageActions from '../reducers/actions/topicFormPageActions'
+import topicEditPageActions from '../reducers/actions/topicEditPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import topicService from '../services/topic'
 
-class TopicFormPage extends React.Component {
+class TopicEditPage extends React.Component {
+  async componentDidMount() {
+    const id = this.props.match.params.id
+    try {
+      const topic = await topicService.getOne(id)
+      this.props.setTopic(topic.content)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   submitForm = async (event) => {
     event.preventDefault()
+    const topic = {
+      topic_id: this.props.match.params.id,
+      content: this.props.content
+    }
     try {
-      const content = { content: this.props.content }
-      const response = await topicService.create(content)
-      console.log(response)
-      this.props.setSuccess('Topic proposal submitted succesfully!')
+      topicService.update(topic)
+      this.props.history.push('/topics/' + topic.topic_id)
+      this.props.setSuccess('Aihe päivitetty')
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
-      this.props.clearForm()
-      const idRedirect = response.topic.topic_id
-      window.location.href='/topics/'+idRedirect
     } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      console.log(e)
     }
   }
 
   render() {
     return (
       <div>
-        <h1>Give your proposal</h1>
-        <p>Projektin kuvaus voi olla myös suomeksi.</p>
-
+        <h1>Edit topic proposal</h1>
         <form onSubmit={this.submitForm}>
           <div>
             <TextField
@@ -113,7 +117,7 @@ class TopicFormPage extends React.Component {
             />
           </div>
           <Button type="submit" variant="contained" color="primary">
-            Submit proposal
+            Save
           </Button>
         </form>
       </div>
@@ -123,25 +127,25 @@ class TopicFormPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    content: state.topicFormPage,
-    title: state.topicFormPage.title,
-    customerName: state.topicFormPage.customerName,
-    email: state.topicFormPage.email,
-    description: state.topicFormPage.description,
-    environment: state.topicFormPage.environment,
-    specialRequests: state.topicFormPage.specialRequests,
-    additionalInfo: state.topicFormPage.additionalInfo
+    content: state.topicEditPage,
+    title: state.topicEditPage.title,
+    customerName: state.topicEditPage.customerName,
+    email: state.topicEditPage.email,
+    description: state.topicEditPage.description,
+    environment: state.topicEditPage.environment,
+    specialRequests: state.topicEditPage.specialRequests,
+    additionalInfo: state.topicEditPage.additionalInfo
   }
 }
 
 const mapDispatchToProps = {
-  ...topicFormPageActions,
+  ...topicEditPageActions,
   ...notificationActions
 }
 
-const ConnectedTopicFormPage = connect(
+const ConnectedtopicEditPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TopicFormPage)
+)(TopicEditPage)
 
-export default ConnectedTopicFormPage
+export default ConnectedtopicEditPage

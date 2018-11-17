@@ -8,6 +8,8 @@ import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
+import ViewTopicPage from './components/ViewTopicPage'
+import TopicEditPage from './components/TopicEditPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
@@ -63,8 +65,10 @@ class App extends Component {
                   <Redirect to='/' /> :
                   <LoginPage />
               )} />
-              <Route path='/topics/create' render={() => <TopicFormPage />} />
-              <Route path='/topics' render={() => <TopicListPage />} />
+              <Route exact path='/topics' render={() => <TopicListPage />} />
+              <Route exact path='/topics/create' render={() => <TopicFormPage />} />
+              <Route exact path='/topics/:id' render={(props) => <ViewTopicPage {...props} />} />
+              <Route path='/topics/:id/edit' render={(props) => <TopicEditPage {...props} />} />
               <AuthRoute path='/' user={this.props.user} component={LandingPage} />
             </Switch>
           </div>
