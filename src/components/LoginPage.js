@@ -10,7 +10,6 @@ import './LoginPage.css'
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
-
     this.login = this.login.bind(this)
   }
 
