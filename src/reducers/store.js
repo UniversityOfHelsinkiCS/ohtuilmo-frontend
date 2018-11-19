@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
 // Import all reducers here
-import testReducer from './testReducer'
+import appReducer from './appReducer'
 import loginPageReducer from './loginPageReducer'
 import topicListPageReducer from './topicListPageReducer'
 import notificationReducer from './notificationReducer'
@@ -11,7 +11,7 @@ import viewTopicPageReducer from './viewTopicPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
-  test: testReducer,
+  app: appReducer,
   loginPage: loginPageReducer,
   topicFormPage: topicFormReducer('SUBMIT'),
   topicEditPage: topicFormReducer('EDIT'),

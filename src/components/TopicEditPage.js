@@ -20,12 +20,12 @@ class TopicEditPage extends React.Component {
   submitForm = async (event) => {
     event.preventDefault()
     const topic = {
-      topic_id: this.props.match.params.id,
+      id: this.props.match.params.id,
       content: this.props.content
     }
     try {
       topicService.update(topic)
-      this.props.history.push('/topics/' + topic.topic_id)
+      this.props.history.push('/topics/' + topic.id)
       this.props.setSuccess('Aihe päivitetty')
       setTimeout(() => {
         this.props.clearNotifications()

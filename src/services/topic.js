@@ -43,7 +43,7 @@ const update = async (topic) => {
   const config = {
     headers: { 'Authorization': 'bearer ' + token }
   }
-  const response = await axios.put(url + '/' + topic.topic_id, topic, config)
+  const response = await axios.put(url + '/' + topic.id, topic, config)
   return response.data
 }
 
