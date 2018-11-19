@@ -26,7 +26,7 @@ class TopicEditPage extends React.Component {
     try {
       topicService.update(topic)
       this.props.history.push('/topics/' + topic.id)
-      this.props.setSuccess('Aihe päivitetty')
+      this.props.setSuccess('Topic updated')
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
@@ -44,7 +44,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="aihe / title"
+              label="title / aihe"
               margin="normal"
               value={this.props.title}
               onChange={(e) => this.props.updateTitle(e.target.value)}
@@ -54,7 +54,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="asiakas / customer"
+              label="customer / asiakas"
               margin="normal"
               value={this.props.customerName}
               onChange={(e) => this.props.updateCustomerName(e.target.value)}
@@ -64,7 +64,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="yhteyshenkilön email / contact email"
+              label="contact email / yhteyshenkilön email"
               margin="normal"
               value={this.props.email}
               onChange={(e) => this.props.updateEmail(e.target.value)}
@@ -74,7 +74,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="aiheen kuvaus / description"
+              label="description / aiheen kuvaus"
               multiline
               rows="5"
               margin="normal"
@@ -86,7 +86,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="toteutusympäristö / implementation environment"
+              label="implementation environment / toteutusympäristö"
               multiline
               rows="5"
               margin="normal"
@@ -97,7 +97,7 @@ class TopicEditPage extends React.Component {
           <div>
             <TextField
               fullWidth
-              label="erityisvaatimukset / special requests"
+              label="special requests / erityisvaatimukset"
               multiline
               rows="5"
               margin="normal"
@@ -108,7 +108,7 @@ class TopicEditPage extends React.Component {
           <div>
             <TextField
               fullWidth
-              label="lisätietoja / additional info"
+              label="additional info / lisätietoja"
               multiline
               rows="5"
               margin="normal"

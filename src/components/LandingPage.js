@@ -6,7 +6,7 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div className="landingpage-container">
-        <h1 className="landingpage-header">Etusivu</h1>
+        <h1 className="landingpage-header">Front page</h1>
       </div>
     )
   }

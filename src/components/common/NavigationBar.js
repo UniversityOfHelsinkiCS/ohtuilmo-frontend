@@ -31,7 +31,7 @@ class NavigationBar extends React.Component {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" color="inherit" className='grow' style={{ marginLeft: '9px' }}>
-              Ohjelmistotuotantoprojekti
+              Software engineering project
             </Typography>
             {loggedIn}
             {username}
