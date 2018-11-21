@@ -33,7 +33,10 @@ class ViewTopicPage extends React.Component {
     return (
       <div>
         {this.props.isOnEditMode ? (
-          <TopicEdit />
+          <TopicEdit
+            topic={this.props.topic.content}
+            id={this.props.match.params.id}
+          />
         ) : (
           <Topic
             content={this.props.topic.content}

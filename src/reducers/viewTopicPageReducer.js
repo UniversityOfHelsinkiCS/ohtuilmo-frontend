@@ -11,6 +11,13 @@ const viewTopicPageReducer = (state = initialState, action) => {
       ...state,
       topic: action.payload
     }
+  case 'SET_TOPIC_CONTENT':
+    return {
+      ...state,
+      topic: {
+        content: action.payload
+      }
+    }
   case 'SET_EDITABLE':
     return {
       ...state,

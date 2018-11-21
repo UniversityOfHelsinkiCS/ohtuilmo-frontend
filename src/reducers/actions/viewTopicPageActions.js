@@ -5,6 +5,13 @@ const setTopic = (topic) => {
   }
 }
 
+const setTopicContent = (content) => {
+  return {
+    type: 'SET_TOPIC_CONTENT',
+    payload: content
+  }
+}
+
 const setEditable = (status) => {
   return {
     type: 'SET_EDITABLE',
@@ -19,4 +26,4 @@ const setEditMode = (status) => {
   }
 }
 
-export default { setTopic, setEditable, setEditMode }
+export default { setTopic, setTopicContent, setEditable, setEditMode }
