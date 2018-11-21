@@ -13,7 +13,11 @@ class ViewTopicPage extends React.Component {
       const topic = await topicService.getOne(id)
       this.props.setTopic(topic)
       const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'))
-      if (loggedInUser.user.admin === true || isNaN(id)) {
+      var admin = false
+      if (loggedInUser) {
+        admin = loggedInUser.user.admin === true
+      }
+      if (admin || isNaN(id)) {
         this.props.setEditable(true)
       }
     } catch (e) {
