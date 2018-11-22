@@ -53,7 +53,7 @@ const clearForm = () => {
   }
 }
 
-const setTopic = (topic) => {
+const setCurrentTopic = (topic) => {
   return {
     type: 'SET_TOPIC_EDIT',
     payload: topic
@@ -69,5 +69,5 @@ export default {
   updateSpecialRequests,
   updateAdditionalInfo,
   clearForm,
-  setTopic
+  setCurrentTopic
 }

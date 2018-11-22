@@ -7,8 +7,6 @@ import store from './reducers/store'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import amber from '@material-ui/core/colors/amber'
 
-console.log(store.getState())
-
 const theme = createMuiTheme({
   palette: {
     primary: {
