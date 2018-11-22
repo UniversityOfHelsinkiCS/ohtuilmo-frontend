@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
@@ -15,14 +16,15 @@ class TopicFormPage extends React.Component {
     try {
       const content = { content: this.props.content }
       const response = await topicService.create(content)
-      console.log(response)
+
       this.props.setSuccess('Topic proposal submitted succesfully!')
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
       this.props.clearForm()
-      const idRedirect = response.topic.id
-      window.location.href = '/topics/' + idRedirect
+
+      this.props.updateSecretId(response.topic.secret_id)
+      this.props.setSaved(true)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Some error happened')
@@ -33,6 +35,10 @@ class TopicFormPage extends React.Component {
   }
 
   render() {
+    if (this.props.isSaved === true) {
+      return <Redirect to={'/topics/' + this.props.secretId} />
+    }
+
     return (
       <div>
         {this.props.preview ? (
@@ -78,6 +84,7 @@ class TopicFormPage extends React.Component {
               </div>
               <div>
                 <TextField
+                  type="email"
                   fullWidth
                   required
                   label="yhteyshenkilön email / contact email"
@@ -166,7 +173,9 @@ const mapStateToProps = (state) => {
     environment: state.topicFormPage.environment,
     specialRequests: state.topicFormPage.specialRequests,
     additionalInfo: state.topicFormPage.additionalInfo,
-    preview: state.topicFormPage.preview
+    preview: state.topicFormPage.preview,
+    isSaved: state.topicFormPage.isSaved,
+    secretId: state.topicFormPage.secretId
   }
 }
 

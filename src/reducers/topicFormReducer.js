@@ -6,7 +6,9 @@ const initialState = {
   environment: '',
   specialRequests: '',
   additionalInfo: '',
-  preview: false
+  preview: false,
+  isSaved: false,
+  secretId: ''
 }
 
 const topicFormReducer = (name = '') => {
@@ -49,6 +51,7 @@ const topicFormReducer = (name = '') => {
       }
     case `CLEAR_FORM_${name}`:
       return {
+        ...state,
         title: '',
         customerName: '',
         email: '',
@@ -67,10 +70,20 @@ const topicFormReducer = (name = '') => {
         specialRequests: action.payload.specialRequests,
         additionalInfo: action.payload.additionalInfo
       }
-    case 'UPDATE_PREVIEW':
+    case `UPDATE_PREVIEW_${name}`:
       return {
         ...state,
         preview: action.payload
+      }
+    case `SET_SAVED_${name}`:
+      return {
+        ...state,
+        isSaved: action.payload
+      }
+    case `UPDATE_SECRETID_${name}`:
+      return {
+        ...state,
+        secretId: action.payload
       }
     default:
     }
