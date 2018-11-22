@@ -5,7 +5,9 @@ const initialState = {
   description: '',
   environment: '',
   specialRequests: '',
-  additionalInfo: ''
+  additionalInfo: '',
+  isSaved: false,
+  secretId: ''
 }
 
 const topicFormReducer = (name = '') => {
@@ -48,6 +50,7 @@ const topicFormReducer = (name = '') => {
       }
     case `CLEAR_FORM_${name}`:
       return {
+        ...state,
         title: '',
         customerName: '',
         email: '',
@@ -65,6 +68,16 @@ const topicFormReducer = (name = '') => {
         environment: action.payload.environment,
         specialRequests: action.payload.specialRequests,
         additionalInfo: action.payload.additionalInfo
+      }
+    case `SET_SAVED_${name}`:
+      return {
+        ...state,
+        isSaved: action.payload
+      }
+    case `UPDATE_SECRETID_${name}`:
+      return {
+        ...state,
+        secretId: action.payload
       }
     default:
     }

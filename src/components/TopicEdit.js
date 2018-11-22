@@ -74,6 +74,7 @@ class TopicEditPage extends React.Component {
           </div>
           <div>
             <TextField
+              type="email"
               fullWidth
               required
               label="yhteyshenkilön email / contact email"
