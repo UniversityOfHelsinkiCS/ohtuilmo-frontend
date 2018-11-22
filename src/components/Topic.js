@@ -1,6 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import ReactMarkdown from 'react-markdown'
 
 const Topic = ({ content, isEditable, onPageChange }) => {
   return (
@@ -20,19 +21,19 @@ const Topic = ({ content, isEditable, onPageChange }) => {
       </div>
       <div className="block">
         <Typography variant="h4">Description</Typography>
-        <Typography variant="body1">{content.description}</Typography>
+        <ReactMarkdown>{content.description}</ReactMarkdown>
       </div>
       <div className="block">
         <Typography variant="h4">Implementation environment</Typography>
-        <Typography variant="body1">{content.environment}</Typography>
+        <ReactMarkdown>{content.environment}</ReactMarkdown>
       </div>
       <div className="block">
         <Typography variant="h4">Special requests</Typography>
-        <Typography variant="body1">{content.specialRequests}</Typography>
+        <ReactMarkdown>{content.specialRequests}</ReactMarkdown>
       </div>
       <div className="block">
         <Typography variant="h4">Additional info</Typography>
-        <Typography variant="body1">{content.additionalInfo}</Typography>
+        <ReactMarkdown>{content.additionalInfo}</ReactMarkdown>
       </div>
       {isEditable && (
         <div>

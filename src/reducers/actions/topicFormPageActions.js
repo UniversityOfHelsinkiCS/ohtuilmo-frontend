@@ -67,6 +67,13 @@ const updateSecretId = (secretId) => {
   }
 }
 
+const updatePreview = (preview) => {
+  return {
+    type: 'UPDATE_PREVIEW_SUBMIT',
+    payload: preview
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -77,5 +84,6 @@ export default {
   updateAdditionalInfo,
   clearForm,
   setSaved,
-  updateSecretId
+  updateSecretId,
+  updatePreview
 }
