@@ -53,6 +53,13 @@ const clearForm = () => {
   }
 }
 
+const updatePreview = (preview) => {
+  return {
+    type: 'UPDATE_PREVIEW',
+    payload: preview
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -61,5 +68,6 @@ export default {
   updateEnvironment,
   updateSpecialRequests,
   updateAdditionalInfo,
-  clearForm
+  clearForm,
+  updatePreview
 }

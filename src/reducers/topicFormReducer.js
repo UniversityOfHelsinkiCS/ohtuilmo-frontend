@@ -5,7 +5,8 @@ const initialState = {
   description: '',
   environment: '',
   specialRequests: '',
-  additionalInfo: ''
+  additionalInfo: '',
+  preview: false
 }
 
 const topicFormReducer = (name = '') => {
@@ -65,6 +66,11 @@ const topicFormReducer = (name = '') => {
         environment: action.payload.environment,
         specialRequests: action.payload.specialRequests,
         additionalInfo: action.payload.additionalInfo
+      }
+    case 'UPDATE_PREVIEW':
+      return {
+        ...state,
+        preview: action.payload
       }
     default:
     }
