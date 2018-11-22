@@ -68,7 +68,7 @@ class TopicFormPage extends React.Component {
                   required
                   label="aihe / title"
                   margin="normal"
-                  value={this.props.title}
+                  value={this.props.content.title}
                   onChange={(e) => this.props.updateTitle(e.target.value)}
                 />
               </div>
@@ -78,7 +78,7 @@ class TopicFormPage extends React.Component {
                   required
                   label="asiakas / customer"
                   margin="normal"
-                  value={this.props.customerName}
+                  value={this.props.content.customerName}
                   onChange={(e) => this.props.updateCustomerName(e.target.value)}
                 />
               </div>
@@ -89,7 +89,7 @@ class TopicFormPage extends React.Component {
                   required
                   label="yhteyshenkilön email / contact email"
                   margin="normal"
-                  value={this.props.email}
+                  value={this.props.content.email}
                   onChange={(e) => this.props.updateEmail(e.target.value)}
                 />
               </div>
@@ -101,7 +101,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.description}
+                  value={this.props.content.description}
                   onChange={(e) => this.props.updateDescription(e.target.value)}
                 />
               </div>
@@ -113,7 +113,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.environment}
+                  value={this.props.content.environment}
                   onChange={(e) => this.props.updateEnvironment(e.target.value)}
                 />
               </div>
@@ -124,7 +124,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.specialRequests}
+                  value={this.props.content.specialRequests}
                   onChange={(e) => this.props.updateSpecialRequests(e.target.value)}
                 />
               </div>
@@ -135,7 +135,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.additionalInfo}
+                  value={this.props.content.additionalInfo}
                   onChange={(e) => this.props.updateAdditionalInfo(e.target.value)}
                 />
               </div>
@@ -165,14 +165,7 @@ class TopicFormPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    content: state.topicFormPage,
-    title: state.topicFormPage.title,
-    customerName: state.topicFormPage.customerName,
-    email: state.topicFormPage.email,
-    description: state.topicFormPage.description,
-    environment: state.topicFormPage.environment,
-    specialRequests: state.topicFormPage.specialRequests,
-    additionalInfo: state.topicFormPage.additionalInfo,
+    content: state.topicFormPage.content,
     preview: state.topicFormPage.preview,
     isSaved: state.topicFormPage.isSaved,
     secretId: state.topicFormPage.secretId
