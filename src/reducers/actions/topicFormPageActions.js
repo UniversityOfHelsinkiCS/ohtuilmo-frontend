@@ -53,6 +53,27 @@ const clearForm = () => {
   }
 }
 
+const updatePreview = (preview) => {
+  return {
+    type: 'UPDATE_PREVIEW_SUBMIT',
+    payload: preview
+  }
+}
+
+const setSaved = (status) => {
+  return {
+    type: 'SET_SAVED_SUBMIT',
+    payload: status
+  }
+}
+
+const updateSecretId = (secretId) => {
+  return {
+    type: 'UPDATE_SECRETID_SUBMIT',
+    payload: secretId
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -61,5 +82,8 @@ export default {
   updateEnvironment,
   updateSpecialRequests,
   updateAdditionalInfo,
-  clearForm
+  clearForm,
+  updatePreview,
+  setSaved,
+  updateSecretId
 }

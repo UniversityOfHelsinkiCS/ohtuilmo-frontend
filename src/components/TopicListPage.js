@@ -16,9 +16,7 @@ class TopicListPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAll().then(function (defs) {
-        return defs
-      })
+      const fetchedTopics = await topicService.getAll()
       //sorts topics based on timestamp
       const sortedTopics = fetchedTopics.sort((t1, t2) =>
         t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0

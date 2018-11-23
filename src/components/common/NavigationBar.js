@@ -25,7 +25,6 @@ class NavigationBar extends React.Component {
       loggedIn = ''
     }
 
-    console.log(this.props.logout)
     return (
       <div className='navigation-bar-container'>
         <AppBar position="static">
