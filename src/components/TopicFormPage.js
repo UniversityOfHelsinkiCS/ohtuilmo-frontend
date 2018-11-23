@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import TextField from '@material-ui/core/TextField'
@@ -15,14 +16,15 @@ class TopicFormPage extends React.Component {
     try {
       const content = { content: this.props.content }
       const response = await topicService.create(content)
-      console.log(response)
+
       this.props.setSuccess('Topic proposal submitted succesfully!')
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
       this.props.clearForm()
-      const idRedirect = response.topic.id
-      window.location.href = '/topics/' + idRedirect
+
+      this.props.updateSecretId(response.topic.secret_id)
+      this.props.setSaved(true)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Some error happened')
@@ -33,6 +35,10 @@ class TopicFormPage extends React.Component {
   }
 
   render() {
+    if (this.props.isSaved === true) {
+      return <Redirect to={'/topics/' + this.props.secretId} />
+    }
+
     return (
       <div>
         {this.props.preview ? (
@@ -62,7 +68,7 @@ class TopicFormPage extends React.Component {
                   required
                   label="aihe / title"
                   margin="normal"
-                  value={this.props.title}
+                  value={this.props.content.title}
                   onChange={(e) => this.props.updateTitle(e.target.value)}
                 />
               </div>
@@ -72,17 +78,18 @@ class TopicFormPage extends React.Component {
                   required
                   label="asiakas / customer"
                   margin="normal"
-                  value={this.props.customerName}
+                  value={this.props.content.customerName}
                   onChange={(e) => this.props.updateCustomerName(e.target.value)}
                 />
               </div>
               <div>
                 <TextField
+                  type="email"
                   fullWidth
                   required
                   label="yhteyshenkilön email / contact email"
                   margin="normal"
-                  value={this.props.email}
+                  value={this.props.content.email}
                   onChange={(e) => this.props.updateEmail(e.target.value)}
                 />
               </div>
@@ -94,7 +101,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.description}
+                  value={this.props.content.description}
                   onChange={(e) => this.props.updateDescription(e.target.value)}
                 />
               </div>
@@ -106,7 +113,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.environment}
+                  value={this.props.content.environment}
                   onChange={(e) => this.props.updateEnvironment(e.target.value)}
                 />
               </div>
@@ -117,7 +124,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.specialRequests}
+                  value={this.props.content.specialRequests}
                   onChange={(e) => this.props.updateSpecialRequests(e.target.value)}
                 />
               </div>
@@ -128,7 +135,7 @@ class TopicFormPage extends React.Component {
                   multiline
                   rows="5"
                   margin="normal"
-                  value={this.props.additionalInfo}
+                  value={this.props.content.additionalInfo}
                   onChange={(e) => this.props.updateAdditionalInfo(e.target.value)}
                 />
               </div>
@@ -158,15 +165,10 @@ class TopicFormPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    content: state.topicFormPage,
-    title: state.topicFormPage.title,
-    customerName: state.topicFormPage.customerName,
-    email: state.topicFormPage.email,
-    description: state.topicFormPage.description,
-    environment: state.topicFormPage.environment,
-    specialRequests: state.topicFormPage.specialRequests,
-    additionalInfo: state.topicFormPage.additionalInfo,
-    preview: state.topicFormPage.preview
+    content: state.topicFormPage.content,
+    preview: state.topicFormPage.preview,
+    isSaved: state.topicFormPage.isSaved,
+    secretId: state.topicFormPage.secretId
   }
 }
 

@@ -4,22 +4,24 @@ import { BACKEND_URI } from '../utils/config'
 const url = `${BACKEND_URI}/api/topics`
 
 const create = async (content) => {
-  console.log('submitting proposal')
-  console.log('content: ', content)
-
   const response = await axios.post(url, content)
   return response.data
 }
 
 const getAll = async () => {
-  const response = await axios.get(url)
-  console.log(response)
+  let token
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  if (loggedInUser) {
+    token = JSON.parse(loggedInUser).token
+  }
+  const config = {
+    headers: { 'Authorization': 'bearer ' + token }
+  }
+  const response = await axios.get(url, config)
   return response.data
 }
 
 const update = async (topic) => {
-  console.log('updating topic')
-  console.log('content: ', topic)
   const loggedInUser = localStorage.getItem('loggedInUser')
   let token
   if (loggedInUser) {
