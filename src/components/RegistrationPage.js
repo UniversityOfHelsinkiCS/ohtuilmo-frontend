@@ -60,7 +60,7 @@ class RegistrationPage extends React.Component {
       <Card style={{ marginBottom: '10px' }} key={idx} >
         <CardContent>
           <p>{item.question}</p>
-          {item.type === 'scale'? <div>Scale 1 to 5</div> : null}
+          {item.type === 'scale'? <div>Scale 1 to 5 selector</div> : null}
           {item.type === 'text'? <Input /> : null}
         </CardContent>
       </Card>
@@ -69,6 +69,8 @@ class RegistrationPage extends React.Component {
     return (
       <div>
         <div className="section">
+          <h2 className="landingpage-header">User details</h2>
+          <p>---</p>
           <h2>Topics</h2>
           <p>Order the list of topics by your preference</p>
           <div className="expandable-section-headers">
