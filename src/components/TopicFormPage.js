@@ -36,7 +36,7 @@ class TopicFormPage extends React.Component {
 
   render() {
     if (this.props.isSaved === true) {
-      return <Redirect to={'/topics/' + this.props.secretId} />
+      return <Redirect to={process.env.PUBLIC_URL + '/topics/' + this.props.secretId} />
     }
 
     return (
@@ -48,9 +48,9 @@ class TopicFormPage extends React.Component {
             />
             <FormControlLabel
               control={
-                <Switch
+                <Button
                   checked={this.props.preview}
-                  onChange={() => this.props.updatePreview(false)}
+                  onClick={() => this.props.updatePreview(false)}
                 />
               }
               label="Preview topic proposal"

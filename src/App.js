@@ -67,19 +67,19 @@ class App extends Component {
     return (
       <Router>
         <div id="app-wrapper">
-          <NavigationBar logout={this.logout}/>
-          <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
+          <NavigationBar logout={this.logout} />
+          <Notification type={this.props.type} message={this.props.message} open={this.props.open} />
           <div id="app-content">
             <Switch>
-              <Route path='/login' render={() => (
-                this.props.user?
-                  <Redirect to='/' /> :
+              <Route path={process.env.PUBLIC_URL + '/login'} render={() => (
+                this.props.user ?
+                  <Redirect to={process.env.PUBLIC_URL + '/'} /> :
                   <LoginPage />
               )} />
-              <Route exact path='/topics' render={() => <TopicListPage />} />
-              <Route exact path='/topics/create' render={() => <TopicFormPage />} />
-              <Route exact path='/topics/:id' render={(props) => <ViewTopicPage {...props} />} />
-              <AuthRoute path='/' user={this.props.user} component={LandingPage} />
+              <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
+              <AuthRoute path={process.env.PUBLIC_URL + '/'} user={this.props.user} component={LandingPage} />
             </Switch>
           </div>
         </div>
@@ -116,14 +116,14 @@ const AuthRoute = ({ component: Component, ...props }) => (
   <Route
     {...props}
     render={() => (
-      typeof props.user === 'undefined' || props.user === null?
+      typeof props.user === 'undefined' || props.user === null ?
         <Redirect
           to={{
-            pathname: '/login'
+            pathname: process.env.PUBLIC_URL + '/login'
           }}
         />
         :
-        <Component {...props}/>
+        <Component {...props} />
     )}
   />
 )
