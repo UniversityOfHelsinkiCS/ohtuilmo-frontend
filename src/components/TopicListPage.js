@@ -88,7 +88,7 @@ class TopicListPage extends React.Component {
             return (
               <List key={topic.id}>
                 <ListItem>
-                  <a href={'/topics/' + topic.id}>
+                  <a href={process.env.PUBLIC_URL + '/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />
                   </a>
                   <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
