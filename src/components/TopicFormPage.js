@@ -15,7 +15,7 @@ class TopicFormPage extends React.Component {
     event.preventDefault()
     try {
       const content = { content: this.props.content }
-      const response = await topicService.create(content)
+      const createdTopic = await topicService.create(content)
 
       this.props.setSuccess('Topic proposal submitted succesfully!')
       setTimeout(() => {
@@ -23,7 +23,7 @@ class TopicFormPage extends React.Component {
       }, 3000)
       this.props.clearForm()
 
-      this.props.updateSecretId(response.topic.secret_id)
+      this.props.updateSecretId(createdTopic.secret_id)
       this.props.setSaved(true)
     } catch (e) {
       console.log('error happened', e.response)

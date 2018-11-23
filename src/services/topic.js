@@ -5,7 +5,7 @@ const url = `${BACKEND_URI}/api/topics`
 
 const create = async (content) => {
   const response = await axios.post(url, content)
-  return response.data
+  return response.data.topic
 }
 
 const getAll = async () => {
@@ -18,7 +18,7 @@ const getAll = async () => {
     headers: { 'Authorization': 'bearer ' + token }
   }
   const response = await axios.get(url, config)
-  return response.data
+  return response.data.topics
 }
 
 const update = async (topic) => {
@@ -31,12 +31,12 @@ const update = async (topic) => {
     headers: { 'Authorization': 'bearer ' + token }
   }
   const response = await axios.put(url + '/' + topic.id, topic, config)
-  return response.data
+  return response.data.topic
 }
 
 const getOne = async (id) => {
   const response = await axios.get(url + '/' + id)
-  return response.data
+  return response.data.topic
 }
 
 export default { create, getAll, getOne , update }
