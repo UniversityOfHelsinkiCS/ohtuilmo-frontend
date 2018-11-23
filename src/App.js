@@ -54,15 +54,14 @@ class App extends Component {
     this.props.updateIsLoading(true)
     window.localStorage.clear()
     this.props.updateUser('')
-    window.location.reload()
     this.props.updateIsLoading(false)
+    window.location.reload()
   }
 
   render() {
+    let loadingSpinner
     if (this.props.isLoading) {
-      return (
-        <LoadingSpinner />
-      )
+      loadingSpinner = <LoadingSpinner />
     }
     console.log(this.props.user)
 
@@ -72,6 +71,7 @@ class App extends Component {
           <NavigationBar logout={this.logout}/>
           <Notification type={this.props.type} message={this.props.message} open={this.props.open}/>
           <div id="app-content">
+            {loadingSpinner}
             <Switch>
               <Route path='/login' render={() => (
                 this.props.user?
