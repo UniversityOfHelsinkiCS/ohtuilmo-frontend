@@ -89,9 +89,9 @@ class RegistrationPage extends React.Component {
 }
 
 const testQuestions = [
-  { question: 'What is the meaning of life?', type: 'scale' },
-  { question: 'Who are you?', type: 'text' },
-  { question: 'How much money do you have?', type: 'scale' },
+  { question: 'Test scale question?', type: 'scale' },
+  { question: 'Test input question?', type: 'text' },
+  { question: 'Another test scale question?', type: 'scale' },
   { question: 'Ok?', type: 'text' }
 ]
 
