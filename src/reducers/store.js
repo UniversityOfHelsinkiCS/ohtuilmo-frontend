@@ -13,8 +13,7 @@ import viewTopicPageReducer from './viewTopicPageReducer'
 const reducer = combineReducers({
   app: appReducer,
   loginPage: loginPageReducer,
-  topicFormPage: topicFormReducer('SUBMIT'),
-  topicEditPage: topicFormReducer('EDIT'),
+  topicFormPage: topicFormReducer,
   topicListPage: topicListPageReducer,
   notifications: notificationReducer,
   viewTopicPage: viewTopicPageReducer
