@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import topicService from '../services/topic'
 import Topic from './Topic'
 import TopicForm from './TopicForm'
+import './TopicFormPage.css'
 
 class TopicFormPage extends React.Component {
   submitForm = async (event) => {
@@ -43,41 +44,43 @@ class TopicFormPage extends React.Component {
     }
 
     return (
-      <div>
-        {this.props.preview ? (
-          <div>
-            <Topic content={this.props.content} />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.props.preview}
-                  onClick={() => this.props.updatePreview(false)}
-                />
-              }
-              label="Preview topic proposal"
-            />
-          </div>
-        ) : (
-          <div>
-            <h1>Give your proposal</h1>
-            <p>Projektin kuvaus voi olla myös suomeksi.</p>
-
-            <TopicForm
-              content={this.props.content}
-              onSubmit={this.submitForm}
-              submitButtonText="submit proposal"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.props.preview}
-                  onChange={() => this.props.updatePreview(true)}
-                />
-              }
-              label="Preview topic proposal"
-            />
-          </div>
-        )}
+      <div className="topic-submit-page-container">
+        <div className="topic-form-container">
+          {this.props.preview ? (
+            <div>
+              <Topic content={this.props.content} />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={this.props.preview}
+                    onClick={() => this.props.updatePreview(false)}
+                  />
+                }
+                label="Preview topic proposal"
+              />
+            </div>
+          ) : (
+            <div>
+              <h1>Give your proposal</h1>
+              <p>Projektin kuvaus voi olla myös suomeksi.</p>
+              <TopicForm
+                content={this.props.content}
+                onSubmit={this.submitForm}
+                submitButtonText="submit proposal"
+                isEditForm={false}
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={this.props.preview}
+                    onChange={() => this.props.updatePreview(true)}
+                  />
+                }
+                label="Preview topic proposal"
+              />
+            </div>
+          )}
+        </div>
       </div>
     )
   }

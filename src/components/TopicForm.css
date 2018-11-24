@@ -1,0 +1,10 @@
+.topic-form {
+  min-width: 375px;
+}
+
+.form-buttons {
+  margin: 20px;
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
+}

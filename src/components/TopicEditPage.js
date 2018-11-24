@@ -54,6 +54,8 @@ class TopicEditPage extends React.Component {
           content={this.props.content}
           onSubmit={this.submitForm}
           submitButtonText="Save"
+          isEditForm={true}
+          onCancel={() => this.props.setEditMode(false)}
         />
       </div>
     )

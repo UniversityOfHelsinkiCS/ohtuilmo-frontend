@@ -1,8 +1,8 @@
-.topic-view-page-container {
+.topic-submit-page-container {
   display: flex;
   justify-content: center;
 }
 
-.topic-view {
+.topic-form-container {
   max-width: 800px;
 }

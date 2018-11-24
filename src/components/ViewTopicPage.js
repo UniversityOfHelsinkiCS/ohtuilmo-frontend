@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Topic from './Topic'
-import TopicEdit from './TopicEdit'
+import TopicEditPage from './TopicEditPage'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'
 import topicService from '../services/topic'
 import './ViewTopicPage.css'
@@ -35,9 +35,9 @@ class ViewTopicPage extends React.Component {
       return <div />
     }
     return (
-      <div>
+      <div className="topic-view-page-container">
         {this.props.isOnEditMode ? (
-          <TopicEdit
+          <TopicEditPage
             topic={this.props.topic.content}
             id={this.props.match.params.id}
           />
