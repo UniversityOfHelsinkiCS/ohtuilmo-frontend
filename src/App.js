@@ -5,10 +5,10 @@ import './App.css'
 
 // Components
 import LoginPage from './components/LoginPage'
-import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
 import ViewTopicPage from './components/ViewTopicPage'
+import RegistrationPage from './components/RegistrationPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
@@ -53,15 +53,14 @@ class App extends Component {
     this.props.updateIsLoading(true)
     window.localStorage.clear()
     this.props.updateUser('')
-    window.location.reload()
     this.props.updateIsLoading(false)
+    window.location.reload()
   }
 
   render() {
+    let loadingSpinner
     if (this.props.isLoading) {
-      return (
-        <LoadingSpinner />
-      )
+      loadingSpinner = <LoadingSpinner />
     }
 
     return (
@@ -70,6 +69,7 @@ class App extends Component {
           <NavigationBar logout={this.logout} />
           <Notification type={this.props.type} message={this.props.message} open={this.props.open} />
           <div id="app-content">
+            {loadingSpinner}
             <Switch>
               <Route path={process.env.PUBLIC_URL + '/login'} render={() => (
                 this.props.user ?
@@ -79,7 +79,7 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
-              <AuthRoute path={process.env.PUBLIC_URL + '/'} user={this.props.user} component={LandingPage} />
+              <AuthRoute path={process.env.PUBLIC_URL + '/'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>
         </div>

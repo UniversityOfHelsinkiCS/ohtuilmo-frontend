@@ -21,11 +21,10 @@ const getAll = async () => {
   return response.data.topics
 }
 
-
-//available topics for students can be fetched with getActive
-const getActive = async () => {
+const getAllActive = async () => {
   const response = await axios.get(url + '/active')
-  return response.data
+  console.log(response)
+  return response.data.topics
 }
 
 const update = async (topic) => {
@@ -46,4 +45,4 @@ const getOne = async (id) => {
   return response.data.topic
 }
 
-export default { create, getAll, getOne , update, getActive }
+export default { create, getAll, getAllActive, getOne , update }

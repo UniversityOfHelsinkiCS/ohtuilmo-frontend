@@ -1,0 +1,23 @@
+.expandable-section-headers {
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-content: center;
+  align-items:center;
+  display: flex;
+  padding: 0 24px 0 24px;
+}
+
+.expandable-section-headers-topic {
+  flex: 1;
+  font-weight: bold;
+  padding-right: 32px;
+}
+
+.expandable-section-headers-customer {
+  flex: 1;
+  font-weight: bold;
+}
+
+.section {
+  padding-bottom: 40px;
+}
