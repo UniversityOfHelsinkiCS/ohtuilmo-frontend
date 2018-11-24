@@ -84,7 +84,7 @@ class RegistrationPage extends React.Component {
           <p>Please answer all questions</p>
           {questions}
         </div>
-        <Button variant="outlined" color='' >Submit</Button>
+        <Button variant="outlined" style={{ backgroundColor: 'white' }} >Submit</Button>
       </div>
     )
   }
