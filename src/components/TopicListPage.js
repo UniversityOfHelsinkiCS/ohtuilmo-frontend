@@ -16,9 +16,7 @@ class TopicListPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAll().then(function (defs) {
-        return defs
-      })
+      const fetchedTopics = await topicService.getAll()
       //sorts topics based on timestamp
       const sortedTopics = fetchedTopics.sort((t1, t2) =>
         t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0
@@ -90,7 +88,7 @@ class TopicListPage extends React.Component {
             return (
               <List key={topic.id}>
                 <ListItem>
-                  <a href={'/topics/' + topic.id}>
+                  <a href={process.env.PUBLIC_URL + '/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />
                   </a>
                   <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
