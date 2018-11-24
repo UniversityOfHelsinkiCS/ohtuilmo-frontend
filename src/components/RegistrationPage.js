@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
+import notificationActions from '../reducers/actions/notificationActions'
 
 class RegistrationPage extends React.Component {
   componentDidMount() {
@@ -106,7 +107,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...registrationPageActions
+  ...registrationPageActions,
+  ...notificationActions
 }
 
 const ConnectedRegistrationPage = connect(
