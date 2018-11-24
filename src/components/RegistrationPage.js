@@ -23,7 +23,7 @@ class RegistrationPage extends React.Component {
 
   async fetchTopics() {
     try {
-      const fetchedTopics = await topicService.getAll().then(function (defs) {
+      const fetchedTopics = await topicService.getAllActive().then(function (defs) {
         return defs
       })
       //sorts topics based on timestamp
@@ -33,7 +33,7 @@ class RegistrationPage extends React.Component {
       this.props.updateTopics(sortedTopics)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
+      this.props.setError('Error fetching topics')
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)

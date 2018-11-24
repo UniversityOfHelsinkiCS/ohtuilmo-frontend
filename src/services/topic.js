@@ -17,6 +17,12 @@ const getAll = async () => {
   return response.data
 }
 
+const getAllActive = async () => {
+  const response = await axios.get(url + '/active')
+  console.log(response)
+  return response.data
+}
+
 const update = async (topic) => {
   console.log('updating topic')
   console.log('content: ', topic)
@@ -37,4 +43,4 @@ const getOne = async (id) => {
   return response.data
 }
 
-export default { create, getAll, getOne , update }
+export default { create, getAll, getAllActive, getOne , update }
