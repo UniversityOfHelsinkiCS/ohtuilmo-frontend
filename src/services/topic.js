@@ -20,7 +20,7 @@ const getAll = async () => {
 const getAllActive = async () => {
   const response = await axios.get(url + '/active')
   console.log(response)
-  return response.data
+  return response.data.topics
 }
 
 const update = async (topic) => {

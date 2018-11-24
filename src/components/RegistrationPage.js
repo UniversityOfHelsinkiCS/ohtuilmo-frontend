@@ -46,8 +46,8 @@ class RegistrationPage extends React.Component {
     let topicsList = this.props.topics.map((topic, idx) => (
       <ExpansionPanel key={idx}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography style={{ flex: 1 }}>{topic.content.customerName}</Typography>
-          <Typography style={{ flex:  1 }}>{topic.content.title}</Typography>
+          <Typography style={{ flex: 1 }}>{topic.customerName}</Typography>
+          <Typography style={{ flex:  1 }}>{topic.title}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
