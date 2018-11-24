@@ -48,9 +48,9 @@ class TopicFormPage extends React.Component {
             />
             <FormControlLabel
               control={
-                <Button
+                <Switch
                   checked={this.props.preview}
-                  onClick={() => this.props.updatePreview(false)}
+                  onChange={() => this.props.updatePreview(false)}
                 />
               }
               label="Preview topic proposal"
