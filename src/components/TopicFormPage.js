@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
-import Switch from '@material-ui/core/Switch'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Button from '@material-ui/core/Button'
 import topicService from '../services/topic'
 import Topic from './Topic'
 import TopicForm from './TopicForm'
@@ -49,15 +48,15 @@ class TopicFormPage extends React.Component {
           {this.props.preview ? (
             <div>
               <Topic content={this.props.content} />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.props.preview}
-                    onClick={() => this.props.updatePreview(false)}
-                  />
-                }
-                label="Preview topic proposal"
-              />
+              <div className="preview-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => this.props.updatePreview(false)}
+                >
+                  Back to edit
+                </Button>
+              </div>
             </div>
           ) : (
             <div>
@@ -69,15 +68,15 @@ class TopicFormPage extends React.Component {
                 submitButtonText="submit proposal"
                 isEditForm={false}
               />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.props.preview}
-                    onChange={() => this.props.updatePreview(true)}
-                  />
-                }
-                label="Preview topic proposal"
-              />
+              <div className="preview-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => this.props.updatePreview(true)}
+                >
+                  Preview
+                </Button>
+              </div>
             </div>
           )}
         </div>

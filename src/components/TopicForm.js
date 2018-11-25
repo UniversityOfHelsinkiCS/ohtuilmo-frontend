@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 import './TopicForm.css'
 
@@ -92,25 +91,25 @@ const TopicForm = (props) => {
           />
         </div>
         <div className="form-buttons">
-          <FormControlLabel
-            control={
-              <Button type="submit" variant="contained" color="primary">
-                {props.submitButtonText}
-              </Button>
-            }
-          />
+          <div className="form-button">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              {props.submitButtonText}
+            </Button>
+          </div>
           {props.isEditForm && (
-            <FormControlLabel
-              control={
-                <Button
-                  variant="contained"
-                  color="default"
-                  onClick={props.onCancel}
-                >
-                  Cancel
-                </Button>
-              }
-            />
+            <div className="form-button">
+              <Button
+                variant="contained"
+                color="default"
+                onClick={props.onCancel}
+              >
+                Cancel
+              </Button>
+            </div>
           )}
         </div>
       </form>

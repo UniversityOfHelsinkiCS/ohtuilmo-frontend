@@ -6,3 +6,7 @@
 .topic-form-container {
   max-width: 800px;
 }
+
+.preview-button {
+  margin: 10px;
+}
