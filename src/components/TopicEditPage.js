@@ -5,6 +5,8 @@ import notificationActions from '../reducers/actions/notificationActions'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'
 import topicService from '../services/topic'
 import TopicForm from './TopicForm'
+import Button from '@material-ui/core/Button'
+import Topic from './Topic'
 
 class TopicEditPage extends React.Component {
   componentDidMount() {
@@ -49,22 +51,50 @@ class TopicEditPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>Edit topic proposal</h1>
-        <TopicForm
-          content={this.props.content}
-          onSubmit={this.submitForm}
-          submitButtonText="Save"
-          isEditForm={true}
-          onCancel={() => this.props.setEditMode(false)}
-        />
+        {this.props.preview ? (
+          <div>
+            <Topic content={this.props.content} />
+            <div className="preview-button">
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => this.props.updatePreview(false)}
+              >
+                Back to edit
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h1>Edit topic proposal</h1>
+            <TopicForm
+              content={this.props.content}
+              onSubmit={this.submitForm}
+              submitButtonText="Save"
+              isEditForm={true}
+              onCancel={() => this.props.setEditMode(false)}
+            />
+            <div className="preview-button">
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => this.props.updatePreview(true)}
+              >
+                Preview
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
+
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    content: state.topicFormPage.content
+    content: state.topicFormPage.content,
+    preview: state.topicFormPage.preview
   }
 }
 
