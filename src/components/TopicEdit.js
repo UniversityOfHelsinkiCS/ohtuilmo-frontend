@@ -56,7 +56,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="aihe / title"
+              label="title / aihe"
               margin="normal"
               value={this.props.content.title}
               onChange={(e) => this.props.updateTitle(e.target.value)}
@@ -66,7 +66,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="asiakas / customer"
+              label="customer / asiakas"
               margin="normal"
               value={this.props.content.customerName}
               onChange={(e) => this.props.updateCustomerName(e.target.value)}
@@ -77,7 +77,7 @@ class TopicEditPage extends React.Component {
               type="email"
               fullWidth
               required
-              label="yhteyshenkilön email / contact email"
+              label="contact email / yhteyshenkilön email"
               margin="normal"
               value={this.props.content.email}
               onChange={(e) => this.props.updateEmail(e.target.value)}
@@ -87,7 +87,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="aiheen kuvaus / description (Markdown field)"
+              label="description / aiheen kuvaus (Markdown field)"
               multiline
               rows="5"
               margin="normal"
@@ -99,7 +99,7 @@ class TopicEditPage extends React.Component {
             <TextField
               fullWidth
               required
-              label="toteutusympäristö / implementation environment (Markdown field)"
+              label="implementation environment / toteutusympäristö (Markdown field)"
               multiline
               rows="5"
               margin="normal"
@@ -110,7 +110,7 @@ class TopicEditPage extends React.Component {
           <div>
             <TextField
               fullWidth
-              label="erityisvaatimukset / special requests (Markdown field)"
+              label="special requests / erityisvaatimukset (Markdown field)"
               multiline
               rows="5"
               margin="normal"
@@ -121,7 +121,7 @@ class TopicEditPage extends React.Component {
           <div>
             <TextField
               fullWidth
-              label="lisätietoja / additional info (Markdown field)"
+              label="additional info / lisätietoja (Markdown field)"
               multiline
               rows="5"
               margin="normal"
