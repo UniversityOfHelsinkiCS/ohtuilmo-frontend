@@ -59,28 +59,36 @@ class RegistrationPage extends React.Component {
       </Card>
     ))
 
+    let indexes = this.props.topics.map((item, idx) => (
+      <p key={idx} className='dragndrop-index'>{idx + 1}</p>
+    ))
+
     return (
       <div>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
           <p>---</p>
           <h2>Topics</h2>
-          <p>Order the list of topics by your preference, click to expand</p>
-          <ReactDragList
-            handles={false}
-            dataSource={this.props.topics}
-            onUpdate={this.handleUpdate}
-            row={(topic, index) => (
-              <ExpansionPanel key={index}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography style={{ flex: 6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
-                  <Typography style={{ flex:  6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Topic content={topic.content}/>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>)}
-          />
+          <p>Order the list of topics according to your preference by dragging and dropping, click to expand</p>
+          <div className='dragndrop-container'>
+            <div className='dragndrop-indexes-container'>{indexes}</div>
+            <ReactDragList
+              className='dragndrop-list'
+              handles={false}
+              dataSource={this.props.topics}
+              onUpdate={this.handleUpdate}
+              row={(topic, index) => (
+                <ExpansionPanel key={index}>
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography style={{ flex: 6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
+                    <Typography style={{ flex:  6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <Topic content={topic.content}/>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>)}
+            />
+          </div>
         </div>
         <div className="section">
           <h2>Details</h2>
