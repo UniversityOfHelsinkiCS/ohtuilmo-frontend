@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import topicService from '../services/topic'
 import Topic from './Topic'
+import TopicForm from './TopicForm'
+import './TopicFormPage.css'
 
 class TopicFormPage extends React.Component {
   submitForm = async (event) => {
@@ -36,128 +35,51 @@ class TopicFormPage extends React.Component {
 
   render() {
     if (this.props.isSaved === true) {
-      return <Redirect to={process.env.PUBLIC_URL + '/topics/' + this.props.secretId} />
+      return (
+        <Redirect
+          to={process.env.PUBLIC_URL + '/topics/' + this.props.secretId}
+        />
+      )
     }
 
     return (
-      <div>
-        {this.props.preview ? (
-          <div>
-            <Topic
-              content={this.props.content}
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.props.preview}
-                  onChange={() => this.props.updatePreview(false)}
-                />
-              }
-              label="Preview topic proposal"
-            />
-          </div>
-        ) : (
-          <div>
-            <h1>Give your proposal</h1>
-            <p>Projektin kuvaus voi olla myös suomeksi.</p>
-
-            <form onSubmit={this.submitForm}>
-              <div>
-                <TextField
-                  fullWidth
-                  required
-                  label="title / aihe"
-                  margin="normal"
-                  value={this.props.content.title}
-                  onChange={(e) => this.props.updateTitle(e.target.value)}
-                />
+      <div className="topic-submit-page-container">
+        <div className="topic-form-container">
+          {this.props.preview ? (
+            <div>
+              <Topic content={this.props.content} />
+              <div className="preview-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => this.props.updatePreview(false)}
+                >
+                  Back to edit
+                </Button>
               </div>
-              <div>
-                <TextField
-                  fullWidth
-                  required
-                  label="customer / asiakas"
-                  margin="normal"
-                  value={this.props.content.customerName}
-                  onChange={(e) => this.props.updateCustomerName(e.target.value)}
-                />
-              </div>
-              <div>
-                <TextField
-                  type="email"
-                  fullWidth
-                  required
-                  label="contact email / yhteyshenkilön email"
-                  margin="normal"
-                  value={this.props.content.email}
-                  onChange={(e) => this.props.updateEmail(e.target.value)}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  required
-                  label="description / aiheen kuvaus (Markdown field)"
-                  multiline
-                  rows="5"
-                  margin="normal"
-                  value={this.props.content.description}
-                  onChange={(e) => this.props.updateDescription(e.target.value)}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  required
-                  label="implementation environment / toteutusympäristö (Markdown field)"
-                  multiline
-                  rows="5"
-                  margin="normal"
-                  value={this.props.content.environment}
-                  onChange={(e) => this.props.updateEnvironment(e.target.value)}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  label="special requests / erityisvaatimukset (Markdown field)"
-                  multiline
-                  rows="5"
-                  margin="normal"
-                  value={this.props.content.specialRequests}
-                  onChange={(e) => this.props.updateSpecialRequests(e.target.value)}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  label="additional info / lisätietoja (Markdown field)"
-                  multiline
-                  rows="5"
-                  margin="normal"
-                  value={this.props.content.additionalInfo}
-                  onChange={(e) => this.props.updateAdditionalInfo(e.target.value)}
-                />
-              </div>
-              <FormControlLabel
-                control={
-                  <Button type="submit" variant="contained" color="primary">
-                    Submit proposal
-                  </Button>
-                }
+            </div>
+          ) : (
+            <div>
+              <h1>Give your proposal</h1>
+              <p>Projektin kuvaus voi olla myös suomeksi.</p>
+              <TopicForm
+                content={this.props.content}
+                onSubmit={this.submitForm}
+                submitButtonText="submit proposal"
+                isEditForm={false}
               />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.props.preview}
-                    onChange={() => this.props.updatePreview(true)}
-                  />
-                }
-                label="Preview topic proposal"
-              />
-            </form>
-          </div>
-        )}
+              <div className="preview-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => this.props.updatePreview(true)}
+                >
+                  Preview
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     )
   }
