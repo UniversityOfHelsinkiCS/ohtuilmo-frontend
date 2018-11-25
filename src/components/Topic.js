@@ -8,7 +8,7 @@ const Topic = ({ content, isEditable, onPageChange }) => {
   return (
     <div className="single-topic-container">
       <div className="block">
-        <Typography variant="h2" id="title">
+        <Typography variant="h4" id="title">
           {content.title}
         </Typography>
       </div>
@@ -33,7 +33,7 @@ const Topic = ({ content, isEditable, onPageChange }) => {
         <ReactMarkdown>{content.specialRequests}</ReactMarkdown>
       </div>
       <div className="block">
-        <Typography variant="h6">Additional info</Typography>
+        <Typography variant="h6">Additional information</Typography>
         <ReactMarkdown>{content.additionalInfo}</ReactMarkdown>
       </div>
       {isEditable && (

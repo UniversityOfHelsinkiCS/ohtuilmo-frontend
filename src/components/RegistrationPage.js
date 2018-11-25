@@ -2,6 +2,8 @@ import React from 'react'
 import topicService from '../services/topic'
 import { connect } from 'react-redux'
 import './RegistrationPage.css'
+import ReactDragList from 'react-drag-list'
+import Topic from './Topic'
 // MUI
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
@@ -40,22 +42,13 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  handleUpdate = (evt, updated) => {
+    console.log(evt)
+    console.log(updated)
+    this.props.updateTopics(updated)
+  }
 
   render() {
-    let topicsList = this.props.topics.map((topic, idx) => (
-      <ExpansionPanel key={idx}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography style={{ flex: 1 }}>{topic.content.customerName}</Typography>
-          <Typography style={{ flex:  1 }}>{topic.content.title}</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            {topic.content.description}
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    ))
-
     let questions = testQuestions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx} >
         <CardContent>
@@ -72,12 +65,22 @@ class RegistrationPage extends React.Component {
           <h2 className="landingpage-header">User details</h2>
           <p>---</p>
           <h2>Topics</h2>
-          <p>Order the list of topics by your preference</p>
-          <div className="expandable-section-headers">
-            <p className="expandable-section-headers-customer">Customer</p>
-            <p className="expandable-section-headers-topic">Topic</p>
-          </div>
-          {topicsList}
+          <p>Order the list of topics by your preference, click to expand</p>
+          <ReactDragList
+            handles={false}
+            dataSource={this.props.topics}
+            onUpdate={this.handleUpdate}
+            row={(topic, index) => (
+              <ExpansionPanel key={index}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography style={{ flex: 6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
+                  <Typography style={{ flex:  6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Topic content={topic.content}/>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>)}
+          />
         </div>
         <div className="section">
           <h2>Details</h2>
