@@ -28,7 +28,7 @@ class LoginPage extends React.Component {
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
-      this.props.setSuccess('Kirjautuminen sisään onnistui!')
+      this.props.setSuccess('Login successful!')
       this.props.clearForm()
       this.props.updateIsLoading(false)
       setTimeout(() => {
@@ -40,12 +40,12 @@ class LoginPage extends React.Component {
 
       if (e.response) {
         if (e.response.status === 400) {
-          this.props.setError('Käyttäjätunnus tai salasana puuttuu!')
+          this.props.setError('Username or password is missing!')
         } else if (e.response.status === 401) {
-          this.props.setError('Väärä käyttäjätunnus tai salasana!')
+          this.props.setError('Username or password is incorrect!')
         }
       } else {
-        this.props.setError('Jokin virhe tapahtui, kirjautuminen sisään epäonnistui')
+        this.props.setError('Error occurred, login failed')
       }
 
       setTimeout(() => {
@@ -57,8 +57,8 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="loginpage-container">
-        <h1 className="loginpage-header">Kirjaudu sisään</h1>
-        <p className="loginpage-information">Kirjautuminen vaatii Helsingin yliopiston käyttäjätunnuksen</p>
+        <h1 className="loginpage-header">Login</h1>
+        <p className="loginpage-information">University of Helsinki account required for login.</p>
         <form onSubmit={this.login}>
           <div>
             <TextField
@@ -66,7 +66,7 @@ class LoginPage extends React.Component {
               error={this.props.username.length > 20 ? true : false}
               type='text'
               name='username'
-              label="Käyttäjätunnus"
+              label='Username'
               value={this.props.username}
               onChange={(e) => this.props.updateUsername(e.target.value)}
             />
@@ -76,12 +76,12 @@ class LoginPage extends React.Component {
               error={this.props.password.length > 20 ? true : false}
               type='password'
               name='password'
-              label='Salasana'
+              label='Password'
               value={this.props.password}
               onChange={(e) => this.props.updatePassword(e.target.value)}
             />
           </div>
-          <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Kirjaudu</Button>
+          <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Log in</Button>
         </form>
       </div>
     )

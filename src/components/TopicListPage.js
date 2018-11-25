@@ -36,8 +36,7 @@ class TopicListPage extends React.Component {
     try {
       topic.active = !topic.active
       const updatedTopics = this.props.topics.map(topic2 => { return topic2.id === topic.id ? topic : topic2 })
-      const response = await topicService.update(topic)
-      console.log('Response: ', response)
+      await topicService.update(topic)
       this.props.updateTopics(updatedTopics)
       this.props.setSuccess('Topic update submitted succesfully!')
       setTimeout(() => {

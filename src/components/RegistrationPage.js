@@ -42,7 +42,6 @@ class RegistrationPage extends React.Component {
 
 
   render() {
-    console.log(this.props.topic)
     let topicsList = this.props.topics.map((topic, idx) => (
       <ExpansionPanel key={idx}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
