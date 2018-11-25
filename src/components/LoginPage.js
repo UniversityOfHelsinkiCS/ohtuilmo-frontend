@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import loginService from '../services/login'
+import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import Button from '@material-ui/core/Button'
@@ -14,6 +15,7 @@ class LoginPage extends React.Component {
   }
 
   login = async (event) => {
+    this.props.updateIsLoading(true)
     event.preventDefault()
     let username = this.props.username
     let password = this.props.password
@@ -28,12 +30,13 @@ class LoginPage extends React.Component {
       this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
       this.props.setSuccess('Kirjautuminen sisään onnistui!')
       this.props.clearForm()
-
+      this.props.updateIsLoading(false)
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
     } catch (e) {
       console.log('error happened', e.response)
+      this.props.updateIsLoading(false)
 
       if (e.response) {
         if (e.response.status === 400) {
@@ -89,13 +92,15 @@ const mapStateToProps = (state) => {
   return {
     username: state.loginPage.username,
     password: state.loginPage.password,
-    user: state.loginPage.user
+    user: state.loginPage.user,
+    isLoading: state.app.isLoading
   }
 }
 
 const mapDispatchToProps = {
   ...loginPageActions,
-  ...notificationActions
+  ...notificationActions,
+  ...appActions
 }
 
 const ConnectedLoginPage = connect(

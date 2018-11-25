@@ -21,6 +21,12 @@ const getAll = async () => {
   return response.data.topics
 }
 
+const getAllActive = async () => {
+  const response = await axios.get(url + '/active')
+  console.log(response)
+  return response.data.topics
+}
+
 const update = async (topic) => {
   const loggedInUser = localStorage.getItem('loggedInUser')
   let token
@@ -39,4 +45,4 @@ const getOne = async (id) => {
   return response.data.topic
 }
 
-export default { create, getAll, getOne , update }
+export default { create, getAll, getAllActive, getOne , update }
