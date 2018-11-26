@@ -81,6 +81,13 @@ const updateSecretId = (secretId) => {
   }
 }
 
+const updateShowInfo = (showInfo) => {
+  return {
+    type: 'UPDATE_SHOWINFO',
+    payload: showInfo
+  }
+}
+
 export default {
   updateTitle,
   updateCustomerName,
@@ -93,5 +100,6 @@ export default {
   updatePreview,
   setSaved,
   updateSecretId,
-  setCurrentTopic
+  setCurrentTopic,
+  updateShowInfo
 }

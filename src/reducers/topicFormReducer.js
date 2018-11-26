@@ -8,6 +8,7 @@ const initialState = {
     specialRequests: '',
     additionalInfo: ''
   },
+  showInfo: true,
   preview: false,
   isSaved: false,
   secretId: ''
@@ -111,6 +112,11 @@ const topicFormReducer = (state = initialState, action) => {
     return {
       ...state,
       secretId: action.payload
+    }
+  case 'UPDATE_SHOWINFO':
+    return {
+      ...state,
+      showInfo: action.payload
     }
   default:
   }
