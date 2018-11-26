@@ -43,8 +43,6 @@ class RegistrationPage extends React.Component {
   }
 
   handleUpdate = (evt, updated) => {
-    console.log(evt)
-    console.log(updated)
     this.props.updateTopics(updated)
   }
 
@@ -80,8 +78,8 @@ class RegistrationPage extends React.Component {
               row={(topic, index) => (
                 <ExpansionPanel key={index}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography style={{ flex: 6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
-                    <Typography style={{ flex:  6, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
+                    <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
+                    <Typography style={{ flex:  1, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Topic content={topic.content}/>
