@@ -7,10 +7,11 @@ import Button from '@material-ui/core/Button'
 import topicService from '../services/topic'
 import Topic from './Topic'
 import TopicForm from './TopicForm'
+import TopicFormPageInfo from './TopicFormPageInfo'
 import './TopicFormPage.css'
 
 class TopicFormPage extends React.Component {
-  submitForm = async (event) => {
+  submitForm = async event => {
     event.preventDefault()
     try {
       const content = { content: this.props.content }
@@ -34,11 +35,18 @@ class TopicFormPage extends React.Component {
   }
 
   render() {
+    window.scrollTo(0,0)
     if (this.props.isSaved === true) {
       return (
         <Redirect
           to={process.env.PUBLIC_URL + '/topics/' + this.props.secretId}
         />
+      )
+    }
+
+    if (this.props.showInfo) {
+      return (
+        <TopicFormPageInfo />
       )
     }
 
@@ -85,9 +93,10 @@ class TopicFormPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     content: state.topicFormPage.content,
+    showInfo: state.topicFormPage.showInfo,
     preview: state.topicFormPage.preview,
     isSaved: state.topicFormPage.isSaved,
     secretId: state.topicFormPage.secretId
