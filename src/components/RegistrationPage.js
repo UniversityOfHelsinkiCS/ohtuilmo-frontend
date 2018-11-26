@@ -3,13 +3,8 @@ import topicService from '../services/topic'
 import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
-import Topic from './Topic'
+import TopicDialog from './TopicDialog'
 // MUI
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
@@ -58,7 +53,7 @@ class RegistrationPage extends React.Component {
     ))
 
     let indexes = this.props.topics.map((item, idx) => (
-      <p key={idx} className='dragndrop-index'>{idx + 1}</p>
+      <Card key={idx} className='dragndrop-index'>{idx + 1}</Card>
     ))
 
     return (
@@ -67,7 +62,7 @@ class RegistrationPage extends React.Component {
           <h2 className="landingpage-header">User details</h2>
           <p>---</p>
           <h2>Topics</h2>
-          <p>Order the list of topics according to your preference by dragging and dropping, click to expand</p>
+          <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
           <div className='dragndrop-container'>
             <div className='dragndrop-indexes-container'>{indexes}</div>
             <ReactDragList
@@ -76,15 +71,7 @@ class RegistrationPage extends React.Component {
               dataSource={this.props.topics}
               onUpdate={this.handleUpdate}
               row={(topic, index) => (
-                <ExpansionPanel key={index}>
-                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography style={{ flex: 1, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>Customer: {topic.content.customerName}</Typography>
-                    <Typography style={{ flex:  1, fontWeight: 'bold', color: 'gray', fontStyle: 'italic' }}>{topic.content.title}</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <Topic content={topic.content}/>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>)}
+                <TopicDialog topic={topic} key={index}></TopicDialog>)}
             />
           </div>
         </div>

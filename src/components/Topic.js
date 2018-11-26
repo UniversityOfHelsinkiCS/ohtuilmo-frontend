@@ -13,27 +13,27 @@ const Topic = ({ content, isEditable, onPageChange }) => {
         </Typography>
       </div>
       <div className="block">
-        <Typography variant="h7">Customer</Typography>
+        <p className='title'>Customer</p>
         <Typography variant="body1">{content.customerName}</Typography>
       </div>
       <div className="block">
-        <Typography variant="h7">Contact email</Typography>
+        <p className='title'>Contact email</p>
         <Typography variant="body1">{content.email}</Typography>
       </div>
       <div className="block">
-        <Typography variant="h7">Description</Typography>
+        <p className='title'>Description</p>
         <ReactMarkdown>{content.description}</ReactMarkdown>
       </div>
       <div className="block">
-        <Typography variant="h7">Implementation environment</Typography>
+        <p className='title'>Implementation environment</p>
         <ReactMarkdown>{content.environment}</ReactMarkdown>
       </div>
       <div className="block">
-        <Typography variant="h7">Special requests</Typography>
+        <p className='title'>Special requests</p>
         <ReactMarkdown>{content.specialRequests? content.specialRequests : '-'}</ReactMarkdown>
       </div>
       <div className="block">
-        <Typography variant="h7">Additional information</Typography>
+        <p className='title'>Additional information</p>
         <ReactMarkdown>{content.additionalInfo? content.additionalInfo : '-'}</ReactMarkdown>
       </div>
       {isEditable && (

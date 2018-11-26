@@ -36,8 +36,10 @@
 }
 
 .dragndrop-index {
-  padding: 15px 20px 15px 5px;
+  padding: 27px 20px 27px 20px;
   max-height: 18px;
-  margin: 0;
-  font-weight: bold
+  margin: 2px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #4d4d4d;
 }
