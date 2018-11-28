@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
 import TopicDialog from './TopicDialog'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // MUI
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
