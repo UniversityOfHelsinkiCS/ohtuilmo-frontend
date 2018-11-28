@@ -2,12 +2,9 @@ import React from 'react'
 import topicService from '../services/topic'
 import { connect } from 'react-redux'
 import './RegistrationPage.css'
+import ReactDragList from 'react-drag-list'
+import TopicDialog from './TopicDialog'
 // MUI
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
@@ -40,22 +37,11 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  handleUpdate = (evt, updated) => {
+    this.props.updateTopics(updated)
+  }
 
   render() {
-    let topicsList = this.props.topics.map((topic, idx) => (
-      <ExpansionPanel key={idx}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography style={{ flex: 1 }}>{topic.content.customerName}</Typography>
-          <Typography style={{ flex:  1 }}>{topic.content.title}</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            {topic.content.description}
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    ))
-
     let questions = testQuestions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx} >
         <CardContent>
@@ -66,18 +52,28 @@ class RegistrationPage extends React.Component {
       </Card>
     ))
 
+    let indexes = this.props.topics.map((item, idx) => (
+      <Card key={idx} className='dragndrop-index'>{idx + 1}</Card>
+    ))
+
     return (
       <div>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
           <p>---</p>
           <h2>Topics</h2>
-          <p>Order the list of topics by your preference</p>
-          <div className="expandable-section-headers">
-            <p className="expandable-section-headers-customer">Customer</p>
-            <p className="expandable-section-headers-topic">Topic</p>
+          <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
+          <div className='dragndrop-container'>
+            <div className='dragndrop-indexes-container'>{indexes}</div>
+            <ReactDragList
+              className='dragndrop-list'
+              handles={false}
+              dataSource={this.props.topics}
+              onUpdate={this.handleUpdate}
+              row={(topic, index) => (
+                <TopicDialog topic={topic} key={index}></TopicDialog>)}
+            />
           </div>
-          {topicsList}
         </div>
         <div className="section">
           <h2>Details</h2>
