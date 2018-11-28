@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
 import TopicDialog from './TopicDialog'
+import {Link} from 'react-router-dom'
 // MUI
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -59,7 +60,7 @@ class RegistrationPage extends React.Component {
     return (
       <div>
         <div className="section">
-          <h2 className="landingpage-header">User details</h2>
+          <Link to="/user/details" style={{ textDecoration: 'none' }}><h2 className="landingpage-header">User details</h2></Link>
           <p>---</p>
           <h2>Topics</h2>
           <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
