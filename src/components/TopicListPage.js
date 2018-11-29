@@ -24,10 +24,7 @@ class TopicListPage extends React.Component {
       this.props.updateTopics(sortedTopics)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      window.location.replace(process.env.PUBLIC_URL + '/')
     }
   }
 
