@@ -54,7 +54,7 @@ class App extends Component {
     window.localStorage.clear()
     this.props.updateUser('')
     this.props.updateIsLoading(false)
-    window.location.reload()
+    window.location.replace(process.env.PUBLIC_URL + '/login')
   }
 
   render() {
