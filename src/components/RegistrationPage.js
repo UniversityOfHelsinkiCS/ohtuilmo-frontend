@@ -9,6 +9,9 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormHelperText from '@material-ui/core/FormHelperText'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
@@ -17,7 +20,6 @@ class RegistrationPage extends React.Component {
   componentDidMount() {
     this.fetchTopics()
     this.fetchQuestions()
-    this.props.updateQuestionAnswer('Hey', 1)
   }
 
   async fetchQuestions() {
@@ -48,12 +50,38 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
-    let questions = testQuestions.map((item, idx) => (
+    let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx} >
         <CardContent>
           <p>{item.question}</p>
-          {item.type === 'scale'? <div>Scale 1 to 5 selector</div> : null}
-          {item.type === 'text'? <Input /> : null}
+          {item.type === 'scale'?
+            <div>
+              <Select
+                value={this.props.questions[idx].answer}
+                onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5
+                </MenuItem>
+              </Select>
+              <FormHelperText>1=None 2=Basics 3=Average 4=Good 5=Excellent</FormHelperText>
+            </div>
+            :
+            null}
+          {item.type === 'text'?
+            <Input
+              value={this.props.questions[idx].answer}
+              onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
+              placeholder='Answer'
+            />
+            :
+            null}
         </CardContent>
       </Card>
     ))
