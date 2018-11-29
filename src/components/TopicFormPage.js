@@ -35,7 +35,6 @@ class TopicFormPage extends React.Component {
   }
 
   render() {
-    window.scrollTo(0,0)
     if (this.props.isSaved === true) {
       return (
         <Redirect

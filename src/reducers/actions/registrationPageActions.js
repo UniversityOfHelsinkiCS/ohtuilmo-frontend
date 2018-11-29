@@ -5,6 +5,14 @@ const updateTopics = (topics) => {
   }
 }
 
+const updateEmail = (email) => {
+  return {
+    type: 'UPDATE_EMAIL',
+    payload: email
+  }
+}
+
 export default {
-  updateTopics
+  updateTopics,
+  updateEmail
 }

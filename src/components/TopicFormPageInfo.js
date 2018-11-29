@@ -17,7 +17,10 @@ const TopicFormPageInfo = props => {
         type="submit"
         variant="contained"
         color="primary"
-        onClick={() => props.updateShowInfo(false)}
+        onClick={() => {
+          window.scrollTo(0,0)
+          props.updateShowInfo(false)
+        }}
       >
         Create Topic
       </Button>
