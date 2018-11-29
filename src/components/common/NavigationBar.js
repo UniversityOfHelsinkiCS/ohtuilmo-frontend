@@ -17,7 +17,8 @@ class NavigationBar extends React.Component {
 
   getAppropriateMenuItemList() {
     let itemList = []
-    const user = window.localStorage.getItem('loggedInUser')
+    let user = window.localStorage.getItem('loggedInUser')
+    user = user ? JSON.parse(user).user : null
     if (!user) {
       itemList = regularItems(this.props.history)
     } else if (!user.admin) {
