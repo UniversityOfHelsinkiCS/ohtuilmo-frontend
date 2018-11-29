@@ -9,7 +9,6 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
-import TextField from '@material-ui/core/TextField'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
@@ -61,17 +60,7 @@ class RegistrationPage extends React.Component {
       <div>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
-          <div>
-            <TextField
-              type="email"
-              fullWidth
-              required
-              label="email"
-              margin="normal"
-              value={this.props.email}
-              onChange={(e) => this.props.updateEmail(e.target.value)}
-            />
-          </div>
+          <p>---</p>
           <h2>Topics</h2>
           <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
           <div className='dragndrop-container'>
