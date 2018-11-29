@@ -46,7 +46,7 @@ class NavigationMenu extends React.Component {
           >
             <MenuIcon />
           </IconButton>
-          <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
+          <Popper style={{ zIndex: 1 }} open={open} anchorEl={this.anchorEl} transition disablePortal>
             {({ TransitionProps, placement }) => (
               <Grow
                 {...TransitionProps}
