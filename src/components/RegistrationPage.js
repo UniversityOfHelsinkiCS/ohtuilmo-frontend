@@ -12,6 +12,7 @@ import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import InputLabel from '@material-ui/core/InputLabel'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
@@ -53,22 +54,22 @@ class RegistrationPage extends React.Component {
     let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx} >
         <CardContent>
+          <InputLabel>Question {idx}:</InputLabel>
           <p>{item.question}</p>
           {item.type === 'scale'?
             <div>
               <Select
-                value={this.props.questions[idx].answer}
+                value={this.props.questions[idx].answer? this.props.questions[idx].answer : 0}
                 onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               >
-                <MenuItem value="">
+                <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
                 <MenuItem value={3}>3</MenuItem>
                 <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5
-                </MenuItem>
+                <MenuItem value={5}>5</MenuItem>
               </Select>
               <FormHelperText>1=None 2=Basics 3=Average 4=Good 5=Excellent</FormHelperText>
             </div>
@@ -79,6 +80,10 @@ class RegistrationPage extends React.Component {
               value={this.props.questions[idx].answer}
               onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               placeholder='Answer'
+              fullWidth
+              multiline
+              rowsMax='3'
+              required
             />
             :
             null}
