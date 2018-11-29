@@ -16,6 +16,12 @@ import notificationActions from '../reducers/actions/notificationActions'
 class RegistrationPage extends React.Component {
   componentDidMount() {
     this.fetchTopics()
+    this.fetchQuestions()
+    this.props.updateQuestionAnswer('Hey', 1)
+  }
+
+  async fetchQuestions() {
+    this.props.updateQuestions(testQuestions)
   }
 
   async fetchTopics() {
@@ -97,7 +103,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.loginPage.user,
     isLoading: state.app.isLoading,
-    topics: state.registrationPage.topics
+    topics: state.registrationPage.topics,
+    questions: state.registrationPage.questions
   }
 }
 
