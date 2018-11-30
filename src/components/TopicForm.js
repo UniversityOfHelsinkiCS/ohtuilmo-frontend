@@ -8,6 +8,14 @@ import './TopicForm.css'
 const TopicForm = (props) => {
   return (
     <div className="topic-form">
+      <div className="preview-button">
+        <Button
+          variant="outlined"
+          onClick={() => props.updatePreview(true)}
+        >
+          Preview
+        </Button>
+      </div>
       <form onSubmit={props.onSubmit}>
         <div>
           <TextField
@@ -88,14 +96,6 @@ const TopicForm = (props) => {
             value={props.content.additionalInfo}
             onChange={(e) => props.updateAdditionalInfo(e.target.value)}
           />
-        </div>
-        <div className="preview-button">
-          <Button
-            variant="outlined"
-            onClick={() => props.updatePreview(true)}
-          >
-            Preview
-          </Button>
         </div>
         <div className="form-buttons">
           <div className="form-button">
