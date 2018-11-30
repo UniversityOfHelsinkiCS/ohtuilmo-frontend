@@ -66,7 +66,7 @@ class App extends Component {
     return (
       <Router>
         <div id="app-wrapper">
-          <NavigationBar logout={this.logout} />
+          <NavigationBar logout={this.logout} history={this.history}/>
           <Notification type={this.props.type} message={this.props.message} open={this.props.open} />
           <div id="app-content">
             {loadingSpinner}
