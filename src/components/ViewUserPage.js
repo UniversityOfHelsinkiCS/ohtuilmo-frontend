@@ -1,8 +1,11 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import registrationPageActions from '../reducers/actions/registrationPageActions'
+import { connect } from 'react-redux'
+import Typography from '@material-ui/core/Typography'
 
 class ViewUserPage extends React.Component {
+
   componentDidMount() {
 
   }
@@ -10,40 +13,44 @@ class ViewUserPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>User details</h1>
-        <div>
-          <TextField
-            fullWidth
-            label="name"
-            margin="normal"
-            value={JSON.parse(localStorage.getItem('loggedInUser')).user.first_names}
-          />
+        <div className="block">
+          <Typography variant="h5" id="title">
+            {JSON.parse(localStorage.getItem('loggedInUser')).user.first_names}
+          </Typography>
+        </div>
+        <div className="block">
+          <Typography variant="h5" id="title">
+            {JSON.parse(localStorage.getItem('loggedInUser')).user.student_number}
+          </Typography>
         </div>
         <div>
           <TextField
+            type="email"
             fullWidth
-            label="student number"
+            label="email"
             margin="normal"
-            value={JSON.parse(localStorage.getItem('loggedInUser')).user.student_number}
+            value={this.props.email}
+            onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
-        <form onSubmit={this.submitForm}>
-          <div>
-            <TextField
-              fullWidth
-              label="email"
-              margin="normal"
-              value={JSON.parse(localStorage.getItem('loggedInUser')).user.email}
-              onChange={(e) => this.props.updateEmail(e.target.value)}
-            />
-          </div>
-          <Button type="submit" variant="contained" color="primary">
-            Save
-          </Button>
-        </form>
       </div>
     )
   }
 }
 
-export default ViewUserPage
+const mapStateToProps = (state) => {
+  return {
+    email: state.registrationPage.email
+  }
+}
+
+const mapDispatchToProps = {
+  ...registrationPageActions
+}
+
+const ConnectedViewUserPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewUserPage)
+
+export default ConnectedViewUserPage
