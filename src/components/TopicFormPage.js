@@ -58,7 +58,6 @@ class TopicFormPage extends React.Component {
               <div className="preview-button">
                 <Button
                   variant="outlined"
-                  color="primary"
                   onClick={() => this.props.updatePreview(false)}
                 >
                   Back to edit
