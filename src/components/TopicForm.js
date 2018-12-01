@@ -8,12 +8,19 @@ import './TopicForm.css'
 const TopicForm = (props) => {
   return (
     <div className="topic-form">
+      <div className="preview-button">
+        <Button
+          variant="outlined"
+          onClick={() => props.updatePreview(true)}
+        >
+          Preview
+        </Button>
+      </div>
       <form onSubmit={props.onSubmit}>
         <div>
           <TextField
             fullWidth
-            required
-            label="title / aihe"
+            label="Title / Aihe"
             margin="normal"
             value={props.content.title}
             onChange={(e) => props.updateTitle(e.target.value)}
@@ -23,7 +30,7 @@ const TopicForm = (props) => {
           <TextField
             fullWidth
             required
-            label="customer / asiakas"
+            label="Customer / Asiakas"
             margin="normal"
             value={props.content.customerName}
             onChange={(e) => props.updateCustomerName(e.target.value)}
@@ -34,7 +41,7 @@ const TopicForm = (props) => {
             type="email"
             fullWidth
             required
-            label="contact email / yhteyshenkilön email"
+            label="Contact email / Yhteyshenkilön sähköpostiosoite"
             margin="normal"
             value={props.content.email}
             onChange={(e) => props.updateEmail(e.target.value)}
@@ -48,7 +55,7 @@ const TopicForm = (props) => {
           <TextField
             fullWidth
             required
-            label="description / aiheen kuvaus"
+            label="Description / Aiheen kuvaus"
             multiline
             rows={props.isEditForm ? '' : 7}
             margin="normal"
@@ -60,7 +67,7 @@ const TopicForm = (props) => {
           <TextField
             fullWidth
             required
-            label="implementation environment / toteutusympäristö"
+            label="Implementation environment / Toteutusympäristö"
             multiline
             rows={props.isEditForm ? '' : 7}
             margin="normal"
@@ -71,7 +78,7 @@ const TopicForm = (props) => {
         <div>
           <TextField
             fullWidth
-            label="special requests / erityisvaatimukset"
+            label="Special requests / Erityisvaatimukset"
             multiline
             rows={props.isEditForm ? '' : 7}
             margin="normal"
@@ -82,7 +89,7 @@ const TopicForm = (props) => {
         <div>
           <TextField
             fullWidth
-            label="additional info / lisätietoja"
+            label="Additional info / Lisätietoja"
             multiline
             rows={props.isEditForm ? '' : 7}
             margin="normal"
@@ -104,7 +111,7 @@ const TopicForm = (props) => {
             <div className="form-button">
               <Button
                 variant="contained"
-                color="default"
+                color="primary"
                 onClick={props.onCancel}
               >
                 Cancel

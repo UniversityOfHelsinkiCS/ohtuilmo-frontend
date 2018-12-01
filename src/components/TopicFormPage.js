@@ -20,7 +20,7 @@ class TopicFormPage extends React.Component {
       this.props.setSuccess('Topic proposal submitted succesfully!')
       setTimeout(() => {
         this.props.clearNotifications()
-      }, 3000)
+      }, 10000)
       this.props.clearForm()
 
       this.props.updateSecretId(createdTopic.secret_id)
@@ -35,7 +35,6 @@ class TopicFormPage extends React.Component {
   }
 
   render() {
-    window.scrollTo(0,0)
     if (this.props.isSaved === true) {
       return (
         <Redirect
@@ -59,7 +58,6 @@ class TopicFormPage extends React.Component {
               <div className="preview-button">
                 <Button
                   variant="outlined"
-                  color="primary"
                   onClick={() => this.props.updatePreview(false)}
                 >
                   Back to edit
@@ -75,16 +73,8 @@ class TopicFormPage extends React.Component {
                 onSubmit={this.submitForm}
                 submitButtonText="submit proposal"
                 isEditForm={false}
+                updatePreview={this.props.updatePreview}
               />
-              <div className="preview-button">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => this.props.updatePreview(true)}
-                >
-                  Preview
-                </Button>
-              </div>
             </div>
           )}
         </div>

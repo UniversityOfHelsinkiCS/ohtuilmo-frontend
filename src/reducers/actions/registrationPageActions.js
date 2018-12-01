@@ -5,6 +5,31 @@ const updateTopics = (topics) => {
   }
 }
 
+const updateEmail = (email) => {
+  return {
+    type: 'UPDATE_EMAIL',
+    payload: email
+  }
+}
+
+const updateQuestions = (questions) => {
+  return {
+    type: 'UPDATE_QUESTIONS',
+    payload: questions
+  }
+}
+
+const updateQuestionAnswer = (answer, questionIndex) => {
+  return {
+    type: 'UPDATE_QUESTION_ANSWER',
+    index: questionIndex,
+    answer: answer
+  }
+}
+
 export default {
-  updateTopics
+  updateTopics,
+  updateEmail,
+  updateQuestions,
+  updateQuestionAnswer
 }
