@@ -49,7 +49,7 @@ const TopicForm = (props) => {
         </div>
         <p>
           The fields below have Markdown support. / Seuraavia kenttiä voi
-          muotoilla Markdown-notaatiolla.
+          muotoilla Markdown-notaatiolla. (<a href='https://guides.github.com/features/mastering-markdown/'>Markdown instructions / Markdown ohjeet</a>)
         </p>
         <div>
           <TextField
