@@ -38,7 +38,7 @@ const Topic = ({ content, isEditable, onPageChange }) => {
       </div>
       {isEditable && (
         <div className="topic-edit-button">
-          <Button variant="contained" color="primary" onClick={onPageChange}>
+          <Button variant="outlined" onClick={onPageChange}>
             Edit
           </Button>
         </div>

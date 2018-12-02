@@ -57,7 +57,6 @@ class TopicEditPage extends React.Component {
             <div className="preview-button">
               <Button
                 variant="outlined"
-                color="primary"
                 onClick={() => this.props.updatePreview(false)}
               >
                 Back to edit
@@ -74,15 +73,6 @@ class TopicEditPage extends React.Component {
               isEditForm={true}
               onCancel={() => this.props.setEditMode(false)}
             />
-            <div className="preview-button">
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => this.props.updatePreview(true)}
-              >
-                Preview
-              </Button>
-            </div>
           </div>
         )}
       </div>
