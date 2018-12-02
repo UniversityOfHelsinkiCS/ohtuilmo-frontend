@@ -13,19 +13,20 @@ class UserDetails extends React.Component {
 
     return (
       <div>
-        <Typography variant="h5" id="title">
-          {firstname} {this.props.user.last_name}
+        <Typography variant="h6" id="title">
+          Name: {firstname} {this.props.user.last_name}
         </Typography>
-        <Typography variant="h5" id="title">
-          {this.props.user.student_number}
+        <Typography variant="h6" id="title">
+          Studet number: {this.props.user.student_number}
         </Typography>
         <p>Please fill your email</p>
         <div>
           <TextField
             type="email"
             required
-            label="email"
+            label="Email"
             margin="normal"
+            style={{ width: '250px', marginTop: 0 }}
             value={this.props.email}
             onChange={(e) => this.props.updateEmail(e.target.value)}
           />
