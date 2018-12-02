@@ -62,8 +62,8 @@ class RegistrationPage extends React.Component {
                 value={this.props.questions[idx].answer? this.props.questions[idx].answer : 0}
                 onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               >
-                <MenuItem value=''>
-                  <em>None</em>
+                <MenuItem value='' disabled>
+                  <em>Pick a number</em>
                 </MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
