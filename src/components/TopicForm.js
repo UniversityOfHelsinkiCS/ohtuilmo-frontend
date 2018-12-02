@@ -20,6 +20,7 @@ const TopicForm = (props) => {
         <div>
           <TextField
             fullWidth
+            required
             label="Title / Aihe"
             margin="normal"
             value={props.content.title}
