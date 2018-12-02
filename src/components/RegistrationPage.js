@@ -61,7 +61,7 @@ class RegistrationPage extends React.Component {
       <div>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
-          <ViewUserPage></ViewUserPage>
+          <ViewUserPage />
           <h2>Topics</h2>
           <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
           <div className='dragndrop-container'>

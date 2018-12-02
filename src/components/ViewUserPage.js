@@ -4,29 +4,26 @@ import registrationPageActions from '../reducers/actions/registrationPageActions
 import { connect } from 'react-redux'
 import Typography from '@material-ui/core/Typography'
 
-class ViewUserPage extends React.Component {
-
-  componentDidMount() {
-
-  }
-
+class UserDetails extends React.Component {
   render() {
+    var firstname = this.props.user.first_names
+    if (firstname.includes('*'))
+      firstname = firstname.split('*')[1].split(' ')[0]
+    else firstname = firstname.split(' ')[0]
+
     return (
       <div>
-        <div className="block">
-          <Typography variant="h5" id="title">
-            {JSON.parse(localStorage.getItem('loggedInUser')).user.first_names}
-          </Typography>
-        </div>
-        <div className="block">
-          <Typography variant="h5" id="title">
-            {JSON.parse(localStorage.getItem('loggedInUser')).user.student_number}
-          </Typography>
-        </div>
+        <Typography variant="h5" id="title">
+          {firstname} {this.props.user.last_name}
+        </Typography>
+        <Typography variant="h5" id="title">
+          {this.props.user.student_number}
+        </Typography>
+        <p>Please fill your email</p>
         <div>
           <TextField
             type="email"
-            fullWidth
+            required
             label="email"
             margin="normal"
             value={this.props.email}
@@ -40,7 +37,8 @@ class ViewUserPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    email: state.registrationPage.email
+    email: state.registrationPage.email,
+    user: state.loginPage.user.user
   }
 }
 
@@ -48,9 +46,9 @@ const mapDispatchToProps = {
   ...registrationPageActions
 }
 
-const ConnectedViewUserPage = connect(
+const ConnectedUserDetails = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewUserPage)
+)(UserDetails)
 
-export default ConnectedViewUserPage
+export default ConnectedUserDetails
