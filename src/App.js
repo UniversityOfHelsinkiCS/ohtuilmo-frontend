@@ -9,6 +9,7 @@ import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
 import ViewTopicPage from './components/ViewTopicPage'
 import RegistrationPage from './components/RegistrationPage'
+import ParticipantsPage from './components/ParticipantsPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
@@ -80,6 +81,7 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
+              <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
               <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>
