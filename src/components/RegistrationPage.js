@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
+import UserDetails from './UserDetails'
 
 class RegistrationPage extends React.Component {
   componentDidMount() {
@@ -62,8 +63,8 @@ class RegistrationPage extends React.Component {
                 value={this.props.questions[idx].answer? this.props.questions[idx].answer : 0}
                 onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
               >
-                <MenuItem value=''>
-                  <em>None</em>
+                <MenuItem value='' disabled>
+                  <em>Pick a number</em>
                 </MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
@@ -99,7 +100,7 @@ class RegistrationPage extends React.Component {
       <div>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
-          <p>---</p>
+          <UserDetails />
           <h2>Topics</h2>
           <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
           <div className='dragndrop-container'>

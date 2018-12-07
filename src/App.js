@@ -54,7 +54,7 @@ class App extends Component {
     window.localStorage.clear()
     this.props.updateUser('')
     this.props.updateIsLoading(false)
-    window.location.reload()
+    window.location.href = (process.env.PUBLIC_URL + '/login')
   }
 
   render() {
@@ -73,13 +73,14 @@ class App extends Component {
             <Switch>
               <Route path={process.env.PUBLIC_URL + '/login'} render={() => (
                 this.props.user ?
-                  <Redirect to={process.env.PUBLIC_URL + '/'} /> :
+                  <Redirect to={process.env.PUBLIC_URL + '/register'} /> :
                   <LoginPage />
               )} />
+              <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <Redirect to={process.env.PUBLIC_URL + '/login'} />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
-              <AuthRoute path={process.env.PUBLIC_URL + '/'} user={this.props.user} component={RegistrationPage} />
+              <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>
         </div>
