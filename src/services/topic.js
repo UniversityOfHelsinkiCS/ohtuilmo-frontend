@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URI } from '../utils/config'
+import { getUserToken } from '../utils/functions'
 
 const url = `${BACKEND_URI}/api/topics`
 
@@ -9,13 +10,8 @@ const create = async (content) => {
 }
 
 const getAll = async () => {
-  let token
-  const loggedInUser = localStorage.getItem('loggedInUser')
-  if (loggedInUser) {
-    token = JSON.parse(loggedInUser).token
-  }
   const config = {
-    headers: { 'Authorization': 'bearer ' + token }
+    headers: { 'Authorization': 'bearer ' + getUserToken() }
   }
   const response = await axios.get(url, config)
   return response.data.topics
@@ -27,13 +23,8 @@ const getAllActive = async () => {
 }
 
 const update = async (topic) => {
-  const loggedInUser = localStorage.getItem('loggedInUser')
-  let token
-  if (loggedInUser) {
-    token = JSON.parse(loggedInUser).token
-  }
   const config = {
-    headers: { 'Authorization': 'bearer ' + token }
+    headers: { 'Authorization': 'bearer ' + getUserToken() }
   }
   const response = await axios.put(url + '/' + topic.id, topic, config)
   return response.data.topic

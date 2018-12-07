@@ -1,5 +1,6 @@
 import React from 'react'
 import topicService from '../services/topic'
+import userService from '../services/user'
 import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
@@ -30,9 +31,11 @@ class RegistrationPage extends React.Component {
 
   async fetchTopics() {
     try {
-      const fetchedTopics = await topicService.getAllActive().then(function (defs) {
-        return defs
-      })
+      const fetchedTopics = await topicService
+        .getAllActive()
+        .then(function(defs) {
+          return defs
+        })
       //sorts topics based on timestamp
       const sortedTopics = fetchedTopics.sort((t1, t2) =>
         t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0
@@ -51,17 +54,38 @@ class RegistrationPage extends React.Component {
     this.props.updateTopics(updated)
   }
 
+  updateUser = async () => {
+    const user = {
+      student_number: this.props.user.user.student_number,
+      email: { email: this.props.email }
+    }
+    try {
+      const response = await userService.update(user)
+      var loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'))
+      loggedInUser['user'] = response.user
+      localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   render() {
     let questions = this.props.questions.map((item, idx) => (
-      <Card style={{ marginBottom: '10px' }} key={idx} >
+      <Card style={{ marginBottom: '10px' }} key={idx}>
         <CardContent>
           <InputLabel>Question {idx}:</InputLabel>
           <p>{item.question}</p>
-          {item.type === 'scale'?
+          {item.type === 'scale' ? (
             <div>
               <Select
-                value={this.props.questions[idx].answer? this.props.questions[idx].answer : 0}
-                onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
+                value={
+                  this.props.questions[idx].answer
+                    ? this.props.questions[idx].answer
+                    : 0
+                }
+                onChange={(event) =>
+                  this.props.updateQuestionAnswer(event.target.value, idx)
+                }
               >
                 <MenuItem value='' disabled>
                   <em>Pick a number</em>
@@ -72,28 +96,32 @@ class RegistrationPage extends React.Component {
                 <MenuItem value={4}>4</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
               </Select>
-              <FormHelperText>1=None 2=Basics 3=Average 4=Good 5=Excellent</FormHelperText>
+              <FormHelperText>
+                1=None 2=Basics 3=Average 4=Good 5=Excellent
+              </FormHelperText>
             </div>
-            :
-            null}
-          {item.type === 'text'?
+          ) : null}
+          {item.type === 'text' ? (
             <Input
               value={this.props.questions[idx].answer}
-              onChange={(event) => this.props.updateQuestionAnswer(event.target.value, idx)}
-              placeholder='Answer'
+              onChange={(event) =>
+                this.props.updateQuestionAnswer(event.target.value, idx)
+              }
+              placeholder="Answer"
               fullWidth
               multiline
-              rowsMax='3'
+              rowsMax="3"
               required
             />
-            :
-            null}
+          ) : null}
         </CardContent>
       </Card>
     ))
 
     let indexes = this.props.topics.map((item, idx) => (
-      <Card key={idx} className='dragndrop-index'>{idx + 1}</Card>
+      <Card key={idx} className="dragndrop-index">
+        {idx + 1}
+      </Card>
     ))
 
     return (
@@ -102,16 +130,18 @@ class RegistrationPage extends React.Component {
           <h2 className="landingpage-header">User details</h2>
           <UserDetails />
           <h2>Topics</h2>
-          <p>Set the order of the list of topics according to your preference (1 = favorite) by dragging and dropping, click to expand details</p>
-          <div className='dragndrop-container'>
-            <div className='dragndrop-indexes-container'>{indexes}</div>
+          <p>
+            Set the order of the list of topics according to your preference (1
+            = favorite) by dragging and dropping, click to expand details
+          </p>
+          <div className="dragndrop-container">
+            <div className="dragndrop-indexes-container">{indexes}</div>
             <ReactDragList
-              className='dragndrop-list'
+              className="dragndrop-list"
               handles={false}
               dataSource={this.props.topics}
               onUpdate={this.handleUpdate}
-              row={(topic, index) => (
-                <TopicDialog topic={topic} key={index}></TopicDialog>)}
+              row={(topic, index) => <TopicDialog topic={topic} key={index} />}
             />
           </div>
         </div>
@@ -120,7 +150,13 @@ class RegistrationPage extends React.Component {
           <p>Please answer all questions</p>
           {questions}
         </div>
-        <Button variant="outlined" style={{ backgroundColor: 'white' }} >Submit</Button>
+        <Button
+          onClick={this.updateUser}
+          variant="outlined"
+          style={{ backgroundColor: 'white' }}
+        >
+          Submit
+        </Button>
       </div>
     )
   }
@@ -138,7 +174,8 @@ const mapStateToProps = (state) => {
     user: state.loginPage.user,
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
-    questions: state.registrationPage.questions
+    questions: state.registrationPage.questions,
+    email: state.registrationPage.email
   }
 }
 
