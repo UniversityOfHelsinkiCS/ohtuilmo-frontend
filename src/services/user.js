@@ -8,7 +8,7 @@ const update = async (user) => {
   const config = {
     headers: { 'Authorization': 'bearer ' + getUserToken() }
   }
-  const response = await axios.post(url + `/${user.student_number}`, user.email, config)
+  const response = await axios.put(url + `/${user.student_number}`, user.email, config)
   return response.data
 }
 
