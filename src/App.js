@@ -82,8 +82,8 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
-              <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration'} render={() => <AdminPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
               <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>
