@@ -144,18 +144,18 @@ class TopicListPage extends React.Component {
                       <Button
                         color="primary"
                         variant="outlined"
-                        value="Suomi-Kyllä"
+                        value="Finnish-Yes"
                         onClick={this.handleEmailButtonPress(topic)}
                       >
-                        Suomi-Kyllä
+                        Finnish-Yes
                       </Button>
                       <Button
                         color="secondary"
                         variant="outlined"
-                        value="Suomi-Ei"
+                        value="Finnish-No"
                         onClick={this.handleEmailButtonPress(topic)}
                       >
-                        Suomi-Ei
+                        Finnish-No
                       </Button>
                       <Button
                         color="primary"
