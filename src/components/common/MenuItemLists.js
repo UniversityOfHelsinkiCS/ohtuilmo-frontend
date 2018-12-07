@@ -29,6 +29,10 @@ const adminItems = history => {
     {
       text: 'Topics',
       handler: () => history.push(process.env.PUBLIC_URL + '/topics')
+    },
+    {
+      text: 'Administration',
+      handler: () => history.push(process.env.PUBLIC_URL + '/administration')
     }
   ]
 

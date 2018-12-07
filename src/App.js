@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import './App.css'
 
 // Components
+import AdminPage from './components/AdminPage'
 import LoginPage from './components/LoginPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
@@ -82,6 +83,7 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/administration'} render={() => <AdminPage />} />
               <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>

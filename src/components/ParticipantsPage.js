@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -110,57 +111,88 @@ const testRows = [
   }
 ]
 
-const ParticipantsPage = () => {
-  return (
-    <div className="participants-container">
-      <div>
-        <Paper className="participants-paper">
-          <Table className="participants-table">
-            <TableHead>
-              <TableRow>
-                <TableCell numeric>id</TableCell>
-                <TableCell>Preferred Topic #1</TableCell>
-                <TableCell>Preferred Topic #2</TableCell>
-                <TableCell>Preferred Topic #3</TableCell>
-                <TableCell>Preferred Topic #4</TableCell>
-                <TableCell>Preferred Topic #5</TableCell>
-                <TableCell>Questions</TableCell>
-                <TableCell>Semester</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {testRows.map(row => {
-                return (
-                  <TableRow key={row.id}>
-                    <TableCell numeric component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell>{row.preferredTopics[0].topic}</TableCell>
-                    <TableCell>{row.preferredTopics[1].topic}</TableCell>
-                    <TableCell>{row.preferredTopics[2].topic}</TableCell>
-                    <TableCell>{row.preferredTopics[3].topic}</TableCell>
-                    <TableCell>{row.preferredTopics[4].topic}</TableCell>
-                    <TableCell>{row.questions}</TableCell>
-                    <TableCell>{row.semester}</TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
+class ParticipantsPage extends React.Component {
+
+  async componentWillMount() {
+    try {
+      if (window.localStorage.getItem('loggedInUser') === null) {
+        window.location.replace(process.env.PUBLIC_URL + '/')
+      } else {
+        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
+        if(!token.user.admin || token === undefined || token === null) {
+          window.location.replace(process.env.PUBLIC_URL + '/')
+        }
+      }
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Some error happened')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    }
+  }
+
+  render() {
+    return (
+      <div className="participants-container">
+        <div>
+          <Paper className="participants-paper">
+            <Table className="participants-table">
+              <TableHead>
+                <TableRow>
+                  <TableCell numeric>id</TableCell>
+                  <TableCell>Preferred Topic #1</TableCell>
+                  <TableCell>Preferred Topic #2</TableCell>
+                  <TableCell>Preferred Topic #3</TableCell>
+                  <TableCell>Preferred Topic #4</TableCell>
+                  <TableCell>Preferred Topic #5</TableCell>
+                  <TableCell>Questions</TableCell>
+                  <TableCell>Semester</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {testRows.map(row => {
+                  return (
+                    <TableRow key={row.id}>
+                      <TableCell numeric component="th" scope="row">
+                        {row.id}
+                      </TableCell>
+                      <TableCell>{row.preferredTopics[0].topic}</TableCell>
+                      <TableCell>{row.preferredTopics[1].topic}</TableCell>
+                      <TableCell>{row.preferredTopics[2].topic}</TableCell>
+                      <TableCell>{row.preferredTopics[3].topic}</TableCell>
+                      <TableCell>{row.preferredTopics[4].topic}</TableCell>
+                      <TableCell>{row.questions}</TableCell>
+                      <TableCell>{row.semester}</TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
+        <div className="export-cvs-button">
+          <Button variant="outlined">
+            Export CVS-file
+          </Button>
+        </div>
       </div>
-      <div className="export-html-button">
-        <Button variant="outlined">
-          Export HTML-file
-        </Button>
-      </div>
-      <div className="export-cvs-button">
-        <Button variant="outlined">
-          Export CVS-file
-        </Button>
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
-export default withStyles(styles)(ParticipantsPage)
+const mapStateToProps = state => {
+  return {
+    state: state
+  }
+}
+
+const mapDispatchToProps = {
+}
+
+const ConnectedParticipantsPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ParticipantsPage)
+
+export default withStyles(styles)(ConnectedParticipantsPage)
