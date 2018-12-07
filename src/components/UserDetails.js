@@ -17,7 +17,7 @@ class UserDetails extends React.Component {
           Name: {firstname} {this.props.user.last_name}
         </Typography>
         <Typography variant="h6" id="title">
-          Studet number: {this.props.user.student_number}
+          Student number: {this.props.user.student_number}
         </Typography>
         <p>Please fill your email</p>
         <div>
