@@ -10,7 +10,8 @@ const TopicForm = (props) => {
     <div className="topic-form">
       <div className="preview-button">
         <Button
-          variant="outlined"
+          variant="contained"
+          color="primary"
           onClick={() => props.updatePreview(true)}
         >
           Preview
