@@ -11,6 +11,19 @@ import Divider from '@material-ui/core/Divider'
 import topicService from '../services/topic'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import green from '@material-ui/core/colors/green'
+import red from '@material-ui/core/colors/red'
+import Grid from '@material-ui/core/Grid'
+
+const buttonTheme = createMuiTheme({
+  palette: {
+    primary: green,
+    secondary: red
+  }
+})
 
 class TopicListPage extends React.Component {
 
@@ -20,7 +33,7 @@ class TopicListPage extends React.Component {
         window.location.replace(process.env.PUBLIC_URL + '/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if(!token.user.admin || token === undefined || token === null) {
+        if (!token.user.admin || token === undefined || token === null) {
           window.location.replace(process.env.PUBLIC_URL + '/')
         }
       }
@@ -90,6 +103,13 @@ class TopicListPage extends React.Component {
     }
   }
 
+  handleEmailButtonPress = topic => async (event) => {
+    event.preventDefault()
+    console.log(`You pressed: ${event.currentTarget.value}`)
+    console.log(topic)
+    console.log('No Email Sent, feature not implemented')
+  }
+
   render() {
     return (
       <div>
@@ -101,6 +121,15 @@ class TopicListPage extends React.Component {
           <MenuItem value="active">Active</MenuItem>
           <MenuItem value="inactive">Inactive</MenuItem>
         </Select>
+        <Grid container spacing={8} justify="flex-end">
+          <Grid item xs={4}>
+            <Typography align="right" variant="subtitle1">Send email</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography align="right" variant="subtitle1">Active</Typography>
+          </Grid>
+        </Grid>
+
         {this.props.topics.map(topic => {
           if (this.showTopic(topic)) {
             return (
@@ -111,6 +140,40 @@ class TopicListPage extends React.Component {
                   </a>
                   <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
                   <ListItemSecondaryAction>
+                    <MuiThemeProvider theme={buttonTheme}>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        value="Suomi-Kyllä"
+                        onClick={this.handleEmailButtonPress(topic)}
+                      >
+                        Suomi-Kyllä
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        value="Suomi-Ei"
+                        onClick={this.handleEmailButtonPress(topic)}
+                      >
+                        Suomi-Ei
+                      </Button>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        value="English-Yes"
+                        onClick={this.handleEmailButtonPress(topic)}
+                      >
+                        English-Yes
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        value="English-No"
+                        onClick={this.handleEmailButtonPress(topic)}
+                      >
+                        English-No
+                      </Button>
+                    </MuiThemeProvider>
                     <Switch
                       checked={topic.active}
                       onChange={this.handleActiveChange(topic)}
