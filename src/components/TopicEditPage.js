@@ -56,7 +56,8 @@ class TopicEditPage extends React.Component {
             <Topic content={this.props.content} />
             <div className="preview-button">
               <Button
-                variant="outlined"
+                variant="contained"
+                color="primary"
                 onClick={() => this.props.updatePreview(false)}
               >
                 Back to edit
