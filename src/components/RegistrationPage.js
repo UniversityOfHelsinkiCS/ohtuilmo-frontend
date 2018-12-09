@@ -1,6 +1,7 @@
 import React from 'react'
 import topicService from '../services/topic'
 import userService from '../services/user'
+import registrationService from '../services/registration'
 import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
@@ -64,6 +65,16 @@ class RegistrationPage extends React.Component {
       var loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'))
       loggedInUser['user'] = response.user
       localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  submitRegistration = async () => {
+    this.updateUser()
+    try {
+      const response = await registrationService.create({ questions: this.props.questions, preferred_topics: this.props.topics })
+      console.log(response)
     } catch (e) {
       console.log(e)
     }
@@ -151,7 +162,7 @@ class RegistrationPage extends React.Component {
           {questions}
         </div>
         <Button
-          onClick={this.updateUser}
+          onClick={this.submitRegistration}
           variant="outlined"
           style={{ backgroundColor: 'white' }}
         >
