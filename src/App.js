@@ -75,7 +75,8 @@ class App extends Component {
             <Switch>
               <Route path={process.env.PUBLIC_URL + '/login'} render={() => (
                 this.props.user ?
-                  <Redirect to={process.env.PUBLIC_URL + '/register'} /> :
+                  (this.props.user.admin? <Redirect to={process.env.PUBLIC_URL + '/administration'} /> : <Redirect to={process.env.PUBLIC_URL + '/register'} />)
+                  :
                   <LoginPage />
               )} />
               <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <Redirect to={process.env.PUBLIC_URL + '/login'} />} />
