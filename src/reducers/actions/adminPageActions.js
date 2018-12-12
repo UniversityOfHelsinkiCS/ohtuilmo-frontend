@@ -5,4 +5,11 @@ const setConfigurations = (configurations) => {
   }
 }
 
-export default { setConfigurations }
+const updateSelected = (configuration) => {
+  return {
+    type: 'UPDATE_SELECTED',
+    payload: configuration
+  }
+}
+
+export default { setConfigurations, updateSelected }

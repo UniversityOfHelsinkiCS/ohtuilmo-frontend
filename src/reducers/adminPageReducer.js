@@ -1,5 +1,6 @@
 const initialState = {
-  configurations: {}
+  configurations: [],
+  selected: {}
 }
 
 const adminPageReducer = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const adminPageReducer = (state = initialState, action) => {
     return {
       ...state,
       configurations: action.payload
+    }
+  case 'UPDATE_SELECTED':
+    return {
+      ...state,
+      selected: action.payload
     }
   default:
   }

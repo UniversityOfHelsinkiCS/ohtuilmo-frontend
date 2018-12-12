@@ -1,7 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './TopicFormPage.css'
+// MUI
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
+// Service
 import configurationService from '../services/configuration'
+// Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 
@@ -31,8 +37,9 @@ class AdminPage extends React.Component {
 
   fetchConfigurations = async () => {
     try {
-      const configurations = await configurationService.getAll()
-      this.props.setConfigurations(configurations)
+      const response = await configurationService.getAll()
+      this.props.setConfigurations(response.configurations)
+      this.props.updateSelected(this.props.configurations[0])
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching configurations')
@@ -42,10 +49,35 @@ class AdminPage extends React.Component {
     }
   }
 
+  handleConfigurationChange = (event) => {
+    this.props.updateSelected(event.target.value)
+  }
+
   render() {
+    console.log(this.props.selected ? this.props.selected.name : 'asd')
     return (
       <div className="admin-page-container">
-        <h3>Administration</h3>
+        <h3>Change configuration</h3>
+        <Select
+          value={this.props.selected ? this.props.selected : 'new'}
+          onChange={this.handleConfigurationChange}
+        >
+          {this.props.configurations.map((item) => (
+            <MenuItem key={item.id} value={item}>
+              {item.name}
+            </MenuItem>
+          ))}
+          <MenuItem value="new">New</MenuItem>
+        </Select>
+        <div>
+          <TextField
+            required
+            margin="normal"
+            placeholder={this.props.selected.name}
+          />
+        </div>
+        <h3>Questions</h3>
+        <h3>Customer emails</h3>
       </div>
     )
   }
@@ -53,7 +85,8 @@ class AdminPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    configurations: state.adminPage.configurations
+    configurations: state.adminPage.configurations,
+    selected: state.adminPage.selected
   }
 }
 
