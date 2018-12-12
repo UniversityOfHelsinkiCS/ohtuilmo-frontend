@@ -9,6 +9,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Switch from '@material-ui/core/Switch'
 import Divider from '@material-ui/core/Divider'
 import topicService from '../services/topic'
+import emailService from '../services/email'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
@@ -103,11 +104,14 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleEmailButtonPress = topic => async (event) => {
+  handleEmailButtonPress = (topic, messageType) => async (event) => {
     event.preventDefault()
-    console.log(`You pressed: ${event.currentTarget.value}`)
-    console.log(topic)
-    console.log('No Email Sent, feature not implemented')
+    try {
+      const response = await emailService.sendCustomerEmail(topic.content.email, messageType)
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
@@ -145,7 +149,7 @@ class TopicListPage extends React.Component {
                         color="primary"
                         variant="outlined"
                         value="Finnish-Yes"
-                        onClick={this.handleEmailButtonPress(topic)}
+                        onClick={this.handleEmailButtonPress(topic, 'acceptFin')}
                       >
                         Finnish-Yes
                       </Button>
@@ -153,7 +157,7 @@ class TopicListPage extends React.Component {
                         color="secondary"
                         variant="outlined"
                         value="Finnish-No"
-                        onClick={this.handleEmailButtonPress(topic)}
+                        onClick={this.handleEmailButtonPress(topic, 'rejectFin')}
                       >
                         Finnish-No
                       </Button>
@@ -161,7 +165,7 @@ class TopicListPage extends React.Component {
                         color="primary"
                         variant="outlined"
                         value="English-Yes"
-                        onClick={this.handleEmailButtonPress(topic)}
+                        onClick={this.handleEmailButtonPress(topic, 'acceptEng')}
                       >
                         English-Yes
                       </Button>
@@ -169,7 +173,7 @@ class TopicListPage extends React.Component {
                         color="secondary"
                         variant="outlined"
                         value="English-No"
-                        onClick={this.handleEmailButtonPress(topic)}
+                        onClick={this.handleEmailButtonPress(topic, 'rejectEng')}
                       >
                         English-No
                       </Button>
