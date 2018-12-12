@@ -1,6 +1,9 @@
 const initialState = {
   configurations: [],
-  selected: {}
+  selected: {},
+  form: {
+    name: ''
+  }
 }
 
 const adminPageReducer = (state = initialState, action) => {
@@ -14,6 +17,21 @@ const adminPageReducer = (state = initialState, action) => {
     return {
       ...state,
       selected: action.payload
+    }
+  case 'UPDATE_CONFIG_FORM':
+    return {
+      ...state,
+      form: {
+        name: action.payload.name
+      }
+    }
+  case 'UPDATE_CONFIG_NAME':
+    return {
+      ...state,
+      form: {
+        ...state.form,
+        name: action.payload
+      }
     }
   default:
   }

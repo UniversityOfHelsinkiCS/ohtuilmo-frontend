@@ -40,6 +40,7 @@ class AdminPage extends React.Component {
       const response = await configurationService.getAll()
       this.props.setConfigurations(response.configurations)
       this.props.updateSelected(this.props.configurations[0])
+      this.props.updateConfigForm(this.props.selected)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching configurations')
@@ -54,7 +55,6 @@ class AdminPage extends React.Component {
   }
 
   render() {
-    console.log(this.props.selected ? this.props.selected.name : 'asd')
     return (
       <div className="admin-page-container">
         <h3>Change configuration</h3>
@@ -73,7 +73,8 @@ class AdminPage extends React.Component {
           <TextField
             required
             margin="normal"
-            placeholder={this.props.selected.name}
+            value={this.props.form.name}
+            onChange={(e) => this.props.updateConfigName(e.target.value)}
           />
         </div>
         <h3>Questions</h3>
@@ -86,7 +87,8 @@ class AdminPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     configurations: state.adminPage.configurations,
-    selected: state.adminPage.selected
+    selected: state.adminPage.selected,
+    form: state.adminPage.form
   }
 }
 

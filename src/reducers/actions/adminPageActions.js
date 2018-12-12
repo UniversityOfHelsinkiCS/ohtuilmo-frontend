@@ -12,4 +12,23 @@ const updateSelected = (configuration) => {
   }
 }
 
-export default { setConfigurations, updateSelected }
+const updateConfigForm = (configuration) => {
+  return {
+    type: 'UPDATE_CONFIG_FORM',
+    payload: configuration
+  }
+}
+
+const updateConfigName = (name) => {
+  return {
+    type: 'UPDATE_CONFIG_NAME',
+    payload: name
+  }
+}
+
+export default {
+  setConfigurations,
+  updateSelected,
+  updateConfigForm,
+  updateConfigName
+}
