@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './TopicFormPage.css'
+import configurationService from '../services/configuration'
+import adminPageActions from '../reducers/actions/adminPageActions'
+import notificationActions from '../reducers/actions/notificationActions'
 
 class AdminPage extends React.Component {
   componentWillMount() {
@@ -22,6 +25,23 @@ class AdminPage extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.fetchConfigurations()
+  }
+
+  fetchConfigurations = async () => {
+    try {
+      const configurations = await configurationService.getAll()
+      this.props.setConfigurations(configurations)
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Error fetching configurations')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    }
+  }
+
   render() {
     return (
       <div className="admin-page-container">
@@ -31,13 +51,15 @@ class AdminPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    state: state
+    configurations: state.adminPage.configurations
   }
 }
 
 const mapDispatchToProps = {
+  ...adminPageActions,
+  ...notificationActions
 }
 
 const ConnectedAdminPage = connect(
