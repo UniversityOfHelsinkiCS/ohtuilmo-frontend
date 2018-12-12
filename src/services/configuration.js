@@ -16,4 +16,18 @@ const getActive = async () => {
   return response.data.configuration
 }
 
-export default { getAll, getActive }
+const create = async (configuration) => {
+  const response = await axios.post(url, configuration, {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  return response.data
+}
+
+const update = async (configuration, id) => {
+  const response = await axios.put(url + '/' + id, configuration, {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  return response.data
+}
+
+export default { getAll, getActive, create, update }

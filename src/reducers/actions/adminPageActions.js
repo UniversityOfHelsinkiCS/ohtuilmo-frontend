@@ -12,6 +12,12 @@ const updateSelected = (configuration) => {
   }
 }
 
+const selectNewConfig = () => {
+  return {
+    type: 'SELECT_NEW_CONFIG'
+  }
+}
+
 const updateConfigForm = (configuration) => {
   return {
     type: 'UPDATE_CONFIG_FORM',
@@ -26,9 +32,19 @@ const updateConfigName = (name) => {
   }
 }
 
+const updateNewStatus = (status) => {
+  console.log('asd')
+  return {
+    type: 'UPDATE_NEW_STATUS',
+    payload: status
+  }
+}
+
 export default {
   setConfigurations,
   updateSelected,
+  selectNewConfig,
   updateConfigForm,
-  updateConfigName
+  updateConfigName,
+  updateNewStatus
 }

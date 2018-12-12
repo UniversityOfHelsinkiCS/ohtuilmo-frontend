@@ -5,6 +5,7 @@ import './TopicFormPage.css'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 // Service
 import configurationService from '../services/configuration'
 // Actions
@@ -39,6 +40,7 @@ class AdminPage extends React.Component {
     try {
       const response = await configurationService.getAll()
       this.props.setConfigurations(response.configurations)
+      // should update selected to the active one
       this.props.updateSelected(this.props.configurations[0])
       this.props.updateConfigForm(this.props.selected)
     } catch (e) {
@@ -51,34 +53,74 @@ class AdminPage extends React.Component {
   }
 
   handleConfigurationChange = (event) => {
-    this.props.updateSelected(event.target.value)
+    if (event.target.value === 'new') {
+      this.props.selectNewConfig()
+      this.props.updateNewStatus(true)
+    } else {
+      this.props.updateSelected(event.target.value)
+      this.props.updateConfigForm(event.target.value)
+      this.props.updateNewStatus(false)
+    }
+  }
+
+  saveNewConfig = async (event) => {
+    event.preventDefault()
+    const configuration = { ...this.props.form, active: true }
+    try {
+      const response = await configurationService.create(configuration)
+      this.props.setConfigurations([
+        ...this.props.configurations,
+        response.configuration
+      ])
+      this.props.updateSelected(response.configuration)
+      this.props.updateNewStatus(false)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  updateConfig = async (event) => {
+    event.preventDefault()
+    const configuration = { ...this.props.form, active: true }
+    try {
+      const response = await configurationService.update(configuration, this.props.selected.id)
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
+
     return (
       <div className="admin-page-container">
-        <h3>Change configuration</h3>
-        <Select
-          value={this.props.selected ? this.props.selected : 'new'}
-          onChange={this.handleConfigurationChange}
-        >
-          {this.props.configurations.map((item) => (
-            <MenuItem key={item.id} value={item}>
-              {item.name}
-            </MenuItem>
-          ))}
-          <MenuItem value="new">New</MenuItem>
-        </Select>
-        <div>
-          <TextField
-            required
-            margin="normal"
-            value={this.props.form.name}
-            onChange={(e) => this.props.updateConfigName(e.target.value)}
-          />
-        </div>
-        <h3>Questions</h3>
-        <h3>Customer emails</h3>
+        <form onSubmit={this.props.isNew ? this.saveNewConfig : this.updateConfig}>
+          <h3>Change configuration</h3>
+          <Select
+            value={this.props.selected ? this.props.selected : 'new'}
+            onChange={this.handleConfigurationChange}
+          >
+            {this.props.configurations.map((item) => (
+              <MenuItem key={item.id} value={item}>
+                {item.name}
+              </MenuItem>
+            ))}
+            <MenuItem value="new">New</MenuItem>
+          </Select>
+          <div>
+            <TextField
+              required
+              margin="normal"
+              value={this.props.form.name}
+              onChange={(e) => this.props.updateConfigName(e.target.value)}
+            />
+          </div>
+          <h3>Questions</h3>
+          <h3>Customer emails</h3>
+          <Button type="submit" color="primary" variant="contained">
+            Save
+          </Button>
+        </form>
       </div>
     )
   }
@@ -88,7 +130,8 @@ const mapStateToProps = (state) => {
   return {
     configurations: state.adminPage.configurations,
     selected: state.adminPage.selected,
-    form: state.adminPage.form
+    form: state.adminPage.form,
+    isNew: state.adminPage.isNew
   }
 }
 
