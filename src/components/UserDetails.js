@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 
 class UserDetails extends React.Component {
   render() {
-    var firstname = this.props.user.first_names
+    var firstname = this.props.user? this.props.user.user.first_names : ''
     if (firstname.includes('*'))
       firstname = firstname.split('*')[1].split(' ')[0]
     else firstname = firstname.split(' ')[0]
@@ -14,10 +14,10 @@ class UserDetails extends React.Component {
     return (
       <div>
         <Typography variant="h6" id="title">
-          Name: {firstname} {this.props.user.last_name}
+          Name: {firstname} {this.props.user? this.props.user.user.last_name : null}
         </Typography>
         <Typography variant="h6" id="title">
-          Student number: {this.props.user.student_number}
+          Student number: {this.props.user? this.props.user.user.student_number : null}
         </Typography>
         <p>Please fill your email</p>
         <div>
@@ -39,7 +39,7 @@ class UserDetails extends React.Component {
 const mapStateToProps = (state) => {
   return {
     email: state.registrationPage.email,
-    user: state.loginPage.user.user
+    user: state.loginPage.user
   }
 }
 

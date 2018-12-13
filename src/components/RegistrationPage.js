@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
 import TopicDialog from './TopicDialog'
+import LoadingSpinner from '../components/common/LoadingSpinner'
 // MUI
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -22,6 +23,25 @@ import notificationActions from '../reducers/actions/notificationActions'
 import UserDetails from './UserDetails'
 
 class RegistrationPage extends React.Component {
+  async componentWillMount() {
+    try {
+      if (window.localStorage.getItem('loggedInUser') === null) {
+        window.location.replace(process.env.PUBLIC_URL + '/')
+      } else {
+        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
+        if (token === undefined || token === null) {
+          window.location.replace(process.env.PUBLIC_URL + '/')
+        }
+      }
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Some error happened')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    }
+  }
+
   componentDidMount() {
     this.fetchTopics()
     this.fetchQuestions()
@@ -92,6 +112,11 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
+    if (!this.props.user) {
+      return (
+        <LoadingSpinner />
+      )
+    }
     let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx}>
         <CardContent>
