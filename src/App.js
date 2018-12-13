@@ -14,6 +14,7 @@ import ParticipantsPage from './components/ParticipantsPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
+import QuestionsFormPage from './components/QuestionsFormPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -85,7 +86,8 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration'} render={() => <AdminPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
-              <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
+              <Route exact path={process.env.PUBLIC_URL + '/administration/questions'} render={() => <QuestionsFormPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/register'} user={this.props.user} render={() => <RegistrationPage /> } />
             </Switch>
           </div>
         </div>
@@ -116,20 +118,3 @@ const ConnectedApp = connect(
 )(App)
 
 export default ConnectedApp
-
-
-const AuthRoute = ({ component: Component, ...props }) => (
-  <Route
-    {...props}
-    render={() => (
-      typeof props.user === 'undefined' || props.user === null ?
-        <Redirect
-          to={{
-            pathname: process.env.PUBLIC_URL + '/login'
-          }}
-        />
-        :
-        <Component {...props} />
-    )}
-  />
-)
