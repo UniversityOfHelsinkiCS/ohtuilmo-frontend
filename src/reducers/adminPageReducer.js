@@ -14,6 +14,13 @@ const adminPageReducer = (state = initialState, action) => {
       ...state,
       configurations: action.payload
     }
+  case 'UPDATE_CONFIGURATIONS':
+    return {
+      ...state,
+      configurations: state.configurations.map(
+        (config) => config.id === action.payload.id ? action.payload : config
+      )
+    }
   case 'UPDATE_SELECTED':
     return {
       ...state,

@@ -5,6 +5,13 @@ const setConfigurations = (configurations) => {
   }
 }
 
+const updateConfigurations = (configuration) => {
+  return {
+    type: 'UPDATE_CONFIGURATIONS',
+    payload: configuration
+  }
+}
+
 const updateSelected = (configuration) => {
   return {
     type: 'UPDATE_SELECTED',
@@ -33,7 +40,6 @@ const updateConfigName = (name) => {
 }
 
 const updateNewStatus = (status) => {
-  console.log('asd')
   return {
     type: 'UPDATE_NEW_STATUS',
     payload: status
@@ -42,6 +48,7 @@ const updateNewStatus = (status) => {
 
 export default {
   setConfigurations,
+  updateConfigurations,
   updateSelected,
   selectNewConfig,
   updateConfigForm,

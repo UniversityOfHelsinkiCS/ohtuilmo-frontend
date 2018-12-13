@@ -28,7 +28,7 @@ class AdminPage extends React.Component {
       this.props.setError('Some error happened')
       setTimeout(() => {
         this.props.clearNotifications()
-      }, 3000)
+      }, 5000)
     }
   }
 
@@ -40,15 +40,23 @@ class AdminPage extends React.Component {
     try {
       const response = await configurationService.getAll()
       this.props.setConfigurations(response.configurations)
-      // should update selected to the active one
-      this.props.updateSelected(this.props.configurations[0])
-      this.props.updateConfigForm(this.props.selected)
+      if (this.props.configurations.length > 0) {
+        const selected = this.props.configurations.find(
+          (c) => c.active === true
+        )
+        this.props.updateSelected(selected)
+        this.props.updateConfigForm(this.props.selected)
+        this.props.updateNewStatus(false)
+      } else {
+        this.props.selectNewConfig()
+        this.props.updateNewStatus(true)
+      }
     } catch (e) {
-      console.log('error happened', e.response)
+      console.log('error happened', e)
       this.props.setError('Error fetching configurations')
       setTimeout(() => {
         this.props.clearNotifications()
-      }, 3000)
+      }, 5000)
     }
   }
 
@@ -74,27 +82,46 @@ class AdminPage extends React.Component {
       ])
       this.props.updateSelected(response.configuration)
       this.props.updateNewStatus(false)
+      this.props.setSuccess('New configuration saved and set active')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
     } catch (e) {
       console.log(e)
+      this.props.setError('Error saving new configuration')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
     }
   }
 
   updateConfig = async (event) => {
     event.preventDefault()
-    const configuration = { ...this.props.form, active: true }
     try {
-      const response = await configurationService.update(configuration, this.props.selected.id)
-      console.log(response)
+      const configuration = { ...this.props.form, active: true }
+      const response = await configurationService.update(configuration)
+      this.props.updateConfigurations(response.configuration)
+      this.props.updateSelected(response.configuration)
+      this.props.updateConfigForm(response.configuration)
+      this.props.setSuccess('Configuration updated and set active')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
     } catch (e) {
       console.log(e)
+      this.props.setError('Error saving edits to configuration')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
     }
   }
 
   render() {
-
     return (
       <div className="admin-page-container">
-        <form onSubmit={this.props.isNew ? this.saveNewConfig : this.updateConfig}>
+        <form
+          onSubmit={this.props.isNew ? this.saveNewConfig : this.updateConfig}
+        >
           <h3>Change configuration</h3>
           <Select
             value={this.props.selected ? this.props.selected : 'new'}
