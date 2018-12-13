@@ -99,7 +99,7 @@ class AdminPage extends React.Component {
     event.preventDefault()
     try {
       const configuration = { ...this.props.form, active: true }
-      const response = await configurationService.update(configuration)
+      const response = await configurationService.update(configuration, this.props.selected.id)
       this.props.updateConfigurations(response.configuration)
       this.props.updateSelected(response.configuration)
       this.props.updateConfigForm(response.configuration)
