@@ -1,10 +1,6 @@
 const regularItems = history => {
   const items = [
     {
-      text: 'Create Topic',
-      handler: () => history.push(process.env.PUBLIC_URL + '/topics/create')
-    },
-    {
       text: 'Log In',
       handler: () => history.push(process.env.PUBLIC_URL + '/login')
     }
@@ -26,6 +22,10 @@ const loggedInItems = history => {
 
 const adminItems = history => {
   const items = [
+    {
+      text: 'Create Topic',
+      handler: () => history.push(process.env.PUBLIC_URL + '/topics/create')
+    },
     {
       text: 'Topics',
       handler: () => history.push(process.env.PUBLIC_URL + '/topics')
