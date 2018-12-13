@@ -14,6 +14,7 @@ import ParticipantsPage from './components/ParticipantsPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
+import QuestionsFormPage from './components/QuestionsFormPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -85,6 +86,7 @@ class App extends Component {
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration'} render={() => <AdminPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/administration/participants'} render={() => <ParticipantsPage />} />
+              <Route exact path={process.env.PUBLIC_URL + '/administration/questions'} render={() => <QuestionsFormPage />} />
               <AuthRoute path={process.env.PUBLIC_URL + '/register'} user={this.props.user} component={RegistrationPage} />
             </Switch>
           </div>
