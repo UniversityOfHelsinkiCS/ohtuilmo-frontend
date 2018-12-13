@@ -99,7 +99,10 @@ class AdminPage extends React.Component {
     event.preventDefault()
     try {
       const configuration = { ...this.props.form, active: true }
-      const response = await configurationService.update(configuration, this.props.selected.id)
+      const response = await configurationService.update(
+        configuration,
+        this.props.selected.id
+      )
       this.props.updateConfigurations(response.configuration)
       this.props.updateSelected(response.configuration)
       this.props.updateConfigForm(response.configuration)
@@ -119,35 +122,41 @@ class AdminPage extends React.Component {
   render() {
     return (
       <div className="admin-page-container">
-        <form
-          onSubmit={this.props.isNew ? this.saveNewConfig : this.updateConfig}
+        <h3>Change configuration</h3>
+        <Select
+          value={this.props.selected ? this.props.selected : 'new'}
+          onChange={this.handleConfigurationChange}
         >
-          <h3>Change configuration</h3>
-          <Select
-            value={this.props.selected ? this.props.selected : 'new'}
-            onChange={this.handleConfigurationChange}
-          >
-            {this.props.configurations.map((item) => (
-              <MenuItem key={item.id} value={item}>
-                {item.name}
-              </MenuItem>
-            ))}
-            <MenuItem value="new">New</MenuItem>
-          </Select>
-          <div>
-            <TextField
-              required
-              margin="normal"
-              value={this.props.form.name}
-              onChange={(e) => this.props.updateConfigName(e.target.value)}
-            />
-          </div>
-          <h3>Questions</h3>
-          <h3>Customer emails</h3>
-          <Button type="submit" color="primary" variant="contained">
-            Save
+          {this.props.configurations.map((item) => (
+            <MenuItem key={item.id} value={item}>
+              {item.name}
+            </MenuItem>
+          ))}
+          <MenuItem value="new">New</MenuItem>
+        </Select>
+        <div>
+          <TextField
+            label="Nimi"
+            required
+            margin="normal"
+            value={this.props.form.name}
+            onChange={(e) => this.props.updateConfigName(e.target.value)}
+          />
+        </div>
+        <h3>Questions</h3>
+        <h3>Customer emails</h3>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={this.saveNewConfig}
+        >
+          Save new configuration
+        </Button>
+        {!this.props.isNew && (
+          <Button type="submit" color="primary" variant="contained" onClick={this.updateConfig}>
+            Edit existing configuration
           </Button>
-        </form>
+        )}
       </div>
     )
   }
