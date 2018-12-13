@@ -12,10 +12,45 @@ const updateConfigurations = (configuration) => {
   }
 }
 
-const updateSelected = (configuration) => {
+const updateSelectedConfig = (configuration) => {
   return {
-    type: 'UPDATE_SELECTED',
+    type: 'UPDATE_SELECTED_CONFIG',
     payload: configuration
+  }
+}
+
+const setRegistrationQuestions = (questions) => {
+  return {
+    type: 'SET_REGISTRATION_QUESTIONS',
+    payload: questions
+  }
+}
+
+const setReviewQuestions = (questions) => {
+  return {
+    type: 'SET_REVIEW_QUESTIONS',
+    payload: questions
+  }
+}
+
+const updateSelectedRegistrationQuestions = (selected) => {
+  return {
+    type: 'UPDATE_SELECTED_REGISTRATION_QUESTIONS',
+    payload: selected
+  }
+}
+
+const updateSelectedReviewQuestions1 = (selected) => {
+  return {
+    type: 'UPDATE_SELECTED_REVIEW_QUESTIONS_1',
+    payload: selected
+  }
+}
+
+const updateSelectedReviewQuestions2 = (selected) => {
+  return {
+    type: 'UPDATE_SELECTED_REVIEW_QUESTIONS_2',
+    payload: selected
   }
 }
 
@@ -49,7 +84,12 @@ const updateNewStatus = (status) => {
 export default {
   setConfigurations,
   updateConfigurations,
-  updateSelected,
+  updateSelectedConfig,
+  setRegistrationQuestions,
+  setReviewQuestions,
+  updateSelectedRegistrationQuestions,
+  updateSelectedReviewQuestions1,
+  updateSelectedReviewQuestions2,
   selectNewConfig,
   updateConfigForm,
   updateConfigName,
