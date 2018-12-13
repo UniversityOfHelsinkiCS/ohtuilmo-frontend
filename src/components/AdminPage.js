@@ -6,11 +6,33 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Divider from '@material-ui/core/Divider'
 // Service
 import configurationService from '../services/configuration'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
+
+const mockConfiguration = {
+  registrationQuestions: [
+    { question: 'This is a test question?', type: 'scale' },
+    { question: 'Test scale question?', type: 'text' }
+  ],
+  reviewQuestions1: [
+    { question: 'This is a test question?', type: 'scale' },
+    { question: 'Test scale question?', type: 'text' },
+    { question: 'This is a test question?', type: 'scale' },
+    { question: 'Test scale question?', type: 'text' }
+  ],
+  reviewQuestions2: [
+    { question: 'This is a test question?', type: 'scale' },
+    { question: 'Test scale question?', type: 'text' }
+  ]
+}
 
 class AdminPage extends React.Component {
   componentWillMount() {
@@ -120,6 +142,12 @@ class AdminPage extends React.Component {
   }
 
   render() {
+    const {
+      registrationQuestions,
+      reviewQuestions1,
+      reviewQuestions2
+    } = mockConfiguration
+
     return (
       <div className="admin-page-container">
         <h3>Change configuration</h3>
@@ -144,6 +172,107 @@ class AdminPage extends React.Component {
           />
         </div>
         <h3>Questions</h3>
+        <div>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <p style={{ flex: 6 }}>Registration questions</p>
+                <Button
+                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
+                  color="primary"
+                  variant="contained"
+                >
+                  Configure
+                </Button>
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+                <Divider />
+                {registrationQuestions.map((questionItem, index) => (
+                  <div key={index}>
+                    <p>Question: {questionItem.question}</p>
+                    <p>Type: {questionItem.type}</p>
+                    <Divider />
+                  </div>
+                ))}
+              </div>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <p style={{ flex: 6 }}>Review questions 1</p>
+                <Button
+                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
+                  color="primary"
+                  variant="contained"
+                >
+                  Configure
+                </Button>
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+                <Divider />
+                {reviewQuestions2.map((questionItem, index) => (
+                  <div key={index}>
+                    <p>Question: {questionItem.question}</p>
+                    <p>Type: {questionItem.type}</p>
+                    <Divider />
+                  </div>
+                ))}
+              </div>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <p style={{ flex: 6 }}>Review questions 2</p>
+                <Button
+                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
+                  color="primary"
+                  variant="contained"
+                >
+                  Configure
+                </Button>
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+                <Divider />
+                {reviewQuestions1.map((questionItem, index) => (
+                  <div key={index}>
+                    <p>Question: {questionItem.question}</p>
+                    <p>Type: {questionItem.type}</p>
+                    <Divider />
+                  </div>
+                ))}
+              </div>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
         <h3>Customer emails</h3>
         <Button
           color="primary"
@@ -153,7 +282,12 @@ class AdminPage extends React.Component {
           Save new configuration
         </Button>
         {!this.props.isNew && (
-          <Button type="submit" color="primary" variant="contained" onClick={this.updateConfig}>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            onClick={this.updateConfig}
+          >
             Edit existing configuration
           </Button>
         )}
