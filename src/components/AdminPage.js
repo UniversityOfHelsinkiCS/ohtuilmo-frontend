@@ -274,6 +274,46 @@ class AdminPage extends React.Component {
           </ExpansionPanel>
         </div>
         <h3>Customer emails</h3>
+        <div>
+          <TextField
+            fullWidth
+            label="Hyväksytty (Suomi)"
+            type="text"
+            margin="normal"
+            value=""
+          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            fullWidth
+            label="Hylätty (Suomi)"
+            type="text"
+            margin="normal"
+            value=""
+          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            fullWidth
+            label="Hyväksytty (Englanti)"
+            type="text"
+            margin="normal"
+            value=""
+          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            fullWidth
+            label="Hylätty (Englanti)"
+            type="text"
+            margin="normal"
+            value=""
+          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+          />
+        </div>
         <Button
           color="primary"
           variant="contained"
