@@ -51,7 +51,7 @@ class RegistrationPage extends React.Component {
       const fetchedConfiguration = await configurationService.getActive()
       let fetchedQuestions = fetchedConfiguration.registration_question_set.questions
       fetchedQuestions = fetchedQuestions ? fetchedQuestions : []
-      this.props.updateQuestions(JSON.parse(fetchedQuestions))
+      this.props.updateQuestions(fetchedQuestions)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching questions')
