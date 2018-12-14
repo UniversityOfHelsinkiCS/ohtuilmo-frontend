@@ -4,24 +4,24 @@ const initialState = {
   email: ''
 }
 
-const topicListPageReducer = (state = initialState, action) => {
+const registrationPageReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'UPDATE_TOPICS':
+  case 'UPDATE_REGISTRATION_TOPICS':
     return {
       ...state,
       topics: action.payload
     }
-  case 'UPDATE_EMAIL':
+  case 'UPDATE_REGISTRATION_EMAIL':
     return {
       ...state,
       email: action.payload
     }
-  case 'UPDATE_QUESTIONS':
+  case 'UPDATE_REGISTRATION_QUESTIONS':
     return {
       ...state,
       questions: action.payload
     }
-  case 'UPDATE_QUESTION_ANSWER':
+  case 'UPDATE_REGISTRATION_QUESTION_ANSWER':
     return {
       ...state,
       questions: state.questions.map(
@@ -33,4 +33,4 @@ const topicListPageReducer = (state = initialState, action) => {
   return state
 }
 
-export default topicListPageReducer
+export default registrationPageReducer
