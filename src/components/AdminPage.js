@@ -13,33 +13,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Divider from '@material-ui/core/Divider'
 // Service
 import configurationService from '../services/configuration'
+import registrationQuestionSetService from '../services/registrationQuestionSet'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import { ExpansionPanelActions } from '@material-ui/core'
-
-const questionSets = [
-  {
-    id: 1,
-    name: 'Testikysymykset',
-    questions: [
-      { question: 'This is a test question?', type: 'scale' },
-      { question: 'Test scale question?', type: 'text' }
-    ],
-    createdAt: '2018-12-13T13:56:23.906Z',
-    updatedAt: '2018-12-13T13:56:23.906Z'
-  },
-  {
-    id: 2,
-    name: 'Random questions',
-    questions: [
-      { question: 'Random question', type: 'scale' },
-      { question: 'Describe random things', type: 'text' }
-    ],
-    createdAt: '2018-12-13T13:56:23.906Z',
-    updatedAt: '2018-12-13T13:56:23.906Z'
-  }
-]
 
 class AdminPage extends React.Component {
   componentWillMount() {
@@ -90,8 +68,17 @@ class AdminPage extends React.Component {
     }
   }
 
-  setQuestions = () => {
-    this.props.setRegistrationQuestions(questionSets)
+  setQuestions = async () => {
+    try {
+      const questions = await registrationQuestionSetService.getAll()
+      this.props.setRegistrationQuestions(questions)
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError('Error fetching question sets')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
+    }
   }
 
   handleConfigurationChange = (event) => {
@@ -262,15 +249,13 @@ class AdminPage extends React.Component {
               <div>
                 <Divider />
                 {this.props.selectedReview1 &&
-                  this.props.selectedReview1.questions.map(
-                    (questionItem, index) => (
-                      <div key={index}>
-                        <p>Question: {questionItem.question}</p>
-                        <p>Type: {questionItem.type}</p>
-                        <Divider />
-                      </div>
-                    )
-                  )}
+                  this.props.allReviewQuestions.map((questionItem, index) => (
+                    <div key={index}>
+                      <p>Question: {questionItem.question}</p>
+                      <p>Type: {questionItem.type}</p>
+                      <Divider />
+                    </div>
+                  ))}
               </div>
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
@@ -318,15 +303,13 @@ class AdminPage extends React.Component {
               <div>
                 <Divider />
                 {this.props.selectedReview2 &&
-                  this.props.selectedReview2.questions.map(
-                    (questionItem, index) => (
-                      <div key={index}>
-                        <p>Question: {questionItem.question}</p>
-                        <p>Type: {questionItem.type}</p>
-                        <Divider />
-                      </div>
-                    )
-                  )}
+                  this.props.allReviewQuestions.map((questionItem, index) => (
+                    <div key={index}>
+                      <p>Question: {questionItem.question}</p>
+                      <p>Type: {questionItem.type}</p>
+                      <Divider />
+                    </div>
+                  ))}
               </div>
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
@@ -366,7 +349,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -376,7 +359,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -386,7 +369,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -396,7 +379,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <Button
