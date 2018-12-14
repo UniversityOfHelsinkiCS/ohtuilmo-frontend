@@ -5,6 +5,7 @@ import './App.css'
 
 // Components
 import AdminPage from './components/AdminPage'
+import LandingPage from './components/LandingPage'
 import LoginPage from './components/LoginPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
@@ -76,11 +77,11 @@ class App extends Component {
             <Switch>
               <Route path={process.env.PUBLIC_URL + '/login'} render={() => (
                 this.props.user ?
-                  (this.props.user.admin? <Redirect to={process.env.PUBLIC_URL + '/administration'} /> : <Redirect to={process.env.PUBLIC_URL + '/register'} />)
+                  (this.props.user.admin? <Redirect to={process.env.PUBLIC_URL + '/administration'} /> : <Redirect to={process.env.PUBLIC_URL + '/'} />)
                   :
                   <LoginPage />
               )} />
-              <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <Redirect to={process.env.PUBLIC_URL + '/login'} />} />
+              <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <LandingPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics'} render={() => <TopicListPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/create'} render={() => <TopicFormPage />} />
               <Route exact path={process.env.PUBLIC_URL + '/topics/:id'} render={(props) => <ViewTopicPage {...props} />} />

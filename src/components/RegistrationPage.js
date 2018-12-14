@@ -8,6 +8,7 @@ import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
 import TopicDialog from './TopicDialog'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import { withRouter } from 'react-router-dom'
 // MUI
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -50,7 +51,8 @@ class RegistrationPage extends React.Component {
   async fetchQuestions() {
     try {
       const fetchedConfiguration = await configurationService.getActive()
-      let fetchedQuestions = fetchedConfiguration.registration_question_set.questions
+      let fetchedQuestions =
+        fetchedConfiguration.registration_question_set.questions
       fetchedQuestions = fetchedQuestions ? fetchedQuestions : []
       this.props.updateQuestions(fetchedQuestions)
     } catch (e) {
@@ -66,7 +68,7 @@ class RegistrationPage extends React.Component {
     try {
       const fetchedTopics = await topicService
         .getAllActive()
-        .then(function (defs) {
+        .then(function(defs) {
           return defs
         })
       //sorts topics based on timestamp
@@ -105,8 +107,16 @@ class RegistrationPage extends React.Component {
   submitRegistration = async () => {
     this.updateUser()
     try {
-      const response = await registrationService.create({ questions: this.props.questions, preferred_topics: this.props.topics })
+      const response = await registrationService.create({
+        questions: this.props.questions,
+        preferred_topics: this.props.topics
+      })
       console.log(response)
+      this.props.setSuccess('Registration saved')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
+      this.props.history.push('/')
     } catch (e) {
       console.log(e)
     }
@@ -114,9 +124,7 @@ class RegistrationPage extends React.Component {
 
   render() {
     if (!this.props.user) {
-      return (
-        <LoadingSpinner />
-      )
+      return <LoadingSpinner />
     }
     let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx}>
@@ -135,7 +143,7 @@ class RegistrationPage extends React.Component {
                   this.props.updateQuestionAnswer(event.target.value, idx)
                 }
               >
-                <MenuItem value='' disabled>
+                <MenuItem value="" disabled>
                   <em>Pick a number</em>
                 </MenuItem>
                 <MenuItem value={1}>1</MenuItem>
@@ -230,4 +238,4 @@ const ConnectedRegistrationPage = connect(
   mapDispatchToProps
 )(RegistrationPage)
 
-export default ConnectedRegistrationPage
+export default withRouter(ConnectedRegistrationPage)
