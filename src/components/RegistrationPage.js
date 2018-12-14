@@ -167,7 +167,6 @@ class RegistrationPage extends React.Component {
         {idx + 1}
       </Card>
     ))
-    console.log('t', this.props.topics)
     return (
       <div>
         <div className="section">
