@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
@@ -144,9 +143,6 @@ class RegistrationPage extends React.Component {
                 <MenuItem value={4}>4</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
               </Select>
-              <FormHelperText>
-                1=None 2=Basics 3=Average 4=Good 5=Excellent
-              </FormHelperText>
             </div>
           ) : null}
           {item.type === 'text' ? (
@@ -171,7 +167,6 @@ class RegistrationPage extends React.Component {
         {idx + 1}
       </Card>
     ))
-
     return (
       <div>
         <div className="section">
@@ -189,7 +184,8 @@ class RegistrationPage extends React.Component {
               handles={false}
               dataSource={this.props.topics}
               onUpdate={this.handleUpdate}
-              row={(topic, index) => <TopicDialog topic={topic} key={index} />}
+              rowKey='id'
+              row={(topic) => <TopicDialog topic={topic} key={topic.content.title} />}
             />
           </div>
         </div>
