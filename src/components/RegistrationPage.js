@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import topicService from '../services/topic'
 import userService from '../services/user'
 import registrationService from '../services/registration'
@@ -16,6 +17,7 @@ import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
+import TextField from '@material-ui/core/TextField'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
@@ -49,7 +51,8 @@ class RegistrationPage extends React.Component {
   async fetchQuestions() {
     try {
       const fetchedConfiguration = await configurationService.getActive()
-      let fetchedQuestions = fetchedConfiguration.registration_question_set.questions
+      let fetchedQuestions =
+        fetchedConfiguration.registration_question_set.questions
       fetchedQuestions = fetchedQuestions ? fetchedQuestions : []
       this.props.updateQuestions(fetchedQuestions)
     } catch (e) {
@@ -65,7 +68,7 @@ class RegistrationPage extends React.Component {
     try {
       const fetchedTopics = await topicService
         .getAllActive()
-        .then(function (defs) {
+        .then(function(defs) {
           return defs
         })
       //sorts topics based on timestamp
@@ -97,25 +100,47 @@ class RegistrationPage extends React.Component {
       loggedInUser['user'] = response.user
       localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
     } catch (e) {
-      console.log(e)
+      throw e
     }
   }
 
-  submitRegistration = async () => {
-    this.updateUser()
+  submitRegistration = async (e) => {
+    e.preventDefault()
     try {
-      const response = await registrationService.create({ questions: this.props.questions, preferred_topics: this.props.topics })
-      console.log(response)
+      await this.updateUser()
+      await registrationService.create({
+        questions: this.props.questions,
+        preferred_topics: this.props.topics
+      })
+      this.props.setSuccess('Registration submitted')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
+      this.props.history.push('/')
     } catch (e) {
       console.log(e)
+      if (e.response.data.error === 'student already registered') {
+        this.props.setError('You have already registered for this course')
+        setTimeout(() => {
+          this.props.clearNotifications()
+        }, 5000)
+      } else if (e.response.data.error === 'missing email') {
+        this.props.setError('Email is missing')
+        setTimeout(() => {
+          this.props.clearNotifications()
+        }, 5000)
+      } else {
+        this.props.setError('Error happened')
+        setTimeout(() => {
+          this.props.clearNotifications()
+        }, 5000)
+      }
     }
   }
 
   render() {
     if (!this.props.user) {
-      return (
-        <LoadingSpinner />
-      )
+      return <LoadingSpinner />
     }
     let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx}>
@@ -134,7 +159,7 @@ class RegistrationPage extends React.Component {
                   this.props.updateQuestionAnswer(event.target.value, idx)
                 }
               >
-                <MenuItem value='' disabled>
+                <MenuItem value="" disabled>
                   <em>Pick a number</em>
                 </MenuItem>
                 <MenuItem value={1}>1</MenuItem>
@@ -168,10 +193,22 @@ class RegistrationPage extends React.Component {
       </Card>
     ))
     return (
-      <div>
+      <form onSubmit={this.submitRegistration}>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
           <UserDetails />
+          <p>Please fill your email</p>
+          <div>
+            <TextField
+              type="email"
+              required
+              label="Email"
+              margin="normal"
+              style={{ width: '250px', marginTop: 0 }}
+              value={this.props.email}
+              onChange={(e) => this.props.updateEmail(e.target.value)}
+            />
+          </div>
           <h2>Topics</h2>
           <p>
             Set the order of the list of topics according to your preference (1
@@ -184,8 +221,10 @@ class RegistrationPage extends React.Component {
               handles={false}
               dataSource={this.props.topics}
               onUpdate={this.handleUpdate}
-              rowKey='id'
-              row={(topic) => <TopicDialog topic={topic} key={topic.content.title} />}
+              rowKey="id"
+              row={(topic) => (
+                <TopicDialog topic={topic} key={topic.content.title} />
+              )}
             />
           </div>
         </div>
@@ -195,13 +234,13 @@ class RegistrationPage extends React.Component {
           {questions}
         </div>
         <Button
-          onClick={this.submitRegistration}
+          type="submit"
           variant="outlined"
           style={{ backgroundColor: 'white' }}
         >
           Submit
         </Button>
-      </div>
+      </form>
     )
   }
 }
@@ -226,4 +265,4 @@ const ConnectedRegistrationPage = connect(
   mapDispatchToProps
 )(RegistrationPage)
 
-export default ConnectedRegistrationPage
+export default withRouter(ConnectedRegistrationPage)
