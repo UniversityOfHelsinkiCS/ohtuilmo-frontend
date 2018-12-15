@@ -13,26 +13,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Divider from '@material-ui/core/Divider'
 // Service
 import configurationService from '../services/configuration'
+import registrationQuestionSetService from '../services/registrationQuestionSet'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
-
-const mockConfiguration = {
-  registrationQuestions: [
-    { question: 'This is a test question?', type: 'scale' },
-    { question: 'Test scale question?', type: 'text' }
-  ],
-  reviewQuestions1: [
-    { question: 'This is a test question?', type: 'scale' },
-    { question: 'Test scale question?', type: 'text' },
-    { question: 'This is a test question?', type: 'scale' },
-    { question: 'Test scale question?', type: 'text' }
-  ],
-  reviewQuestions2: [
-    { question: 'This is a test question?', type: 'scale' },
-    { question: 'Test scale question?', type: 'text' }
-  ]
-}
+import { ExpansionPanelActions } from '@material-ui/core'
 
 class AdminPage extends React.Component {
   componentWillMount() {
@@ -56,6 +41,7 @@ class AdminPage extends React.Component {
 
   componentDidMount() {
     this.fetchConfigurations()
+    this.setQuestions()
   }
 
   fetchConfigurations = async () => {
@@ -66,8 +52,10 @@ class AdminPage extends React.Component {
         const selected = this.props.configurations.find(
           (c) => c.active === true
         )
-        this.props.updateSelected(selected)
-        this.props.updateConfigForm(this.props.selected)
+        if (selected) {
+          this.props.updateSelectedConfig(selected)
+          this.props.updateConfigForm(this.props.selectedConfig)
+        }
         this.props.updateNewStatus(false)
       } else {
         this.props.selectNewConfig()
@@ -82,14 +70,37 @@ class AdminPage extends React.Component {
     }
   }
 
+  setQuestions = async () => {
+    try {
+      const questions = await registrationQuestionSetService.getAll()
+      this.props.setRegistrationQuestions(questions)
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError('Error fetching question sets')
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
+    }
+  }
+
   handleConfigurationChange = (event) => {
     if (event.target.value === 'new') {
       this.props.selectNewConfig()
       this.props.updateNewStatus(true)
     } else {
-      this.props.updateSelected(event.target.value)
+      this.props.updateSelectedConfig(event.target.value)
       this.props.updateConfigForm(event.target.value)
       this.props.updateNewStatus(false)
+    }
+  }
+
+  handleQuestionSetChange = (event) => {
+    if (event.target.name === 'registration') {
+      this.props.updateSelectedRegistrationQuestions(event.target.value)
+    } else if (event.target.value === 'review1') {
+      this.props.updateSelectedReviewQuestions1(event.target.value)
+    } else if (event.target.value === 'review2') {
+      this.props.updateSelectedReviewQuestions2(event.target.value)
     }
   }
 
@@ -102,7 +113,7 @@ class AdminPage extends React.Component {
         ...this.props.configurations,
         response.configuration
       ])
-      this.props.updateSelected(response.configuration)
+      this.props.updateSelectedConfig(response.configuration)
       this.props.updateNewStatus(false)
       this.props.setSuccess('New configuration saved and set active')
       setTimeout(() => {
@@ -123,10 +134,10 @@ class AdminPage extends React.Component {
       const configuration = { ...this.props.form, active: true }
       const response = await configurationService.update(
         configuration,
-        this.props.selected.id
+        this.props.selectedConfig.id
       )
       this.props.updateConfigurations(response.configuration)
-      this.props.updateSelected(response.configuration)
+      this.props.updateSelectedConfig(response.configuration)
       this.props.updateConfigForm(response.configuration)
       this.props.setSuccess('Configuration updated and set active')
       setTimeout(() => {
@@ -142,17 +153,11 @@ class AdminPage extends React.Component {
   }
 
   render() {
-    const {
-      registrationQuestions,
-      reviewQuestions1,
-      reviewQuestions2
-    } = mockConfiguration
-
     return (
       <div className="admin-page-container">
         <h3>Change configuration</h3>
         <Select
-          value={this.props.selected ? this.props.selected : 'new'}
+          value={this.props.selectedConfig ? this.props.selectedConfig : 'new'}
           onChange={this.handleConfigurationChange}
         >
           {this.props.configurations.map((item) => (
@@ -183,28 +188,51 @@ class AdminPage extends React.Component {
                   alignItems: 'center'
                 }}
               >
-                <p style={{ flex: 6 }}>Registration questions</p>
-                <Button
-                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
-                  color="primary"
-                  variant="contained"
-                >
-                  Configure
-                </Button>
+                <p>Registration questions</p>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {registrationQuestions.map((questionItem, index) => (
-                  <div key={index}>
-                    <p>Question: {questionItem.question}</p>
-                    <p>Type: {questionItem.type}</p>
-                    <Divider />
-                  </div>
-                ))}
+                {this.props.selectedRegister &&
+                  this.props.selectedRegister.questions.map(
+                    (questionItem, index) => (
+                      <div key={index}>
+                        <p>Question: {questionItem.question}</p>
+                        <p>Type: {questionItem.type}</p>
+                        <Divider />
+                      </div>
+                    )
+                  )}
               </div>
             </ExpansionPanelDetails>
+            <ExpansionPanelActions>
+              <Select
+                name="registration"
+                value={
+                  this.props.selectedRegister
+                    ? this.props.selectedRegister
+                    : 'default'
+                }
+                onChange={this.handleQuestionSetChange}
+              >
+                <MenuItem value="default" disabled>
+                  Pick registration questions
+                </MenuItem>
+                {this.props.allRegistrationQuestions.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                style={{ marginRight: '10px', height: '40px' }}
+                color="primary"
+                variant="contained"
+              >
+                Configure
+              </Button>
+            </ExpansionPanelActions>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -216,28 +244,49 @@ class AdminPage extends React.Component {
                   alignItems: 'center'
                 }}
               >
-                <p style={{ flex: 6 }}>Review questions 1</p>
-                <Button
-                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
-                  color="primary"
-                  variant="contained"
-                >
-                  Configure
-                </Button>
+                <p>Review questions 1</p>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {reviewQuestions2.map((questionItem, index) => (
-                  <div key={index}>
-                    <p>Question: {questionItem.question}</p>
-                    <p>Type: {questionItem.type}</p>
-                    <Divider />
-                  </div>
-                ))}
+                {this.props.selectedReview1 &&
+                  this.props.allReviewQuestions.map((questionItem, index) => (
+                    <div key={index}>
+                      <p>Question: {questionItem.question}</p>
+                      <p>Type: {questionItem.type}</p>
+                      <Divider />
+                    </div>
+                  ))}
               </div>
             </ExpansionPanelDetails>
+            <ExpansionPanelActions>
+              <Select
+                name="review1"
+                value={
+                  this.props.selectedRegister
+                    ? this.props.selectedRegister
+                    : 'default'
+                }
+                onChange={this.handleQuestionSetChange}
+              >
+                <MenuItem value="default" disabled>
+                  Pick review 1 questions
+                </MenuItem>
+                {this.props.allReviewQuestions.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                style={{ marginRight: '10px', height: '40px' }}
+                color="primary"
+                variant="contained"
+              >
+                Configure
+              </Button>
+            </ExpansionPanelActions>
           </ExpansionPanel>
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -249,28 +298,49 @@ class AdminPage extends React.Component {
                   alignItems: 'center'
                 }}
               >
-                <p style={{ flex: 6 }}>Review questions 2</p>
-                <Button
-                  style={{ flex: 1, marginRight: '60px', height: '40px' }}
-                  color="primary"
-                  variant="contained"
-                >
-                  Configure
-                </Button>
+                <p>Review questions 2</p>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {reviewQuestions1.map((questionItem, index) => (
-                  <div key={index}>
-                    <p>Question: {questionItem.question}</p>
-                    <p>Type: {questionItem.type}</p>
-                    <Divider />
-                  </div>
-                ))}
+                {this.props.selectedReview2 &&
+                  this.props.allReviewQuestions.map((questionItem, index) => (
+                    <div key={index}>
+                      <p>Question: {questionItem.question}</p>
+                      <p>Type: {questionItem.type}</p>
+                      <Divider />
+                    </div>
+                  ))}
               </div>
             </ExpansionPanelDetails>
+            <ExpansionPanelActions>
+              <Select
+                name="review2"
+                value={
+                  this.props.selectedRegister
+                    ? this.props.selectedRegister
+                    : 'default'
+                }
+                onChange={this.handleQuestionSetChange}
+              >
+                <MenuItem value="default" disabled>
+                  Pick review 2 questions
+                </MenuItem>
+                {this.props.allReviewQuestions.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                style={{ marginRight: '10px', height: '40px' }}
+                color="primary"
+                variant="contained"
+              >
+                Configure
+              </Button>
+            </ExpansionPanelActions>
           </ExpansionPanel>
         </div>
         <h3>Customer emails</h3>
@@ -281,7 +351,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -291,7 +361,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -301,7 +371,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <div>
@@ -311,7 +381,7 @@ class AdminPage extends React.Component {
             type="text"
             margin="normal"
             value=""
-          //  onChange={(e) => this.props.updateEmail(e.target.value)}
+            //  onChange={(e) => this.props.updateEmail(e.target.value)}
           />
         </div>
         <Button
@@ -339,7 +409,11 @@ class AdminPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     configurations: state.adminPage.configurations,
-    selected: state.adminPage.selected,
+    selectedConfig: state.adminPage.selectedConfig,
+    allRegistrationQuestions: state.adminPage.allRegistrationQuestions,
+    allReviewQuestions: state.adminPage.allReviewQuestions,
+    selectedRegister: state.adminPage.selectedRegister,
+    selectedReview: state.adminPage.selectedReview,
     form: state.adminPage.form,
     isNew: state.adminPage.isNew
   }
