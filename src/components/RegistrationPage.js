@@ -205,7 +205,7 @@ class RegistrationPage extends React.Component {
             />
           </div>
           <h2>Topics</h2>
-          <p>
+          <p style={{ fontWeight: 'bold' }}>
             Set the order of the list of topics according to your preference (1
             = favorite) by dragging and dropping, click to expand details
           </p>
