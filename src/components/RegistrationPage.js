@@ -17,6 +17,7 @@ import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
+import TextField from '@material-ui/core/TextField'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
@@ -99,13 +100,14 @@ class RegistrationPage extends React.Component {
       loggedInUser['user'] = response.user
       localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
     } catch (e) {
-      console.log(e)
+      throw e
     }
   }
 
-  submitRegistration = async () => {
-    this.updateUser()
+  submitRegistration = async (e) => {
+    e.preventDefault()
     try {
+      await this.updateUser()
       await registrationService.create({
         questions: this.props.questions,
         preferred_topics: this.props.topics
@@ -119,6 +121,11 @@ class RegistrationPage extends React.Component {
       console.log(e)
       if (e.response.data.error === 'student already registered') {
         this.props.setError('You have already registered for this course')
+        setTimeout(() => {
+          this.props.clearNotifications()
+        }, 5000)
+      } else if (e.response.data.error === 'missing email') {
+        this.props.setError('Email is missing')
         setTimeout(() => {
           this.props.clearNotifications()
         }, 5000)
@@ -186,10 +193,22 @@ class RegistrationPage extends React.Component {
       </Card>
     ))
     return (
-      <div>
+      <form onSubmit={this.submitRegistration}>
         <div className="section">
           <h2 className="landingpage-header">User details</h2>
           <UserDetails />
+          <p>Please fill your email</p>
+          <div>
+            <TextField
+              type="email"
+              required
+              label="Email"
+              margin="normal"
+              style={{ width: '250px', marginTop: 0 }}
+              value={this.props.email}
+              onChange={(e) => this.props.updateEmail(e.target.value)}
+            />
+          </div>
           <h2>Topics</h2>
           <p>
             Set the order of the list of topics according to your preference (1
@@ -215,13 +234,13 @@ class RegistrationPage extends React.Component {
           {questions}
         </div>
         <Button
-          onClick={this.submitRegistration}
+          type="submit"
           variant="outlined"
           style={{ backgroundColor: 'white' }}
         >
           Submit
         </Button>
-      </div>
+      </form>
     )
   }
 }
