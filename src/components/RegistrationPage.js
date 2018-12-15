@@ -16,7 +16,6 @@ import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
 import TextField from '@material-ui/core/TextField'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
@@ -145,7 +144,6 @@ class RegistrationPage extends React.Component {
     let questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx}>
         <CardContent>
-          <InputLabel>Question {idx}:</InputLabel>
           <p>{item.question}</p>
           {item.type === 'scale' ? (
             <div>
