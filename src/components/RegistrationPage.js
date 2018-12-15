@@ -102,6 +102,10 @@ class RegistrationPage extends React.Component {
 
   submitRegistration = async (e) => {
     e.preventDefault()
+
+    const answer = window.confirm('Are you sure that you have ordered topics according to your preference?')
+    if (!answer) return
+
     try {
       await this.updateUser()
       await registrationService.create({
@@ -111,7 +115,7 @@ class RegistrationPage extends React.Component {
       this.props.setSuccess('Registration submitted')
       setTimeout(() => {
         this.props.clearNotifications()
-      }, 5000)
+      }, 15000)
       this.props.history.push(process.env.PUBLIC_URL + '/')
     } catch (e) {
       console.log(e)
@@ -119,7 +123,7 @@ class RegistrationPage extends React.Component {
         this.props.setError('You have already registered for this course')
         setTimeout(() => {
           this.props.clearNotifications()
-        }, 5000)
+        }, 15000)
       } else if (e.response.data.error === 'missing email') {
         this.props.setError('Email is missing')
         setTimeout(() => {
@@ -205,10 +209,10 @@ class RegistrationPage extends React.Component {
             />
           </div>
           <h2>Topics</h2>
-          <p style={{ fontWeight: 'bold' }}>
+          <div style={{ fontWeight: 'bold', marginBottom: 20, border: 'solid', padding: 10, borderRadius: 10 }}>
             Set the order of the list of topics according to your preference (1
             = favorite) by dragging and dropping, click to expand details
-          </p>
+          </div>
           <div className="dragndrop-container">
             <div className="dragndrop-indexes-container">{indexes}</div>
             <ReactDragList
