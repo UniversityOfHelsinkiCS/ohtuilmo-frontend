@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import './TopicFormPage.css'
 // MUI
 import Select from '@material-ui/core/Select'
@@ -17,6 +18,7 @@ import registrationQuestionSetService from '../services/registrationQuestionSet'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
+import questionsFormPageActions from '../reducers/actions/questionsFormPageActions'
 import { ExpansionPanelActions } from '@material-ui/core'
 
 class AdminPage extends React.Component {
@@ -152,6 +154,16 @@ class AdminPage extends React.Component {
     }
   }
 
+  goToAddRegistrationQuestions = () => {
+    this.props.updateMode('registration')
+    this.props.history.push(process.env.PUBLIC_URL + '/administration/questions')
+  }
+
+  goToAddReviewQuestions = () => {
+    this.props.updateMode('review')
+    this.props.history.push(process.env.PUBLIC_URL + '/administration/questions')
+  }
+
   render() {
     return (
       <div className="admin-page-container">
@@ -229,6 +241,7 @@ class AdminPage extends React.Component {
                 style={{ marginRight: '10px', height: '40px' }}
                 color="primary"
                 variant="contained"
+                onClick={this.goToAddRegistrationQuestions}
               >
                 Configure
               </Button>
@@ -283,6 +296,7 @@ class AdminPage extends React.Component {
                 style={{ marginRight: '10px', height: '40px' }}
                 color="primary"
                 variant="contained"
+                onClick={this.goToAddReviewQuestions}
               >
                 Configure
               </Button>
@@ -337,6 +351,7 @@ class AdminPage extends React.Component {
                 style={{ marginRight: '10px', height: '40px' }}
                 color="primary"
                 variant="contained"
+                onClick={this.goToAddReviewQuestions}
               >
                 Configure
               </Button>
@@ -421,7 +436,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...adminPageActions,
-  ...notificationActions
+  ...notificationActions,
+  ...questionsFormPageActions
 }
 
 const ConnectedAdminPage = connect(
@@ -429,4 +445,4 @@ const ConnectedAdminPage = connect(
   mapDispatchToProps
 )(AdminPage)
 
-export default ConnectedAdminPage
+export default withRouter(ConnectedAdminPage)
