@@ -71,11 +71,8 @@ class RegistrationPage extends React.Component {
         .then(function(defs) {
           return defs
         })
-      //sorts topics based on timestamp
-      const sortedTopics = fetchedTopics.sort((t1, t2) =>
-        t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0
-      )
-      this.props.updateTopics(sortedTopics)
+
+      this.props.updateTopics(fetchedTopics)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching topics')
