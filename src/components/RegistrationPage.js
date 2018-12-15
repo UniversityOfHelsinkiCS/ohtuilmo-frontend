@@ -116,7 +116,7 @@ class RegistrationPage extends React.Component {
       setTimeout(() => {
         this.props.clearNotifications()
       }, 5000)
-      this.props.history.push('/')
+      this.props.history.push(process.env.PUBLIC_URL + '/')
     } catch (e) {
       console.log(e)
       if (e.response.data.error === 'student already registered') {
