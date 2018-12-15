@@ -61,7 +61,7 @@ class QuestionsFormPage extends React.Component {
     try {
       const question_set = {
         name: this.props.selected_question_set.name,
-        questions: JSON.parse(this.props.selected_question_set.questions)
+        questions: JSON.parse(`${this.props.selected_question_set.questions}`)
       }
       await registrationQuestionSetService.create(question_set)
       this.handleSuccess('Registration created successfully')
@@ -77,7 +77,7 @@ class QuestionsFormPage extends React.Component {
     try {
       const question_set = {
         name: this.props.selected_question_set.name,
-        questions: JSON.parse(this.props.selected_question_set.questions)
+        questions: JSON.parse(`${this.props.selected_question_set.questions}`)
       }
       await registrationQuestionSetService.update(question_set)
       this.handleSuccess('Registration updated successfully')
@@ -93,7 +93,7 @@ class QuestionsFormPage extends React.Component {
     try {
       const question_set = {
         name: this.props.selected_question_set.name,
-        questions: JSON.parse(this.props.selected_question_set.questions)
+        questions: JSON.parse(`${this.props.selected_question_set.questions}`)
       }
       await reviewQuestionSetService.create(question_set)
       this.handleSuccess('Review created successfully')
@@ -109,7 +109,7 @@ class QuestionsFormPage extends React.Component {
     try {
       const question_set = {
         name: this.props.selected_question_set.name,
-        questions: JSON.parse(this.props.selected_question_set.questions)
+        questions: JSON.parse(`${this.props.selected_question_set.questions}`)
       }
       await reviewQuestionSetService.update(question_set)
       this.handleSuccess('Review updated successfully')
