@@ -32,11 +32,12 @@
 }
 
 .dragndrop-indexes-container {
-  flex: 1
+  flex: 1;
+  height: 80px
 }
 
 .dragndrop-index {
-  padding: 27px 20px 27px 20px;
+  padding: 30px 20px 30px 20px;
   max-height: 18px;
   margin: 2px;
   font-weight: bold;
