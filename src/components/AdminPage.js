@@ -52,8 +52,10 @@ class AdminPage extends React.Component {
         const selected = this.props.configurations.find(
           (c) => c.active === true
         )
-        this.props.updateSelectedConfig(selected)
-        this.props.updateConfigForm(this.props.selectedConfig)
+        if (selected) {
+          this.props.updateSelectedConfig(selected)
+          this.props.updateConfigForm(this.props.selectedConfig)
+        }
         this.props.updateNewStatus(false)
       } else {
         this.props.selectNewConfig()
