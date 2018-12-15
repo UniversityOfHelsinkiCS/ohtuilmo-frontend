@@ -106,11 +106,10 @@ class RegistrationPage extends React.Component {
   submitRegistration = async () => {
     this.updateUser()
     try {
-      const response = await registrationService.create({
+      await registrationService.create({
         questions: this.props.questions,
         preferred_topics: this.props.topics
       })
-      console.log(response)
       this.props.setSuccess('Registration submitted')
       setTimeout(() => {
         this.props.clearNotifications()
