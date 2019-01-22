@@ -47,6 +47,12 @@ class RegistrationPage extends React.Component {
     this.fetchQuestions()
   }
 
+  checkRegistration() {
+    if (!this.props.registrationOpen) {
+      this.props.history.push(process.env.PUBLIC_URL + '/')
+    }
+  }
+
   async fetchQuestions() {
     try {
       const fetchedConfiguration = await configurationService.getActive()
@@ -103,7 +109,9 @@ class RegistrationPage extends React.Component {
   submitRegistration = async (e) => {
     e.preventDefault()
 
-    const answer = window.confirm('Are you sure that you have ordered topics according to your preference?')
+    const answer = window.confirm(
+      'Are you sure that you have ordered topics according to your preference?'
+    )
     if (!answer) return
 
     try {
@@ -139,6 +147,7 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
+    this.checkRegistration()
     if (!this.props.user) {
       return <LoadingSpinner />
     }
@@ -209,7 +218,15 @@ class RegistrationPage extends React.Component {
             />
           </div>
           <h2>Topics</h2>
-          <div style={{ fontWeight: 'bold', marginBottom: 20, border: 'solid', padding: 10, borderRadius: 10 }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              marginBottom: 20,
+              border: 'solid',
+              padding: 10,
+              borderRadius: 10
+            }}
+          >
             Set the order of the list of topics according to your preference (1
             = favorite) by dragging and dropping, click to expand details
           </div>
@@ -250,7 +267,8 @@ const mapStateToProps = (state) => {
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
-    email: state.registrationPage.email
+    email: state.registrationPage.email,
+    registrationOpen: state.registrationManagement.project_registration_open
   }
 }
 
