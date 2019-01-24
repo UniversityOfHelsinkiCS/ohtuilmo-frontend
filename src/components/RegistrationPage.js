@@ -48,7 +48,7 @@ class RegistrationPage extends React.Component {
   }
 
   checkRegistration() {
-    if (!this.props.registrationOpen) {
+    if (!this.props.projectOpen) {
       this.props.history.push(process.env.PUBLIC_URL + '/')
     }
   }
@@ -268,7 +268,7 @@ const mapStateToProps = (state) => {
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
     email: state.registrationPage.email,
-    registrationOpen: state.registrationManagement.projectRegistrationOpen
+    projectOpen: state.registrationManagement.projectRegistrationOpen
   }
 }
 

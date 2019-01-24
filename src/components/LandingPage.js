@@ -10,14 +10,12 @@ class LandingPage extends React.Component {
     return (
       <div className="landingpage-container">
         <h2 className="landingpage-header">Home</h2>
-        {this.props.registrationOpen ? (
+        {this.props.projectOpen ? (
           <a href={process.env.PUBLIC_URL + '/register'}>
             Submit your registration
           </a>
         ) : (
-          <div className="landingpage-message">
-            {this.props.registrationMessage}
-          </div>
+          <div className="landingpage-message">{this.props.projectMessage}</div>
         )}
       </div>
     )
@@ -26,8 +24,8 @@ class LandingPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    registrationOpen: state.registrationManagement.projectRegistrationOpen,
-    registrationMessage: state.registrationManagement.projectRegistrationMessage
+    projectOpen: state.registrationManagement.projectRegistrationOpen,
+    projectMessage: state.registrationManagement.projectRegistrationMessage
   }
 }
 

@@ -21,7 +21,7 @@ import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
 import QuestionsFormPage from './components/QuestionsFormPage'
-import RegistrationManagement from './components/RegistrationManagement'
+import RegistrationManagementPage from './components/RegistrationManagementPage'
 
 // Services
 import registrationManagementService from './services/registrationManagement'
@@ -169,7 +169,7 @@ class App extends Component {
                   '/administration/registrationmanagement'
                 }
                 user={this.props.user}
-                render={() => <RegistrationManagement />}
+                render={() => <RegistrationManagementPage />}
               />
             </Switch>
           </div>
@@ -184,6 +184,7 @@ const mapStateToProps = (state) => {
     isLoading: state.app.isLoading,
     user: state.loginPage.user,
     type: state.notifications.type,
+    open: state.notifications.open,
     message: state.notifications.message
   }
 }

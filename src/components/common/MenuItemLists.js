@@ -35,7 +35,7 @@ const adminItems = (history) => {
       handler: () => history.push(process.env.PUBLIC_URL + '/administration')
     },
     {
-      text: 'Registration management',
+      text: 'Registration Management',
       handler: () =>
         history.push(
           process.env.PUBLIC_URL + '/administration/registrationmanagement'

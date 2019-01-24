@@ -1,10 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
+// MUI
+import Button from '@material-ui/core/Button'
+import Switch from '@material-ui/core/Switch'
+import TextField from '@material-ui/core/TextField'
+// Actions
 import appActions from '../reducers/actions/appActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import registrationManagementActions from '../reducers/actions/registrationManagementActions'
-import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
+// Services
 import registrationManagementService from '../services/registrationManagement'
 
 class RegistrationManagement extends React.Component {
@@ -27,11 +31,11 @@ class RegistrationManagement extends React.Component {
     }
   }
 
-  saveOptions = async (event) => {
+  saveConfiguration = async (event) => {
     event.preventDefault()
     this.props.updateIsLoading(true)
-    let registrationOpen = this.props.registrationOpen
-    let registrationMessage = this.props.registrationMessage
+    let registrationOpen = this.props.projectOpen
+    let registrationMessage = this.props.projectMessage
     let topicOpen = this.props.topicOpen
     let topicMessage = this.props.topicMessage
 
@@ -50,13 +54,11 @@ class RegistrationManagement extends React.Component {
         this.props.clearNotifications()
       }, 3000)
     } catch (e) {
-      console.log('error happened', e)
+      console.log('error happened', e.response)
       this.props.updateIsLoading(false)
-
       if (e.response.status === 400) {
-        this.props.setError('Message cant be empty if registration is closed')
+        this.props.setError(e.response.data.error)
       }
-
       setTimeout(() => {
         this.props.clearNotifications()
       }, 3000)
@@ -66,43 +68,56 @@ class RegistrationManagement extends React.Component {
   render() {
     return (
       <div className="registrationManagement-container">
-        <h1 className="registrationManagement-header">
-          Registration Management
-        </h1>
-        <form onSubmit={this.saveOptions}>
-          <p className="registrationManagement-information">
-            Change registration status and messages.
-          </p>
+        <h3>Registration management</h3>
+        <form
+          className="registration-management-form"
+          onSubmit={this.saveConfiguration}
+        >
+          <p>Change registration status and messages</p>
+          <h4>Project registration</h4>
           <p>
-            Open registration: :
+            Project registration open:
             <Switch
-              checked={this.props.registrationOpen}
+              checked={this.props.projectOpen}
               className="projectRegistrationSwitch"
               onChange={() =>
                 this.props.updateProjectRegistrationOpen(
-                  !this.props.registrationOpen
+                  !this.props.projectOpen
                 )
               }
             />
           </p>
-          <textarea
-            label="viesti"
-            value={this.props.registrationMessage}
-            className="projectRegistrationMessage"
+          <TextField
+            fullWidth
+            label="Message / Viesti"
+            margin="normal"
+            value={this.props.projectMessage}
             onChange={(e) =>
               this.props.updateProjectRegistrationMessage(e.target.value)
             }
           />
-          <br />
-
-          <Button
-            className="registrationManagementSubmit-button"
-            style={{ marginTop: '30px' }}
-            variant="outlined"
-            color="default"
-            type="submit"
-          >
-            Save Options
+          <h4>Topic registration</h4>
+          <p>
+            Topic registration open:
+            <Switch
+              checked={this.props.topicOpen}
+              className="projectRegistrationSwitch"
+              onChange={() =>
+                this.props.updateTopicRegistrationOpen(!this.props.topicOpen)
+              }
+            />
+          </p>
+          <TextField
+            fullWidth
+            label="Message / Viesti"
+            margin="normal"
+            value={this.props.topicMessage}
+            onChange={(e) =>
+              this.props.updateTopicRegistrationMessage(e.target.value)
+            }
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Save Configuration
           </Button>
         </form>
       </div>
@@ -112,9 +127,8 @@ class RegistrationManagement extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    registrationOpen: state.registrationManagement.projectRegistrationOpen,
-    registrationMessage:
-      state.registrationManagement.projectRegistrationMessage,
+    projectOpen: state.registrationManagement.projectRegistrationOpen,
+    projectMessage: state.registrationManagement.projectRegistrationMessage,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     isLoading: state.app.isLoading
