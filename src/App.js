@@ -66,7 +66,7 @@ class App extends Component {
   fetchRegistrationManagement = async () => {
     try {
       const response = await registrationManagementService.get()
-      this.props.updateRegistrationManagement(response.registrationManagement)
+      this.props.setRegistrationManagement(response.registrationManagement)
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(

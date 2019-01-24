@@ -26,9 +26,8 @@ class LandingPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    registrationOpen: state.registrationManagement.project_registration_open,
-    registrationMessage:
-      state.registrationManagement.project_registration_message
+    registrationOpen: state.registrationManagement.projectRegistrationOpen,
+    registrationMessage: state.registrationManagement.projectRegistrationMessage
   }
 }
 

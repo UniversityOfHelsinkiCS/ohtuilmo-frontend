@@ -268,7 +268,7 @@ const mapStateToProps = (state) => {
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
     email: state.registrationPage.email,
-    registrationOpen: state.registrationManagement.project_registration_open
+    registrationOpen: state.registrationManagement.projectRegistrationOpen
   }
 }
 

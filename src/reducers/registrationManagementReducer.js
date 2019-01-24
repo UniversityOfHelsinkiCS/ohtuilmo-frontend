@@ -1,20 +1,39 @@
 const initialState = {
-  project_registration_open: true,
-  project_registration_message: '',
-  topic_registration_open: true,
-  topic_registration_message: ''
+  projectRegistrationOpen: true,
+  projectRegistrationMessage: '',
+  topicRegistrationOpen: true,
+  topicRegistrationMessage: ''
 }
 
 const registrationManagementReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'UPDATE_REGISTRATION_MANAGEMENT':
+  case 'SET_REGISTRATION_MANAGEMENT':
     return {
       ...state,
-      project_registration_open: action.payload.project_registration_open,
-      project_registration_message:
-          action.payload.project_registration_message,
-      topic_registration_open: action.payload.topic_registration_open,
-      topic_registration_message: action.payload.topic_registration_message
+      projectRegistrationOpen: action.payload.projectRegistrationOpen,
+      projectRegistrationMessage: action.payload.projectRegistrationMessage,
+      topicRegistrationOpen: action.payload.topicRegistrationOpen,
+      topicRegistrationMessage: action.payload.topicRegistrationMessage
+    }
+  case 'UPDATE_PROJECT_REGISTRATION_OPEN':
+    return {
+      ...state,
+      projectRegistrationOpen: action.payload.projectRegistrationOpen
+    }
+  case 'UPDATE_PROJECT_REGISTRATION_MESSAGE':
+    return {
+      ...state,
+      projectRegistrationMessage: action.payload.projectRegistrationMessage
+    }
+  case 'UPDATE_TOPIC_REGISTRATION_OPEN':
+    return {
+      ...state,
+      topicRegistrationOpen: action.payload.topicRegistrationOpen
+    }
+  case 'UPDATE_TOPIC_REGISTRATION_MESSAGE':
+    return {
+      ...state,
+      topicRegistrationMessage: action.payload.topicRegistrationMessage
     }
   default:
     return state
