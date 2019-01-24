@@ -21,6 +21,7 @@ import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
 import QuestionsFormPage from './components/QuestionsFormPage'
+import RegistrationManagement from './components/RegistrationManagement'
 
 // Services
 import registrationManagementService from './services/registrationManagement'
@@ -160,6 +161,15 @@ class App extends Component {
                 path={process.env.PUBLIC_URL + '/register'}
                 user={this.props.user}
                 render={() => <RegistrationPage />}
+              />
+              <Route
+                exact
+                path={
+                  process.env.PUBLIC_URL +
+                  '/administration/registrationmanagement'
+                }
+                user={this.props.user}
+                render={() => <RegistrationManagement />}
               />
             </Switch>
           </div>

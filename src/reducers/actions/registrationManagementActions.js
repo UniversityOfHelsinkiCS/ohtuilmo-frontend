@@ -40,6 +40,7 @@ const updateTopicRegistrationMessage = (topicRegistrationMessage) => {
   }
 }
 
+
 export default {
   setRegistrationManagement,
   updateProjectRegistrationOpen,
@@ -47,3 +48,4 @@ export default {
   updateTopicRegistrationOpen,
   updateTopicRegistrationMessage
 }
+

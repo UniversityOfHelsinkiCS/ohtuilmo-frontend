@@ -18,22 +18,22 @@ const registrationManagementReducer = (state = initialState, action) => {
   case 'UPDATE_PROJECT_REGISTRATION_OPEN':
     return {
       ...state,
-      projectRegistrationOpen: action.payload.projectRegistrationOpen
+      projectRegistrationOpen: action.payload
     }
   case 'UPDATE_PROJECT_REGISTRATION_MESSAGE':
     return {
       ...state,
-      projectRegistrationMessage: action.payload.projectRegistrationMessage
+      projectRegistrationMessage: action.payload
     }
   case 'UPDATE_TOPIC_REGISTRATION_OPEN':
     return {
       ...state,
-      topicRegistrationOpen: action.payload.topicRegistrationOpen
+      topicRegistrationOpen: action.payload
     }
   case 'UPDATE_TOPIC_REGISTRATION_MESSAGE':
     return {
       ...state,
-      topicRegistrationMessage: action.payload.topicRegistrationMessage
+      topicRegistrationMessage: action.payload
     }
   default:
     return state
