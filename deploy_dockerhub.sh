@@ -5,6 +5,6 @@
 #
 # DON'T RUN MANUALLY UNLESS YOU KNOW WHAT YOU'RE DOING! -Joona
 
-docker login -u $DOCKER_USERNAME -p $docker_password
+docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 docker build -t ohtuprojektiilmo/ohtufront .
 docker push ohtuprojektiilmo/ohtufront
