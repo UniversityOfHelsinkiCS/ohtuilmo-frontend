@@ -94,7 +94,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <div id="app-wrapper">
-          <NavigationBar logout={this.logout} history={this.history} />
+          <NavigationBar logout={this.logout} />
           <Notification
             type={this.props.type}
             message={this.props.message}
