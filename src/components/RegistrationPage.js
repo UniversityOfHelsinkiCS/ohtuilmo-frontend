@@ -1,14 +1,7 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
-import topicService from '../services/topic'
-import userService from '../services/user'
-import registrationService from '../services/registration'
-import configurationService from '../services/configuration'
+import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import './RegistrationPage.css'
 import ReactDragList from 'react-drag-list'
-import TopicDialog from './TopicDialog'
-import LoadingSpinner from '../components/common/LoadingSpinner'
 // MUI
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -17,10 +10,19 @@ import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
+// services
+import topicService from '../services/topic'
+import userService from '../services/user'
+import registrationService from '../services/registration'
+import configurationService from '../services/configuration'
+// components
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import TopicDialog from './TopicDialog'
+import UserDetails from './UserDetails'
+import './RegistrationPage.css'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
-import UserDetails from './UserDetails'
 
 class RegistrationPage extends React.Component {
   async componentWillMount() {
@@ -103,7 +105,9 @@ class RegistrationPage extends React.Component {
   submitRegistration = async (e) => {
     e.preventDefault()
 
-    const answer = window.confirm('Are you sure that you have ordered topics according to your preference?')
+    const answer = window.confirm(
+      'Are you sure that you have ordered topics according to your preference?'
+    )
     if (!answer) return
 
     try {
@@ -139,10 +143,15 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
+    if (!this.props.projectOpen) {
+      return <Redirect to={process.env.PUBLIC_URL + '/'} />
+    }
+
     if (!this.props.user) {
       return <LoadingSpinner />
     }
-    let questions = this.props.questions.map((item, idx) => (
+
+    const questions = this.props.questions.map((item, idx) => (
       <Card style={{ marginBottom: '10px' }} key={idx}>
         <CardContent>
           <p>{item.question}</p>
@@ -186,11 +195,12 @@ class RegistrationPage extends React.Component {
       </Card>
     ))
 
-    let indexes = this.props.topics.map((item, idx) => (
+    const indexes = this.props.topics.map((item, idx) => (
       <Card key={idx} className="dragndrop-index">
         {idx + 1}
       </Card>
     ))
+
     return (
       <form onSubmit={this.submitRegistration}>
         <div className="section">
@@ -209,7 +219,15 @@ class RegistrationPage extends React.Component {
             />
           </div>
           <h2>Topics</h2>
-          <div style={{ fontWeight: 'bold', marginBottom: 20, border: 'solid', padding: 10, borderRadius: 10 }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              marginBottom: 20,
+              border: 'solid',
+              padding: 10,
+              borderRadius: 10
+            }}
+          >
             Set the order of the list of topics according to your preference (1
             = favorite) by dragging and dropping, click to expand details
           </div>
@@ -250,7 +268,8 @@ const mapStateToProps = (state) => {
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
-    email: state.registrationPage.email
+    email: state.registrationPage.email,
+    projectOpen: state.registrationManagement.projectRegistrationOpen
   }
 }
 

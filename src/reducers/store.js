@@ -11,6 +11,7 @@ import viewTopicPageReducer from './viewTopicPageReducer'
 import registrationPageReducer from './registrationPageReducer'
 import adminPageReducer from './adminPageReducer'
 import questionsFormPageReducer from './questionsFormPageReducer'
+import registrationManagementReducer from './registrationManagementReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -22,16 +23,12 @@ const reducer = combineReducers({
   viewTopicPage: viewTopicPageReducer,
   registrationPage: registrationPageReducer,
   adminPage: adminPageReducer,
-  questionsFormPage: questionsFormPageReducer
+  questionsFormPage: questionsFormPageReducer,
+  registrationManagement: registrationManagementReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const store = createStore(
-  reducer,
-  composeEnhancers(
-    applyMiddleware(thunk)
-  )
-)
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
 
 export default store

@@ -1,4 +1,4 @@
-const regularItems = history => {
+const regularItems = (history) => {
   const items = [
     {
       text: 'Log In',
@@ -9,7 +9,7 @@ const regularItems = history => {
   return items
 }
 
-const loggedInItems = history => {
+const loggedInItems = (history) => {
   const items = [
     {
       text: 'Home',
@@ -20,7 +20,7 @@ const loggedInItems = history => {
   return items
 }
 
-const adminItems = history => {
+const adminItems = (history) => {
   const items = [
     {
       text: 'Create Topic',
@@ -33,6 +33,13 @@ const adminItems = history => {
     {
       text: 'Administration',
       handler: () => history.push(process.env.PUBLIC_URL + '/administration')
+    },
+    {
+      text: 'Registration Management',
+      handler: () =>
+        history.push(
+          process.env.PUBLIC_URL + '/administration/registrationmanagement'
+        )
     }
   ]
 
