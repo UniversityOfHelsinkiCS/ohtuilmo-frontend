@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import './LandingPage.css'
 
@@ -11,9 +12,9 @@ class LandingPage extends React.Component {
       <div className="landingpage-container">
         <h2 className="landingpage-header">Home</h2>
         {this.props.projectOpen ? (
-          <a href={process.env.PUBLIC_URL + '/register'}>
+          <Link to={process.env.PUBLIC_URL + '/register'}>
             Submit your registration
-          </a>
+          </Link>
         ) : (
           <div className="landingpage-message">{this.props.projectMessage}</div>
         )}
@@ -29,13 +30,13 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToprops = {
+const mapDispatchToProps = {
   ...notificationActions
 }
 
 const ConnectedLandingPage = connect(
   mapStateToProps,
-  mapDispatchToprops
+  mapDispatchToProps
 )(LandingPage)
 
 export default ConnectedLandingPage

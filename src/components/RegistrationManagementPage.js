@@ -33,39 +33,58 @@ class RegistrationManagement extends React.Component {
 
   saveConfiguration = async (event) => {
     event.preventDefault()
-    this.props.updateIsLoading(true)
-    let registrationOpen = this.props.projectOpen
-    let registrationMessage = this.props.projectMessage
-    let topicOpen = this.props.topicOpen
-    let topicMessage = this.props.topicMessage
+
+    const {
+      projectOpen,
+      projectMessage,
+      topicOpen,
+      topicMessage,
+      updateIsLoading,
+      setSuccess,
+      clearNotifications,
+      setError
+    } = this.props
+
+    updateIsLoading(true)
 
     try {
       await registrationManagementService.create({
         registrationManagement: {
-          project_registration_open: registrationOpen,
-          project_registration_message: registrationMessage,
+          project_registration_open: projectOpen,
+          project_registration_message: projectMessage,
           topic_registration_open: topicOpen,
           topic_registration_message: topicMessage
         }
       })
-      this.props.setSuccess('Saving configuration succesful!')
-      this.props.updateIsLoading(false)
+      setSuccess('Saving configuration succesful!')
+      updateIsLoading(false)
       setTimeout(() => {
-        this.props.clearNotifications()
+        clearNotifications()
       }, 3000)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.updateIsLoading(false)
+      updateIsLoading(false)
       if (e.response.status === 400) {
-        this.props.setError(e.response.data.error)
+        setError(e.response.data.error)
       }
       setTimeout(() => {
-        this.props.clearNotifications()
+        clearNotifications()
       }, 3000)
     }
   }
 
   render() {
+    const {
+      projectOpen,
+      projectMessage,
+      topicOpen,
+      topicMessage,
+      updateProjectRegistrationOpen,
+      updateProjectRegistrationMessage,
+      updateTopicRegistrationOpen,
+      updateTopicRegistrationMessage
+    } = this.props
+
     return (
       <div className="registrationManagement-container">
         <h3>Registration management</h3>
@@ -78,43 +97,35 @@ class RegistrationManagement extends React.Component {
           <p>
             Project registration open:
             <Switch
-              checked={this.props.projectOpen}
+              checked={projectOpen}
               className="projectRegistrationSwitch"
-              onChange={() =>
-                this.props.updateProjectRegistrationOpen(
-                  !this.props.projectOpen
-                )
-              }
+              onChange={() => updateProjectRegistrationOpen(!projectOpen)}
             />
           </p>
           <TextField
             fullWidth
             label="Message / Viesti"
             margin="normal"
-            value={this.props.projectMessage}
-            onChange={(e) =>
-              this.props.updateProjectRegistrationMessage(e.target.value)
-            }
+            value={projectMessage}
+            onChange={(e) => updateProjectRegistrationMessage(e.target.value)}
+            required={!projectOpen}
           />
           <h4>Topic registration</h4>
           <p>
             Topic registration open:
             <Switch
-              checked={this.props.topicOpen}
+              checked={topicOpen}
               className="projectRegistrationSwitch"
-              onChange={() =>
-                this.props.updateTopicRegistrationOpen(!this.props.topicOpen)
-              }
+              onChange={() => updateTopicRegistrationOpen(!topicOpen)}
             />
           </p>
           <TextField
             fullWidth
             label="Message / Viesti"
             margin="normal"
-            value={this.props.topicMessage}
-            onChange={(e) =>
-              this.props.updateTopicRegistrationMessage(e.target.value)
-            }
+            value={topicMessage}
+            onChange={(e) => updateTopicRegistrationMessage(e.target.value)}
+            required={!topicOpen}
           />
           <Button variant="contained" color="primary" type="submit">
             Save Configuration

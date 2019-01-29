@@ -1,8 +1,8 @@
 const initialState = {
-  projectRegistrationOpen: true,
-  projectRegistrationMessage: '',
-  topicRegistrationOpen: true,
-  topicRegistrationMessage: ''
+  projectRegistrationOpen: false,
+  projectRegistrationMessage: 'Registration is closed.',
+  topicRegistrationOpen: false,
+  topicRegistrationMessage: 'Registration is closed.'
 }
 
 const registrationManagementReducer = (state = initialState, action) => {
