@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import questionsPageActions from '../reducers/actions/questionsFormPageActions'
 import QuestionsForm from './QuestionsForm'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
@@ -10,11 +11,11 @@ class QuestionsFormPage extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if (!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -192,4 +193,4 @@ const ConnectedQuestionsFormPage = connect(
   mapDispatchToProps
 )(QuestionsFormPage)
 
-export default ConnectedQuestionsFormPage
+export default withRouter(ConnectedQuestionsFormPage)

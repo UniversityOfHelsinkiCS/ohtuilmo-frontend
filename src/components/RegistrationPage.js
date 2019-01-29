@@ -28,11 +28,11 @@ class RegistrationPage extends React.Component {
   async componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if (token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -120,7 +120,7 @@ class RegistrationPage extends React.Component {
       setTimeout(() => {
         this.props.clearNotifications()
       }, 15000)
-      this.props.history.push(process.env.PUBLIC_URL + '/')
+      this.props.history.push('/')
     } catch (e) {
       console.log(e)
       if (e.response.data.error === 'student already registered') {
@@ -144,7 +144,7 @@ class RegistrationPage extends React.Component {
 
   render() {
     if (!this.props.projectOpen) {
-      return <Redirect to={process.env.PUBLIC_URL + '/'} />
+      return <Redirect to="/" />
     }
 
     if (!this.props.user) {

@@ -25,11 +25,11 @@ class AdminPage extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if (!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -156,12 +156,12 @@ class AdminPage extends React.Component {
 
   goToAddRegistrationQuestions = () => {
     this.props.updateMode('registration')
-    this.props.history.push(process.env.PUBLIC_URL + '/administration/questions')
+    this.props.history.push('/administration/questions')
   }
 
   goToAddReviewQuestions = () => {
     this.props.updateMode('review')
-    this.props.history.push(process.env.PUBLIC_URL + '/administration/questions')
+    this.props.history.push('/administration/questions')
   }
 
   render() {
