@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -116,11 +117,11 @@ class ParticipantsPage extends React.Component {
   async componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if(!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -195,4 +196,4 @@ const ConnectedParticipantsPage = connect(
   mapDispatchToProps
 )(ParticipantsPage)
 
-export default withStyles(styles)(ConnectedParticipantsPage)
+export default withRouter(withStyles(styles)(ConnectedParticipantsPage))

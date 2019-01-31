@@ -11,7 +11,7 @@ import TopicFormPageInfo from './TopicFormPageInfo'
 import './TopicFormPage.css'
 
 class TopicFormPage extends React.Component {
-  submitForm = async event => {
+  submitForm = async (event) => {
     event.preventDefault()
     try {
       const content = { content: this.props.content }
@@ -36,17 +36,11 @@ class TopicFormPage extends React.Component {
 
   render() {
     if (this.props.isSaved === true) {
-      return (
-        <Redirect
-          to={process.env.PUBLIC_URL + '/topics/' + this.props.secretId}
-        />
-      )
+      return <Redirect to={'/topics/' + this.props.secretId} />
     }
 
     if (this.props.showInfo) {
-      return (
-        <TopicFormPageInfo />
-      )
+      return <TopicFormPageInfo />
     }
 
     return (
@@ -84,7 +78,7 @@ class TopicFormPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     content: state.topicFormPage.content,
     showInfo: state.topicFormPage.showInfo,

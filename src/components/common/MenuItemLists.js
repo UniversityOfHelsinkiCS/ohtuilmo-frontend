@@ -2,7 +2,7 @@ const regularItems = (history) => {
   const items = [
     {
       text: 'Log In',
-      handler: () => history.push(process.env.PUBLIC_URL + '/login')
+      handler: () => history.push('/login')
     }
   ]
 
@@ -13,7 +13,7 @@ const loggedInItems = (history) => {
   const items = [
     {
       text: 'Home',
-      handler: () => history.push(process.env.PUBLIC_URL + '/')
+      handler: () => history.push('/')
     }
   ]
 
@@ -24,22 +24,19 @@ const adminItems = (history) => {
   const items = [
     {
       text: 'Create Topic',
-      handler: () => history.push(process.env.PUBLIC_URL + '/topics/create')
+      handler: () => history.push('/topics/create')
     },
     {
       text: 'Topics',
-      handler: () => history.push(process.env.PUBLIC_URL + '/topics')
+      handler: () => history.push('/topics')
     },
     {
       text: 'Administration',
-      handler: () => history.push(process.env.PUBLIC_URL + '/administration')
+      handler: () => history.push('/administration')
     },
     {
       text: 'Registration Management',
-      handler: () =>
-        history.push(
-          process.env.PUBLIC_URL + '/administration/registrationmanagement'
-        )
+      handler: () => history.push('/administration/registrationmanagement')
     }
   ]
 

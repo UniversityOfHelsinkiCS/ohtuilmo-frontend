@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 // MUI
 import Button from '@material-ui/core/Button'
 import Switch from '@material-ui/core/Switch'
@@ -15,11 +16,11 @@ class RegistrationManagement extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if (!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -157,4 +158,4 @@ const ConnectedRegistrationManagement = connect(
   mapDispatchToProps
 )(RegistrationManagement)
 
-export default ConnectedRegistrationManagement
+export default withRouter(ConnectedRegistrationManagement)

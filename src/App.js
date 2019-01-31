@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom'
+import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import './App.css'
 
 // Components
@@ -32,6 +28,8 @@ import appActions from './reducers/actions/appActions'
 import notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
+
+const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
 class App extends Component {
   constructor(props) {
@@ -84,7 +82,7 @@ class App extends Component {
     window.localStorage.clear()
     this.props.updateUser('')
     this.props.updateIsLoading(false)
-    window.location.href = process.env.PUBLIC_URL + '/login'
+    history.push('/login')
   }
 
   render() {
@@ -94,9 +92,9 @@ class App extends Component {
     }
 
     return (
-      <Router>
+      <Router history={history}>
         <div id="app-wrapper">
-          <NavigationBar logout={this.logout} history={this.history} />
+          <NavigationBar logout={this.logout} />
           <Notification
             type={this.props.type}
             message={this.props.message}
@@ -106,68 +104,55 @@ class App extends Component {
             {loadingSpinner}
             <Switch>
               <Route
-                path={process.env.PUBLIC_URL + '/login'}
+                path="/login"
                 render={() =>
                   this.props.user ? (
                     this.props.user.admin ? (
-                      <Redirect
-                        to={process.env.PUBLIC_URL + '/administration'}
-                      />
+                      <Redirect to="/administration" />
                     ) : (
-                      <Redirect to={process.env.PUBLIC_URL + '/'} />
+                      <Redirect to="/" />
                     )
                   ) : (
                     <LoginPage />
                   )
                 }
               />
+              <Route exact path="/" render={() => <LandingPage />} />
+              <Route exact path="/topics" render={() => <TopicListPage />} />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/'}
-                render={() => <LandingPage />}
-              />
-              <Route
-                exact
-                path={process.env.PUBLIC_URL + '/topics'}
-                render={() => <TopicListPage />}
-              />
-              <Route
-                exact
-                path={process.env.PUBLIC_URL + '/topics/create'}
+                path="/topics/create"
                 render={() => <TopicFormPage />}
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/topics/:id'}
+                path="/topics/:id"
                 render={(props) => <ViewTopicPage {...props} />}
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/administration'}
+                path="/administration"
                 render={() => <AdminPage />}
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/administration/participants'}
+                path="/administration/participants"
                 render={() => <ParticipantsPage />}
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/administration/questions'}
+                path="/administration/questions"
                 render={() => <QuestionsFormPage />}
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/register'}
+                path="/register"
                 user={this.props.user}
                 render={() => <RegistrationPage />}
               />
               <Route
                 exact
-                path={
-                  process.env.PUBLIC_URL +
-                  '/administration/registrationmanagement'
-                }
+                path="/administration/registrationmanagement"
                 user={this.props.user}
                 render={() => <RegistrationManagementPage />}
               />

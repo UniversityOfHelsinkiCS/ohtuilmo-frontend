@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link, withRouter } from 'react-router-dom'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import notificationActions from '../reducers/actions/notificationActions'
 import List from '@material-ui/core/List'
@@ -40,11 +41,11 @@ class TopicListPage extends React.Component {
   async componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
+        this.props.history.push('/')
       } else {
         const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
         if (!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
+          this.props.history.push('/')
         }
       }
     } catch (e) {
@@ -193,9 +194,9 @@ class TopicListPage extends React.Component {
             return (
               <List key={topic.id}>
                 <ListItem>
-                  <a href={process.env.PUBLIC_URL + '/topics/' + topic.id}>
+                  <Link to={'/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />
-                  </a>
+                  </Link>
                   <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
                   <ListItemSecondaryAction>
                     <MuiThemeProvider theme={buttonTheme}>
@@ -267,4 +268,4 @@ const ConnectedTopicListPage = connect(
   mapDispatchToProps
 )(TopicListPage)
 
-export default ConnectedTopicListPage
+export default withRouter(ConnectedTopicListPage)
