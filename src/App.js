@@ -119,11 +119,11 @@ class App extends Component {
               />
               <Route
                 exact
-                path={process.env.PUBLIC_URL + '/'}
+                path={'/'}
                 render={() =>
                   this.props.user ? <LandingPage /> : <Redirect to={'/login'} />
                 }
-              />{' '}
+              />
               <Route exact path="/topics" render={() => <TopicListPage />} />
               <Route
                 exact
