@@ -159,17 +159,18 @@ class RegistrationPage extends React.Component {
             <div>
               <Select
                 value={
-                  this.props.questions[idx].answer
-                    ? this.props.questions[idx].answer
-                    : 0
+                  this.props.questions[idx].answer === undefined
+                    ? -1
+                    : this.props.questions[idx].answer
                 }
                 onChange={(event) =>
                   this.props.updateQuestionAnswer(event.target.value, idx)
                 }
               >
-                <MenuItem value="" disabled>
+                <MenuItem value={-1} disabled>
                   <em>Pick a number</em>
                 </MenuItem>
+                <MenuItem value={0}>0</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
                 <MenuItem value={3}>3</MenuItem>
