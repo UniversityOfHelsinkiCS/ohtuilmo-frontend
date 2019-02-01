@@ -18,6 +18,7 @@ import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
 import QuestionsFormPage from './components/QuestionsFormPage'
 import RegistrationManagementPage from './components/RegistrationManagementPage'
+import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 
 // Services
 import registrationManagementService from './services/registrationManagement'
@@ -161,8 +162,13 @@ class App extends Component {
               <Route
                 exact
                 path="/administration/registrationmanagement"
-                user={this.props.user}
                 render={() => <RegistrationManagementPage />}
+              />
+
+              <Route
+                exact
+                path="/registrationdetails"
+                render={() => <RegistrationDetailsPage />}
               />
             </Switch>
           </div>

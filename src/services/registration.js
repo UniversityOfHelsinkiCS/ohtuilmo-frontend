@@ -17,7 +17,6 @@ const getOwn = async () => {
   const response = await axios.get(url, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
-  console.log('registration service', response)
   if (response.status === 204) {
     return null
   }

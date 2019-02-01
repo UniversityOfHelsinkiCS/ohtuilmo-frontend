@@ -18,6 +18,7 @@ class LandingPage extends React.Component {
     const response = await registrationService.getOwn()
     if (response) {
       this.props.setRegistration(response)
+      this.props.history.push('/registrationdetails')
     } else {
       this.props.clearRegistration()
     }
@@ -28,13 +29,9 @@ class LandingPage extends React.Component {
       <div className="landingpage-container">
         <h2 className="landingpage-header">Home</h2>
         {this.props.projectOpen ? (
-          this.props.ownRegistration ? (
-            <div>You are already registered</div>
-          ) : (
-            <Link to={process.env.PUBLIC_URL + '/register'}>
-              Submit your registration
-            </Link>
-          )
+          <Link to={process.env.PUBLIC_URL + '/register'}>
+            Submit your registration
+          </Link>
         ) : (
           <div className="landingpage-message">{this.props.projectMessage}</div>
         )}
@@ -46,8 +43,7 @@ class LandingPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
-    projectMessage: state.registrationManagement.projectRegistrationMessage,
-    ownRegistration: state.registration
+    projectMessage: state.registrationManagement.projectRegistrationMessage
   }
 }
 
