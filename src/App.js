@@ -28,6 +28,7 @@ import appActions from './reducers/actions/appActions'
 import notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
+import registrationActions from './reducers/actions/registrationActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -43,6 +44,21 @@ class App extends Component {
       this.props.updateIsLoading(true)
       this.userCheck()
       this.props.updateIsLoading(false)
+    }
+  }
+
+  fetchRegistrationManagement = async () => {
+    try {
+      const response = await registrationManagementService.get()
+      this.props.setRegistrationManagement(response.registrationManagement)
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError(
+        'Error fetching registration management configuration'
+      )
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 5000)
     }
   }
 
@@ -62,25 +78,11 @@ class App extends Component {
     }
   }
 
-  fetchRegistrationManagement = async () => {
-    try {
-      const response = await registrationManagementService.get()
-      this.props.setRegistrationManagement(response.registrationManagement)
-    } catch (e) {
-      console.log('error happened', e)
-      this.props.setError(
-        'Error fetching registration management configuration'
-      )
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
-    }
-  }
-
   logout() {
     this.props.updateIsLoading(true)
     window.localStorage.clear()
     this.props.updateUser('')
+    this.props.clearRegistration()
     this.props.updateIsLoading(false)
     history.push('/login')
   }
@@ -184,7 +186,8 @@ const mapDispatchToProps = {
   ...notificationActions,
   ...loginPageActions,
   ...appActions,
-  ...registrationmanagementActions
+  ...registrationmanagementActions,
+  ...registrationActions
 }
 
 const ConnectedApp = connect(

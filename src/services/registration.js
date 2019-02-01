@@ -13,4 +13,15 @@ const create = async ({ questions, preferred_topics }) => {
   return response.data.registration
 }
 
-export default { create }
+const getOwn = async () => {
+  const response = await axios.get(url, {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  console.log('registration service', response)
+  if (response.status === 204) {
+    return null
+  }
+  return response.data.registration
+}
+
+export default { create, getOwn }
