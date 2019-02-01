@@ -1,9 +1,4 @@
-const setRegistration = (registration) => {
-  return {
-    type: 'SET_REGISTRATION',
-    payload: registration
-  }
-}
+import registrationService from '../../services/registration'
 
 const clearRegistration = () => {
   return {
@@ -11,4 +6,20 @@ const clearRegistration = () => {
   }
 }
 
-export default { setRegistration, clearRegistration }
+const fetchRegistration = () => {
+  return async (dispatch) => {
+    const registration = await registrationService.getOwn()
+    if (registration) {
+      dispatch({
+        type: 'SET_REGISTRATION',
+        payload: registration
+      })
+    } else {
+      dispatch({
+        type: 'CLEAR_REGISTRATION'
+      })
+    }
+  }
+}
+
+export default { clearRegistration, fetchRegistration }

@@ -4,23 +4,18 @@ import { withRouter, Link } from 'react-router-dom'
 
 import './LandingPage.css'
 
-import registrationService from '../services/registration'
-
 import notificationActions from '../reducers/actions/notificationActions'
 import registrationActions from '../reducers/actions/registrationActions'
 
 class LandingPage extends React.Component {
   componentDidMount() {
-    this.fetchOwnRegistration()
+    this.fetchOwnregistration()
   }
 
-  fetchOwnRegistration = async () => {
-    const response = await registrationService.getOwn()
-    if (response) {
-      this.props.setRegistration(response)
+  fetchOwnregistration = async () => {
+    await this.props.fetchRegistration()
+    if (this.props.ownRegistration) {
       this.props.history.push('/registrationdetails')
-    } else {
-      this.props.clearRegistration()
     }
   }
 
@@ -43,13 +38,14 @@ class LandingPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
-    projectMessage: state.registrationManagement.projectRegistrationMessage
+    projectMessage: state.registrationManagement.projectRegistrationMessage,
+    ownRegistration: state.registration
   }
 }
 
 const mapDispatchToProps = {
   ...notificationActions,
-  ...registrationActions
+  fetchRegistration: registrationActions.fetchRegistration
 }
 
 const ConnectedLandingPage = connect(

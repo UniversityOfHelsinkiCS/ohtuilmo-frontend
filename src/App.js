@@ -168,7 +168,13 @@ class App extends Component {
               <Route
                 exact
                 path="/registrationdetails"
-                render={() => <RegistrationDetailsPage />}
+                render={() =>
+                  this.props.user ? (
+                    <RegistrationDetailsPage />
+                  ) : (
+                    <Redirect to={'/login'} />
+                  )
+                }
               />
             </Switch>
           </div>
