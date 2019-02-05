@@ -199,7 +199,7 @@ const mapDispatchToProps = {
   ...loginPageActions,
   ...appActions,
   ...registrationmanagementActions,
-  ...registrationActions
+  clearRegistration: registrationActions.clearRegistration
 }
 
 const ConnectedApp = connect(
