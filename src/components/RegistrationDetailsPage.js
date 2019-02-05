@@ -76,6 +76,7 @@ class RegistrationDetailsPage extends React.Component {
                   <Typography variant="body1">{question.question}</Typography>
                   {question.type === 'scale' ? (
                     <Select value={question.answer} disabled>
+                      <MenuItem value={0}>0</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
