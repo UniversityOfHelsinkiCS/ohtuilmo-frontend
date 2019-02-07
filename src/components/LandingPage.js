@@ -24,7 +24,7 @@ class LandingPage extends React.Component {
       <div className="landingpage-container">
         <h2 className="landingpage-header">Home</h2>
         {this.props.projectOpen ? (
-          <Link to='/register'>Submit your registration</Link>
+          <Link to="/register">Submit your registration</Link>
         ) : (
           <div className="landingpage-message">{this.props.projectMessage}</div>
         )}
