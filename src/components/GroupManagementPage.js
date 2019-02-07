@@ -107,7 +107,6 @@ const GroupManagementForm = ({ groups }) => {
 
 const saveGroup = async (event, props) => {
   event.preventDefault()
-  console.log('saveGroup', props)
 
   const {
     groupName,
@@ -130,17 +129,14 @@ const saveGroup = async (event, props) => {
       instructorId: groupInstructorID,
       studentIds: splitStudents
     })
-
     props.createGroupSuccsess(createdGroup)
 
-    console.log(createdGroup)
     props.setSuccess('Group saved!')
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
   } catch (e) {
-    console.log('error happened', e)
-    props.setError('Failed to save!')
+    props.setError(`Failed to save! ${e.response.data.error}`)
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
@@ -258,7 +254,7 @@ const ConnectedConfigurationSelect = connect(
 )(ConfigurationSelect)
 
 class GroupManagementPage extends React.Component {
-  async componentWillMount() {
+  componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
         window.location.replace(process.env.PUBLIC_URL + '/')
@@ -281,13 +277,12 @@ class GroupManagementPage extends React.Component {
     try {
       const fetchedTopics = await topicService.getAllActive()
       const fetchedConfiguration = await configurationService.getActive()
-
+      const fetchedGroups = await groupManagementService.get()
       //topic filter configin omille
-
+      this.props.setGroups(fetchedGroups)
       this.props.updateTopics(fetchedTopics)
       this.props.setConfigurations([fetchedConfiguration])
     } catch (e) {
-      console.log('props fetchedtopics', e)
       this.props.setError('Some error happened')
       setTimeout(() => {
         this.props.clearNotifications()
@@ -329,12 +324,14 @@ class GroupManagementPage extends React.Component {
 
 const mapStateToProps = (state) => ({
   topics: state.topicListPage.topics,
-  configurations: state.adminPage.configurations
+  configurations: state.adminPage.configurations,
+  groups: state.groupPage.groups
 })
 
 const mapDispatchToProps = {
   updateTopics: topicListPageActions.updateTopics,
   setConfigurations: adminPageActions.setConfigurations,
+  setGroups: groupManagementActions.setGroups,
   ...notificationActions
 }
 

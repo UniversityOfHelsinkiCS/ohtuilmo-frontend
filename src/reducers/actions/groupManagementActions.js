@@ -28,11 +28,17 @@ const createGroupSuccsess = (newGroup) => ({
   payload: newGroup
 })
 
+const setGroups = (groups) => ({
+  type: 'SET_GROUPS',
+  payload: groups
+})
+
 export default {
   updateCreateGroupFormName,
   updateStudentsForm,
   updateGroupTopicID,
   updateGroupInstructorID,
   updateGroupConfigurationID,
-  createGroupSuccsess
+  createGroupSuccsess,
+  setGroups
 }
