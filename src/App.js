@@ -122,7 +122,7 @@ class App extends Component {
               />
               <Route
                 exact
-                path={'/'}
+                path="/"
                 render={() =>
                   this.props.user ? <LandingPage /> : <Redirect to="/login" />
                 }
