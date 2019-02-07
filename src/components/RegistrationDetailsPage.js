@@ -11,19 +11,111 @@ import TopicDialog from './TopicDialog'
 
 import './RegistrationDetailsPage.css'
 
+const UserDetails = ({ student }) => {
+  const { first_names, last_name, student_number, email } = student
+
+  const extractCallingName = (firstNames) => {
+    if (firstNames.includes('*')) {
+      return first_names.split('*')[1].split(' ')[0]
+    }
+    return firstNames.split(' ')[0]
+  }
+
+  return (
+    <div>
+      <h2>User details</h2>
+      <Typography variant="body1" gutterBottom>
+        Name: {extractCallingName(first_names)} {last_name}
+        <br />
+        Student number: {student_number}
+        <br />
+        Email: {email}
+      </Typography>
+    </div>
+  )
+}
+
+const PreferredTopics = ({ topics }) => {
+  return (
+    <div>
+      <h2>Preferred Topics</h2>
+      <div className="dragndrop-container">
+        <div className="dragndrop-indexes-container">
+          {topics.map((topic, index) => {
+            return (
+              <Card key={index} className="dragndrop-index">
+                {index + 1}
+              </Card>
+            )
+          })}
+        </div>
+        <ReactDragList
+          className="dragndrop-list"
+          handles={false}
+          dataSource={topics}
+          rowKey="id"
+          row={(topic) => {
+            return <TopicDialog topic={topic} key={topic.content.title} />
+          }}
+          disabled
+        />
+      </div>
+    </div>
+  )
+}
+
+const RegistrationAnswers = ({ questions }) => {
+  return (
+    <div>
+      <h2>Answers</h2>
+      {questions.map((question, index) => {
+        return (
+          <Card style={{ marginBottom: '10px' }} key={index}>
+            <CardContent>
+              <Typography variant="body1">{question.question}</Typography>
+              {question.type === 'scale' ? (
+                <Select value={question.answer} disabled>
+                  <MenuItem value={0}>0</MenuItem>
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                </Select>
+              ) : (
+                <Input
+                  value={question.answer}
+                  fullWidth
+                  multiline
+                  rowsMax="3"
+                  disabled
+                />
+              )}
+            </CardContent>
+          </Card>
+        )
+      })}
+    </div>
+  )
+}
+
 class RegistrationDetailsPage extends React.Component {
   render() {
-    const registration = this.props.ownRegistration
-    const { student, preferred_topics, questions, createdAt } = registration
-    const { first_names, last_name, student_number, email } = student
+    const {
+      student,
+      preferred_topics,
+      questions,
+      createdAt
+    } = this.props.ownRegistration
 
-    let firstname = ''
-    if (first_names.includes('*')) {
-      firstname = first_names.split('*')[1]
+    /**
+     * Format datetime
+     * eg. from 2019-02-07T10:57:19.122Z to 7.2.2019 12.57
+     */
+    const formatDate = (date) => {
+      const parsedDate = new Date(date).toLocaleString('fi-FI')
+      return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
     }
-    firstname = firstname.split(' ')[0]
-
-    const submittedDate = createdAt.replace(/T/, ' ').substr(0, 16)
 
     return (
       <div>
@@ -31,72 +123,11 @@ class RegistrationDetailsPage extends React.Component {
           Registration details
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Registration date: {submittedDate}
+          Registration date: {formatDate(createdAt)}
         </Typography>
-        <div>
-          <h2>User details</h2>
-          <Typography variant="body1" gutterBottom>
-            Name: {firstname} {last_name}
-            <br />
-            Student number: {student_number}
-            <br />
-            Email: {email}
-          </Typography>
-        </div>
-        <div>
-          <h2>Preferred Topics</h2>
-          <div className="dragndrop-container">
-            <div className="dragndrop-indexes-container">
-              {preferred_topics.map((topic, index) => {
-                return (
-                  <Card key={index} className="dragndrop-index">
-                    {index + 1}
-                  </Card>
-                )
-              })}
-            </div>
-            <ReactDragList
-              className="dragndrop-list"
-              handles={false}
-              dataSource={preferred_topics}
-              rowKey="id"
-              row={(topic) => {
-                return <TopicDialog topic={topic} key={topic.content.title} />
-              }}
-              disabled
-            />
-          </div>
-        </div>
-        <div>
-          <h2>Details</h2>
-          {questions.map((question, index) => {
-            return (
-              <Card style={{ marginBottom: '10px' }} key={index}>
-                <CardContent>
-                  <Typography variant="body1">{question.question}</Typography>
-                  {question.type === 'scale' ? (
-                    <Select value={question.answer} disabled>
-                      <MenuItem value={0}>0</MenuItem>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </Select>
-                  ) : (
-                    <Input
-                      value={question.answer}
-                      fullWidth
-                      multiline
-                      rowsMax="3"
-                      disabled
-                    />
-                  )}
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+        <UserDetails student={student} />
+        <PreferredTopics topics={preferred_topics} />
+        <RegistrationAnswers questions={questions} />
       </div>
     )
   }

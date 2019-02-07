@@ -17,6 +17,11 @@ const getOwn = async () => {
   const response = await axios.get(url, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
+
+  /**
+   * Backend returns 204 when there is no registration to current
+   * iteration made by user fetching the registrationdetails
+   */
   if (response.status === 204) {
     return null
   }
