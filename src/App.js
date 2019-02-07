@@ -19,6 +19,7 @@ import LoadingSpinner from './components/common/LoadingSpinner'
 import QuestionsFormPage from './components/QuestionsFormPage'
 import RegistrationManagementPage from './components/RegistrationManagementPage'
 import RegistrationDetailsPage from './components/RegistrationDetailsPage'
+import GroupManagementPage from './components/GroupManagementPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
@@ -144,6 +145,11 @@ class App extends Component {
                 exact
                 path="/administration/questions"
                 render={() => <QuestionsFormPage />}
+              />
+              <Route
+                exact
+                path="/administration/groups"
+                render={() => <GroupManagementPage />}
               />
               <Route
                 exact
