@@ -4,6 +4,8 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import './App.css'
 
+import { PUBLIC_URL } from './utils/config'
+
 // Components
 import AdminPage from './components/AdminPage'
 import LoginPage from './components/LoginPage'
@@ -29,7 +31,7 @@ import notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 
-const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
+const history = createBrowserHistory({ basename: PUBLIC_URL })
 
 class App extends Component {
   constructor(props) {

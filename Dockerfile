@@ -5,18 +5,14 @@ FROM node:8
 WORKDIR /app
 
 # copy files and install dependencies
+# copy package.json and package-lock.json separately so docker can skip rebuild
+# the layers if they haven't changed
 COPY package.json package-lock.json /app/
-RUN npm install
 COPY . /app/
 
-# build
-RUN npm run build
-
-# install serve to run the app
-RUN npm install -g serve
-
-# start server
-CMD serve -s build -p 3000
+RUN npm install
 
 # specify which port to expose
 EXPOSE 3000
+
+CMD ["npm", "run", "server"]
