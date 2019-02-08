@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { BACKEND_URI } from '../utils/config'
+import { BACKEND_API_BASE } from '../utils/config'
 import { getUserToken } from '../utils/functions'
 
-const url = `${BACKEND_URI}/api/configurations`
+const url = `${BACKEND_API_BASE}/configurations`
 
 const getAll = async () => {
   const response = await axios.get(url, {
