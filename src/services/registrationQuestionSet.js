@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { BACKEND_URI } from '../utils/config'
+import { BACKEND_API_BASE } from '../utils/config'
 import { getUserToken } from '../utils/functions'
 
-const url = `${BACKEND_URI}/api/registrationQuestions`
+const url = `${BACKEND_API_BASE}/registrationQuestions`
 
 const create = async (registrationQuestionSet) => {
   const config = {

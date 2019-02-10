@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { BACKEND_URI } from '../utils/config'
+import { BACKEND_API_BASE } from '../utils/config'
 import { getUserToken } from '../utils/functions'
 
-const url = `${BACKEND_URI}/api/users`
+const url = `${BACKEND_API_BASE}/users`
 
 const update = async (user) => {
   const config = {

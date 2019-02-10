@@ -10,20 +10,15 @@ Sign up tool for University of Helsinki's software production course
 ## Instructions
 - [How to start frontend, backend and database using docker-compose](https://github.com/ohtuprojekti-ilmo/ohtuilmo-frontend/wiki)
 
-### How to start only frontend
+### How to start frontend for local development
 - Clone project
-- Create .env file to the project root and add address to backend server (ie. `http://localhost:3001` if you're running backend in port 3001)
-
-```
-REACT_APP_BACKEND_URI='backend server address'
-```
-
+- Start the backend server on `localhost:7001` or change package.json's "proxy" address to point to wherever you're running the backend in local development
+    - Easiest way is to use docker-compose and set the backend's host port to `7001`
 - Run project
-
-```
-$ npm install
-$ npm start
-```
+    ```
+    $ npm install
+    $ npm start
+    ```
 
 ### Docker instructions
 

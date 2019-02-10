@@ -1,13 +1,8 @@
-let BACKEND_URI = process.env.REACT_APP_BACKEND_URI
+// We can just request /api instead of making requests to a hardcoded/injected
+// backend URL since nginx will proxy /api to the backend.
+//
+// When in local dev, react-scripts knows how to proxy these calls according
+// to package.json's "proxy".
 
-if (window.location.hostname === 'svm-61.cs.helsinki.fi') {
-  BACKEND_URI = 'http://svm-61.cs.helsinki.fi/projekti-backend'
-} else if (window.location.hostname === 'svm-45.cs.helsinki.fi') {
-  BACKEND_URI = 'https://studies.cs.helsinki.fi/projekti-backend'
-} else if (window.location.hostname === 'studies.cs.helsinki.fi') {
-  BACKEND_URI = 'https://studies.cs.helsinki.fi/projekti-backend'
-}
-
-if (!BACKEND_URI) BACKEND_URI = 'http://localhost:7001'
-
-export { BACKEND_URI }
+const BACKEND_API_BASE = '/api'
+export { BACKEND_API_BASE }
