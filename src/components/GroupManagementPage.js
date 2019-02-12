@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 import topicService from '../services/topic'
 import configurationService from '../services/configuration'
@@ -60,16 +62,19 @@ const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
   )
 }
 
-const ConfigurationSelect = (props) => {
+const ConfigurationSelect = ({
+  groupConfigurationID,
+  onConfigurationChange,
+  configurations
+}) => {
   return (
     <Select
-      value={props.groupConfigurationID}
-      onChange={(e) => props.onConfigurationChange(e.target.value)}
+      value={groupConfigurationID}
+      onChange={(e) => onConfigurationChange(e.target.value)}
     >
-      {props.configurations.map((config) => (
-        <MenuItem key={config.id} value={config.id}>
-          {' '}
-          {config.name}
+      {configurations.map((configuration) => (
+        <MenuItem key={configuration.id} value={configuration.id}>
+          {configuration.name}
         </MenuItem>
       ))}
     </Select>
@@ -85,20 +90,120 @@ const NameInput = ({ value, onChange, ...textFieldProps }) => (
   />
 )
 
-const GroupManagementForm = ({ groups }) => {
+const SingleGroupView = ({ group }) => {
+  return (
+    /*     <Paper key={group.id} style={{ padding: 10, float: 'left' }}> */
+    <div style={{ align: 'top' }}>
+      {group.name}
+
+      <div>
+        <p>students</p>
+
+        {group.studentIds.map((student) => (
+          <div key={student}>
+            {student}
+            <IconButton
+              aria-label="Delete"
+              onClick={() => console.log('nappi')}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </div>
+          /* Mahollisesti delete nappulla tai kentät mitä voi muokata */
+        ))}
+        <p>Instructor</p>
+        <div>
+          {group.instructorId}
+          <IconButton aria-label="Delete" onClick={() => console.log('nappi')}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </div>
+
+        {/*         <Button
+          style={{ marginRight: '10px', height: '30px' }}
+          color="primary"
+          variant="contained"
+        >
+          Edit
+        </Button> */}
+      </div>
+    </div>
+    /*     </Paper> */
+  )
+}
+
+const SingleGroupEdit = ({ group }) => {
+  return (
+    <div style={{ allign: 'top' }}>
+      Edit group: {group.name}
+      <p>Edit group name</p>
+      <Button
+        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+        color="primary"
+        variant="contained"
+      >
+        Edit
+      </Button>
+      {/* <FormInput lable="Group name"> */}
+      <NameInput />
+      {/* </FormInput> */}
+      <p>Add new students</p>
+      <Button
+        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+        color="primary"
+        variant="contained"
+      >
+        Edit
+      </Button>
+      {/*  <FormInput label="Students"> */}
+      <StudentInput />
+      {/* </FormInput> */}
+      <p>Add instructor</p>
+      <Button
+        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+        color="primary"
+        variant="contained"
+      >
+        Edit
+      </Button>
+      {/* <FormInput label="Instructor"> */}
+      <NameInput />
+      {/* </FormInput> */}
+    </div>
+  )
+}
+
+const GroupManagementForm = ({ groups, groupConfigurationID }) => {
+  console.log('group config id', groupConfigurationID)
+  const filteredGroups = groups.filter(
+    (group) => group.configurationId === groupConfigurationID
+  )
+
+  console.log('filtered', filteredGroups)
+
   return (
     <div>
-      {groups.map((group) => {
+      {filteredGroups.map((group) => {
         return (
-          <Paper key={group.id}>
-            {group.name}
-            <p>students</p>
-            {group.studentIds.map((student) => (
-              <p key={student}>{student}</p>
-            ))}
-            <p>Instructor</p>
-            <p>{group.instructorId}</p>
-          </Paper>
+          <div
+            key={group.id}
+            style={{ clear: 'both', display: 'table', padding: '15px' }}
+          >
+            <Paper>
+              <table>
+                <tbody>
+                  <tr>
+                    <td style={{ verticalAlign: 'top', padding: '25px' }}>
+                      <SingleGroupView group={group} />
+                    </td>
+                    <td style={{ verticalAlign: 'top', padding: '25px' }}>
+                      <SingleGroupEdit group={group} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </Paper>
+          </div>
         )
       })}
     </div>
@@ -130,6 +235,7 @@ const saveGroup = async (event, props) => {
       studentIds: splitStudents
     })
     props.createGroupSuccsess(createdGroup)
+    console.log(createdGroup)
 
     props.setSuccess('Group saved!')
     setTimeout(() => {
@@ -276,12 +382,15 @@ class GroupManagementPage extends React.Component {
   async componentDidMount() {
     try {
       const fetchedTopics = await topicService.getAllActive()
-      const fetchedConfiguration = await configurationService.getActive()
+
+      const fetchedConfiguration = await configurationService.getAll()
+
       const fetchedGroups = await groupManagementService.get()
       //topic filter configin omille
+
       this.props.setGroups(fetchedGroups)
       this.props.updateTopics(fetchedTopics)
-      this.props.setConfigurations([fetchedConfiguration])
+      this.props.setConfigurations(fetchedConfiguration.configurations)
     } catch (e) {
       this.props.setError('Some error happened')
       setTimeout(() => {
@@ -309,14 +418,18 @@ class GroupManagementPage extends React.Component {
 
         <h4>Created groups</h4>
 
-        {this.props.topics.map((topic) => (
+        {/* <Paper elevation={1} style={{ padding: '1rem 1.5rem' }}> */}
+        <ConnectedGroupManagementForm />
+        {/* </Paper> */}
+
+        {/*         {this.props.topics.map((topic) => (
           <div key={topic.id}>
             <Paper elevation={1} style={{ padding: '1rem 1.5rem' }}>
               <ConnectedGroupManagementForm group={topic} />
             </Paper>
             <p />
           </div>
-        ))}
+        ))} */}
       </div>
     )
   }
