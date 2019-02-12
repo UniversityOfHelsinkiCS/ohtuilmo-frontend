@@ -203,62 +203,73 @@ class RegistrationPage extends React.Component {
     ))
 
     return (
-      <form onSubmit={this.submitRegistration}>
-        <div className="section">
-          <h2 className="landingpage-header">User details</h2>
-          <UserDetails />
-          <p>Please fill your email</p>
-          <div>
-            <TextField
-              type="email"
-              required
-              label="Email"
-              margin="normal"
-              style={{ width: '250px', marginTop: 0 }}
-              value={this.props.email}
-              onChange={(e) => this.props.updateEmail(e.target.value)}
-            />
-          </div>
-          <h2>Topics</h2>
-          <div
-            style={{
-              fontWeight: 'bold',
-              marginBottom: 20,
-              border: 'solid',
-              padding: 10,
-              borderRadius: 10
-            }}
-          >
-            Set the order of the list of topics according to your preference (1
-            = favorite) by dragging and dropping, click to expand details
-          </div>
-          <div className="dragndrop-container">
-            <div className="dragndrop-indexes-container">{indexes}</div>
-            <ReactDragList
-              className="dragndrop-list"
-              handles={false}
-              dataSource={this.props.topics}
-              onUpdate={this.handleUpdate}
-              rowKey="id"
-              row={(topic) => (
-                <TopicDialog topic={topic} key={topic.content.title} />
-              )}
-            />
-          </div>
-        </div>
-        <div className="section">
-          <h2>Details</h2>
-          <p>Please answer all questions</p>
-          {questions}
-        </div>
-        <Button
-          type="submit"
-          variant="outlined"
-          style={{ backgroundColor: 'white' }}
+      <div>
+        <div
+          style={{
+            fontWeight: 'bold',
+            color: 'green',
+            marginBottom: 20
+          }}
         >
-          Submit
-        </Button>
-      </form>
+          {this.props.projectInfo}
+        </div>
+        <form onSubmit={this.submitRegistration}>
+          <div className="section">
+            <h2 className="landingpage-header">User details</h2>
+            <UserDetails />
+            <p>Please fill your email</p>
+            <div>
+              <TextField
+                type="email"
+                required
+                label="Email"
+                margin="normal"
+                style={{ width: '250px', marginTop: 0 }}
+                value={this.props.email}
+                onChange={(e) => this.props.updateEmail(e.target.value)}
+              />
+            </div>
+            <h2>Topics</h2>
+            <div
+              style={{
+                fontWeight: 'bold',
+                marginBottom: 20,
+                border: 'solid',
+                padding: 10,
+                borderRadius: 10
+              }}
+            >
+              Set the order of the list of topics according to your preference
+              (1 = favorite) by dragging and dropping, click to expand details
+            </div>
+            <div className="dragndrop-container">
+              <div className="dragndrop-indexes-container">{indexes}</div>
+              <ReactDragList
+                className="dragndrop-list"
+                handles={false}
+                dataSource={this.props.topics}
+                onUpdate={this.handleUpdate}
+                rowKey="id"
+                row={(topic) => (
+                  <TopicDialog topic={topic} key={topic.content.title} />
+                )}
+              />
+            </div>
+          </div>
+          <div className="section">
+            <h2>Details</h2>
+            <p>Please answer all questions</p>
+            {questions}
+          </div>
+          <Button
+            type="submit"
+            variant="outlined"
+            style={{ backgroundColor: 'white' }}
+          >
+            Submit
+          </Button>
+        </form>
+      </div>
     )
   }
 }
@@ -270,7 +281,8 @@ const mapStateToProps = (state) => {
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
     email: state.registrationPage.email,
-    projectOpen: state.registrationManagement.projectRegistrationOpen
+    projectOpen: state.registrationManagement.projectRegistrationOpen,
+    projectInfo: state.registrationManagement.projectRegistrationInfo
   }
 }
 

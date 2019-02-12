@@ -5,6 +5,7 @@ const setRegistrationManagement = (registrationManagement) => {
       projectRegistrationOpen: registrationManagement.project_registration_open,
       projectRegistrationMessage:
         registrationManagement.project_registration_message,
+      projectRegistrationInfo: registrationManagement.project_registration_info,
       topicRegistrationOpen: registrationManagement.topic_registration_open,
       topicRegistrationMessage:
         registrationManagement.topic_registration_message
@@ -26,6 +27,13 @@ const updateProjectRegistrationMessage = (projectRegistrationMessage) => {
   }
 }
 
+const updateProjectRegistrationInfo = (projectRegistrationInfo) => {
+  return {
+    type: 'UPDATE_PROJECT_REGISTRATION_INFO',
+    payload: projectRegistrationInfo
+  }
+}
+
 const updateTopicRegistrationOpen = (topicRegistrationOpen) => {
   return {
     type: 'UPDATE_TOPIC_REGISTRATION_OPEN',
@@ -40,12 +48,11 @@ const updateTopicRegistrationMessage = (topicRegistrationMessage) => {
   }
 }
 
-
 export default {
   setRegistrationManagement,
   updateProjectRegistrationOpen,
   updateProjectRegistrationMessage,
+  updateProjectRegistrationInfo,
   updateTopicRegistrationOpen,
   updateTopicRegistrationMessage
 }
-
