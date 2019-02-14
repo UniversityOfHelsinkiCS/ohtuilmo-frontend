@@ -27,10 +27,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cypress run",
+    "e2e": "./run_cypress_e2e.sh prepare-images && ./run_cypress_e2e.sh run",
+    "e2e-open": "./run_cypress_e2e.sh prepare-images && ./run_cypress_e2e.sh open",
     "eject": "react-scripts eject",
     "lint": "eslint src/",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "devDependencies": {
     "cypress": "^3.1.5",

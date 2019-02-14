@@ -3,9 +3,9 @@ node_js:
   - '8'
 install:
   # pull images & build stuff needed by e2e tests
-  - 'bash ./run_cypress_e2e.sh install'
+  - 'bash ./run_cypress_e2e.sh prepare-images'
 script:
-  - 'bash ./run_cypress_e2e.sh run && npm run build'
+  - 'bash ./run_cypress_e2e.sh run'
 cache: npm
 deploy:
   provider: script
