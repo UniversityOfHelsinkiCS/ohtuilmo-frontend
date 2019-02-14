@@ -31,11 +31,10 @@
     "e2e-open": "./run_cypress_e2e.sh prepare-images && ./run_cypress_e2e.sh open",
     "eject": "react-scripts eject",
     "lint": "eslint src/",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:open": "npx cypress open",
+    "cypress:run": "npx cypress run"
   },
   "devDependencies": {
-    "cypress": "^3.1.5",
     "husky": "^1.2.0"
   },
   "husky": {

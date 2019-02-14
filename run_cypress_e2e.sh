@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# ABOUT:    Prepares the entire end-to-end environment and runs the Cypress
+#           browser tests.
+#
+#           The "prepare-images" command should be run before "run" or "open".
+#           First, the prepare-images command pulls fresh images of the
+#           following services defined in docker-compose.e2e.yml:
+#             - db
+#             - backend
+#             - nginx
+#           Then, it builds the frontend service from the current directory.
+#
+#           The "run" and "open" commands both prepare the infrastructure by
+#           starting the db service and running the migrations from backend,
+#           then start the backend, frontend and nginx services. After this,
+#           they install the "cypress" package globally with npm and either
+#           run or open it, respectively.
+#
+#           Both commands tear down the E2E infrastructure with
+#           docker-compose down.
+
 set -e
 
 dco='docker-compose -f docker-compose.e2e.yml'
@@ -22,7 +42,7 @@ function prepareImages() {
     # build frontend image from current directory, travis will build the latest
     # version for testing
     printProgress 'INSTALL (1/2)' 'Pulled images, building frontend'
-    $dco build frontend
+    docker build --pull --cache-from ohtuprojektiilmo/ohtufront --tag ohtuprojektiilmo/ohtufront .
 
     printProgress 'INSTALL (2/2)' 'Images ready for E2E'
 }
@@ -31,22 +51,16 @@ function prepareServices() {
     # PREPARE SERVICES FOR TESTS
 
     # bring up db (1/3)
-    printProgress 'PREPARE (0/4)' 'Preparing services for E2E tests. Starting database...'
+    printProgress 'PREPARE (0/3)' 'Preparing services for E2E tests. Starting database...'
     $dco up -d db
 
-    printProgress 'PREPARE (1/4)' 'Database is up, running migrations'
+    printProgress 'PREPARE (1/3)' 'Database is up, running migrations'
     $dco run --entrypoint 'npm run db:migrate' --rm backend
 
-    printProgress 'PREPARE (2/4)' 'Migrations ran, starting backend, frontend and nginx'
+    printProgress 'PREPARE (2/3)' 'Migrations ran, starting backend, frontend and nginx'
     $dco up -d backend frontend nginx
 
-    printProgress 'PREPARE (3/4)' 'Infrastructure is ready, installing Cypress'
-    # install only Cypress, no need to spend time installing react-scripts
-    # will break if we require() some dependency in the integration tests!
-    local CYPRESS_VERSION=$(node -p "require('./package.json').devDependencies.cypress")
-    npm install --no-save "cypress@${CYPRESS_VERSION}"
-
-    printProgress 'PREPARE (4/4)' 'Cypress installed! Ready to run.'
+    printProgress 'PREPARE (3/3)' 'Infrastructure is ready!'
 }
 
 function run() {
