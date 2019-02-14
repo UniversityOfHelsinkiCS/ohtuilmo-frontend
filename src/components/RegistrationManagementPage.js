@@ -40,6 +40,7 @@ class RegistrationManagement extends React.Component {
       projectMessage,
       topicOpen,
       topicMessage,
+      projectInfo,
       updateIsLoading,
       setSuccess,
       clearNotifications,
@@ -53,6 +54,7 @@ class RegistrationManagement extends React.Component {
         registrationManagement: {
           project_registration_open: projectOpen,
           project_registration_message: projectMessage,
+          project_registration_info: projectInfo,
           topic_registration_open: topicOpen,
           topic_registration_message: topicMessage
         }
@@ -80,8 +82,10 @@ class RegistrationManagement extends React.Component {
       projectMessage,
       topicOpen,
       topicMessage,
+      projectInfo,
       updateProjectRegistrationOpen,
       updateProjectRegistrationMessage,
+      updateProjectRegistrationInfo,
       updateTopicRegistrationOpen,
       updateTopicRegistrationMessage
     } = this.props
@@ -105,11 +109,18 @@ class RegistrationManagement extends React.Component {
           </p>
           <TextField
             fullWidth
-            label="Message / Viesti"
+            label="Registration status message"
             margin="normal"
             value={projectMessage}
             onChange={(e) => updateProjectRegistrationMessage(e.target.value)}
             required={!projectOpen}
+          />
+          <TextField
+            fullWidth
+            label="Registration page info message"
+            margin="normal"
+            value={projectInfo}
+            onChange={(e) => updateProjectRegistrationInfo(e.target.value)}
           />
           <h4>Topic registration</h4>
           <p>
@@ -122,7 +133,7 @@ class RegistrationManagement extends React.Component {
           </p>
           <TextField
             fullWidth
-            label="Message / Viesti"
+            label="Registration status message"
             margin="normal"
             value={topicMessage}
             onChange={(e) => updateTopicRegistrationMessage(e.target.value)}
@@ -141,6 +152,7 @@ const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
+    projectInfo: state.registrationManagement.projectRegistrationInfo,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     isLoading: state.app.isLoading

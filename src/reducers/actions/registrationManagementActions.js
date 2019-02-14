@@ -1,14 +1,26 @@
-const setRegistrationManagement = (registrationManagement) => {
-  return {
-    type: 'SET_REGISTRATION_MANAGEMENT',
-    payload: {
-      projectRegistrationOpen: registrationManagement.project_registration_open,
-      projectRegistrationMessage:
-        registrationManagement.project_registration_message,
-      topicRegistrationOpen: registrationManagement.topic_registration_open,
-      topicRegistrationMessage:
-        registrationManagement.topic_registration_message
-    }
+import registrationManagementService from '../../services/registrationManagement'
+
+const fetchRegistrationManagement = () => {
+  return async (dispatch) => {
+    const response = await registrationManagementService.get()
+    const {
+      project_registration_open,
+      project_registration_message,
+      project_registration_info,
+      topic_registration_open,
+      topic_registration_message
+    } = response.registrationManagement
+
+    dispatch({
+      type: 'SET_REGISTRATION_MANAGEMENT',
+      payload: {
+        projectRegistrationOpen: project_registration_open,
+        projectRegistrationMessage: project_registration_message,
+        projectRegistrationInfo: project_registration_info,
+        topicRegistrationOpen: topic_registration_open,
+        topicRegistrationMessage: topic_registration_message
+      }
+    })
   }
 }
 
@@ -26,6 +38,13 @@ const updateProjectRegistrationMessage = (projectRegistrationMessage) => {
   }
 }
 
+const updateProjectRegistrationInfo = (projectRegistrationInfo) => {
+  return {
+    type: 'UPDATE_PROJECT_REGISTRATION_INFO',
+    payload: projectRegistrationInfo
+  }
+}
+
 const updateTopicRegistrationOpen = (topicRegistrationOpen) => {
   return {
     type: 'UPDATE_TOPIC_REGISTRATION_OPEN',
@@ -40,12 +59,11 @@ const updateTopicRegistrationMessage = (topicRegistrationMessage) => {
   }
 }
 
-
 export default {
-  setRegistrationManagement,
+  fetchRegistrationManagement,
   updateProjectRegistrationOpen,
   updateProjectRegistrationMessage,
+  updateProjectRegistrationInfo,
   updateTopicRegistrationOpen,
   updateTopicRegistrationMessage
 }
-

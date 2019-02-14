@@ -21,7 +21,6 @@ import RegistrationManagementPage from './components/RegistrationManagementPage'
 import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 
 // Services
-import registrationManagementService from './services/registrationManagement'
 import tokenCheckService from './services/tokenCheck'
 
 // Actions
@@ -50,8 +49,7 @@ class App extends Component {
 
   fetchRegistrationManagement = async () => {
     try {
-      const response = await registrationManagementService.get()
-      this.props.setRegistrationManagement(response.registrationManagement)
+      await this.props.fetchRegistrationManagement()
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(
@@ -198,7 +196,8 @@ const mapDispatchToProps = {
   ...notificationActions,
   ...loginPageActions,
   ...appActions,
-  ...registrationmanagementActions,
+  fetchRegistrationManagement:
+    registrationmanagementActions.fetchRegistrationManagement,
   clearRegistration: registrationActions.clearRegistration
 }
 
