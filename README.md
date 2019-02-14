@@ -20,6 +20,9 @@ Sign up tool for University of Helsinki's software production course
     $ npm start
     ```
 
+### Running end-to-end tests
+Run `npm run e2e`. The E2E tests set up nginx, backend, frontend and the database with docker-compose, then run the Cypress tests using nginx's port.
+
 ### Docker instructions
 
 [Docker cheatsheet](https://github.com/jexniemi/Docker-cheat-page/wiki)
