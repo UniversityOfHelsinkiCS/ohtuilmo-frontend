@@ -14,8 +14,7 @@
 #           The "run" and "open" commands both prepare the infrastructure by
 #           starting the db service and running the migrations from backend,
 #           then start the backend, frontend and nginx services. After this,
-#           they install the "cypress" package globally with npm and either
-#           run or open it, respectively.
+#           they run the cypress tests.
 #
 #           Both commands tear down the E2E infrastructure with
 #           docker-compose down.
