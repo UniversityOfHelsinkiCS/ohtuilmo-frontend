@@ -2,7 +2,6 @@ version: '2'
 services:
   nginx:
     image: ohtuprojektiilmo/e2e-nginx
-    build: .
     ports:
       - '3000:80'
     restart: always
