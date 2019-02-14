@@ -6,6 +6,10 @@ install:
 script:
   - 'bash ./run_cypress_e2e.sh run'
 cache:
+  # Use $HOME/.npm explicitly. Travis has a "cache: npm" setting as well, but it
+  # only caches the npm cache if the "script" is "npm ci". We run "npm ci" in
+  # our Dockerfile. We also need to cache $HOME/.npm so that "npx cypress" is
+  # cached.
   directories:
   - "$HOME/.npm"
 deploy:
