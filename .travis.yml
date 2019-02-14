@@ -7,8 +7,7 @@ install:
   # run install to get cypress
   - npm install
 script:
-  - 'bash ./run_cypress_e2e.sh run'
-  - npm run build
+  - 'bash ./run_cypress_e2e.sh run && npm run build'
 deploy:
   provider: script
   script: "./deploy_dockerhub.sh"
