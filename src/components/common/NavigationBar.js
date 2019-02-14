@@ -46,6 +46,7 @@ class NavigationBar extends React.Component {
       )
       logoutButton = (
         <Button
+          className="navigation-bar-logout-button"
           style={{ marginLeft: '10px' }}
           variant="outlined"
           onClick={this.props.logout}

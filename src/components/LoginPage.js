@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
       <div className="loginpage-container">
         <h1 className="loginpage-header">Login</h1>
         <p className="loginpage-information">University of Helsinki account required for login.</p>
-        <form onSubmit={this.login}>
+        <form onSubmit={this.login} className="loginpage-form">
           <div>
             <TextField
               className="username-field"
