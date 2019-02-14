@@ -6,7 +6,8 @@ WORKDIR /app
 
 # copy files and install dependencies
 COPY package.json package-lock.json /app/
-RUN npm install
+# use --production because we don't need cypress, eslin or husky in prod
+RUN npm install --production
 COPY . /app/
 
 # build

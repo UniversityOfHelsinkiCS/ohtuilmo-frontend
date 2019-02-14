@@ -9,6 +9,9 @@
     "@material-ui/core": "^3.6.0",
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
+    "babel-eslint": "9.0.0",
+    "eslint": "5.6.0",
+    "eslint-plugin-react": "^7.11.1",
     "history": "^4.7.2",
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
@@ -24,19 +27,18 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "npm run lint",
+    "test": "cypress run",
     "eject": "react-scripts eject",
-    "lint": "eslint ."
+    "lint": "eslint src/",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
-    "babel-eslint": "9.0.0",
-    "eslint": "5.6.0",
-    "eslint-plugin-react": "^7.11.1",
+    "cypress": "^3.1.5",
     "husky": "^1.2.0"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test"
+      "pre-commit": "npm run lint"
     }
   },
   "browserslist": [

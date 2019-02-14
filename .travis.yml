@@ -2,9 +2,12 @@ language: node_js
 node_js:
   - '8'
 install:
+  # pull images needed by e2e tests
+  - 'bash ./run_cypress_e2e.sh install'
+  # run install to get cypress
   - npm install
 script:
-  - npm test
+  - 'bash ./run_cypress_e2e.sh run'
   - npm run build
 deploy:
   provider: script
