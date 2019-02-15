@@ -24,8 +24,6 @@ const Notification = ({
   onNotificationClose
 }) => {
   const style = {
-    margin: '10px',
-    borderRadius: '4px',
     backgroundColor: getBackgroundColor(type)
   }
 
