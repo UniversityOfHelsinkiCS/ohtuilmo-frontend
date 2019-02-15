@@ -37,8 +37,4 @@ services:
       - '5432'
     environment:
       PGDATA: /data/test
-    volumes:
-      - pg-data:/data/test
-
-volumes:
-  pg-data:
+    # don't set volumes so that we have a fresh db every time
