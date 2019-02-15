@@ -25,7 +25,7 @@ import tokenCheckService from './services/tokenCheck'
 
 // Actions
 import appActions from './reducers/actions/appActions'
-import notificationActions from './reducers/actions/notificationActions'
+import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
@@ -184,7 +184,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...notificationActions,
+  setError: notificationActions.setError,
   ...loginPageActions,
   ...appActions,
   fetchRegistrationManagement:

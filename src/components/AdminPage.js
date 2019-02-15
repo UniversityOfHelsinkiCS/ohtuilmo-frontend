@@ -17,7 +17,7 @@ import configurationService from '../services/configuration'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import questionsFormPageActions from '../reducers/actions/questionsFormPageActions'
 import { ExpansionPanelActions } from '@material-ui/core'
 
@@ -415,8 +415,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...adminPageActions,
-  ...notificationActions,
-  ...questionsFormPageActions
+  ...questionsFormPageActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedAdminPage = connect(

@@ -7,7 +7,7 @@ import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 // Actions
 import appActions from '../reducers/actions/appActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationManagementActions from '../reducers/actions/registrationManagementActions'
 // Services
 import registrationManagementService from '../services/registrationManagement'
@@ -151,8 +151,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...registrationManagementActions,
-  ...notificationActions,
-  ...appActions
+  ...appActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedRegistrationManagement = connect(

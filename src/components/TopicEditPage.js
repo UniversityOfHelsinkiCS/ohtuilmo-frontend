@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
+import Button from '@material-ui/core/Button'
+
 import topicFormPageActions from '../reducers/actions/topicFormPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import viewTopicPageActions from '../reducers/actions/viewTopicPageActions'
 import topicService from '../services/topic'
 import TopicForm from './TopicForm'
-import Button from '@material-ui/core/Button'
 import Topic from './Topic'
 
 class TopicEditPage extends React.Component {
@@ -90,8 +92,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...topicFormPageActions,
-  ...notificationActions,
-  ...viewTopicPageActions
+  ...viewTopicPageActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedTopicEditPage = connect(

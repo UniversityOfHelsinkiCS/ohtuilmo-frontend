@@ -46,5 +46,3 @@ export const setSuccess = (message, timeout = 3000) => {
 export const setInfo = (message, timeout = 3000) => {
   return setNotification(message, 'info', timeout)
 }
-
-export default { setError, setSuccess, setInfo }

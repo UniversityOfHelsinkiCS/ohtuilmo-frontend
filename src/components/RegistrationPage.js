@@ -22,7 +22,7 @@ import UserDetails from './UserDetails'
 import './RegistrationPage.css'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 class RegistrationPage extends React.Component {
   async componentWillMount() {
@@ -270,7 +270,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...registrationPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedRegistrationPage = connect(

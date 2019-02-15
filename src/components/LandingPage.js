@@ -4,7 +4,6 @@ import { withRouter, Link } from 'react-router-dom'
 
 import './LandingPage.css'
 
-import notificationActions from '../reducers/actions/notificationActions'
 import registrationActions from '../reducers/actions/registrationActions'
 
 class LandingPage extends React.Component {
@@ -42,7 +41,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...notificationActions,
   fetchRegistration: registrationActions.fetchRegistration
 }
 

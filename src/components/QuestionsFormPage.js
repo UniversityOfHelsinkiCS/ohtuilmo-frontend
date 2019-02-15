@@ -5,7 +5,7 @@ import questionsPageActions from '../reducers/actions/questionsFormPageActions'
 import QuestionsForm from './QuestionsForm'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
 import reviewQuestionSetService from '../services/reviewQuestionSet'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 class QuestionsFormPage extends React.Component {
   componentWillMount() {
@@ -176,7 +176,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   ...questionsPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedQuestionsFormPage = connect(

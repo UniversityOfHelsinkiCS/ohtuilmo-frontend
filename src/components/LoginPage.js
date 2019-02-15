@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+
 import loginService from '../services/login'
 import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import './LoginPage.css'
 
 class LoginPage extends React.Component {
@@ -92,8 +94,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...loginPageActions,
-  ...notificationActions,
-  ...appActions
+  ...appActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedLoginPage = connect(

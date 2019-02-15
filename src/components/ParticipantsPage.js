@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 const styles = theme => ({
   root: {
@@ -186,6 +187,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
+  setError: notificationActions.setError
 }
 
 const ConnectedParticipantsPage = connect(

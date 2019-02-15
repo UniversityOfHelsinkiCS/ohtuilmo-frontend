@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-import topicFormPageActions from '../reducers/actions/topicFormPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+
 import Button from '@material-ui/core/Button'
+
+import topicFormPageActions from '../reducers/actions/topicFormPageActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import topicService from '../services/topic'
 import Topic from './Topic'
 import TopicForm from './TopicForm'
@@ -84,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...topicFormPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedTopicFormPage = connect(

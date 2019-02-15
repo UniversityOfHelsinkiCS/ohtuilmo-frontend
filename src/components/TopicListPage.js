@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import topicListPageActions from '../reducers/actions/topicListPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+
 import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItem from '@material-ui/core/ListItemText'
@@ -22,6 +21,9 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+
+import topicListPageActions from '../reducers/actions/topicListPageActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 const buttonTheme = createMuiTheme({
   palette: {
@@ -248,7 +250,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...topicListPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedTopicListPage = connect(
