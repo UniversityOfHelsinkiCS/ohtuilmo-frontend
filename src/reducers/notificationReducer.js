@@ -6,27 +6,15 @@ const initialState = {
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'SET_ERROR':
+  case 'SET_NOTIFICATION': {
+    const { type, message } = action.payload
     return {
       ...state,
-      type: 'error',
-      message: action.payload,
-      open: true
+      open: true,
+      type,
+      message
     }
-  case 'SET_SUCCESS':
-    return {
-      ...state,
-      type: 'success',
-      message: action.payload,
-      open: true
-    }
-  case 'SET_INFO':
-    return {
-      ...state,
-      type: 'info',
-      message: action.payload,
-      open: true
-    }
+  }
   case 'CLEAR_NOTIFICATIONS':
     return {
       type: '',
@@ -34,8 +22,8 @@ const notificationReducer = (state = initialState, action) => {
       open: false
     }
   default:
+    return state
   }
-  return state
 }
 
 export default notificationReducer
