@@ -20,7 +20,40 @@ Sign up tool for University of Helsinki's software production course
     $ npm start
     ```
 
+### Writing and running Cypress tests locally
+
+You'll first want to bring up the database with docker-compose.
+
+#### If you're writing a frontend-only feature which works with the Docker image in DockerHub
+
+In this case, you won't need to start the backend locally.
+
+1. Start `db` and `backend` with docker-compose normally, no need to specifically use the `.e2e.yml`.
+2. Check which port the backend is running and in frontend's `package.json`
+    - Set `"proxy": "http://localhost:<PORT>"` to the correct port so that the frontend's /api calls get proxied to the backend
+        - Don't commit this change, it's not needed in production and it changes per developer really.
+3. Start the frontend with `npm start`
+4. Check which port the frontend is running on, pass it to Cypress before opening it
+    - There's [multiple ways](https://docs.cypress.io/guides/guides/environment-variables.html#Setting) to pass this information to Cypress, the easiest for you probably is to do:
+        ```sh
+        CYPRESS_baseUrl=http://localhost:<PORT>
+        # ...
+        # npm run cypress:open
+        ```
+        This will set the environment variable `CYPRESS_baseUrl` in your current terminal session which will persist until you restart your terminal. The `baseUrl` lets Cypress know which host to direct its requests when we do `cy.visit('/')`.
+5. Open the Cypress test runner
+    ```sh
+    npm run cypress:open
+    ```
+
+#### If you're writing a feature that touches both the frontend and backend
+
+Same instructions as above but you only start `db` with docker-compose.
+
 ### Running end-to-end tests
+
+The full E2E test suite can be run locally, but notice that it builds the frontend image from the frontend directory, meaning that you can't interactively edit your code and the tests.
+
 Run:
 - npm run e2e:install
 - npm run e2e:setup
