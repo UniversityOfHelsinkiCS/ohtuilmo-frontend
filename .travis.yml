@@ -1,19 +1,30 @@
 language: node_js
 node_js:
   - '8'
+
 install:
-  - 'bash ./run_cypress_e2e.sh prepare-images'
+  - npm run e2e:install
+
+before_script:
+  - npm run e2e:setup
+
 script:
-  - 'bash ./run_cypress_e2e.sh run'
+  - npm run e2e:run
+
+after_script:
+  - npm run e2e:teardown
+
+deploy:
+  provider: script
+  script: './deploy_dockerhub.sh'
+  on:
+    branch: master
+
 cache:
   # Use $HOME/.npm explicitly. Travis has a "cache: npm" setting as well, but it
   # only caches the npm cache if the "script" is "npm ci". We run "npm ci" in
   # our Dockerfile. We also need to cache $HOME/.npm so that "npx cypress" is
   # cached.
   directories:
-  - "$HOME/.npm"
-deploy:
-  provider: script
-  script: './deploy_dockerhub.sh'
-  on:
-    branch: master
+    - '$HOME/.npm'
+    - '$HOME/.cache' # should cache Cypress?

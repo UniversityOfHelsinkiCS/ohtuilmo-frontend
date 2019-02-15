@@ -27,12 +27,15 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "e2e": "./run_cypress_e2e.sh prepare-images && ./run_cypress_e2e.sh run",
-    "e2e-open": "./run_cypress_e2e.sh prepare-images && ./run_cypress_e2e.sh open",
     "eject": "react-scripts eject",
     "lint": "eslint src/",
-    "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run"
+    "e2e:install": "./run_cypress_e2e.sh install",
+    "e2e:setup": "./run_cypress_e2e.sh setup",
+    "e2e:run": "./run_cypress_e2e.sh run",
+    "e2e:open": "./run_cypress_e2e.sh open",
+    "e2e:teardown": "./run_cypress_e2e.sh teardown",
+    "cypress:open": "npx cypress open -P ./",
+    "cypress:run": "npx cypress run -P ./"
   },
   "devDependencies": {
     "husky": "^1.2.0"
