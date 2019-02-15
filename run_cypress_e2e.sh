@@ -1,24 +1,5 @@
 #!/bin/bash
 
-# ABOUT:    Prepares the entire end-to-end environment and runs the Cypress
-#           browser tests.
-#
-#           The "prepare-images" command should be run before "run" or "open".
-#           First, the prepare-images command pulls fresh images of the
-#           following services defined in docker-compose.e2e.yml:
-#             - db
-#             - backend
-#             - nginx
-#           Then, it builds the frontend service from the current directory.
-#
-#           The "run" and "open" commands both prepare the infrastructure by
-#           starting the db service and running the migrations from backend,
-#           then start the backend, frontend and nginx services. After this,
-#           they run the cypress tests.
-#
-#           Both commands tear down the E2E infrastructure with
-#           docker-compose down.
-
 set -e
 
 dco='docker-compose -f docker-compose.e2e.yml'
