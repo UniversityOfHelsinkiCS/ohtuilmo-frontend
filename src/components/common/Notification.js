@@ -30,7 +30,7 @@ const Notification = ({ type, message, open }) => {
   }
 
   return (
-    <div>
+    <div className="notification">
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
