@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 
+import { clearNotifications } from '../../reducers/actions/notificationActions'
+
 const getBackgroundColor = (type) => {
   switch (type) {
   case 'error':
@@ -14,11 +16,13 @@ const getBackgroundColor = (type) => {
   }
 }
 
-const Notification = ({ type, message, open }) => {
-  if (message === null || message === '') {
-    return null
-  }
-
+const Notification = ({
+  type,
+  message,
+  open,
+  duration,
+  onNotificationClose
+}) => {
   const style = {
     margin: '10px',
     borderRadius: '4px',
@@ -33,6 +37,8 @@ const Notification = ({ type, message, open }) => {
           horizontal: 'left'
         }}
         open={open}
+        autoHideDuration={duration}
+        onClose={onNotificationClose}
       >
         <SnackbarContent
           style={style}
@@ -49,13 +55,21 @@ const Notification = ({ type, message, open }) => {
 
 const mapStateToProps = (state) => {
   const { notifications } = state
-  const { type, open, message } = notifications
+  const { type, open, message, duration } = notifications
 
   return {
     type,
     open,
-    message
+    message,
+    duration
   }
 }
 
-export default connect(mapStateToProps)(Notification)
+const mapDispatchToProps = {
+  onNotificationClose: clearNotifications
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notification)
