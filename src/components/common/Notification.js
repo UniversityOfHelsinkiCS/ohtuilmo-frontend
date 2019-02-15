@@ -2,31 +2,26 @@ import React from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 
+const getBackgroundColor = (type) => {
+  switch (type) {
+  case 'error':
+    return 'red'
+  case 'success':
+    return 'green'
+  default:
+    return 'skyblue'
+  }
+}
+
 const Notification = ({ type, message, open }) => {
-  if ((message === null) | (message === '')) {
+  if (message === null || message === '') {
     return null
   }
 
-  var style = {
+  const style = {
     margin: '10px',
-    borderRadius: '4px'
-  }
-
-  if (type === 'error') {
-    style = {
-      ...style,
-      backgroundColor: 'red'
-    }
-  } else if (type === 'success') {
-    style = {
-      ...style,
-      backgroundColor: 'green'
-    }
-  } else {
-    style = {
-      ...style,
-      backgroundColor: 'skyblue'
-    }
+    borderRadius: '4px',
+    backgroundColor: getBackgroundColor(type)
   }
 
   return (
