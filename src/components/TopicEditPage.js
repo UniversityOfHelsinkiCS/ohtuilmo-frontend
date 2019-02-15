@@ -26,24 +26,24 @@ class TopicEditPage extends React.Component {
     }
     try {
       await topicService.update(topic)
-      this.props.setSuccess('Topic updated succesfully!')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setSuccess('Topic updated succesfully!', 3000)
       this.props.setEditMode(false)
       this.props.setTopicContent(this.props.content)
     } catch (e) {
       console.log(e)
       if (e.response) {
         if (e.response.status === 401) {
-          this.props.setError('You do not have permission to edit this topic')
+          this.props.setError(
+            'You do not have permission to edit this topic',
+            3000
+          )
         } else {
-          this.props.setError('Some error happened')
+          this.props.setError(
+            'Some error happened',
+            3000
+          )
         }
       }
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
       this.props.setEditMode(false)
     }
   }
@@ -77,7 +77,6 @@ class TopicEditPage extends React.Component {
           </div>
         )}
       </div>
-
     )
   }
 }

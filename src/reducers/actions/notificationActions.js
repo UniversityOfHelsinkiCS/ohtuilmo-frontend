@@ -4,23 +4,47 @@ const clearNotifications = () => {
   }
 }
 
-const setNotification = (message, type) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    payload: { message, type }
+let clearNotificationTimeoutHandle = null
+
+const isPreviousNotificationShowing = () =>
+  clearNotificationTimeoutHandle !== null
+
+const cancelClearTimeout = () => {
+  clearTimeout(clearNotificationTimeoutHandle)
+  clearNotificationTimeoutHandle = null
+}
+const clearNotificationsAfter = (timeout, dispatch) => {
+  clearNotificationTimeoutHandle = setTimeout(() => {
+    dispatch(clearNotifications())
+  }, timeout)
+}
+
+const setNotification = (message, type, timeout) => {
+  return (dispatch) => {
+    if (isPreviousNotificationShowing()) {
+      // Cancel the previous setTimeout so we can start a new one
+      cancelClearTimeout()
+    }
+
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      payload: { message, type }
+    })
+
+    clearNotificationsAfter(timeout, dispatch)
   }
 }
 
-const setError = (message) => {
-  return setNotification(message, 'error')
+export const setError = (message, timeout = 3000) => {
+  return setNotification(message, 'error', timeout)
 }
 
-const setSuccess = (message) => {
-  return setNotification(message, 'success')
+export const setSuccess = (message, timeout = 3000) => {
+  return setNotification(message, 'success', timeout)
 }
 
-const setInfo = (message) => {
-  return setNotification(message, 'info')
+export const setInfo = (message, timeout = 3000) => {
+  return setNotification(message, 'info', timeout)
 }
 
-export default { setError, setSuccess, setInfo, clearNotifications }
+export default { setError, setSuccess, setInfo }

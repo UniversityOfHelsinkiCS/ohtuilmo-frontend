@@ -126,10 +126,7 @@ class ParticipantsPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 

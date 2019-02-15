@@ -34,10 +34,7 @@ class AdminPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Some error happened', 5000)
     }
   }
 
@@ -65,10 +62,7 @@ class AdminPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e)
-      this.props.setError('Error fetching configurations')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Error fetching configurations', 5000)
     }
   }
 
@@ -78,10 +72,7 @@ class AdminPage extends React.Component {
       this.props.setRegistrationQuestions(questions)
     } catch (e) {
       console.log('error happened', e)
-      this.props.setError('Error fetching question sets')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Error fetching question sets', 5000)
     }
   }
 
@@ -117,16 +108,10 @@ class AdminPage extends React.Component {
       ])
       this.props.updateSelectedConfig(response.configuration)
       this.props.updateNewStatus(false)
-      this.props.setSuccess('New configuration saved and set active')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setSuccess('New configuration saved and set active', 5000)
     } catch (e) {
       console.log(e)
-      this.props.setError('Error saving new configuration')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Error saving new configuration', 5000)
     }
   }
 
@@ -141,16 +126,10 @@ class AdminPage extends React.Component {
       this.props.updateConfigurations(response.configuration)
       this.props.updateSelectedConfig(response.configuration)
       this.props.updateConfigForm(response.configuration)
-      this.props.setSuccess('Configuration updated and set active')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setSuccess('Configuration updated and set active', 5000)
     } catch (e) {
       console.log(e)
-      this.props.setError('Error saving edits to configuration')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Error saving edits to configuration', 5000)
     }
   }
 

@@ -50,10 +50,7 @@ class TopicListPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -67,10 +64,7 @@ class TopicListPage extends React.Component {
       this.props.updateTopics(sortedTopics)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -81,16 +75,10 @@ class TopicListPage extends React.Component {
       const updatedTopics = this.props.topics.map(topic2 => { return topic2.id === topic.id ? topic : topic2 })
       await topicService.update(topic)
       this.props.updateTopics(updatedTopics)
-      this.props.setSuccess('Topic update submitted succesfully!')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setSuccess('Topic update submitted succesfully!', 3000)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 

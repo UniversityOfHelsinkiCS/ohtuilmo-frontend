@@ -53,11 +53,9 @@ class App extends Component {
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(
-        'Error fetching registration management configuration'
+        'Error fetching registration management configuration',
+        5000
       )
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
     }
   }
 

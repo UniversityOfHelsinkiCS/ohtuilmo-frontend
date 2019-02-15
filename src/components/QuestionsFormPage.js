@@ -20,10 +20,7 @@ class QuestionsFormPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Some error happened', 5000)
     }
   }
 
@@ -33,17 +30,11 @@ class QuestionsFormPage extends React.Component {
 
   handleError = (e) => {
     console.log('error happened', e.response)
-    this.props.setError('Some error happened')
-    setTimeout(() => {
-      this.props.clearNotifications()
-    }, 3000)
+    this.props.setError('Some error happened', 3000)
   }
 
   handleSuccess = (msg) => {
-    this.props.setSuccess(msg)
-    setTimeout(() => {
-      this.props.clearNotifications()
-    }, 5000)
+    this.props.setSuccess(msg, 5000)
   }
 
   async fetchQuestions() {
