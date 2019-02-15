@@ -24,6 +24,10 @@ Sign up tool for University of Helsinki's software production course
 
 You'll first want to bring up the database with docker-compose.
 
+#### Writing tests
+
+The test specs can be found in `e2e/cypress/integration`.
+
 #### If you're writing a frontend-only feature which works with the Docker image in DockerHub
 
 In this case, you won't need to start the backend locally.
