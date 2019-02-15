@@ -1,5 +1,6 @@
 # Only include files that we need for "npm install",
 # "react-scripts build" and "serve"!
+*
 !public/
 !src/
 # react-scripts build runs linter, include eslint configs
