@@ -96,11 +96,7 @@ class App extends Component {
       <Router history={history}>
         <div id="app-wrapper">
           <NavigationBar logout={this.logout} />
-          <Notification
-            type={this.props.type}
-            message={this.props.message}
-            open={this.props.open}
-          />
+          <Notification />
           <div id="app-content">
             {loadingSpinner}
             <Switch>
@@ -185,10 +181,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.loginPage.user,
-    type: state.notifications.type,
-    open: state.notifications.open,
-    message: state.notifications.message
+    user: state.loginPage.user
   }
 }
 

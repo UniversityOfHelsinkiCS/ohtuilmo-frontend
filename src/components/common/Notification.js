@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 
@@ -46,4 +47,15 @@ const Notification = ({ type, message, open }) => {
   )
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  const { notifications } = state
+  const { type, open, message } = notifications
+
+  return {
+    type,
+    open,
+    message
+  }
+}
+
+export default connect(mapStateToProps)(Notification)
