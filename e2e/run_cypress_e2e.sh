@@ -2,14 +2,31 @@
 
 set -e
 
-dco='docker-compose -f docker-compose.e2e.yml'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+dco='docker-compose -f e2e/docker-compose.e2e.yml'
+
+# Exit if someone is trying to run this script inside the e2e directory instead
+# of the repository root. We need to be in the repo root to build our image!
+#
+# There's no real reason why the cypress folder and all related things
+# **couldn't** be in the repo root, but I find this structure to be cleaner.
+# Just like "src" etc.
+# /JH
+if [ "$(basename "${PWD}")" == "e2e" ]; then
+    echo -e "${RED}ERROR${NC}  Current working directory is '$(basename "${PWD}")'!"
+    echo -e "       Script requires working directory to be repository root."
+    echo ''
+    echo "       (you should probably do 'cd ..')"
+    echo ''
+    exit 1
+fi
 
 function printProgress() {
     local STAGE=$1
     local TEXT=$2
-
-    local GREEN='\033[0;32m'
-    local NC='\033[0m' # No Color
 
     echo -e "${GREEN}${STAGE}${NC}  ${TEXT}"
 }
