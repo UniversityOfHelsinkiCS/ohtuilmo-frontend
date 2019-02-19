@@ -10,16 +10,24 @@ const QuestionsFrom = (props) => {
       <h1>{props.title}</h1>
       <div>
         <Select
-          value={props.selected_question_set.old_name !== '' ? props.selected_question_set.old_name : 'new_is_selected'}
-          onChange={(event) => props.updateSelectedQuestionSet(event.target.value)}
+          value={
+            props.selected_question_set.old_name !== ''
+              ? props.selected_question_set.old_name
+              : 'new_is_selected'
+          }
+          onChange={(event) =>
+            props.updateSelectedQuestionSet(event.target.value)
+          }
         >
-          <MenuItem value='' disabled>
+          <MenuItem value="" disabled>
             <em>Pick a question set</em>
           </MenuItem>
-          {props.question_sets.map(question_set => (
-            <MenuItem key={question_set.id} value={question_set.name}>{question_set.name}</MenuItem>
+          {props.question_sets.map((question_set) => (
+            <MenuItem key={question_set.id} value={question_set.name}>
+              {question_set.name}
+            </MenuItem>
           ))}
-          <MenuItem value='new_is_selected'>New</MenuItem>
+          <MenuItem value="new_is_selected">New</MenuItem>
         </Select>
       </div>
       <div>
@@ -42,7 +50,9 @@ const QuestionsFrom = (props) => {
             multiline
             rows={5}
             value={props.selected_question_set.questions}
-            onChange={(e) => props.updateSelectedQuestionSetQuestions(e.target.value)}
+            onChange={(e) =>
+              props.updateSelectedQuestionSetQuestions(e.target.value)
+            }
           />
         </div>
         <div>
@@ -54,8 +64,7 @@ const QuestionsFrom = (props) => {
           >
             Create new question set
           </Button>
-          {props.selected_question_set.old_name === '' ?
-            null :
+          {props.selected_question_set.old_name === '' ? null : (
             <Button
               type="submit"
               variant="contained"
@@ -64,7 +73,7 @@ const QuestionsFrom = (props) => {
             >
               Edit {props.selected_question_set.old_name} question set
             </Button>
-          }
+          )}
         </div>
       </div>
     </div>
