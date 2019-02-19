@@ -4,7 +4,8 @@ const initialState = {
   groupTopicID: '',
   groupInstructorID: '',
   groupConfigurationID: '',
-  groups: []
+  groups: [],
+  users: []
 }
 
 const groupPageReducer = (state = initialState, action) => {
@@ -43,6 +44,32 @@ const groupPageReducer = (state = initialState, action) => {
     return {
       ...state,
       groups: action.payload
+    }
+  case 'DELETE_FROM_GROUP':
+    return {
+      ...state,
+      groups: state.groups.map((group) =>
+        group.id === action.payload.id ? action.payload : group
+      )
+    }
+  case 'UPDATE_EXISTING_GROUP':
+    return {
+      ...state,
+      groups: state.groups.map((group) =>
+        group.id === action.payload.id ? action.payload : group
+      )
+    }
+  case 'DELETE_GROUP':
+    return {
+      ...state,
+      groups: state.groups.map((group) =>
+        group.id === action.payload.id ? '' : group
+      )
+    }
+  case 'SET_USERS':
+    return {
+      ...state,
+      users: action.payload
     }
   default:
     return state

@@ -9,7 +9,6 @@ const get = async () => {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
 
-  console.log(response.data)
   return response.data
 }
 
@@ -21,24 +20,26 @@ const create = async (newGroup) => {
   })
 
   return response.data
-
-  /*   return {
-    id: 37,
-
-    name: 'Fluxx-chat',
-
-    createdAt: '2019-02-07T11:50:40.070Z',
-
-    updatedAt: '2019-02-07T11:50:40.070Z',
-
-    topicId: 46,
-
-    instructorId: '014591770',
-
-    configurationId: 1,
-
-    studentIds: ['014712876', '014806067', '014689116']
-  } */
 }
 
-export default { get, create }
+const put = async (updatedGroup) => {
+  console.log(updatedGroup)
+
+  const response = await axios.put(`${url}/${updatedGroup.id}` , updatedGroup, {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+
+  return response.data
+}
+
+const del = async (groupToDelete) => {
+  console.log(groupToDelete)
+
+  const response = await axios.delete(url, groupToDelete, {
+    headers: { Authorization: 'Bearer ' + getUserToken }
+  })
+
+  return response.data
+}
+
+export default { get, create, put, del }

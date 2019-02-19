@@ -12,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import topicService from '../services/topic'
 import configurationService from '../services/configuration'
 import groupManagementService from '../services/groupManagement'
+import userService from '../services/user'
 
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import adminPageActions from '../reducers/actions/adminPageActions'
@@ -51,7 +52,11 @@ const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
   return (
     <Select
       value={groupTopicID}
-      onChange={(e) => onTopicSelectChange(e.target.value)}
+      onChange={
+        (e) => onTopicSelectChange(e.target.value)
+        /* console.log("topicSelect ", e.target.value) */
+        /* console.log("topicSelect ", groupTopicID)  */
+      }
     >
       {topics.map((topic) => (
         <MenuItem key={topic.id} value={topic.id}>
@@ -90,96 +95,501 @@ const NameInput = ({ value, onChange, ...textFieldProps }) => (
   />
 )
 
-const SingleGroupView = ({ group }) => {
+const SingleGroupView = ({
+  group,
+  topics,
+  users,
+  deleteFromGroupAction,
+  toggleEditMode,
+  setSuccess,
+  setError,
+  clearNotifications
+}) => {
+  console.log(group)
+  const thisTopic = topics
+    .map((topic) => topic)
+    .filter((topic) => topic.id === group.topicId)
+
+  const topicName = thisTopic[0].content.title
+
+  const getUserNames = (user) => {
+    console.log('gUN user ', user)
+    const namedUser = users.filter(
+      (userIterator) => userIterator.student_number === user
+    )[0]
+    console.log('gun users ', users)
+    console.log('gun namedUser ', namedUser)
+    return `${namedUser.first_names} ${namedUser.last_name} (${user})`
+  }
+
+  /*   console.log("SGV group ", group)
+    console.log("SGV thisTopic ", thisTopic[0].content.title) */
   return (
-    /*     <Paper key={group.id} style={{ padding: 10, float: 'left' }}> */
     <div style={{ align: 'top' }}>
       {group.name}
 
       <div>
+        <p>topic</p>
+
+        {topicName}
+
         <p>students</p>
 
         {group.studentIds.map((student) => (
           <div key={student}>
-            {student}
+            {getUserNames(student)}
+
             <IconButton
               aria-label="Delete"
-              onClick={() => console.log('nappi')}
+              onClick={(event) =>
+                deleteFromGroupStudent(event, {
+                  group,
+                  student,
+                  deleteFromGroupAction,
+                  setSuccess,
+                  setError,
+                  clearNotifications
+                })
+              }
             >
               <DeleteIcon fontSize="small" />
             </IconButton>
           </div>
-          /* Mahollisesti delete nappulla tai kentät mitä voi muokata */
         ))}
         <p>Instructor</p>
         <div>
-          {group.instructorId}
-          <IconButton aria-label="Delete" onClick={() => console.log('nappi')}>
+          {getUserNames(group.instructorId)}
+          <IconButton
+            aria-label="Delete"
+            onClick={(event) =>
+              deleteFromGroupInstructor(event, {
+                group,
+                deleteFromGroupAction,
+                setSuccess,
+                setError,
+                clearNotifications
+              })
+            }
+          >
             <DeleteIcon fontSize="small" />
           </IconButton>
         </div>
+      </div>
 
-        {/*         <Button
-          style={{ marginRight: '10px', height: '30px' }}
+      <Button
+        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+        color="primary"
+        variant="contained"
+        onClick={() => toggleEditMode()}
+      >
+        Edit
+      </Button>
+    </div>
+  )
+}
+
+const deleteFromGroupStudent = async (event, props) => {
+  event.preventDefault()
+
+  console.log(props)
+
+  const {
+    id,
+    name,
+    topicId,
+    studentIds,
+    instructorId,
+    configurationId
+  } = props.group
+
+  const removedStudents = studentIds
+    .map((studentmap) => studentmap.trim())
+    .filter((studentmap) => studentmap !== props.student)
+
+  /*   const updatedGroup = {
+    id: id,
+    name: name,
+    topicId: topicId,
+    configurationId: configurationId,
+    instructorId: instructorId,
+    studentIds: removedStudents
+  } */
+
+  try {
+    const updatedGroup = await groupManagementService.put({
+      id: id,
+      name: name,
+      topicId: topicId,
+      configurationId: configurationId,
+      instructorId: instructorId,
+      studentIds: removedStudents
+    })
+    props.deleteFromGroupAction(updatedGroup)
+
+    props.setSuccess('Student deleted!')
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  } catch (e) {
+    console.log(e)
+    props.setError(`Failed to deleted student! ${e.response.data.error}`)
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  }
+
+  /* console.log('deletesä => ', updatedGroup) */
+
+  /*  props.setSuccess('Student deleted!')
+  setTimeout(() => {
+    props.clearNotifications()
+  }, 3000)
+
+  props.deleteFromGroupAction(updatedGroup) */
+}
+
+const deleteFromGroupInstructor = async (event, props) => {
+  event.preventDefault()
+
+  console.log(props)
+
+  const { id, name, topicId, studentIds, configurationId } = props.group
+
+  /*   const updatedGroup = {
+    id: id,
+    name: name,
+    topicId: topicId,
+    configurationId: configurationId,
+    instructorId: '',
+    studentIds: studentIds
+  } */
+
+  try {
+    const updatedGroup = await groupManagementService.put({
+      id: id,
+      name: name,
+      topicId: topicId,
+      configurationId: configurationId,
+      instructorId: '',
+      studentIds: studentIds
+    })
+    props.deleteFromGroupAction(updatedGroup)
+
+    props.setSuccess('Instructor deleted!')
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  } catch (e) {
+    console.log(e)
+    props.setError(`Failed to delete instructor! ${e.response.data.error}`)
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  }
+
+  /* console.log('deletesä => ', updatedGroup) */
+
+  /*   props.setSuccess('Instructor deleted!')
+  setTimeout(() => {
+    props.clearNotifications()
+  }, 3000)
+
+  props.deleteFromGroupAction(updatedGroup) */
+}
+
+const deleteExistingGroup = async (event, props) => {
+  event.preventDefault()
+
+  console.log(props)
+
+  const {
+    id,
+    name,
+    topicId,
+    studentIds,
+    configurationId,
+    instructorId
+  } = props.group
+
+  const groupToDelete = {
+    id: id,
+    name: name,
+    topicId: topicId,
+    configurationId: configurationId,
+    instructorId: instructorId,
+    studentIds: studentIds
+  }
+
+  /*   try {
+    const deletedGroup = await groupManagementService.del({
+      id: id
+    })
+    props.deleteGroup(deletedGroup)
+
+    props.setSuccess('Group saved!')
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  } catch (e) {
+    props.setError(`Failed to save! ${e.response.data.error}`)
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  } */
+
+  console.log(groupToDelete)
+
+  props.setSuccess('Group deleted!')
+  setTimeout(() => {
+    props.clearNotifications()
+  }, 3000)
+
+  props.deleteGroup(groupToDelete)
+}
+
+class SingleGroupEdit extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      id: props.group.id,
+      name: props.group.name,
+      topicId: props.group.topicId,
+      configurationId: props.group.configurationId,
+      instructorId: props.group.instructorId,
+      studentIds: props.group.studentIds.join('\n')
+    }
+  }
+
+  handleNameChange = (event) => {
+    this.setState({ name: event.target.value })
+  }
+
+  handleStudentChange = (event) => {
+    this.setState({ studentIds: event.target.value })
+  }
+
+  handleInstructorChange = (event) => {
+    this.setState({ instructorId: event.target.value })
+  }
+
+  handleTopicChange = (e) => {
+    console.log('SGE ', e)
+    this.setState({ topicId: e })
+  }
+
+  render() {
+    const group = this.state
+
+    return (
+      <div style={{ allign: 'top' }}>
+        Edit group: {this.state.name}
+        <IconButton
+          aria-label="Delete"
+          onClick={(event) =>
+            deleteExistingGroup(event, {
+              group,
+              deleteGroup: this.props.deleteGroup,
+              setSuccess: this.props.setSuccess,
+              setError: this.props.setError,
+              clearNotifications: this.props.clearNotifications
+            })
+          }
+        >
+          <DeleteIcon fontSize="large" />
+        </IconButton>
+        <p>Edit group name</p>
+        <TextField value={this.state.name} onChange={this.handleNameChange} />
+        <p>Change topic</p>
+        <TopicSelect
+          topics={this.props.topics}
+          onTopicSelectChange={this.handleTopicChange}
+          groupTopicID={this.state.topicId}
+        />
+        <p>Add new students</p>
+        <TextField
+          value={this.state.studentIds}
+          onChange={this.handleStudentChange}
+          multiline
+          rows="8"
+        />
+        <p>Add instructor</p>
+        <TextField
+          value={this.state.instructorId}
+          onChange={this.handleInstructorChange}
+        />
+        <Button
+          style={{ marginLeft: '10px', height: '30px', float: 'right' }}
           color="primary"
           variant="contained"
+          onClick={(event) =>
+            updateCreatedGroup(event, {
+              group,
+              updateExistingGroup: this.props.updateExistingGroup,
+              toggleEditMode: this.props.toggleEditMode,
+              setSuccess: this.props.setSuccess,
+              setError: this.props.setError,
+              clearNotifications: this.props.clearNotifications
+            })
+          }
         >
-          Edit
-        </Button> */}
+          Save
+        </Button>
+        <Button
+          style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+          color="primary"
+          variant="contained"
+          onClick={() => this.props.toggleEditMode()}
+        >
+          Cancel
+        </Button>
       </div>
-    </div>
-    /*     </Paper> */
-  )
+    )
+  }
 }
 
-const SingleGroupEdit = ({ group }) => {
-  return (
-    <div style={{ allign: 'top' }}>
-      Edit group: {group.name}
-      <p>Edit group name</p>
-      <Button
-        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
-        color="primary"
-        variant="contained"
-      >
-        Edit
-      </Button>
-      {/* <FormInput lable="Group name"> */}
-      <NameInput />
-      {/* </FormInput> */}
-      <p>Add new students</p>
-      <Button
-        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
-        color="primary"
-        variant="contained"
-      >
-        Edit
-      </Button>
-      {/*  <FormInput label="Students"> */}
-      <StudentInput />
-      {/* </FormInput> */}
-      <p>Add instructor</p>
-      <Button
-        style={{ marginLeft: '10px', height: '30px', float: 'right' }}
-        color="primary"
-        variant="contained"
-      >
-        Edit
-      </Button>
-      {/* <FormInput label="Instructor"> */}
-      <NameInput />
-      {/* </FormInput> */}
-    </div>
-  )
+const updateCreatedGroup = async (event, props) => {
+  event.preventDefault()
+
+  const {
+    id,
+    name,
+    topicId,
+    studentIds,
+    instructorId,
+    configurationId
+  } = props.group
+
+  const splitStudents = studentIds
+    .split(/[;,\n]/)
+    .map((student) => student.trim())
+    .filter((str) => !!str)
+
+  /* const updatedGroup = {
+    id: id,
+    name: name,
+    topicId: topicId,
+    configurationId: configurationId,
+    instructorId: instructorId,
+    studentIds: splitStudents
+  } */
+
+  props.toggleEditMode()
+
+  try {
+    console.log('start of try', splitStudents)
+    const updatedGroup = await groupManagementService.put({
+      id: id,
+      name: name,
+      topicId: topicId,
+      configurationId: configurationId,
+      instructorId: instructorId,
+      studentIds: splitStudents
+    })
+
+    console.log('After save', updatedGroup)
+    props.updateExistingGroup(updatedGroup)
+
+    props.setSuccess('Group updated!')
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  } catch (e) {
+    console.log(e)
+    props.setError(`Failed to updated group! ${e.response.data.error}`)
+    setTimeout(() => {
+      props.clearNotifications()
+    }, 3000)
+  }
+
+  /*  console.log('updateExisting => ', updatedGroup) */
+
+  /* props.setSuccess('Group updated!')
+  setTimeout(() => {
+    props.clearNotifications()
+  }, 3000)
+
+  props.updateExistingGroup(updatedGroup) */
 }
 
-const GroupManagementForm = ({ groups, groupConfigurationID }) => {
-  console.log('group config id', groupConfigurationID)
+class GroupViewer extends React.Component {
+  /* }
+
+const GroupViewer = ({ group, deleteFromGroupAction }) => { */
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      editMode: false
+    }
+  }
+
+  /* let editMode = false */
+
+  toggleEditMode = () => {
+    /* this.setState.state({editMode : !this.state.editMode}) */
+    this.setState((prevState) => ({
+      editMode: !prevState.editMode
+    }))
+    if (this.state.editMode) {
+      this.props.setSuccess(
+        `Editing for group ${this.props.group.name}  disabled!`
+      )
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    } else {
+      this.props.setSuccess(
+        `Editing for group ${this.props.group.name}  enabled!`
+      )
+      setTimeout(() => {
+        this.props.clearNotifications()
+      }, 3000)
+    }
+  }
+
+  render() {
+    if (this.state.editMode) {
+      return (
+        <ConnectedSingleGroupEdit
+          group={this.props.group}
+          toggleEditMode={this.toggleEditMode}
+          deleteGroup={this.props.deletGroup}
+        />
+      )
+    } else {
+      return (
+        <div>
+          <SingleGroupView
+            group={this.props.group}
+            topics={this.props.topics}
+            users={this.props.users}
+            deleteFromGroupAction={this.props.deleteFromGroupAction}
+            toggleEditMode={this.toggleEditMode}
+            setSuccess={this.props.setSuccess}
+            setError={this.props.setError}
+            clearNotifications={this.props.clearNotifications}
+          />
+        </div>
+      )
+    }
+  }
+}
+
+const GroupManagementForm = ({
+  groups,
+  groupConfigurationID,
+  deleteFromGroupAction,
+  topics,
+  users,
+  deleteGroup,
+  setSuccess,
+  setError,
+  clearNotifications
+}) => {
   const filteredGroups = groups.filter(
     (group) => group.configurationId === groupConfigurationID
   )
-
-  console.log('filtered', filteredGroups)
 
   return (
     <div>
@@ -194,11 +604,26 @@ const GroupManagementForm = ({ groups, groupConfigurationID }) => {
                 <tbody>
                   <tr>
                     <td style={{ verticalAlign: 'top', padding: '25px' }}>
-                      <SingleGroupView group={group} />
+                      <GroupViewer
+                        group={group}
+                        topics={topics}
+                        users={users}
+                        deleteFromGroupAction={deleteFromGroupAction}
+                        deleteGroup={deleteGroup}
+                        setSuccess={setSuccess}
+                        setError={setError}
+                        clearNotifications={clearNotifications}
+                      />
+                    </td>
+                    {/*                     <td style={{ verticalAlign: 'top', padding: '25px' }}>
+                      <SingleGroupView
+                        group={group}
+                        deleteFromGroupAction={deleteFromGroupAction}
+                      />
                     </td>
                     <td style={{ verticalAlign: 'top', padding: '25px' }}>
-                      <SingleGroupEdit group={group} />
-                    </td>
+                      <ConnectedSingleGroupEdit group={group} />
+                    </td> */}
                   </tr>
                 </tbody>
               </table>
@@ -235,7 +660,6 @@ const saveGroup = async (event, props) => {
       studentIds: splitStudents
     })
     props.createGroupSuccsess(createdGroup)
-    console.log(createdGroup)
 
     props.setSuccess('Group saved!')
     setTimeout(() => {
@@ -329,7 +753,8 @@ const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
   groups: state.groupPage.groups,
   topics: state.topicListPage.topics,
-  configurations: state.adminPage.configurations
+  configurations: state.adminPage.configurations,
+  users: state.groupPage.users
 })
 
 const mapDispatchToPropsForm = {
@@ -338,7 +763,10 @@ const mapDispatchToPropsForm = {
   onTopicSelectChange: groupManagementActions.updateGroupTopicID,
   onInstructorIdChange: groupManagementActions.updateGroupInstructorID,
   onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
+  deleteFromGroupAction: groupManagementActions.deleteFromGroup,
+  updateExistingGroup: groupManagementActions.updateExistingGroup,
   createGroupSuccsess: groupManagementActions.createGroupSuccsess,
+  deleteGroup: groupManagementActions.deleteGroup,
   updateTopicsForm: topicListPageActions.updateTopics,
   updateConfigurations: adminPageActions.updateConfigurations,
   ...notificationActions
@@ -358,6 +786,11 @@ const ConnectedConfigurationSelect = connect(
   mapStateToPropsForm,
   mapDispatchToPropsForm
 )(ConfigurationSelect)
+
+const ConnectedSingleGroupEdit = connect(
+  mapStateToPropsForm,
+  mapDispatchToPropsForm
+)(SingleGroupEdit)
 
 class GroupManagementPage extends React.Component {
   componentWillMount() {
@@ -386,6 +819,16 @@ class GroupManagementPage extends React.Component {
       const fetchedConfiguration = await configurationService.getAll()
 
       const fetchedGroups = await groupManagementService.get()
+
+      const fetchedUsers = await userService.get()
+      console.log('fetchedUsers ', fetchedUsers)
+      //Siirrä users stateen
+      //Actioni millä haetaan nimet student numberin mukaan statesta
+      //Muuta hakemaan rekisteröinnit
+      //
+      //    Alustavasti lisätty groupmanagement stateen
+      this.props.setUsers(fetchedUsers)
+
       //topic filter configin omille
 
       this.props.setGroups(fetchedGroups)
@@ -418,18 +861,7 @@ class GroupManagementPage extends React.Component {
 
         <h4>Created groups</h4>
 
-        {/* <Paper elevation={1} style={{ padding: '1rem 1.5rem' }}> */}
         <ConnectedGroupManagementForm />
-        {/* </Paper> */}
-
-        {/*         {this.props.topics.map((topic) => (
-          <div key={topic.id}>
-            <Paper elevation={1} style={{ padding: '1rem 1.5rem' }}>
-              <ConnectedGroupManagementForm group={topic} />
-            </Paper>
-            <p />
-          </div>
-        ))} */}
       </div>
     )
   }
@@ -438,13 +870,15 @@ class GroupManagementPage extends React.Component {
 const mapStateToProps = (state) => ({
   topics: state.topicListPage.topics,
   configurations: state.adminPage.configurations,
-  groups: state.groupPage.groups
+  groups: state.groupPage.groups,
+  users: state.groupPage.users
 })
 
 const mapDispatchToProps = {
   updateTopics: topicListPageActions.updateTopics,
   setConfigurations: adminPageActions.setConfigurations,
   setGroups: groupManagementActions.setGroups,
+  setUsers: groupManagementActions.setUsers,
   ...notificationActions
 }
 

@@ -33,6 +33,26 @@ const setGroups = (groups) => ({
   payload: groups
 })
 
+const deleteFromGroup = (group) => ({
+  type: 'DELETE_FROM_GROUP',
+  payload: group
+})
+
+const updateExistingGroup = (group) => ({
+  type: 'UPDATE_EXISTING_GROUP',
+  payload: group
+})
+
+const deleteGroup = (group) => ({
+  type: 'DELETE_GROUP',
+  payload: group
+})
+
+const setUsers = (users) => ({
+  type: 'SET_USERS',
+  payload: users
+})
+
 export default {
   updateCreateGroupFormName,
   updateStudentsForm,
@@ -40,5 +60,9 @@ export default {
   updateGroupInstructorID,
   updateGroupConfigurationID,
   createGroupSuccsess,
-  setGroups
+  setGroups,
+  deleteFromGroup,
+  updateExistingGroup,
+  deleteGroup,
+  setUsers
 }
