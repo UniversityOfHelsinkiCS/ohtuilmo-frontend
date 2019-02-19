@@ -1,28 +1,22 @@
-const setError = (message) => {
-  return {
-    type: 'SET_ERROR',
-    payload: message
-  }
-}
-
-const setSuccess = (message) => {
-  return {
-    type: 'SET_SUCCESS',
-    payload: message
-  }
-}
-
-const setInfo = (message) => {
-  return {
-    type: 'SET_INFO',
-    payload: message
-  }
-}
-
-const clearNotifications = () => {
+export const clearNotifications = () => {
   return {
     type: 'CLEAR_NOTIFICATIONS'
   }
 }
 
-export default { setError, setSuccess, setInfo, clearNotifications }
+const setNotification = (message, type, duration) => ({
+  type: 'SET_NOTIFICATION',
+  payload: { message, type, duration }
+})
+
+export const setError = (message, duration = 3000) => {
+  return setNotification(message, 'error', duration)
+}
+
+export const setSuccess = (message, duration = 3000) => {
+  return setNotification(message, 'success', duration)
+}
+
+export const setInfo = (message, duration = 3000) => {
+  return setNotification(message, 'info', duration)
+}

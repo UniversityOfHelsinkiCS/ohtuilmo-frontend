@@ -22,7 +22,7 @@ import UserDetails from './UserDetails'
 import './RegistrationPage.css'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 class RegistrationPage extends React.Component {
   async componentWillMount() {
@@ -37,10 +37,7 @@ class RegistrationPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -58,10 +55,7 @@ class RegistrationPage extends React.Component {
       this.props.updateQuestions(fetchedQuestions)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Error fetching questions')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Error fetching questions', 3000)
     }
   }
 
@@ -76,10 +70,7 @@ class RegistrationPage extends React.Component {
       this.props.updateTopics(fetchedTopics)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Error fetching topics')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Error fetching topics', 3000)
     }
   }
 
@@ -116,28 +107,19 @@ class RegistrationPage extends React.Component {
         questions: this.props.questions,
         preferred_topics: this.props.topics
       })
-      this.props.setSuccess('Registration submitted')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 15000)
+      this.props.setSuccess('Registration submitted', 15000)
       this.props.history.push('/')
     } catch (e) {
       console.log(e)
       if (e.response.data.error === 'student already registered') {
-        this.props.setError('You have already registered for this course')
-        setTimeout(() => {
-          this.props.clearNotifications()
-        }, 15000)
+        this.props.setError(
+          'You have already registered for this course',
+          15000
+        )
       } else if (e.response.data.error === 'missing email') {
-        this.props.setError('Email is missing')
-        setTimeout(() => {
-          this.props.clearNotifications()
-        }, 5000)
+        this.props.setError('Email is missing', 5000)
       } else {
-        this.props.setError('Error happened')
-        setTimeout(() => {
-          this.props.clearNotifications()
-        }, 5000)
+        this.props.setError('Error happened', 5000)
       }
     }
   }
@@ -288,7 +270,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...registrationPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedRegistrationPage = connect(

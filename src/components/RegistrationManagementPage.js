@@ -7,7 +7,7 @@ import Switch from '@material-ui/core/Switch'
 import TextField from '@material-ui/core/TextField'
 // Actions
 import appActions from '../reducers/actions/appActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationManagementActions from '../reducers/actions/registrationManagementActions'
 // Services
 import registrationManagementService from '../services/registrationManagement'
@@ -25,10 +25,7 @@ class RegistrationManagement extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
+      this.props.setError('Some error happened', 5000)
     }
   }
 
@@ -43,7 +40,6 @@ class RegistrationManagement extends React.Component {
       projectInfo,
       updateIsLoading,
       setSuccess,
-      clearNotifications,
       setError
     } = this.props
 
@@ -59,20 +55,14 @@ class RegistrationManagement extends React.Component {
           topic_registration_message: topicMessage
         }
       })
-      setSuccess('Saving configuration succesful!')
+      setSuccess('Saving configuration succesful!', 3000)
       updateIsLoading(false)
-      setTimeout(() => {
-        clearNotifications()
-      }, 3000)
     } catch (e) {
       console.log('error happened', e.response)
       updateIsLoading(false)
       if (e.response.status === 400) {
-        setError(e.response.data.error)
+        setError(e.response.data.error, 3000)
       }
-      setTimeout(() => {
-        clearNotifications()
-      }, 3000)
     }
   }
 
@@ -161,8 +151,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...registrationManagementActions,
-  ...notificationActions,
-  ...appActions
+  ...appActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedRegistrationManagement = connect(

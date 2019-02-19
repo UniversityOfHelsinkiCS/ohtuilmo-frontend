@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+
 import loginService from '../services/login'
 import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import './LoginPage.css'
 
 class LoginPage extends React.Component {
@@ -28,29 +30,22 @@ class LoginPage extends React.Component {
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
-      this.props.setSuccess('Login successful!')
+      this.props.setSuccess('Login successful!', 3000)
       this.props.clearForm()
       this.props.updateIsLoading(false)
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.updateIsLoading(false)
 
       if (e.response) {
         if (e.response.status === 400) {
-          this.props.setError('Username or password is missing!')
+          this.props.setError('Username or password is missing!', 3000)
         } else if (e.response.status === 401) {
-          this.props.setError('Username or password is incorrect!')
+          this.props.setError('Username or password is incorrect!', 3000)
         }
       } else {
-        this.props.setError('Error occurred, login failed')
+        this.props.setError('Error occurred, login failed', 3000)
       }
-
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     }
   }
 
@@ -99,8 +94,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...loginPageActions,
-  ...notificationActions,
-  ...appActions
+  ...appActions,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedLoginPage = connect(

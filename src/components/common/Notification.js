@@ -1,32 +1,30 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 
-const Notification = ({ type, message, open }) => {
-  if ((message === null) | (message === '')) {
-    return null
-  }
+import { clearNotifications } from '../../reducers/actions/notificationActions'
 
-  var style = {
-    margin: '10px',
-    borderRadius: '4px'
+const getBackgroundColor = (type) => {
+  switch (type) {
+  case 'error':
+    return 'red'
+  case 'success':
+    return 'green'
+  default:
+    return 'skyblue'
   }
+}
 
-  if (type === 'error') {
-    style = {
-      ...style,
-      backgroundColor: 'red'
-    }
-  } else if (type === 'success') {
-    style = {
-      ...style,
-      backgroundColor: 'green'
-    }
-  } else {
-    style = {
-      ...style,
-      backgroundColor: 'skyblue'
-    }
+const Notification = ({
+  type,
+  message,
+  open,
+  duration,
+  onNotificationClose
+}) => {
+  const style = {
+    backgroundColor: getBackgroundColor(type)
   }
 
   return (
@@ -37,6 +35,8 @@ const Notification = ({ type, message, open }) => {
           horizontal: 'left'
         }}
         open={open}
+        autoHideDuration={duration}
+        onClose={onNotificationClose}
       >
         <SnackbarContent
           style={style}
@@ -51,4 +51,23 @@ const Notification = ({ type, message, open }) => {
   )
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  const { notifications } = state
+  const { type, open, message, duration } = notifications
+
+  return {
+    type,
+    open,
+    message,
+    duration
+  }
+}
+
+const mapDispatchToProps = {
+  onNotificationClose: clearNotifications
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notification)

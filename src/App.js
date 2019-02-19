@@ -25,7 +25,7 @@ import tokenCheckService from './services/tokenCheck'
 
 // Actions
 import appActions from './reducers/actions/appActions'
-import notificationActions from './reducers/actions/notificationActions'
+import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
@@ -53,11 +53,9 @@ class App extends Component {
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(
-        'Error fetching registration management configuration'
+        'Error fetching registration management configuration',
+        5000
       )
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 5000)
     }
   }
 
@@ -96,11 +94,7 @@ class App extends Component {
       <Router history={history}>
         <div id="app-wrapper">
           <NavigationBar logout={this.logout} />
-          <Notification
-            type={this.props.type}
-            message={this.props.message}
-            open={this.props.open}
-          />
+          <Notification />
           <div id="app-content">
             {loadingSpinner}
             <Switch>
@@ -185,15 +179,12 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.loginPage.user,
-    type: state.notifications.type,
-    open: state.notifications.open,
-    message: state.notifications.message
+    user: state.loginPage.user
   }
 }
 
 const mapDispatchToProps = {
-  ...notificationActions,
+  setError: notificationActions.setError,
   ...loginPageActions,
   ...appActions,
   fetchRegistrationManagement:

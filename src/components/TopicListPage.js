@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import topicListPageActions from '../reducers/actions/topicListPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+
 import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItem from '@material-ui/core/ListItemText'
@@ -22,6 +21,9 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+
+import topicListPageActions from '../reducers/actions/topicListPageActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 const buttonTheme = createMuiTheme({
   palette: {
@@ -50,10 +52,7 @@ class TopicListPage extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -67,10 +66,7 @@ class TopicListPage extends React.Component {
       this.props.updateTopics(sortedTopics)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -81,16 +77,10 @@ class TopicListPage extends React.Component {
       const updatedTopics = this.props.topics.map(topic2 => { return topic2.id === topic.id ? topic : topic2 })
       await topicService.update(topic)
       this.props.updateTopics(updatedTopics)
-      this.props.setSuccess('Topic update submitted succesfully!')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setSuccess('Topic update submitted succesfully!', 3000)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -260,7 +250,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...topicListPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedTopicListPage = connect(

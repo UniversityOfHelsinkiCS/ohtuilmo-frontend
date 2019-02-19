@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-import topicFormPageActions from '../reducers/actions/topicFormPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+
 import Button from '@material-ui/core/Button'
+
+import topicFormPageActions from '../reducers/actions/topicFormPageActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import topicService from '../services/topic'
 import Topic from './Topic'
 import TopicForm from './TopicForm'
@@ -17,20 +19,14 @@ class TopicFormPage extends React.Component {
       const content = { content: this.props.content }
       const createdTopic = await topicService.create(content)
 
-      this.props.setSuccess('Topic proposal submitted succesfully!')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 10000)
+      this.props.setSuccess('Topic proposal submitted succesfully!', 10000)
       this.props.clearForm()
 
       this.props.updateSecretId(createdTopic.secret_id)
       this.props.setSaved(true)
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
+      this.props.setError('Some error happened', 3000)
     }
   }
 
@@ -90,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   ...topicFormPageActions,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedTopicFormPage = connect(
