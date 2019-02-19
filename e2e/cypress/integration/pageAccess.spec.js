@@ -1,8 +1,14 @@
-const { TEST_USER } = require('../common')
+const { TEST_USER, TEST_ADMIN } = require('../common')
 
 const loginAsUser = () => {
   cy.get('.loginpage-form input[name="username"]').type(TEST_USER.username)
   cy.get('.loginpage-form input[name="password"]').type(TEST_USER.password)
+  cy.get('.loginpage-form .loginpage-button').click()
+}
+
+const loginAsAdmin = () => {
+  cy.get('.loginpage-form input[name="username"]').type(TEST_ADMIN.username)
+  cy.get('.loginpage-form input[name="password"]').type(TEST_ADMIN.password)
   cy.get('.loginpage-form .loginpage-button').click()
 }
 
@@ -16,7 +22,7 @@ const assertIsOnLoginPage = () => {
   cy.get('.loginpage-header').should('have.text', 'Login')
 }
 
-describe('Auto redirects for user without authentication', () => {
+describe('Page access without authentication', () => {
   beforeEach(() => {
     cy.clearLocalStorage()
   })
@@ -57,7 +63,7 @@ describe('Auto redirects for user without authentication', () => {
   })
 })
 
-describe('Auto redirects for user with authentication', () => {
+describe('Page access for user', () => {
   beforeEach(() => {
     cy.clearLocalStorage()
     cy.visit('/')
@@ -88,5 +94,47 @@ describe('Auto redirects for user with authentication', () => {
   it('/topics redirects user to landing page', () => {
     cy.visit('/topics')
     assertIsOnLandingPage()
+  })
+})
+
+describe.only('Page access for admin', () => {
+  beforeEach(() => {
+    cy.clearLocalStorage()
+    cy.visit('/')
+    loginAsAdmin()
+    assertIsOnLandingPage()
+  })
+
+  it('renders /administration when visited', () => {
+    cy.get('.nav-menu-button').click()
+    cy.get('.administration-menu-item').click()
+    cy.url().should('contain', '/administration')
+    cy.contains('Change configuration')
+  })
+
+  it('renders /administration/participants when visited', () => {
+    cy.visit('/administration/participants')
+    cy.url().should('contain', '/administration/participants')
+    cy.get('.participants-container').should('be.visible')
+  })
+
+  it('renders /administration/questions when visited', () => {
+    cy.visit('/administration/questions')
+    cy.url().should('contain', '/administration/questions')
+    cy.get('.questions-form-container').should('be.visible')
+  })
+
+  it('renders /administration/registrationmanagement when visited', () => {
+    cy.get('.nav-menu-button').click()
+    cy.get('.registration-management-menu-item').click()
+    cy.url().should('contain', '/administration/registrationmanagement')
+    cy.contains('Registration management')
+  })
+
+  it('renders /topics when visited', () => {
+    cy.get('.nav-menu-button').click()
+    cy.get('.topics-menu-item').click()
+    cy.url().should('contain', '/topics')
+    cy.get('.topics-container').should('be.visible')
   })
 })

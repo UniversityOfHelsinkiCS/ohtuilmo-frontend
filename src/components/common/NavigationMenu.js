@@ -17,7 +17,7 @@ class NavigationMenu extends React.Component {
     this.setState({ open: !this.state.open })
   }
 
-  handleClose = event => {
+  handleClose = (event) => {
     if (this.anchorEl.contains(event.target)) {
       return
     }
@@ -25,7 +25,7 @@ class NavigationMenu extends React.Component {
     this.setState({ open: false })
   }
 
-  handleItemClick = item => {
+  handleItemClick = (item) => {
     this.setState({ open: false })
     item.handler()
   }
@@ -37,7 +37,8 @@ class NavigationMenu extends React.Component {
       <div>
         <div>
           <IconButton
-            buttonRef={node => {
+            className="nav-menu-button"
+            buttonRef={(node) => {
               this.anchorEl = node
             }}
             aria-owns={open ? 'menu-list-grow' : undefined}
@@ -46,7 +47,13 @@ class NavigationMenu extends React.Component {
           >
             <MenuIcon />
           </IconButton>
-          <Popper style={{ zIndex: 1 }} open={open} anchorEl={this.anchorEl} transition disablePortal>
+          <Popper
+            style={{ zIndex: 1 }}
+            open={open}
+            anchorEl={this.anchorEl}
+            transition
+            disablePortal
+          >
             {({ TransitionProps, placement }) => (
               <Grow
                 {...TransitionProps}
@@ -59,8 +66,9 @@ class NavigationMenu extends React.Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
-                      {this.props.menuItems.map(item => (
+                      {this.props.menuItems.map((item) => (
                         <MenuItem
+                          className={item.className}
                           onClick={() => this.handleItemClick(item)}
                           key={item.text}
                         >
