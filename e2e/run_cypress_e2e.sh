@@ -49,16 +49,19 @@ function install() {
 
 function setup() {
     # Bring up services for tests
-    printProgress 'SETUP (0/3)' 'Preparing services for E2E tests. Starting database...'
+    printProgress 'SETUP (0/4)' 'Preparing services for E2E tests. Starting database...'
     $dco up -d db
 
-    printProgress 'SETUP (1/3)' 'Database is up, running migrations'
+    printProgress 'SETUP (1/4)' 'Database is up, running migrations'
     $dco run --entrypoint 'npm run db:migrate' --rm backend
 
-    printProgress 'SETUP (2/3)' 'Migrations ran, starting backend, frontend and nginx'
+    printProgress 'SETUP (2/4)' 'Migrations ran, running seeds'
+    $dco run --entrypoint 'npm run db:seed:all' --rm backend
+
+    printProgress 'SETUP (3/4)' 'Seeds ran, starting backend, frontend and nginx'
     $dco up -d backend frontend nginx
 
-    printProgress 'SETUP (3/3)' 'Infrastructure is ready!'
+    printProgress 'SETUP (4/4)' 'Infrastructure is ready!'
 }
 
 function teardown() {
