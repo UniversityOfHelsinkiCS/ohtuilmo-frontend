@@ -118,7 +118,7 @@ class RegistrationDetailsPage extends React.Component {
     }
 
     return (
-      <div>
+      <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
           Registration details
         </Typography>

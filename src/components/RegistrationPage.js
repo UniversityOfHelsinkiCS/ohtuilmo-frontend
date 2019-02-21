@@ -196,7 +196,7 @@ class RegistrationPage extends React.Component {
           {this.props.projectInfo}
         </div>
         <form onSubmit={this.submitRegistration}>
-          <div className="section">
+          <div className="section registration-form">
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
             <p>Please fill your email</p>
