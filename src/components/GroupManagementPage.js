@@ -343,7 +343,7 @@ class SingleGroupEdit extends React.Component {
         />
         <p>Add instructor</p>
         <TextField
-          value={this.state.instructorId}
+          value={this.state.instructorId || ''}
           onChange={this.handleInstructorChange}
         />
         <Button
