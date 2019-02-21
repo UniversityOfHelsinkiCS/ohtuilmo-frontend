@@ -52,11 +52,7 @@ const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
   return (
     <Select
       value={groupTopicID}
-      onChange={
-        (e) => onTopicSelectChange(e.target.value)
-        /* console.log("topicSelect ", e.target.value) */
-        /* console.log("topicSelect ", groupTopicID)  */
-      }
+      onChange={(e) => onTopicSelectChange(e.target.value)}
     >
       {topics.map((topic) => (
         <MenuItem key={topic.id} value={topic.id}>
@@ -105,25 +101,43 @@ const SingleGroupView = ({
   setError,
   clearNotifications
 }) => {
-  console.log(group)
-  const thisTopic = topics
-    .map((topic) => topic)
-    .filter((topic) => topic.id === group.topicId)
+  const thisTopic = topics.filter((topic) => topic.id === group.topicId)
 
   const topicName = thisTopic[0].content.title
 
   const getUserNames = (user) => {
-    console.log('gUN user ', user)
     const namedUser = users.filter(
       (userIterator) => userIterator.student_number === user
     )[0]
-    console.log('gun users ', users)
-    console.log('gun namedUser ', namedUser)
     return `${namedUser.first_names} ${namedUser.last_name} (${user})`
   }
 
-  /*   console.log("SGV group ", group)
-    console.log("SGV thisTopic ", thisTopic[0].content.title) */
+  const getGroupInstructor = () => {
+    if (group.instructorId === null) {
+      return <div>No instructor assigned</div>
+    } else {
+      return (
+        <div>
+          {getUserNames(group.instructorId)}
+          <IconButton
+            aria-label="Delete"
+            onClick={(event) =>
+              deleteFromGroupInstructor(event, {
+                group,
+                deleteFromGroupAction,
+                setSuccess,
+                setError,
+                clearNotifications
+              })
+            }
+          >
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </div>
+      )
+    }
+  }
+
   return (
     <div style={{ align: 'top' }}>
       {group.name}
@@ -157,23 +171,7 @@ const SingleGroupView = ({
           </div>
         ))}
         <p>Instructor</p>
-        <div>
-          {getUserNames(group.instructorId)}
-          <IconButton
-            aria-label="Delete"
-            onClick={(event) =>
-              deleteFromGroupInstructor(event, {
-                group,
-                deleteFromGroupAction,
-                setSuccess,
-                setError,
-                clearNotifications
-              })
-            }
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </div>
+        {getGroupInstructor()}
       </div>
 
       <Button
@@ -191,8 +189,6 @@ const SingleGroupView = ({
 const deleteFromGroupStudent = async (event, props) => {
   event.preventDefault()
 
-  console.log(props)
-
   const {
     id,
     name,
@@ -205,15 +201,6 @@ const deleteFromGroupStudent = async (event, props) => {
   const removedStudents = studentIds
     .map((studentmap) => studentmap.trim())
     .filter((studentmap) => studentmap !== props.student)
-
-  /*   const updatedGroup = {
-    id: id,
-    name: name,
-    topicId: topicId,
-    configurationId: configurationId,
-    instructorId: instructorId,
-    studentIds: removedStudents
-  } */
 
   try {
     const updatedGroup = await groupManagementService.put({
@@ -237,32 +224,12 @@ const deleteFromGroupStudent = async (event, props) => {
       props.clearNotifications()
     }, 3000)
   }
-
-  /* console.log('deletesä => ', updatedGroup) */
-
-  /*  props.setSuccess('Student deleted!')
-  setTimeout(() => {
-    props.clearNotifications()
-  }, 3000)
-
-  props.deleteFromGroupAction(updatedGroup) */
 }
 
 const deleteFromGroupInstructor = async (event, props) => {
   event.preventDefault()
 
-  console.log(props)
-
   const { id, name, topicId, studentIds, configurationId } = props.group
-
-  /*   const updatedGroup = {
-    id: id,
-    name: name,
-    topicId: topicId,
-    configurationId: configurationId,
-    instructorId: '',
-    studentIds: studentIds
-  } */
 
   try {
     const updatedGroup = await groupManagementService.put({
@@ -286,21 +253,10 @@ const deleteFromGroupInstructor = async (event, props) => {
       props.clearNotifications()
     }, 3000)
   }
-
-  /* console.log('deletesä => ', updatedGroup) */
-
-  /*   props.setSuccess('Instructor deleted!')
-  setTimeout(() => {
-    props.clearNotifications()
-  }, 3000)
-
-  props.deleteFromGroupAction(updatedGroup) */
 }
 
 const deleteExistingGroup = async (event, props) => {
   event.preventDefault()
-
-  console.log(props)
 
   const {
     id,
@@ -320,31 +276,30 @@ const deleteExistingGroup = async (event, props) => {
     studentIds: studentIds
   }
 
-  /*   try {
+   try {
     const deletedGroup = await groupManagementService.del({
       id: id
     })
-    props.deleteGroup(deletedGroup)
+    console.log(deletedGroup)
+    props.deleteGroup(groupToDelete)
 
-    props.setSuccess('Group saved!')
+    props.setSuccess('Group deleted!')
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
   } catch (e) {
-    props.setError(`Failed to save! ${e.response.data.error}`)
+    props.setError(`Failed to delte! ${e.response.data.error}`)
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
-  } */
+  } 
 
-  console.log(groupToDelete)
-
-  props.setSuccess('Group deleted!')
+ /*  props.setSuccess('Group deleted!')
   setTimeout(() => {
     props.clearNotifications()
   }, 3000)
 
-  props.deleteGroup(groupToDelete)
+  props.deleteGroup(groupToDelete) */
 }
 
 class SingleGroupEdit extends React.Component {
@@ -374,7 +329,6 @@ class SingleGroupEdit extends React.Component {
   }
 
   handleTopicChange = (e) => {
-    console.log('SGE ', e)
     this.setState({ topicId: e })
   }
 
@@ -383,7 +337,7 @@ class SingleGroupEdit extends React.Component {
 
     return (
       <div style={{ allign: 'top' }}>
-        Edit group: {this.state.name}
+        Edit group: {this.props.group.name}
         <IconButton
           aria-label="Delete"
           onClick={(event) =>
@@ -465,19 +419,7 @@ const updateCreatedGroup = async (event, props) => {
     .map((student) => student.trim())
     .filter((str) => !!str)
 
-  /* const updatedGroup = {
-    id: id,
-    name: name,
-    topicId: topicId,
-    configurationId: configurationId,
-    instructorId: instructorId,
-    studentIds: splitStudents
-  } */
-
-  props.toggleEditMode()
-
   try {
-    console.log('start of try', splitStudents)
     const updatedGroup = await groupManagementService.put({
       id: id,
       name: name,
@@ -487,13 +429,14 @@ const updateCreatedGroup = async (event, props) => {
       studentIds: splitStudents
     })
 
-    console.log('After save', updatedGroup)
     props.updateExistingGroup(updatedGroup)
 
     props.setSuccess('Group updated!')
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
+
+    props.toggleEditMode()
   } catch (e) {
     console.log(e)
     props.setError(`Failed to updated group! ${e.response.data.error}`)
@@ -501,22 +444,9 @@ const updateCreatedGroup = async (event, props) => {
       props.clearNotifications()
     }, 3000)
   }
-
-  /*  console.log('updateExisting => ', updatedGroup) */
-
-  /* props.setSuccess('Group updated!')
-  setTimeout(() => {
-    props.clearNotifications()
-  }, 3000)
-
-  props.updateExistingGroup(updatedGroup) */
 }
 
 class GroupViewer extends React.Component {
-  /* }
-
-const GroupViewer = ({ group, deleteFromGroupAction }) => { */
-
   constructor(props) {
     super(props)
     this.state = {
@@ -524,10 +454,7 @@ const GroupViewer = ({ group, deleteFromGroupAction }) => { */
     }
   }
 
-  /* let editMode = false */
-
   toggleEditMode = () => {
-    /* this.setState.state({editMode : !this.state.editMode}) */
     this.setState((prevState) => ({
       editMode: !prevState.editMode
     }))
@@ -615,15 +542,6 @@ const GroupManagementForm = ({
                         clearNotifications={clearNotifications}
                       />
                     </td>
-                    {/*                     <td style={{ verticalAlign: 'top', padding: '25px' }}>
-                      <SingleGroupView
-                        group={group}
-                        deleteFromGroupAction={deleteFromGroupAction}
-                      />
-                    </td>
-                    <td style={{ verticalAlign: 'top', padding: '25px' }}>
-                      <ConnectedSingleGroupEdit group={group} />
-                    </td> */}
                   </tr>
                 </tbody>
               </table>
@@ -634,6 +552,8 @@ const GroupManagementForm = ({
     </div>
   )
 }
+
+
 
 const saveGroup = async (event, props) => {
   event.preventDefault()
@@ -821,15 +741,10 @@ class GroupManagementPage extends React.Component {
       const fetchedGroups = await groupManagementService.get()
 
       const fetchedUsers = await userService.get()
-      console.log('fetchedUsers ', fetchedUsers)
-      //Siirrä users stateen
-      //Actioni millä haetaan nimet student numberin mukaan statesta
-      //Muuta hakemaan rekisteröinnit
-      //
-      //    Alustavasti lisätty groupmanagement stateen
+
       this.props.setUsers(fetchedUsers)
 
-      //topic filter configin omille
+ 
 
       this.props.setGroups(fetchedGroups)
       this.props.updateTopics(fetchedTopics)

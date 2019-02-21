@@ -38,6 +38,10 @@ const groupPageReducer = (state = initialState, action) => {
   case 'CREATE_GROUP_SUCCSESS':
     return {
       ...state,
+      groupName: '',
+      students: '',
+      groupTopicID: '',
+      groupInstructorID: '',
       groups: [...state.groups, action.payload]
     }
   case 'SET_GROUPS':

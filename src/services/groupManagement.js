@@ -33,10 +33,10 @@ const put = async (updatedGroup) => {
 }
 
 const del = async (groupToDelete) => {
-  console.log(groupToDelete)
+ 
 
-  const response = await axios.delete(url, groupToDelete, {
-    headers: { Authorization: 'Bearer ' + getUserToken }
+  const response = await axios.delete(`${url}/${groupToDelete.id}`,  {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
   })
 
   return response.data
