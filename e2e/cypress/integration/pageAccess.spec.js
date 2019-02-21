@@ -108,9 +108,7 @@ describe('Page access for registered user', () => {
     cy.clearLocalStorage()
     cy.visit('/')
     loginAsUser(TEST_USER2)
-  })
-
-  it('login redirects to /registrationdetails', () => {
+    // login redirects to registration details page
     assertIsOnRegistrationDetailsPage()
   })
 
