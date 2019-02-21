@@ -33,7 +33,7 @@ const put = async (updatedGroup) => {
 }
 
 const del = async (groupToDelete) => {
- 
+
 
   const response = await axios.delete(`${url}/${groupToDelete.id}`,  {
     headers: { Authorization: 'Bearer ' + getUserToken() }

@@ -276,7 +276,7 @@ const deleteExistingGroup = async (event, props) => {
     studentIds: studentIds
   }
 
-   try {
+  try {
     const deletedGroup = await groupManagementService.del({
       id: id
     })
@@ -292,14 +292,7 @@ const deleteExistingGroup = async (event, props) => {
     setTimeout(() => {
       props.clearNotifications()
     }, 3000)
-  } 
-
- /*  props.setSuccess('Group deleted!')
-  setTimeout(() => {
-    props.clearNotifications()
-  }, 3000)
-
-  props.deleteGroup(groupToDelete) */
+  }
 }
 
 class SingleGroupEdit extends React.Component {
@@ -743,8 +736,6 @@ class GroupManagementPage extends React.Component {
       const fetchedUsers = await userService.get()
 
       this.props.setUsers(fetchedUsers)
-
- 
 
       this.props.setGroups(fetchedGroups)
       this.props.updateTopics(fetchedTopics)
