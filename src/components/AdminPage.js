@@ -134,8 +134,7 @@ class AdminPage extends React.Component {
   }
 
   goToAddRegistrationQuestions = () => {
-    this.props.updateMode('registration')
-    this.props.history.push('/administration/questions')
+    this.props.history.push('/administration/registration-questions')
   }
 
   goToAddReviewQuestions = () => {
