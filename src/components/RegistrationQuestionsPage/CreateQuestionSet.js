@@ -17,11 +17,23 @@ const CreateQuestionSet = ({ onSubmit }) => {
   const [questionsJson, setQuestionsJson] = useState('')
   const [questionsError, setQuestionsError] = useState('')
 
+  const handleNameChange = (e) => {
+    setName(e.target.value)
+  }
+
+  const handleQuestionsChange = (e) => {
+    setQuestionsJson(e.target.value)
+
+    if (questionsError !== '') {
+      setQuestionsError('')
+    }
+  }
+
   const handleFormSubmit = (e) => {
     e.preventDefault()
 
     if (!isValidJson(questionsJson)) {
-      setQuestionsError('Questions contains invalid JSON')
+      setQuestionsError('Field contains invalid JSON')
       return
     }
 
@@ -42,7 +54,7 @@ const CreateQuestionSet = ({ onSubmit }) => {
         label="Name"
         margin="normal"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={handleNameChange}
       />
       <TextField
         error={!!questionsError}
@@ -56,13 +68,13 @@ const CreateQuestionSet = ({ onSubmit }) => {
         }}
         fullWidth
         required
-        label="Questions"
+        label="Questions (JSON)"
         helperText={questionsError || ''}
         margin="normal"
         multiline
         rows={5}
         value={questionsJson}
-        onChange={(e) => setQuestionsJson(e.target.value)}
+        onChange={handleQuestionsChange}
       />
       <Button type="submit" variant="contained" color="primary">
         Create
