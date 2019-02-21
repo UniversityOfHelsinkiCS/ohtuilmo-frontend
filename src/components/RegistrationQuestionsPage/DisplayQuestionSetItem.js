@@ -48,7 +48,6 @@ DisplayQuestionsTable.propTypes = {
 
 const DisplayQuestionSetItem = ({ questionSet, theme }) => {
   const { name, questions } = questionSet
-  console.log('theme', theme)
   const headerStyle = {
     borderBottomColor: theme.palette.primary.main
   }

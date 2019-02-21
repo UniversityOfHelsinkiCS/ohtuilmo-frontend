@@ -30,7 +30,7 @@ class RegistrationQuestionsPage extends React.Component {
         }
       }
     } catch (e) {
-      console.log('error happened', e.response)
+      console.error('error happened', e.response)
       this.props.setError('Some error happened', 5000)
     }
   }
@@ -51,7 +51,7 @@ class RegistrationQuestionsPage extends React.Component {
     }
   }
   handleError = (e) => {
-    console.log('error happened', e, e.response)
+    console.error('error happened', e, e.response)
     this.props.setError('Some error happened', 3000)
   }
 
