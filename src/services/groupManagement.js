@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { BACKEND_URI } from '../utils/config'
+import { BACKEND_API_BASE } from '../utils/config'
 import { getUserToken } from '../utils/functions'
 
-const url = `${BACKEND_URI}/api/groups`
+const url = `${BACKEND_API_BASE}/groups`
 
 const get = async () => {
   const response = await axios.get(url, {
@@ -13,7 +13,6 @@ const get = async () => {
 }
 
 const create = async (newGroup) => {
-  console.log(newGroup)
 
   const response = await axios.post(url, newGroup, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
@@ -23,7 +22,6 @@ const create = async (newGroup) => {
 }
 
 const put = async (updatedGroup) => {
-  console.log(updatedGroup)
 
   const response = await axios.put(`${url}/${updatedGroup.id}` , updatedGroup, {
     headers: { Authorization: 'Bearer ' + getUserToken() }

@@ -16,7 +16,7 @@ import userService from '../services/user'
 
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import adminPageActions from '../reducers/actions/adminPageActions'
-import notificationActions from '../reducers/actions/notificationActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import groupManagementActions from '../reducers/actions/groupManagementActions'
 
 const FormInput = ({ label, children }) => (
@@ -214,15 +214,9 @@ const deleteFromGroupStudent = async (event, props) => {
     props.deleteFromGroupAction(updatedGroup)
 
     props.setSuccess('Student deleted!')
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   } catch (e) {
     console.log(e)
     props.setError(`Failed to deleted student! ${e.response.data.error}`)
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   }
 }
 
@@ -243,15 +237,9 @@ const deleteFromGroupInstructor = async (event, props) => {
     props.deleteFromGroupAction(updatedGroup)
 
     props.setSuccess('Instructor deleted!')
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   } catch (e) {
     console.log(e)
     props.setError(`Failed to delete instructor! ${e.response.data.error}`)
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   }
 }
 
@@ -277,21 +265,14 @@ const deleteExistingGroup = async (event, props) => {
   }
 
   try {
-    const deletedGroup = await groupManagementService.del({
+    await groupManagementService.del({
       id: id
     })
-    console.log(deletedGroup)
     props.deleteGroup(groupToDelete)
 
     props.setSuccess('Group deleted!')
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   } catch (e) {
     props.setError(`Failed to delte! ${e.response.data.error}`)
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   }
 }
 
@@ -425,17 +406,11 @@ const updateCreatedGroup = async (event, props) => {
     props.updateExistingGroup(updatedGroup)
 
     props.setSuccess('Group updated!')
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
 
     props.toggleEditMode()
   } catch (e) {
     console.log(e)
     props.setError(`Failed to updated group! ${e.response.data.error}`)
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   }
 }
 
@@ -455,16 +430,10 @@ class GroupViewer extends React.Component {
       this.props.setSuccess(
         `Editing for group ${this.props.group.name}  disabled!`
       )
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     } else {
       this.props.setSuccess(
         `Editing for group ${this.props.group.name}  enabled!`
       )
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     }
   }
 
@@ -575,14 +544,8 @@ const saveGroup = async (event, props) => {
     props.createGroupSuccsess(createdGroup)
 
     props.setSuccess('Group saved!')
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   } catch (e) {
     props.setError(`Failed to save! ${e.response.data.error}`)
-    setTimeout(() => {
-      props.clearNotifications()
-    }, 3000)
   }
 }
 
@@ -682,7 +645,8 @@ const mapDispatchToPropsForm = {
   deleteGroup: groupManagementActions.deleteGroup,
   updateTopicsForm: topicListPageActions.updateTopics,
   updateConfigurations: adminPageActions.updateConfigurations,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedGroupCreationForm = connect(
@@ -719,9 +683,6 @@ class GroupManagementPage extends React.Component {
     } catch (e) {
       console.log('error happened', e)
       this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     }
   }
 
@@ -742,9 +703,6 @@ class GroupManagementPage extends React.Component {
       this.props.setConfigurations(fetchedConfiguration.configurations)
     } catch (e) {
       this.props.setError('Some error happened')
-      setTimeout(() => {
-        this.props.clearNotifications()
-      }, 3000)
     }
   }
 
@@ -785,7 +743,8 @@ const mapDispatchToProps = {
   setConfigurations: adminPageActions.setConfigurations,
   setGroups: groupManagementActions.setGroups,
   setUsers: groupManagementActions.setUsers,
-  ...notificationActions
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedGroupManagementPage = connect(
