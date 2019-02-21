@@ -23,18 +23,22 @@ const loggedInItems = (history) => {
 const adminItems = (history) => {
   const items = [
     {
+      className: 'create-topic-menu-item',
       text: 'Create Topic',
       handler: () => history.push('/topics/create')
     },
     {
+      className: 'topics-menu-item',
       text: 'Topics',
       handler: () => history.push('/topics')
     },
     {
+      className: 'administration-menu-item',
       text: 'Administration',
       handler: () => history.push('/administration')
     },
     {
+      className: 'registration-management-menu-item',
       text: 'Registration Management',
       handler: () => history.push('/administration/registrationmanagement')
     }

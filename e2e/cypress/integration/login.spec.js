@@ -1,6 +1,3 @@
-// @ts-check
-/// <reference types="Cypress" />
-/* global describe, it, cy, expect */
 const { TEST_USER } = require('../common')
 
 const writeCredentials = (username, password) => {

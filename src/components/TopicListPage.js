@@ -33,7 +33,6 @@ const buttonTheme = createMuiTheme({
 })
 
 class TopicListPage extends React.Component {
-
   state = {
     open: false,
     selectedTopic: null,
@@ -70,11 +69,13 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleActiveChange = topic => async (event) => {
+  handleActiveChange = (topic) => async (event) => {
     event.preventDefault()
     try {
       topic.active = !topic.active
-      const updatedTopics = this.props.topics.map(topic2 => { return topic2.id === topic.id ? topic : topic2 })
+      const updatedTopics = this.props.topics.map((topic2) => {
+        return topic2.id === topic.id ? topic : topic2
+      })
       await topicService.update(topic)
       this.props.updateTopics(updatedTopics)
       this.props.setSuccess('Topic update submitted succesfully!', 3000)
@@ -84,7 +85,7 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleFilterChange = event => {
+  handleFilterChange = (event) => {
     event.preventDefault()
     const filter = event.target.value
     if (filter === 'active' || filter === 'inactive') {
@@ -94,7 +95,7 @@ class TopicListPage extends React.Component {
     }
   }
 
-  showTopic = topic => {
+  showTopic = (topic) => {
     const filter = this.props.filter
     if (filter === 'active' || filter === 'inactive') {
       const active = filter === 'active'
@@ -105,12 +106,19 @@ class TopicListPage extends React.Component {
   }
 
   handleEmailButtonPress = (topic, messageType) => async () => {
-    this.setState({ open: true, selectedTopic: topic, selectedMessageType: messageType })
+    this.setState({
+      open: true,
+      selectedTopic: topic,
+      selectedMessageType: messageType
+    })
   }
 
   handleDialogAccept = async () => {
     try {
-      await emailService.sendCustomerEmail(this.state.selectedTopic.content.email, this.state.selectedMessageType)
+      await emailService.sendCustomerEmail(
+        this.state.selectedTopic.content.email,
+        this.state.selectedMessageType
+      )
     } catch (e) {
       console.log(e)
     }
@@ -139,7 +147,9 @@ class TopicListPage extends React.Component {
   render() {
     let topicTitle = ''
     let topicOwner = ''
-    let parsedMessageType = this.parseMessageType(this.state.selectedMessageType)
+    let parsedMessageType = this.parseMessageType(
+      this.state.selectedMessageType
+    )
     if (this.state.selectedTopic) {
       topicTitle = this.state.selectedTopic.content.title
       topicOwner = this.state.selectedTopic.content.email
@@ -147,17 +157,20 @@ class TopicListPage extends React.Component {
     console.log(this.state.selectedTopic)
 
     return (
-      <div>
+      <div className="topics-container">
         <Dialog
           open={this.state.open}
           onClose={this.handleDialogClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{'Email confirmation'}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">
+            {'Email confirmation'}
+          </DialogTitle>
           <DialogContent>
             <Typography id="alert-dialog-description">
-              Do you want to send an email of type '{parsedMessageType}' to the owner of topic '{topicTitle}' ({topicOwner})?
+              Do you want to send an email of type '{parsedMessageType}' to the
+              owner of topic '{topicTitle}' ({topicOwner})?
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -169,17 +182,16 @@ class TopicListPage extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Select
-          value={this.props.filter}
-          onChange={this.handleFilterChange}
-        >
+        <Select value={this.props.filter} onChange={this.handleFilterChange}>
           <MenuItem value="all">All</MenuItem>
           <MenuItem value="active">Active</MenuItem>
           <MenuItem value="inactive">Inactive</MenuItem>
         </Select>
-        <Typography align="right" variant="subtitle1">Active</Typography>
+        <Typography align="right" variant="subtitle1">
+          Active
+        </Typography>
 
-        {this.props.topics.map(topic => {
+        {this.props.topics.map((topic) => {
           if (this.showTopic(topic)) {
             return (
               <List key={topic.id}>
@@ -187,14 +199,22 @@ class TopicListPage extends React.Component {
                   <Link to={'/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />
                   </Link>
-                  <ListItemText primary={`${topic.content.customerName} (${topic.content.email})`} secondary={`created: ${topic.createdAt}`} />
+                  <ListItemText
+                    primary={`${topic.content.customerName} (${
+                      topic.content.email
+                    })`}
+                    secondary={`created: ${topic.createdAt}`}
+                  />
                   <ListItemSecondaryAction>
                     <MuiThemeProvider theme={buttonTheme}>
                       <Button
                         color="primary"
                         variant="outlined"
                         value="Finnish-Yes"
-                        onClick={this.handleEmailButtonPress(topic, 'acceptFin')}
+                        onClick={this.handleEmailButtonPress(
+                          topic,
+                          'acceptFin'
+                        )}
                       >
                         Finnish-Yes
                       </Button>
@@ -202,7 +222,10 @@ class TopicListPage extends React.Component {
                         color="secondary"
                         variant="outlined"
                         value="Finnish-No"
-                        onClick={this.handleEmailButtonPress(topic, 'rejectFin')}
+                        onClick={this.handleEmailButtonPress(
+                          topic,
+                          'rejectFin'
+                        )}
                       >
                         Finnish-No
                       </Button>
@@ -210,7 +233,10 @@ class TopicListPage extends React.Component {
                         color="primary"
                         variant="outlined"
                         value="English-Yes"
-                        onClick={this.handleEmailButtonPress(topic, 'acceptEng')}
+                        onClick={this.handleEmailButtonPress(
+                          topic,
+                          'acceptEng'
+                        )}
                       >
                         English-Yes
                       </Button>
@@ -218,7 +244,10 @@ class TopicListPage extends React.Component {
                         color="secondary"
                         variant="outlined"
                         value="English-No"
-                        onClick={this.handleEmailButtonPress(topic, 'rejectEng')}
+                        onClick={this.handleEmailButtonPress(
+                          topic,
+                          'rejectEng'
+                        )}
                       >
                         English-No
                       </Button>

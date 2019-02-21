@@ -48,7 +48,7 @@ class QuestionsFormPage extends React.Component {
     }
   }
 
-  submitNewRegistrationQuestionSet = async event => {
+  submitNewRegistrationQuestionSet = async (event) => {
     event.preventDefault()
     try {
       const question_set = {
@@ -64,7 +64,7 @@ class QuestionsFormPage extends React.Component {
     }
   }
 
-  editOldRegistrationQuestionSet = async event => {
+  editOldRegistrationQuestionSet = async (event) => {
     event.preventDefault()
     try {
       const question_set = {
@@ -80,7 +80,7 @@ class QuestionsFormPage extends React.Component {
     }
   }
 
-  submitNewReviewQuestionSet = async event => {
+  submitNewReviewQuestionSet = async (event) => {
     event.preventDefault()
     try {
       const question_set = {
@@ -96,7 +96,7 @@ class QuestionsFormPage extends React.Component {
     }
   }
 
-  editOldReviewQuestionSet = async event => {
+  editOldReviewQuestionSet = async (event) => {
     event.preventDefault()
     try {
       const question_set = {
@@ -112,22 +112,28 @@ class QuestionsFormPage extends React.Component {
     }
   }
 
-  updateSelectedQuestionSet = value => {
+  updateSelectedQuestionSet = (value) => {
     try {
       if (value === 'new_is_selected') {
         this.props.clearSelectedQuestionSet()
       } else {
         let selected_question_set
         if (this.props.mode === 'registration') {
-          selected_question_set = this.props.registration_question_sets.find(qs => qs.name === value)
+          selected_question_set = this.props.registration_question_sets.find(
+            (qs) => qs.name === value
+          )
         } else {
-          selected_question_set = this.props.review_question_sets.find(qs => qs.name === value)
+          selected_question_set = this.props.review_question_sets.find(
+            (qs) => qs.name === value
+          )
         }
         const selected_question_set_with_old_name = {
           ...selected_question_set,
           old_name: selected_question_set.name
         }
-        this.props.updateSelectedQuestionSet(selected_question_set_with_old_name)
+        this.props.updateSelectedQuestionSet(
+          selected_question_set_with_old_name
+        )
       }
     } catch (e) {
       this.handleError(e)
@@ -136,38 +142,47 @@ class QuestionsFormPage extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.mode === 'registration'
-          ? <QuestionsForm
-            title='Configure registration questions'
+      <div className="questions-form-container">
+        {this.props.mode === 'registration' ? (
+          <QuestionsForm
+            title="Configure registration questions"
             question_sets={this.props.registration_question_sets}
             selected_question_set={this.props.selected_question_set}
             submitNewQuestionSet={this.submitNewRegistrationQuestionSet}
             editOldQuestionSet={this.editOldRegistrationQuestionSet}
             updateSelectedQuestionSet={this.updateSelectedQuestionSet}
-            updateSelectedQuestionSetName={this.props.updateSelectedQuestionSetName}
-            updateSelectedQuestionSetQuestions={this.props.updateSelectedQuestionSetQuestions}
-
+            updateSelectedQuestionSetName={
+              this.props.updateSelectedQuestionSetName
+            }
+            updateSelectedQuestionSetQuestions={
+              this.props.updateSelectedQuestionSetQuestions
+            }
           />
-          : <QuestionsForm
-            title='Configure review questions'
+        ) : (
+          <QuestionsForm
+            title="Configure review questions"
             question_sets={this.props.review_question_sets}
             selected_question_set={this.props.selected_question_set}
             submitNewQuestionSet={this.submitNewReviewQuestionSet}
             editOldQuestionSet={this.editOldReviewQuestionSet}
             updateSelectedQuestionSet={this.updateSelectedQuestionSet}
-            updateSelectedQuestionSetName={this.props.updateSelectedQuestionSetName}
-            updateSelectedQuestionSetQuestions={this.props.updateSelectedQuestionSetQuestions}
+            updateSelectedQuestionSetName={
+              this.props.updateSelectedQuestionSetName
+            }
+            updateSelectedQuestionSetQuestions={
+              this.props.updateSelectedQuestionSetQuestions
+            }
           />
-        }
+        )}
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    registration_question_sets: state.questionsFormPage.registration_question_sets,
+    registration_question_sets:
+      state.questionsFormPage.registration_question_sets,
     review_question_sets: state.questionsFormPage.review_question_sets,
     selected_question_set: state.questionsFormPage.selected_question_set,
     mode: state.questionsFormPage.mode
