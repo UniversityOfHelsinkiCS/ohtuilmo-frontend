@@ -55,6 +55,14 @@ class RegistrationQuestionsPage extends React.Component {
     this.props.setError('Some error happened', 3000)
   }
 
+  handleValidationError = (e) => {
+    // assume 400 and e.response.data exists (server sent { "error": "..." })
+    this.props.setError(
+      `An error occurred while creating question set: ${e.response.data.error}`,
+      5000
+    )
+  }
+
   handleSuccess = (msg) => {
     this.props.setSuccess(msg, 5000)
   }
@@ -64,12 +72,16 @@ class RegistrationQuestionsPage extends React.Component {
       await this.props.createRegistrationQuestionSet(name, questions)
     } catch (err) {
       console.error('Error while creating question set', err)
+      if (err.response && err.response.status === 400) {
+        // name in use or something else, server response is { "error": "..." }
+        this.handleValidationError(err)
+        return
+      }
       this.handleError(err)
     }
   }
 
   render() {
-    console.log('props', this.props)
     return (
       <div className="registration-questions-page">
         <h1>Configure registration questions</h1>
