@@ -13,7 +13,7 @@ import QuestionSetForm from './QuestionSetForm'
 import QuestionsTable from './QuestionsTable'
 import './EditableQuestionSetItem.css'
 
-const ItemControls = ({ onEditClicked, onDeleteClicked }) => {
+const ItemControls = ({ onEditClicked }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (e) => {
@@ -45,54 +45,46 @@ const ItemControls = ({ onEditClicked, onDeleteClicked }) => {
         onClose={handleClose}
       >
         <MenuItem onClick={withClose(onEditClicked)}>Edit</MenuItem>
-        <MenuItem onClick={withClose(onDeleteClicked)}>Delete</MenuItem>
       </Menu>
     </>
   )
 }
 
 ItemControls.propTypes = {
-  onEditClicked: PropTypes.func,
-  onDeleteClicked: PropTypes.func
+  onEditClicked: PropTypes.func
 }
 
-const QuestionSetItem = withTheme()(
-  ({ questionSet, onEditClicked, onDeleteClicked, theme }) => {
-    const headerStyle = {
-      borderColor: theme.palette.primary.main
-    }
-
-    const { name, questions } = questionSet
-
-    return (
-      <div className="question-set-item">
-        <Paper
-          elevation={2}
-          className="question-set-item__header"
-          style={headerStyle}
-        >
-          <h3 className="question-set-item__title">{name}</h3>
-          <div className="question-set-item__controls">
-            <ItemControls
-              onEditClicked={onEditClicked}
-              onDeleteClicked={onDeleteClicked}
-            />
-          </div>
-        </Paper>
-        <div className="question-set-item__content">
-          <Paper elevation={1}>
-            <QuestionsTable questions={questions} />
-          </Paper>
-        </div>
-      </div>
-    )
+const QuestionSetItem = withTheme()(({ questionSet, onEditClicked, theme }) => {
+  const headerStyle = {
+    borderColor: theme.palette.primary.main
   }
-)
+
+  const { name, questions } = questionSet
+
+  return (
+    <div className="question-set-item">
+      <Paper
+        elevation={2}
+        className="question-set-item__header"
+        style={headerStyle}
+      >
+        <h3 className="question-set-item__title">{name}</h3>
+        <div className="question-set-item__controls">
+          <ItemControls onEditClicked={onEditClicked} />
+        </div>
+      </Paper>
+      <div className="question-set-item__content">
+        <Paper elevation={1}>
+          <QuestionsTable questions={questions} />
+        </Paper>
+      </div>
+    </div>
+  )
+})
 
 QuestionSetItem.propTypes = {
   questionSet: questionSetShape,
   onEditClicked: PropTypes.func,
-  onDeleteClicked: PropTypes.func,
   theme: PropTypes.object
 }
 
@@ -138,7 +130,7 @@ EditorQuestionSetItem.propTypes = {
   onCancel: PropTypes.func
 }
 
-const EditableQuestionSetItem = ({ questionSet, onEditSave, onDelete }) => {
+const EditableQuestionSetItem = ({ questionSet, onEditSave }) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const handleEditorSave = (name, questions) => {
@@ -155,7 +147,6 @@ const EditableQuestionSetItem = ({ questionSet, onEditSave, onDelete }) => {
     <QuestionSetItem
       questionSet={questionSet}
       onEditClicked={() => setIsEditing(true)}
-      onDeleteClicked={() => onDelete()}
     />
   )
 
@@ -171,7 +162,8 @@ const EditableQuestionSetItem = ({ questionSet, onEditSave, onDelete }) => {
 }
 
 EditableQuestionSetItem.propTypes = {
-  questionSet: questionSetShape
+  questionSet: questionSetShape,
+  onEditSave: PropTypes.func
 }
 
 export default EditableQuestionSetItem
