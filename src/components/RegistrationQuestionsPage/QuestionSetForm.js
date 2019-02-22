@@ -52,7 +52,7 @@ const QuestionSetForm = ({
     <form className="question-set-form" onSubmit={handleFormSubmit}>
       <TextField
         inputProps={{
-          className: 'create-question-set-form__input-form'
+          className: 'question-set-form__name'
         }}
         fullWidth
         required
@@ -69,7 +69,7 @@ const QuestionSetForm = ({
               'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
             fontSize: '0.9em'
           },
-          className: 'create-question-set-form__input-json'
+          className: 'question-set-form__questions'
         }}
         fullWidth
         required
