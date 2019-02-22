@@ -32,6 +32,7 @@ const ItemControls = ({ onEditClicked }) => {
   return (
     <>
       <IconButton
+        className="question-set-item-controls__menu-button"
         aria-owns={anchorEl && 'question-set-item-controls__menu'}
         aria-haspopup={true}
         onClick={handleClick}
@@ -44,7 +45,12 @@ const ItemControls = ({ onEditClicked }) => {
         open={!!anchorEl}
         onClose={handleClose}
       >
-        <MenuItem onClick={withClose(onEditClicked)}>Edit</MenuItem>
+        <MenuItem
+          className="question-set-item-controls__edit-button"
+          onClick={withClose(onEditClicked)}
+        >
+          Edit
+        </MenuItem>
       </Menu>
     </>
   )
@@ -88,23 +94,40 @@ QuestionSetItem.propTypes = {
   theme: PropTypes.object
 }
 
-const SaveButton = () => (
-  <Button type="submit" variant="contained" color="primary">
+const SaveButton = ({ className }) => (
+  <Button
+    className={className}
+    type="submit"
+    variant="contained"
+    color="primary"
+  >
     Save changes
   </Button>
 )
 
-const CancelButton = ({ onClick }) => <Button onClick={onClick}>Cancel</Button>
+SaveButton.propTypes = {
+  className: PropTypes.string
+}
+
+const CancelButton = ({ className, onClick }) => (
+  <Button className={className} onClick={onClick}>
+    Cancel
+  </Button>
+)
 
 CancelButton.propTypes = {
+  className: PropTypes.string,
   onClick: PropTypes.func
 }
 
 const EditorQuestionSetItem = ({ questionSet, onSave, onCancel }) => {
   const formControls = (
     <>
-      <SaveButton />
-      <CancelButton onClick={onCancel} />
+      <SaveButton className="editor-question-set-item__save-button" />
+      <CancelButton
+        className="editor-question-set-item__cancel-button"
+        onClick={onCancel}
+      />
     </>
   )
 

@@ -15,6 +15,84 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import { TEST_USER, TEST_USER2, TEST_ADMIN } from '../common'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+const postLogin = (user) => {
+  const { username, password } = user
+  return cy.request({
+    url: '/api/login',
+    method: 'POST',
+    body: {
+      username,
+      password
+    }
+  })
+}
+
+const loginAsUser = (user) => {
+  postLogin(user).then((res) => {
+    const userData = res.body
+    window.localStorage.setItem('loggedInUser', JSON.stringify(userData))
+  })
+}
+
+Cypress.Commands.add('loginAsUnregisteredUser', () => {
+  loginAsUser(TEST_USER)
+})
+
+Cypress.Commands.add('loginAsRegisteredUser', () => {
+  loginAsUser(TEST_USER2)
+})
+
+Cypress.Commands.add('loginAsAdmin', () => {
+  loginAsUser(TEST_ADMIN)
+})
+
+const withLoggedAdminToken = (fn) => {
+  postLogin(TEST_ADMIN).then((res) => {
+    const { token } = res.body
+    fn(token)
+  })
+}
+
+Cypress.Commands.add('deleteRegistrationQuestions', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/registrationQuestions',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        cy.request({
+          url: `/api/registrationQuestions/${set.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createRegistrationQuestionSet', (name, questions) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/registrationQuestions',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        questions
+      }
+    })
+  })
+})

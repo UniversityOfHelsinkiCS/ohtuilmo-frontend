@@ -1,11 +1,3 @@
-const { TEST_USER, TEST_USER2, TEST_ADMIN } = require('../common')
-
-const loginAsUser = (user) => {
-  cy.get('.loginpage-form input[name="username"]').type(user.username)
-  cy.get('.loginpage-form input[name="password"]').type(user.password)
-  cy.get('.loginpage-form .loginpage-button').click()
-}
-
 const assertIsOnLandingPage = () => {
   cy.get('[data-cy=registrationlink]').should('be.visible')
 }
@@ -23,10 +15,6 @@ const assertIsOnRegistrationDetailsPage = () => {
 }
 
 describe('Page access without authentication', () => {
-  beforeEach(() => {
-    cy.clearLocalStorage()
-  })
-
   it('/administration redirects user to login page', () => {
     cy.visit('/administration')
     assertIsOnLoginPage()
@@ -70,10 +58,8 @@ describe('Page access without authentication', () => {
 
 describe('Page access for user', () => {
   beforeEach(() => {
-    cy.clearLocalStorage()
+    cy.loginAsUnregisteredUser()
     cy.visit('/')
-    loginAsUser(TEST_USER)
-    assertIsOnLandingPage()
   })
 
   it('/administration redirects user to landing page', () => {
@@ -115,10 +101,12 @@ describe('Page access for user', () => {
 
 describe('Page access for registered user', () => {
   beforeEach(() => {
-    cy.clearLocalStorage()
+    cy.loginAsRegisteredUser()
     cy.visit('/')
-    loginAsUser(TEST_USER2)
-    // login redirects to registration details page
+  })
+  
+  it('/login redirects to /registrationdetails', () => {
+    cy.visit('/login')
     assertIsOnRegistrationDetailsPage()
   })
 
@@ -130,10 +118,8 @@ describe('Page access for registered user', () => {
 
 describe('Page access for admin', () => {
   beforeEach(() => {
-    cy.clearLocalStorage()
+    cy.loginAsAdmin()
     cy.visit('/')
-    loginAsUser(TEST_ADMIN)
-    assertIsOnLandingPage()
   })
 
   it('renders /administration when visited', () => {
