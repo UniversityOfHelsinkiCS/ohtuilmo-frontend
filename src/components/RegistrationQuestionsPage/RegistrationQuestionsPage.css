@@ -11,22 +11,3 @@
   margin: 0;
   padding: 0;
 }
-
-.question-set-item {
-  margin-bottom: 2rem;
-}
-
-.question-set-item__container {
-  padding: 0.5rem 1rem;
-}
-
-.display-question-set-item__name {
-  font-weight: normal;
-}
-
-.display-question-set-item__header {
-  padding: 1.5rem 1rem;
-  margin: 0;
-  /* the MUI primary color is injected to the border-bottom color via style*/
-  border-bottom: 2px solid transparent;
-}

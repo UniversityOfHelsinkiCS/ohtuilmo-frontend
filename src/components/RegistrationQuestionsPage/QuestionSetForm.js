@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import './CreateQuestionSet.css'
+import './QuestionSetForm.css'
 
 const isValidJson = (str) => {
   try {
@@ -12,21 +11,27 @@ const isValidJson = (str) => {
   }
 }
 
-const CreateQuestionSet = ({ onSubmit }) => {
-  const [name, setName] = useState('')
-  const [questionsJson, setQuestionsJson] = useState('')
+const QuestionSetForm = ({
+  initialName,
+  initialQuestionsJson,
+  onSubmit,
+  controls
+}) => {
+  const [name, setName] = useState(initialName || '')
+  const [questionsJson, setQuestionsJson] = useState(initialQuestionsJson || '')
   const [questionsError, setQuestionsError] = useState('')
 
-  const handleNameChange = (e) => {
-    setName(e.target.value)
-  }
-
-  const handleQuestionsChange = (e) => {
-    setQuestionsJson(e.target.value)
-
+  const clearQuestionsError = () => {
     if (questionsError !== '') {
       setQuestionsError('')
     }
+  }
+
+  const handleNameChange = (e) => setName(e.target.value)
+
+  const handleQuestionsChange = (e) => {
+    setQuestionsJson(e.target.value)
+    clearQuestionsError()
   }
 
   const handleFormSubmit = (e) => {
@@ -44,7 +49,7 @@ const CreateQuestionSet = ({ onSubmit }) => {
   }
 
   return (
-    <form className="create-question-set-form" onSubmit={handleFormSubmit}>
+    <form className="question-set-form" onSubmit={handleFormSubmit}>
       <TextField
         inputProps={{
           className: 'create-question-set-form__input-form'
@@ -72,15 +77,13 @@ const CreateQuestionSet = ({ onSubmit }) => {
         helperText={questionsError || ''}
         margin="normal"
         multiline
-        rows={5}
+        rows={10}
         value={questionsJson}
         onChange={handleQuestionsChange}
       />
-      <Button type="submit" variant="contained" color="primary">
-        Create
-      </Button>
+      {controls}
     </form>
   )
 }
 
-export default CreateQuestionSet
+export default QuestionSetForm

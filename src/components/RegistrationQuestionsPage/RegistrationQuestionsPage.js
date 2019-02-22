@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 
 import {
   fetchRegistrationQuestionSets,
-  createRegistrationQuestionSet
+  updateRegistrationQuestionSet
 } from '../../reducers/actions/registrationQuestionsPageActions'
 import {
   setError,
@@ -14,9 +14,25 @@ import {
 } from '../../reducers/actions/notificationActions'
 
 import { questionSetShape } from './common'
-import CreateQuestionSet from './CreateQuestionSet'
-import QuestionSetList from './QuestionSetList'
+import CreateQuestionSetForm from './CreateQuestionSetForm'
+import EditableQuestionSetItem from './EditableQuestionSetItem'
 import './RegistrationQuestionsPage.css'
+
+const QuestionSetList = ({ questionSets, onQuestionSetUpdate }) => {
+  return (
+    <ul className="question-set-list">
+      {questionSets.map((set) => (
+        <EditableQuestionSetItem
+          key={set.id}
+          questionSet={set}
+          onEditSave={onQuestionSetUpdate}
+        />
+      ))}
+    </ul>
+  )
+}
+
+const isValidationError = (e) => e.response && e.response.status === 400
 
 class RegistrationQuestionsPage extends React.Component {
   componentWillMount() {
@@ -43,45 +59,34 @@ class RegistrationQuestionsPage extends React.Component {
     }
   }
 
-  async fetchQuestions() {
-    try {
-      await this.props.fetchRegistrationQuestionSets()
-    } catch (e) {
-      this.handleError(e)
+  handleError = (e) => {
+    const { setError } = this.props
+
+    console.error('error happened', e, e.response)
+    if (isValidationError(e)) {
+      // was error 400, server should have responded { "error": "..." }
+      setError(`An error occurred: "${e.response.data.error}"!`, 5000)
+    } else {
+      setError('Some error happened', 3000)
     }
   }
-  handleError = (e) => {
-    console.error('error happened', e, e.response)
-    this.props.setError('Some error happened', 3000)
+
+  handleSuccess = (message) => {
+    this.props.setSuccess(message, 3000)
   }
 
-  handleValidationError = (e) => {
-    // assume 400 and e.response.data exists (server sent { "error": "..." })
-    this.props.setError(
-      `An error occurred while creating question set: ${e.response.data.error}`,
-      5000
-    )
-  }
-
-  handleSuccess = (msg) => {
-    this.props.setSuccess(msg, 5000)
-  }
-
-  handleCreateQuestionSet = async (name, questions) => {
+  handleQuestionSetUpdate = async (updatedQuestionSet) => {
     try {
-      await this.props.createRegistrationQuestionSet(name, questions)
+      await this.props.updateRegistrationQuestionSet(updatedQuestionSet)
+      this.handleSuccess(`Updated question set "${updatedQuestionSet.name}"!`)
     } catch (err) {
-      console.error('Error while creating question set', err)
-      if (err.response && err.response.status === 400) {
-        // name in use or something else, server response is { "error": "..." }
-        this.handleValidationError(err)
-        return
-      }
       this.handleError(err)
     }
   }
 
   render() {
+    const { questionSets } = this.props
+
     return (
       <div className="registration-questions-page">
         <h1>Configure registration questions</h1>
@@ -92,12 +97,15 @@ class RegistrationQuestionsPage extends React.Component {
               depth={1}
               className="registration-questions-page__create-form"
             >
-              <CreateQuestionSet onSubmit={this.handleCreateQuestionSet} />
+              <CreateQuestionSetForm />
             </Paper>
           </section>
           <section>
             <h2>Question sets</h2>
-            <QuestionSetList />
+            <QuestionSetList
+              questionSets={questionSets}
+              onQuestionSetUpdate={this.handleQuestionSetUpdate}
+            />
           </section>
         </div>
       </div>
@@ -110,7 +118,8 @@ RegistrationQuestionsPage.propTypes = {
   history: PropTypes.any,
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
-  fetchRegistrationQuestionSets: PropTypes.func
+  fetchRegistrationQuestionSets: PropTypes.func,
+  updateRegistrationQuestionSet: PropTypes.func
 }
 
 const mapStateToProps = (state) => ({
@@ -119,7 +128,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   fetchRegistrationQuestionSets,
-  createRegistrationQuestionSet,
+  updateRegistrationQuestionSet,
   setError,
   setSuccess
 }
