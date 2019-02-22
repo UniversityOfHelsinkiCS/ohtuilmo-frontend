@@ -42,6 +42,11 @@ describe('Page access without authentication', () => {
     assertIsOnLoginPage()
   })
 
+  it('/administration/registration-questions redirects user to login page', () => {
+    cy.visit('/administration/registration-questions')
+    assertIsOnLoginPage()
+  })
+
   it('/administration/registrationmanagement redirects user to login page', () => {
     cy.visit('/administration/registrationmanagement')
     assertIsOnLoginPage()
@@ -83,6 +88,11 @@ describe('Page access for user', () => {
 
   it('/administration/questions redirects user to landing page', () => {
     cy.visit('/administration/questions')
+    assertIsOnLandingPage()
+  })
+
+  it('/administration/registration-questions redirects user to landing page', () => {
+    cy.visit('/administration/registration-questions')
     assertIsOnLandingPage()
   })
 
@@ -143,6 +153,12 @@ describe('Page access for admin', () => {
     cy.visit('/administration/questions')
     cy.url().should('contain', '/administration/questions')
     cy.get('.questions-form-container').should('be.visible')
+  })
+
+  it('renders /administration/registration-questions when visited', () => {
+    cy.visit('/administration/registration-questions')
+    cy.url().should('contain', '/administration/registration-questions')
+    cy.get('.registration-questions-page').should('be.visible')
   })
 
   it('renders /administration/registrationmanagement when visited', () => {
