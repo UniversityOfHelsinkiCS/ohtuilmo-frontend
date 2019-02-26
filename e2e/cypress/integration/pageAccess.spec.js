@@ -21,6 +21,11 @@ describe('Page access and redirect tests', () => {
       assertIsOnLoginPage()
     })
 
+    it('/administration/groups redirects user to login page', () => {
+      cy.visit('/administration/groups')
+      assertIsOnLoginPage()
+    })
+
     it('/administration/participants redirects user to login page', () => {
       cy.visit('/administration/participants')
       assertIsOnLoginPage()
@@ -65,6 +70,11 @@ describe('Page access and redirect tests', () => {
 
     it('/administration redirects user to landing page', () => {
       cy.visit('/administration')
+      assertIsOnLandingPage()
+    })
+
+    it('/administration/groups redirects user to landing page', () => {
+      cy.visit('/administration/groups')
       assertIsOnLandingPage()
     })
 
@@ -128,6 +138,13 @@ describe('Page access and redirect tests', () => {
       cy.get('.administration-menu-item').click()
       cy.url().should('contain', '/administration')
       cy.contains('Change configuration')
+    })
+
+    it('renders /administration/groups when visited', () => {
+      cy.get('.nav-menu-button').click()
+      cy.get('.group-management-menu-item').click()
+      cy.url().should('contain', '/administration/groups')
+      cy.contains('Group Management')
     })
 
     it('renders /administration/participants when visited', () => {
