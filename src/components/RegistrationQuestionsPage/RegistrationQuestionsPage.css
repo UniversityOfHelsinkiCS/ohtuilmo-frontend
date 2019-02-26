@@ -1,0 +1,13 @@
+.registration-questions-page__container {
+  max-width: 800px;
+}
+
+.registration-questions-page__create-form {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.question-set-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

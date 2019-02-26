@@ -11,6 +11,7 @@ import viewTopicPageReducer from './viewTopicPageReducer'
 import registrationPageReducer from './registrationPageReducer'
 import adminPageReducer from './adminPageReducer'
 import questionsFormPageReducer from './questionsFormPageReducer'
+import registrationQuestionsPageReducer from './registrationQuestionsPageReducer'
 import registrationManagementReducer from './registrationManagementReducer'
 import registrationReducer from './registrationReducer'
 import groupPageReducer from './groupPageReducer'
@@ -26,6 +27,7 @@ const reducer = combineReducers({
   registrationPage: registrationPageReducer,
   adminPage: adminPageReducer,
   questionsFormPage: questionsFormPageReducer,
+  registrationQuestionsPage: registrationQuestionsPageReducer,
   registrationManagement: registrationManagementReducer,
   registration: registrationReducer,
   groupPage: groupPageReducer
