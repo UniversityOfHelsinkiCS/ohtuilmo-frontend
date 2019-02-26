@@ -43,19 +43,30 @@ const StudentInput = ({ value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         multiline
         rows="8"
+        className="create-group-student"
       />
     </div>
   )
 }
 
-const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
+const TopicSelect = ({
+  topics,
+  onTopicSelectChange,
+  groupTopicID,
+  className
+}) => {
   return (
     <Select
+      className={className}
       value={groupTopicID}
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
       {topics.map((topic) => (
-        <MenuItem key={topic.id} value={topic.id}>
+        <MenuItem
+          key={topic.id}
+          value={topic.id}
+          className={`topic-${topic.id}`}
+        >
           {topic.content.title}
         </MenuItem>
       ))}
@@ -70,11 +81,16 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      className="configuration-selector"
       value={groupConfigurationID}
       onChange={(e) => onConfigurationChange(e.target.value)}
     >
       {configurations.map((configuration) => (
-        <MenuItem key={configuration.id} value={configuration.id}>
+        <MenuItem
+          key={configuration.id}
+          value={configuration.id}
+          className={`configuration-${configuration.id}`}
+        >
           {configuration.name}
         </MenuItem>
       ))}
@@ -82,11 +98,12 @@ const ConfigurationSelect = ({
   )
 }
 
-const NameInput = ({ value, onChange, ...textFieldProps }) => (
+const NameInput = ({ value, onChange, className, ...textFieldProps }) => (
   <TextField
     value={value}
     onChange={(e) => onChange(e.target.value)}
     variant="standard"
+    className={className}
     {...textFieldProps}
   />
 )
@@ -590,11 +607,16 @@ const GroupCreationForm = ({
                 topics={topics}
                 onTopicSelectChange={onTopicSelectChange}
                 groupTopicID={groupTopicID}
+                className="create-group-topic-selector"
               />
             </FormInput>
 
             <FormInput label="Group name">
-              <NameInput value={groupName} onChange={onNameChangeForm} />
+              <NameInput
+                value={groupName}
+                onChange={onNameChangeForm}
+                className="create-group-name"
+              />
             </FormInput>
 
             <FormInput label="Students">
@@ -605,6 +627,7 @@ const GroupCreationForm = ({
               <NameInput
                 value={groupInstructorID}
                 onChange={onInstructorIdChange}
+                className="create-group-instructor"
               />
             </FormInput>
           </tbody>
@@ -614,6 +637,7 @@ const GroupCreationForm = ({
           color="primary"
           variant="contained"
           type="submit"
+          className="create-group-submit"
         >
           Add group
         </Button>
