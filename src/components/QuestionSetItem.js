@@ -7,9 +7,6 @@ import Paper from '@material-ui/core/Paper'
 import { withTheme } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-
-import { questionSetShape } from './common'
-import QuestionsTable from '../QuestionsTable'
 import './QuestionSetItem.css'
 
 const ItemControls = ({ onEditClicked }) => {
@@ -59,12 +56,10 @@ ItemControls.propTypes = {
   onEditClicked: PropTypes.func
 }
 
-const QuestionSetItem = ({ questionSet, onEditClicked, theme }) => {
+const QuestionSetItem = ({ title, children, onEditClicked, theme }) => {
   const headerStyle = {
     borderColor: theme.palette.primary.main
   }
-
-  const { name, questions } = questionSet
 
   return (
     <div className="question-set-item">
@@ -73,22 +68,21 @@ const QuestionSetItem = ({ questionSet, onEditClicked, theme }) => {
         className="question-set-item__header"
         style={headerStyle}
       >
-        <h3 className="question-set-item__title">{name}</h3>
+        <h3 className="question-set-item__title">{title}</h3>
         <div className="question-set-item__controls">
           <ItemControls onEditClicked={onEditClicked} />
         </div>
       </Paper>
       <div className="question-set-item__content">
-        <Paper elevation={1}>
-          <QuestionsTable questions={questions} />
-        </Paper>
+        <Paper elevation={1}>{children}</Paper>
       </div>
     </div>
   )
 }
 
 QuestionSetItem.propTypes = {
-  questionSet: questionSetShape,
+  title: PropTypes.string,
+  children: PropTypes.node,
   onEditClicked: PropTypes.func,
   theme: PropTypes.object
 }

@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import './QuestionSetForm.css'
 
-const isValidJson = (str) => {
+const validateQuestionsJson = (str) => {
   try {
-    JSON.parse(str)
-    return true
+    const obj = JSON.parse(str)
+    if (!Array.isArray(obj)) {
+      return { ok: false, error: 'Questions should be an array' }
+    }
+    return { ok: true }
   } catch (err) {
-    return false
+    return { ok: false, error: 'Field contains invalid JSON' }
   }
 }
 
@@ -37,13 +40,13 @@ const QuestionSetForm = ({
   const handleFormSubmit = (e) => {
     e.preventDefault()
 
-    if (!isValidJson(questionsJson)) {
-      setQuestionsError('Field contains invalid JSON')
+    const { ok, error } = validateQuestionsJson(questionsJson)
+    if (!ok) {
+      setQuestionsError(error)
       return
     }
 
-    const parsedQuestions = JSON.parse(questionsJson)
-    onSubmit(name, parsedQuestions)
+    onSubmit(name, questionsJson)
     setName('')
     setQuestionsJson('')
   }
