@@ -2,9 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 // MUI
-import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
-import TextField from '@material-ui/core/TextField'
+import {
+  FormControlLabel,
+  Select,
+  MenuItem,
+  CardContent,
+  Card,
+  TextField,
+  Switch,
+  Button
+} from '@material-ui/core'
 // Actions
 import appActions from '../reducers/actions/appActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -33,6 +40,8 @@ class RegistrationManagement extends React.Component {
     event.preventDefault()
 
     const {
+      peerReviewOpen,
+      peerReviewRound,
       projectOpen,
       projectMessage,
       topicOpen,
@@ -48,6 +57,8 @@ class RegistrationManagement extends React.Component {
     try {
       await registrationManagementService.create({
         registrationManagement: {
+          peer_review_open: peerReviewOpen,
+          peer_review_round: peerReviewRound,
           project_registration_open: projectOpen,
           project_registration_message: projectMessage,
           project_registration_info: projectInfo,
@@ -68,11 +79,15 @@ class RegistrationManagement extends React.Component {
 
   render() {
     const {
+      peerReviewOpen,
+      peerReviewRound,
       projectOpen,
       projectMessage,
       topicOpen,
       topicMessage,
       projectInfo,
+      updatePeerReviewOpen,
+      updatePeerReviewRound,
       updateProjectRegistrationOpen,
       updateProjectRegistrationMessage,
       updateProjectRegistrationInfo,
@@ -80,55 +95,99 @@ class RegistrationManagement extends React.Component {
       updateTopicRegistrationMessage
     } = this.props
 
+    const cardStyle = {
+      marginBottom: '10px'
+    }
+
     return (
       <div className="registrationManagement-container">
-        <h3>Registration management</h3>
+        <h3>Registration and review management</h3>
         <form
           className="registration-management-form"
           onSubmit={this.saveConfiguration}
         >
-          <p>Change registration status and messages</p>
-          <h4>Project registration</h4>
-          <p>
-            Project registration open:
-            <Switch
-              checked={projectOpen}
-              className="projectRegistrationSwitch"
-              onChange={() => updateProjectRegistrationOpen(!projectOpen)}
-            />
-          </p>
-          <TextField
-            fullWidth
-            label="Registration status message"
-            margin="normal"
-            value={projectMessage}
-            onChange={(e) => updateProjectRegistrationMessage(e.target.value)}
-            required={!projectOpen}
-          />
-          <TextField
-            fullWidth
-            label="Registration page info message"
-            margin="normal"
-            value={projectInfo}
-            onChange={(e) => updateProjectRegistrationInfo(e.target.value)}
-          />
-          <h4>Topic registration</h4>
-          <p>
-            Topic registration open:
-            <Switch
-              checked={topicOpen}
-              className="projectRegistrationSwitch"
-              onChange={() => updateTopicRegistrationOpen(!topicOpen)}
-            />
-          </p>
-          <TextField
-            fullWidth
-            label="Registration status message"
-            margin="normal"
-            value={topicMessage}
-            onChange={(e) => updateTopicRegistrationMessage(e.target.value)}
-            required={!topicOpen}
-          />
+          <p>Control state of registrations and reviews</p>
+
+          <Card style={cardStyle}>
+            <CardContent>
+              <h4>Project registration</h4>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={projectOpen}
+                    onChange={() => updateProjectRegistrationOpen(!projectOpen)}
+                  />
+                }
+                label="Project registration open"
+              />
+              <TextField
+                fullWidth
+                label="Registration status message"
+                margin="normal"
+                value={projectMessage}
+                onChange={(e) =>
+                  updateProjectRegistrationMessage(e.target.value)
+                }
+                required={!projectOpen}
+              />
+              <TextField
+                fullWidth
+                label="Registration page info message"
+                margin="normal"
+                value={projectInfo}
+                onChange={(e) => updateProjectRegistrationInfo(e.target.value)}
+              />
+            </CardContent>
+          </Card>
+
+          <Card style={cardStyle}>
+            <CardContent>
+              <h4>Topic registration</h4>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={topicOpen}
+                    onChange={() => updateTopicRegistrationOpen(!topicOpen)}
+                  />
+                }
+                label="Topic registration open"
+              />
+              <TextField
+                fullWidth
+                label="Registration status message"
+                margin="normal"
+                value={topicMessage}
+                onChange={(e) => updateTopicRegistrationMessage(e.target.value)}
+                required={!topicOpen}
+              />
+            </CardContent>
+          </Card>
+
+          <Card style={cardStyle}>
+            <CardContent>
+              <h4>Peer review</h4>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={peerReviewOpen}
+                    onChange={() => updatePeerReviewOpen(!peerReviewOpen)}
+                  />
+                }
+                label="Peer review open"
+              />
+              <p />
+              <Select
+                value={peerReviewRound}
+                onChange={(event) => {
+                  updatePeerReviewRound(event.target.value)
+                }}
+              >
+                <MenuItem value={1}>Review round 1</MenuItem>
+                <MenuItem value={2}>Review round 2</MenuItem>
+              </Select>
+            </CardContent>
+          </Card>
+
           <Button variant="contained" color="primary" type="submit">
             Save Configuration
           </Button>
@@ -140,6 +199,8 @@ class RegistrationManagement extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    peerReviewOpen: state.registrationManagement.peerReviewOpen,
+    peerReviewRound: state.registrationManagement.peerReviewRound,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
     projectInfo: state.registrationManagement.projectRegistrationInfo,
