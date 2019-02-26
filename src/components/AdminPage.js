@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Divider from '@material-ui/core/Divider'
 // Service
@@ -19,7 +20,8 @@ import registrationQuestionSetService from '../services/registrationQuestionSet'
 import adminPageActions from '../reducers/actions/adminPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import questionsFormPageActions from '../reducers/actions/questionsFormPageActions'
-import { ExpansionPanelActions } from '@material-ui/core'
+
+import QuestionsTable from './QuestionsTable'
 
 class AdminPage extends React.Component {
   componentWillMount() {
@@ -184,16 +186,11 @@ class AdminPage extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {this.props.selectedRegister &&
-                  this.props.selectedRegister.questions.map(
-                    (questionItem, index) => (
-                      <div key={index}>
-                        <p>Question: {questionItem.question}</p>
-                        <p>Type: {questionItem.type}</p>
-                        <Divider />
-                      </div>
-                    )
-                  )}
+                {this.props.selectedRegister && (
+                  <QuestionsTable
+                    questions={this.props.selectedRegister.questions}
+                  />
+                )}
               </div>
             </ExpansionPanelDetails>
             <ExpansionPanelActions>

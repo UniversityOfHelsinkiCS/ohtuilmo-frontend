@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 import { questionSetShape } from './common'
-import QuestionsTable from './QuestionsTable'
+import QuestionsTable from '../QuestionsTable'
 import './QuestionSetItem.css'
 
 const ItemControls = ({ onEditClicked }) => {

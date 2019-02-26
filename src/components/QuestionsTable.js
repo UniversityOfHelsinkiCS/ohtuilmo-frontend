@@ -7,8 +7,6 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 
-import { questionShape } from './common'
-
 const QuestionsTableRow = ({ question, type }) => (
   <TableRow className="questions-table-row">
     <TableCell component="th" scope="row">
@@ -44,7 +42,12 @@ const QuestionsTable = ({ questions }) => (
 )
 
 QuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(questionShape)
+  questions: PropTypes.arrayOf(
+    PropTypes.shape({
+      question: PropTypes.string.isRequired,
+      type: PropTypes.string
+    })
+  )
 }
 
 export default QuestionsTable
