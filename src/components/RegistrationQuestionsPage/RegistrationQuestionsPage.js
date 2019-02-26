@@ -18,10 +18,17 @@ import CreateQuestionSetForm from './CreateQuestionSetForm'
 import EditableQuestionSetItem from './EditableQuestionSetItem'
 import './RegistrationQuestionsPage.css'
 
+const compareQuestionSetCreatedAtDesc = (a, b) =>
+  b.createdAt.localeCompare(a.createdAt)
+
 const QuestionSetList = ({ questionSets, onQuestionSetUpdate }) => {
+  const byCreatedAtDesc = [...questionSets].sort(
+    compareQuestionSetCreatedAtDesc
+  )
+
   return (
     <ul className="question-set-list">
-      {questionSets.map((set) => (
+      {byCreatedAtDesc.map((set) => (
         <EditableQuestionSetItem
           key={set.id}
           questionSet={set}
