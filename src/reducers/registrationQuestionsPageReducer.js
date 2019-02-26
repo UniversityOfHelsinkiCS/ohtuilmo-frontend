@@ -23,44 +23,8 @@ const questionSets = (state = [], action) => {
   }
 }
 
-const isFetchLoading = (state = false, action) => {
-  switch (action.type) {
-  case 'FETCH_REGISTRATION_QUESTION_SETS_REQUEST':
-    return true
-  case 'FETCH_REGISTRATION_QUESTION_SETS_SUCCESS':
-    return false
-  default:
-    return state
-  }
-}
-
-const isCreateLoading = (state = false, action) => {
-  switch (action.type) {
-  case 'CREATE_REGISTRATION_QUESTION_SET_REQUEST':
-    return true
-  case 'CREATE_REGISTRATION_QUESTION_SET_SUCCESS':
-    return false
-  default:
-    return state
-  }
-}
-
-const isUpdateLoading = (state = false, action) => {
-  switch (action.type) {
-  case 'UPDATE_REGISTRATION_QUESTION_SET_REQUEST':
-    return true
-  case 'UPDATE_REGISTRATION_QUESTION_SET_SUCCESS':
-    return false
-  default:
-    return state
-  }
-}
-
 const registrationQuestionsPageReducer = combineReducers({
-  questionSets,
-  isFetchLoading,
-  isCreateLoading,
-  isUpdateLoading
+  questionSets
 })
 
 export default registrationQuestionsPageReducer
