@@ -64,7 +64,7 @@ const cancelEditingQuestionSet = (selector) => {
     .click()
 }
 
-describe('Page access as admin', () => {
+describe('Registration-questions page', () => {
   beforeEach(() => {
     cy.loginAsAdmin()
     cy.deleteRegistrationQuestions()
