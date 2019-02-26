@@ -16,6 +16,7 @@ import Divider from '@material-ui/core/Divider'
 // Service
 import configurationService from '../services/configuration'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
+import reviewQuestionSetService from '../services/reviewQuestionSet'
 // Actions
 import adminPageActions from '../reducers/actions/adminPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -70,8 +71,11 @@ class AdminPage extends React.Component {
 
   setQuestions = async () => {
     try {
-      const questions = await registrationQuestionSetService.getAll()
-      this.props.setRegistrationQuestions(questions)
+      const registrationQuestions = await registrationQuestionSetService.getAll()
+      this.props.setRegistrationQuestions(registrationQuestions)
+
+      const reviewQuestions = await reviewQuestionSetService.getAll()
+      this.props.setReviewQuestions(reviewQuestions)
     } catch (e) {
       console.log('error happened', e)
       this.props.setError('Error fetching question sets', 5000)
@@ -92,9 +96,9 @@ class AdminPage extends React.Component {
   handleQuestionSetChange = (event) => {
     if (event.target.name === 'registration') {
       this.props.updateSelectedRegistrationQuestions(event.target.value)
-    } else if (event.target.value === 'review1') {
+    } else if (event.target.name === 'review1') {
       this.props.updateSelectedReviewQuestions1(event.target.value)
-    } else if (event.target.value === 'review2') {
+    } else if (event.target.name === 'review2') {
       this.props.updateSelectedReviewQuestions2(event.target.value)
     }
   }
@@ -238,22 +242,19 @@ class AdminPage extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {this.props.selectedReview1 &&
-                  this.props.allReviewQuestions.map((questionItem, index) => (
-                    <div key={index}>
-                      <p>Question: {questionItem.question}</p>
-                      <p>Type: {questionItem.type}</p>
-                      <Divider />
-                    </div>
-                  ))}
+                {this.props.selectedReview1 && (
+                  <QuestionsTable
+                    questions={this.props.selectedReview1.questions}
+                  />
+                )}
               </div>
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
               <Select
                 name="review1"
                 value={
-                  this.props.selectedRegister
-                    ? this.props.selectedRegister
+                  this.props.selectedReview1
+                    ? this.props.selectedReview1
                     : 'default'
                 }
                 onChange={this.handleQuestionSetChange}
@@ -293,22 +294,19 @@ class AdminPage extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {this.props.selectedReview2 &&
-                  this.props.allReviewQuestions.map((questionItem, index) => (
-                    <div key={index}>
-                      <p>Question: {questionItem.question}</p>
-                      <p>Type: {questionItem.type}</p>
-                      <Divider />
-                    </div>
-                  ))}
+                {this.props.selectedReview2 && (
+                  <QuestionsTable
+                    questions={this.props.selectedReview2.questions}
+                  />
+                )}
               </div>
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
               <Select
                 name="review2"
                 value={
-                  this.props.selectedRegister
-                    ? this.props.selectedRegister
+                  this.props.selectedReview2
+                    ? this.props.selectedReview2
                     : 'default'
                 }
                 onChange={this.handleQuestionSetChange}
@@ -403,7 +401,8 @@ const mapStateToProps = (state) => {
     allRegistrationQuestions: state.adminPage.allRegistrationQuestions,
     allReviewQuestions: state.adminPage.allReviewQuestions,
     selectedRegister: state.adminPage.selectedRegister,
-    selectedReview: state.adminPage.selectedReview,
+    selectedReview1: state.adminPage.selectedReview1,
+    selectedReview2: state.adminPage.selectedReview2,
     form: state.adminPage.form,
     isNew: state.adminPage.isNew
   }
