@@ -31,6 +31,7 @@ const PeerReviewLink = () => (
 const PeerReviewSubmitted = ({ submitDate }) => (
   <span>
     Thank you for answering!
+    <br />
     Peer review created at {formatDate(submitDate)}
   </span>
 )

@@ -47,6 +47,8 @@ class PeerReview extends React.Component {
           const answerFound = await peerReviewService.get()
           if (answerFound) {
             this.props.setAnswerFoundTrue(true)
+          } else {
+            this.props.setAnswerFoundTrue(false)
           }
         } else {
           this.props.setLoading(false)
@@ -161,7 +163,7 @@ class PeerReview extends React.Component {
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">
-            This user is not currently part of any group!
+            You are not currently assigned to any group!
           </h1>
         </div>
       )
