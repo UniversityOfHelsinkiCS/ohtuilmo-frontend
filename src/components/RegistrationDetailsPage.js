@@ -1,9 +1,11 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
 import registrationActions from '../reducers/actions/registrationActions'
+
+import peerReviewService from '../services/peerReview'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -11,12 +13,65 @@ import TopicDialog from './TopicDialog'
 
 import './RegistrationDetailsPage.css'
 
+/**
+ * Format datetime
+ * eg. from 2019-02-07T10:57:19.122Z to 7.2.2019 12.57
+ */
+const formatDate = (date) => {
+  const parsedDate = new Date(date).toLocaleString('fi-FI')
+  return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
+}
+
+const PeerReviewLink = () => (
+  <Link to="/peerreview" data-cy="peerreviewlink">
+    Click here to submit your peer review
+  </Link>
+)
+
+const PeerReviewSubmitted = ({ submitDate }) => (
+  <span>
+    Thank you for answering!
+    <br />
+    Peer review created at {formatDate(submitDate)}
+  </span>
+)
+
+class PeerReviewInfo extends React.Component {
+  state = { submittedReview: false }
+
+  async componentDidMount() {
+    const data = await peerReviewService.get()
+    this.setState({
+      submittedReview: data
+    })
+  }
+
+  render() {
+    const { submittedReview } = this.state
+
+    return (
+      <div>
+        <h2>Peer review open</h2>
+        <Typography variant="body1" gutterBottom>
+          {submittedReview ? (
+            <PeerReviewSubmitted submitDate={submittedReview.createdAt} />
+          ) : (
+            <PeerReviewLink />
+          )}
+        </Typography>
+
+        <br />
+      </div>
+    )
+  }
+}
+
 const UserDetails = ({ student }) => {
   const { first_names, last_name, student_number, email } = student
 
   const extractCallingName = (firstNames) => {
     if (firstNames.includes('*')) {
-      return first_names.split('*')[1].split(' ')[0]
+      return firstNames.split('*')[1].split(' ')[0]
     }
     return firstNames.split(' ')[0]
   }
@@ -108,15 +163,6 @@ class RegistrationDetailsPage extends React.Component {
       createdAt
     } = this.props.ownRegistration
 
-    /**
-     * Format datetime
-     * eg. from 2019-02-07T10:57:19.122Z to 7.2.2019 12.57
-     */
-    const formatDate = (date) => {
-      const parsedDate = new Date(date).toLocaleString('fi-FI')
-      return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
-    }
-
     return (
       <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
@@ -125,6 +171,8 @@ class RegistrationDetailsPage extends React.Component {
         <Typography variant="body1" gutterBottom>
           Registration date: {formatDate(createdAt)}
         </Typography>
+
+        <PeerReviewInfo />
         <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />

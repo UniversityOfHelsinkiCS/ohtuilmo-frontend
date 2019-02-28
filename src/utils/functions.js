@@ -6,3 +6,12 @@ export const getUserToken = () => {
   }
   return token
 }
+
+export const getUser = () => {
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  let user
+  if (loggedInUser) {
+    user = JSON.parse(loggedInUser).user
+  }
+  return user
+}

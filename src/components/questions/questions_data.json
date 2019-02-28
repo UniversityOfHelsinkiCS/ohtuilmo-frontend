@@ -1,0 +1,73 @@
+{
+  "questions": [
+    {
+      "type": "info",
+      "header": "Ohje",
+      "description": "Ohje: Anna avovastauksiin vapaamuotoiset perustelut arvosanaehdotuksille. Voit käyttääapuna vinkkeinä annettuna esimerkkejä asioista, joihin voi kiinnittää huomiota. Voit myöskertoa vapaasti muista mielestäsi olennaisista asioista. Arvioi jokainen ryhmäläinen. Kirjoitaitseäsi koskevat perustelut erityisen huolellisesti. Huomaa, että saadakseen kurssistaarvosanaksi 5 ei jokaisen osa­alueen tarvitse olla täydellinen. On luontevaa, että ryhmässäkontribuutioden painopisteet jakautuvat eri tavoin ja tämä on täysin ok myös tällä kurssilla."
+    },
+    {
+      "header": "Aikaisempi kokemus ohjelmistokehitysprojekteista ja -työstä kuukausissa laskettuna  ",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "header": "Kuinka monta tuntia käytit ohjelmistotuotantoprojektiin yhteensä?  ",
+      "description": "",
+      "type": "number"
+    },
+    {
+      "header": "Kuinka hyvin kukin ryhmän jäsen oli läsnä? Arvioi myös oma läsnäolosi.",
+      "description": "(IRC:n ja muiden pikaviestimien aktiivinen käyttö lasketaan myös läsnäoloksi.)",
+      "type": "radio",
+      "options": [
+        "En osaa sanoa",
+        "Ei lainkaan",
+        "Vähän",
+        "Kohtuullisesti",
+        "Paljon",
+        "Erittäin paljon"
+      ]
+    },
+    {
+      "header": "Kuinka monena päivänä viikossa teit työtä projektin eteen (keskimäärin).",
+      "description": " Heitä jotain",
+      "type": "text"
+    },
+    {
+      "header": "Minkälaisia fiiliksiä ohtu-projekti herätti?",
+      "description": "Kuvaile omin sanoin.",
+      "type": "text"
+    },
+    {
+      "type": "radio",
+      "header": "Tekninen - arvosana",
+      "description": "Arvioi ryhmäläisten teknistä kontribuutiota. Kiinnitä huomioita ainakin seuraaviin:;­ tehtyjentaskien määrä, vaikeusaste;­ osallistumisesi teknisten ratkaisujen suunnitteluun;­ tiimilletuomasi lisäarvo tai erityisosaaminen;­ projektin aikana muodostuneet vastuualueet",
+      "options": [
+        "En osaa sanoa",
+        "Ei lainkaan",
+        "Vähän",
+        "Kohtuullisesti",
+        "Paljon",
+        "Erittäin paljon"
+      ]
+    },
+    {
+      "header": "Noudattiko ryhmäläisesi sovittuja aikatauluja?",
+      "description": " Missä määrin kukin ryhmän jäsen oli valmis oppimaan projektin aikana itselleenuusia asioita/tekniikoita",
+      "type": "radio",
+      "options": [
+        "En osaa sanoa",
+        "Ei lainkaan",
+        "Hieman",
+        "Kohtuullisen hyvin",
+        "Hyvin",
+        "Erinomaisesti"
+      ]
+    },
+    {
+      "header": "Testi ilman optionseja?",
+      "description": "Generoidaan 1-5, mikäli syöte on radio ilman optionseja",
+      "type": "radio"
+    }
+  ]
+}

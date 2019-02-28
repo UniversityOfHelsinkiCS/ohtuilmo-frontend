@@ -21,6 +21,7 @@ import PeerReviewQuestionsPage from './components/PeerReviewQuestionsPage'
 import RegistrationManagementPage from './components/RegistrationManagementPage'
 import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 import GroupManagementPage from './components/GroupManagementPage'
+import PeerReviewPage from './components/PeerReviewPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
@@ -31,6 +32,7 @@ import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
+import PeerReviewPageActions from './reducers/actions/peerReviewPageActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -165,6 +167,12 @@ class App extends Component {
               />
               <Route
                 exact
+                path="/peerreview"
+                user={this.props.user}
+                render={() => <PeerReviewPage />}
+              />
+              <Route
+                exact
                 path="/administration/registrationmanagement"
                 render={() => <RegistrationManagementPage />}
               />
@@ -201,7 +209,9 @@ const mapDispatchToProps = {
   ...appActions,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
-  clearRegistration: registrationActions.clearRegistration
+  clearRegistration: registrationActions.clearRegistration,
+  ...registrationmanagementActions,
+  ...PeerReviewPageActions
 }
 
 const ConnectedApp = connect(
