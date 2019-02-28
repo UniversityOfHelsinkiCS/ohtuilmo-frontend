@@ -5,22 +5,22 @@ import { withRouter } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 
 import {
-  fetchRegistrationQuestionSets,
-  updateRegistrationQuestionSet
-} from '../../reducers/actions/registrationQuestionsPageActions'
+  fetchPeerReviewQuestionSets,
+  updatePeerReviewQuestionSet
+} from '../../reducers/actions/peerReviewQuestionsPageActions'
 import {
   setError,
   setSuccess
 } from '../../reducers/actions/notificationActions'
 
-import { registrationQuestionSetShape } from '../common/sharedPropTypes'
-import CreateRegistrationQuestionSet from './CreateRegistrationQuestionSet'
-import RegistrationQuestionSetList from './RegistrationQuestionSetList'
-import './RegistrationQuestionsPage.css'
+import { peerReviewQuestionSetShape } from '../common/sharedPropTypes'
+import PeerReviewQuestionSetList from './PeerReviewQuestionSetList'
+import CreatePeerReviewQuestionSet from './CreatePeerReviewQuestionSet'
+import './PeerReviewQuestionsPage.css'
 
 const isValidationError = (e) => e.response && e.response.status === 400
 
-class RegistrationQuestionsPage extends React.Component {
+class PeerReviewQuestionsPage extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
@@ -39,7 +39,7 @@ class RegistrationQuestionsPage extends React.Component {
 
   async componentDidMount() {
     try {
-      await this.props.fetchRegistrationQuestionSets()
+      await this.props.fetchPeerReviewQuestionSets()
     } catch (err) {
       this.handleError(err)
     }
@@ -63,7 +63,7 @@ class RegistrationQuestionsPage extends React.Component {
 
   handleQuestionSetUpdate = async (updatedQuestionSet) => {
     try {
-      await this.props.updateRegistrationQuestionSet(updatedQuestionSet)
+      await this.props.updatePeerReviewQuestionSet(updatedQuestionSet)
       this.handleSuccess(`Updated question set "${updatedQuestionSet.name}"!`)
     } catch (err) {
       this.handleError(err)
@@ -74,21 +74,21 @@ class RegistrationQuestionsPage extends React.Component {
     const { questionSets } = this.props
 
     return (
-      <div className="registration-questions-page">
-        <h1>Configure registration questions</h1>
-        <div className="registration-questions-page__container">
+      <div className="peer-review-questions-page">
+        <h1>Configure peer review questions</h1>
+        <div className="peer-review-questions-page__container">
           <section style={{ marginBottom: '2rem' }}>
             <h2>Create question set</h2>
             <Paper
               depth={1}
-              className="registration-questions-page__create-form"
+              className="peer-review-questions-page__create-form"
             >
-              <CreateRegistrationQuestionSet />
+              <CreatePeerReviewQuestionSet />
             </Paper>
           </section>
           <section>
             <h2>Question sets</h2>
-            <RegistrationQuestionSetList
+            <PeerReviewQuestionSetList
               questionSets={questionSets}
               onQuestionSetUpdate={this.handleQuestionSetUpdate}
             />
@@ -99,29 +99,29 @@ class RegistrationQuestionsPage extends React.Component {
   }
 }
 
-RegistrationQuestionsPage.propTypes = {
-  questionSets: PropTypes.arrayOf(registrationQuestionSetShape),
+PeerReviewQuestionsPage.propTypes = {
+  questionSets: PropTypes.arrayOf(peerReviewQuestionSetShape),
   history: PropTypes.any,
   setError: PropTypes.func,
   setSuccess: PropTypes.func,
-  fetchRegistrationQuestionSets: PropTypes.func,
-  updateRegistrationQuestionSet: PropTypes.func
+  fetchPeerReviewQuestionSets: PropTypes.func,
+  updatePeerReviewQuestionSet: PropTypes.func
 }
 
 const mapStateToProps = (state) => ({
-  questionSets: state.registrationQuestionsPage.questionSets
+  questionSets: state.peerReviewQuestionsPage.questionSets
 })
 
 const mapDispatchToProps = {
-  fetchRegistrationQuestionSets,
-  updateRegistrationQuestionSet,
+  fetchPeerReviewQuestionSets,
+  updatePeerReviewQuestionSet,
   setError,
   setSuccess
 }
 
-const ConnectedRegistrationQuestionsPage = connect(
+const ConnectedPeerReviewQuestionsPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(RegistrationQuestionsPage)
+)(PeerReviewQuestionsPage)
 
-export default withRouter(ConnectedRegistrationQuestionsPage)
+export default withRouter(ConnectedPeerReviewQuestionsPage)

@@ -12,6 +12,7 @@ import registrationPageReducer from './registrationPageReducer'
 import adminPageReducer from './adminPageReducer'
 import questionsFormPageReducer from './questionsFormPageReducer'
 import registrationQuestionsPageReducer from './registrationQuestionsPageReducer'
+import peerReviewQuestionsPageReducer from './peerReviewQuestionsPageReducer'
 import registrationManagementReducer from './registrationManagementReducer'
 import registrationReducer from './registrationReducer'
 import groupPageReducer from './groupPageReducer'
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   adminPage: adminPageReducer,
   questionsFormPage: questionsFormPageReducer,
   registrationQuestionsPage: registrationQuestionsPageReducer,
+  peerReviewQuestionsPage: peerReviewQuestionsPageReducer,
   registrationManagement: registrationManagementReducer,
   registration: registrationReducer,
   groupPage: groupPageReducer

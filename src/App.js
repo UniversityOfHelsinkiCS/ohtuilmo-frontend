@@ -16,8 +16,8 @@ import ParticipantsPage from './components/ParticipantsPage'
 import NavigationBar from './components/common/NavigationBar'
 import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
-import QuestionsFormPage from './components/QuestionsFormPage'
 import RegistrationQuestionsPage from './components/RegistrationQuestionsPage'
+import PeerReviewQuestionsPage from './components/PeerReviewQuestionsPage'
 import RegistrationManagementPage from './components/RegistrationManagementPage'
 import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 import GroupManagementPage from './components/GroupManagementPage'
@@ -144,8 +144,8 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/administration/questions"
-                render={() => <QuestionsFormPage />}
+                path="/administration/peer-review-questions"
+                render={() => <PeerReviewQuestionsPage />}
               />
               <Route
                 exact

@@ -7,8 +7,10 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 
-const QuestionsTableRow = ({ question, type }) => (
-  <TableRow className="questions-table-row">
+import { registrationQuestionShape } from './common/sharedPropTypes'
+
+const RegistrationQuestionsTableRow = ({ question, type }) => (
+  <TableRow className="registration-questions-table-row">
     <TableCell component="th" scope="row">
       {question}
     </TableCell>
@@ -18,13 +20,13 @@ const QuestionsTableRow = ({ question, type }) => (
   </TableRow>
 )
 
-QuestionsTableRow.propTypes = {
+RegistrationQuestionsTableRow.propTypes = {
   question: PropTypes.string.isRequired,
   type: PropTypes.string
 }
 
-const QuestionsTable = ({ questions }) => (
-  <Table className="questions-table">
+const RegistrationQuestionsTable = ({ questions }) => (
+  <Table className="registration-questions-table">
     <TableHead>
       <TableRow>
         <TableCell>Question</TableCell>
@@ -35,19 +37,18 @@ const QuestionsTable = ({ questions }) => (
     </TableHead>
     <TableBody>
       {questions.map(({ question, type }) => (
-        <QuestionsTableRow key={question} question={question} type={type} />
+        <RegistrationQuestionsTableRow
+          key={question}
+          question={question}
+          type={type}
+        />
       ))}
     </TableBody>
   </Table>
 )
 
-QuestionsTable.propTypes = {
-  questions: PropTypes.arrayOf(
-    PropTypes.shape({
-      question: PropTypes.string.isRequired,
-      type: PropTypes.string
-    })
-  )
+RegistrationQuestionsTable.propTypes = {
+  questions: PropTypes.arrayOf(registrationQuestionShape)
 }
 
-export default QuestionsTable
+export default RegistrationQuestionsTable

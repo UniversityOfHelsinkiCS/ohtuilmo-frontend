@@ -6,11 +6,15 @@ import {
   setError,
   setSuccess
 } from '../../reducers/actions/notificationActions'
-import QuestionSetForm from './QuestionSetForm'
+import QuestionSetForm from '../QuestionSetForm'
 
 const isValidationError = (err) => err.response && err.response.status === 400
 
-const CreateQuestionSet = ({ onCreateRequested, onSuccess, onError }) => {
+const CreateRegistrationQuestionSet = ({
+  onCreateRequested,
+  onSuccess,
+  onError
+}) => {
   const handleError = (err) => {
     console.error('Error while creating registration question set', err)
 
@@ -26,9 +30,9 @@ const CreateQuestionSet = ({ onCreateRequested, onSuccess, onError }) => {
     }
   }
 
-  const handleSubmit = async (name, questions) => {
+  const handleSubmit = async (name, questionsJson) => {
     try {
-      await onCreateRequested(name, questions)
+      await onCreateRequested(name, JSON.parse(questionsJson))
       onSuccess(`Created new registration question set "${name}"`)
     } catch (err) {
       handleError(err)
@@ -53,4 +57,4 @@ const mapDispatchToProps = {
 export default connect(
   null,
   mapDispatchToProps
-)(CreateQuestionSet)
+)(CreateRegistrationQuestionSet)
