@@ -35,7 +35,6 @@ class PeerReview extends React.Component {
             group.configurationId,
             this.props.reviewRound
           )
-            
 
           const questionObject = { questions: reviewQuestionsSet.questions }
 
@@ -46,10 +45,9 @@ class PeerReview extends React.Component {
           this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
           this.props.createPeers(group.students)
           const answerFound = await peerReviewService.get()
-          if(answerFound){
+          if (answerFound) {
             this.props.setAnswerFoundTrue(true)
           }
-          
         } else {
           this.props.setLoading(false)
         }
@@ -124,7 +122,6 @@ class PeerReview extends React.Component {
           review_round: this.props.reviewRound
         }
       })
-      const answerFound = await peerReviewService.get()
       this.props.setAnswerFoundTrue(true)
       this.props.setSuccess('Peer review saved!')
     } catch (e) {
