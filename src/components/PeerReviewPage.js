@@ -191,6 +191,7 @@ class PeerReview extends React.Component {
     }
   }
 }
+
 const Questions = ({ questions, peers, answerSheet, updateAnswer }) => {
   return (
     <div>
@@ -307,13 +308,20 @@ const OptionHeaders = ({ options }) => {
   })
 }
 
+const extractCallingName = (firstNames) => {
+  if (firstNames.includes('*')) {
+    return firstNames.split('*')[1].split(' ')[0]
+  }
+  return firstNames.split(' ')[0]
+}
+
 const QuestionRows = ({ peers, options, questionId, answerSheet }) => (
   <React.Fragment>
     {peers.map((peer, mappiAvain) => (
       <QuestionRow
         key={mappiAvain}
         options={options}
-        peerName={peer.first_names + ' ' + peer.last_name}
+        peerName={extractCallingName(peer.first_names) + ' ' + peer.last_name}
         peerId={peer.first_names + ' ' + peer.last_name}
         questionId={questionId}
         answerSheet={answerSheet}

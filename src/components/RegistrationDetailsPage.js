@@ -16,7 +16,7 @@ const UserDetails = ({ student }) => {
 
   const extractCallingName = (firstNames) => {
     if (firstNames.includes('*')) {
-      return first_names.split('*')[1].split(' ')[0]
+      return firstNames.split('*')[1].split(' ')[0]
     }
     return firstNames.split(' ')[0]
   }
