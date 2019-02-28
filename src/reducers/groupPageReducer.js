@@ -5,11 +5,30 @@ const initialState = {
   groupInstructorID: '',
   groupConfigurationID: '',
   groups: [],
-  users: []
+  users: [],
+  // [ { student_number, first_names, last_name } ]
+  userAutocompleteSuggestions: [],
+  userAutocompleteLoading: false
 }
 
 const groupPageReducer = (state = initialState, action) => {
   switch (action.type) {
+  case 'FETCH_USER_AUTOCOMPLETE_REQUEST':
+    return {
+      ...state,
+      userAutocompleteLoading: true
+    }
+  case 'FETCH_USER_AUTOCOMPLETE_SUCCESS':
+    return {
+      ...state,
+      userAutocompleteSuggestions: action.payload,
+      userAutocompleteLoading: false
+    }
+  case 'FETCH_USER_AUTOCOMPLETE_FAILED':
+    return {
+      ...state,
+      userAutocompleteLoading: false
+    }
   case 'UPDATE_CREATE_GROUP_FORM_NAME':
     return {
       ...state,

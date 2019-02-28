@@ -1,3 +1,5 @@
+import autocompleteService from '../../services/autocomplete'
+
 const updateCreateGroupFormName = (groupName) => ({
   type: 'UPDATE_CREATE_GROUP_FORM_NAME',
   payload: groupName
@@ -53,6 +55,41 @@ const setUsers = (users) => ({
   payload: users
 })
 
+const fetchUserAutocompleteRequest = () => ({
+  type: 'FETCH_USER_AUTOCOMPLETE_REQUEST'
+})
+
+const fetchUserAutocompleteSuccess = (suggestions) => ({
+  type: 'FETCH_USER_AUTOCOMPLETE_SUCCESS',
+  payload: suggestions
+})
+
+const fetchUserAutocompleteFailed = () => ({
+  type: 'FETCH_USER_AUTOCOMPLETE_SUCCESS'
+})
+
+const fetchUserAutocompleteSuggestions = (partialName) => {
+  return async (dispatch) => {
+    dispatch(fetchUserAutocompleteRequest())
+    try {
+      const suggestions = await autocompleteService.findUserByPartialName(
+        partialName
+      )
+      dispatch(fetchUserAutocompleteSuccess(suggestions))
+    } catch (err) {
+      console.error(
+        `Failed to fetch user autocomplete for name ${partialName}`,
+        err
+      )
+      dispatch(fetchUserAutocompleteFailed())
+
+      // normally the pattern has been so far to catch this in the UI but we
+      // want to set the loading to false so we re-throw the error for the UI :)
+      throw err
+    }
+  }
+}
+
 export default {
   updateCreateGroupFormName,
   updateStudentsForm,
@@ -64,5 +101,6 @@ export default {
   deleteFromGroup,
   updateExistingGroup,
   deleteGroup,
-  setUsers
+  setUsers,
+  fetchUserAutocompleteSuggestions
 }

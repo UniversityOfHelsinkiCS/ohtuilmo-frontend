@@ -13,6 +13,7 @@ import * as notificationActions from '../../reducers/actions/notificationActions
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
 import TopicSelect from './TopicSelect'
+import AutocompletedUserSelect from './AutocompletedUserSelect'
 
 const FormInput = ({ label, children }) => (
   <tr>
@@ -136,11 +137,12 @@ const GroupCreationForm = ({
             </FormInput>
 
             <FormInput label="Instructor">
-              <NameInput
+              {/*<NameInput
                 value={groupInstructorID}
                 onChange={onInstructorIdChange}
                 inputProps={{ className: 'create-group-form__instructor' }}
-              />
+              />*/}
+              <AutocompletedUserSelect onUserIdChange={onInstructorIdChange} />
             </FormInput>
           </tbody>
         </table>
