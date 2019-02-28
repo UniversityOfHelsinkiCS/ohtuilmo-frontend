@@ -26,8 +26,8 @@ describe('Page access and redirect tests', () => {
       assertIsOnLoginPage()
     })
 
-    it('/administration/questions redirects user to login page', () => {
-      cy.visit('/administration/questions')
+    it('/administration/peer-review-questions redirects user to login page', () => {
+      cy.visit('/administration/peer-review-questions')
       assertIsOnLoginPage()
     })
 
@@ -73,8 +73,8 @@ describe('Page access and redirect tests', () => {
       assertIsOnLandingPage()
     })
 
-    it('/administration/questions redirects user to landing page', () => {
-      cy.visit('/administration/questions')
+    it('/administration/peer-review-questions redirects user to landing page', () => {
+      cy.visit('/administration/peer-review-questions')
       assertIsOnLandingPage()
     })
 
@@ -136,10 +136,10 @@ describe('Page access and redirect tests', () => {
       cy.get('.participants-container').should('be.visible')
     })
 
-    it('renders /administration/questions when visited', () => {
-      cy.visit('/administration/questions')
-      cy.url().should('contain', '/administration/questions')
-      cy.get('.questions-form-container').should('be.visible')
+    it('renders /administration/peer-review-questions when visited', () => {
+      cy.visit('/administration/peer-review-questions')
+      cy.url().should('contain', '/administration/peer-review-questions')
+      cy.get('.peer-review-questions-page').should('be.visible')
     })
 
     it('renders /administration/registration-questions when visited', () => {
