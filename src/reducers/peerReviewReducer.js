@@ -3,7 +3,7 @@ const initialState = {
   isInitializing: true,
   peers: [],
   groupsLoading: true,
-  answerFound: true,
+  answerFound: false,
   questions: '',
   configurationId: ''
 }
