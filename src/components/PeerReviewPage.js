@@ -168,7 +168,7 @@ class PeerReview extends React.Component {
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">
-            Peer review allready submitted!
+            Peer review already submitted!
           </h1>
         </div>
       )
