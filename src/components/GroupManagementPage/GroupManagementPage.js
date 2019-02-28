@@ -1,0 +1,109 @@
+import React from 'react'
+import { connect } from 'react-redux'
+
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+
+import topicService from '../../services/topic'
+import configurationService from '../../services/configuration'
+import groupManagementService from '../../services/groupManagement'
+import userService from '../../services/user'
+
+import topicListPageActions from '../../reducers/actions/topicListPageActions'
+import adminPageActions from '../../reducers/actions/adminPageActions'
+import * as notificationActions from '../../reducers/actions/notificationActions'
+import groupManagementActions from '../../reducers/actions/groupManagementActions'
+
+import GroupManagementForm from './GroupManagementForm'
+import ConfigurationSelect from './ConfigurationSelect'
+import GroupCreationForm from './GroupCreationForm'
+
+const ConfigurationSelectWrapper = ({ label, children }) => (
+  <div style={{ padding: 20 }}>
+    <Typography variant="caption">{label}</Typography>
+    {children}
+  </div>
+)
+
+class GroupManagementPage extends React.Component {
+  componentWillMount() {
+    try {
+      if (window.localStorage.getItem('loggedInUser') === null) {
+        window.location.replace(process.env.PUBLIC_URL + '/')
+      } else {
+        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
+        if (!token.user.admin || token === undefined || token === null) {
+          window.location.replace(process.env.PUBLIC_URL + '/')
+        }
+      }
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError('Some error happened')
+    }
+  }
+
+  async componentDidMount() {
+    try {
+      const fetchedTopics = await topicService.getAllActive()
+
+      const fetchedConfiguration = await configurationService.getAll()
+
+      const fetchedGroups = await groupManagementService.get()
+
+      const fetchedUsers = await userService.get()
+
+      this.props.setUsers(fetchedUsers)
+
+      this.props.setGroups(fetchedGroups)
+      this.props.updateTopics(fetchedTopics)
+      this.props.setConfigurations(fetchedConfiguration.configurations)
+    } catch (e) {
+      this.props.setError('Some error happened')
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>Administration</h2>
+        <h3>Group Management</h3>
+
+        <ConfigurationSelectWrapper label="Select configuration">
+          <ConfigurationSelect props={this.props} />
+        </ConfigurationSelectWrapper>
+
+        <Paper elevation={2} style={{ padding: '1rem 1.5rem' }}>
+          <h4>Create group</h4>
+          <GroupCreationForm />
+        </Paper>
+
+        <p />
+
+        <h4>Created groups</h4>
+
+        <GroupManagementForm />
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => ({
+  topics: state.topicListPage.topics,
+  configurations: state.adminPage.configurations,
+  groups: state.groupPage.groups,
+  users: state.groupPage.users
+})
+
+const mapDispatchToProps = {
+  updateTopics: topicListPageActions.updateTopics,
+  setConfigurations: adminPageActions.setConfigurations,
+  setGroups: groupManagementActions.setGroups,
+  setUsers: groupManagementActions.setUsers,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GroupManagementPage)
