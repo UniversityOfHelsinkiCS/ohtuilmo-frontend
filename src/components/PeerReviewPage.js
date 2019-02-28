@@ -138,13 +138,22 @@ class PeerReview extends React.Component {
       answerFound,
       isInitializing,
       questionObject,
-      configurationId
+      configurationId,
+      reviewOpen
     } = this.props
 
     if (isInitializing) {
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">Loading!</h1>
+        </div>
+      )
+    } else if (!reviewOpen) {
+      return (
+        <div className="peer-review-container">
+          <h1 className="peer-review-container__h1">
+            Peer review is not currently open!
+          </h1>
         </div>
       )
     } else if (groupsLoading) {
@@ -159,7 +168,7 @@ class PeerReview extends React.Component {
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">
-            You have already answered!
+            Peer review allready submitted!
           </h1>
         </div>
       )
@@ -374,7 +383,8 @@ const mapStateToProps = (state) => {
     answerFound: state.peerReviewPage.answerFound,
     questionObject: state.peerReviewPage.questions,
     configurationId: state.peerReviewPage.configurationId,
-    reviewRound: state.registrationManagement.peerReviewRound
+    reviewRound: state.registrationManagement.peerReviewRound,
+    reviewOpen: state.registrationManagement.peerReviewOpen
   }
 }
 
