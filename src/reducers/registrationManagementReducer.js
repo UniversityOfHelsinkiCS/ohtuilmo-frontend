@@ -1,4 +1,6 @@
 const initialState = {
+  peerReviewOpen: false,
+  peerReviewRound: 1,
   projectRegistrationOpen: false,
   projectRegistrationMessage: 'Registration is closed.',
   projectRegistrationInfo: '',
@@ -11,11 +13,23 @@ const registrationManagementReducer = (state = initialState, action) => {
   case 'SET_REGISTRATION_MANAGEMENT':
     return {
       ...state,
+      peerReviewOpen: action.payload.peerReviewOpen,
+      peerReviewRound: action.payload.peerReviewRound,
       projectRegistrationOpen: action.payload.projectRegistrationOpen,
       projectRegistrationMessage: action.payload.projectRegistrationMessage,
       projectRegistrationInfo: action.payload.projectRegistrationInfo,
       topicRegistrationOpen: action.payload.topicRegistrationOpen,
       topicRegistrationMessage: action.payload.topicRegistrationMessage
+    }
+  case 'UPDATE_PEER_REVIEW_OPEN':
+    return {
+      ...state,
+      peerReviewOpen: action.payload
+    }
+  case 'UPDATE_PEER_REVIEW_ROUND':
+    return {
+      ...state,
+      peerReviewRound: action.payload
     }
   case 'UPDATE_PROJECT_REGISTRATION_OPEN':
     return {

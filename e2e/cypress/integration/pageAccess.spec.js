@@ -152,7 +152,7 @@ describe('Page access and redirect tests', () => {
       cy.get('.nav-menu-button').click()
       cy.get('.registration-management-menu-item').click()
       cy.url().should('contain', '/administration/registrationmanagement')
-      cy.contains('Registration management')
+      cy.contains('Registration and review management')
     })
 
     it('renders /topics when visited', () => {
