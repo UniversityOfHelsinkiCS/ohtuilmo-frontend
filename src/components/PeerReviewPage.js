@@ -115,6 +115,10 @@ class PeerReview extends React.Component {
   Submit = async (event, answerSheet, configurationId) => {
     event.preventDefault()
 
+    const answer = window.confirm(
+      'Answers can not be changed after submitting. Continue?'
+    )
+    if (!answer) return
     try {
       await peerReviewService.create({
         peerReview: {
@@ -176,6 +180,7 @@ class PeerReview extends React.Component {
         </div>
       )
     } else {
+      console.log(answerSheet)
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">Peer Review</h1>
