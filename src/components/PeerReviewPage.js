@@ -180,7 +180,6 @@ class PeerReview extends React.Component {
         </div>
       )
     } else {
-      console.log(answerSheet)
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">Peer Review</h1>
