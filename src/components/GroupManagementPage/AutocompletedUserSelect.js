@@ -4,6 +4,8 @@ import ReactSelect from 'react-select'
 
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
+const MIN_CHARS = 2
+
 const AutocompletedUserSelect = ({
   suggestions,
   isLoading,
@@ -11,7 +13,7 @@ const AutocompletedUserSelect = ({
   onUserIdChange
 }) => {
   const handleInputChange = (text) => {
-    if (text.length >= 3) {
+    if (text.length >= MIN_CHARS) {
       onSearch(text)
     }
   }
@@ -39,7 +41,7 @@ const AutocompletedUserSelect = ({
       options={inputOptions}
       onChange={handleChange}
       onInputChange={handleInputChange}
-      placeholder="Enter 3 characters..."
+      placeholder="Search by name"
       isClearable
     />
   )
