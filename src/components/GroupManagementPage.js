@@ -264,6 +264,9 @@ const deleteExistingGroup = async (event, props) => {
     studentIds: studentIds
   }
 
+  const answer = window.confirm('Are you sure you want to delete this group?')
+  if (!answer) return
+
   try {
     await groupManagementService.del({
       id: id
@@ -514,8 +517,6 @@ const GroupManagementForm = ({
     </div>
   )
 }
-
-
 
 const saveGroup = async (event, props) => {
   event.preventDefault()
