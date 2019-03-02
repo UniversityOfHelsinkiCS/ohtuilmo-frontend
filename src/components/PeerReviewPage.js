@@ -115,6 +115,10 @@ class PeerReview extends React.Component {
   Submit = async (event, answerSheet, configurationId) => {
     event.preventDefault()
 
+    const answer = window.confirm(
+      'Answers can not be changed after submitting. Continue?'
+    )
+    if (!answer) return
     try {
       await peerReviewService.create({
         peerReview: {
