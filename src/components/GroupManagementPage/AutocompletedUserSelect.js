@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import ReactSelect from 'react-select'
 
@@ -6,7 +7,13 @@ import groupManagementActions from '../../reducers/actions/groupManagementAction
 
 const MIN_CHARS = 2
 
+const toReactSelectOption = (autocompleteUser) => ({
+  value: autocompleteUser.student_number,
+  label: `${autocompleteUser.first_names} ${autocompleteUser.last_name}`
+})
+
 const AutocompletedUserSelect = ({
+  defaultUser,
   suggestions,
   isLoading,
   onSearch,
@@ -28,15 +35,11 @@ const AutocompletedUserSelect = ({
     }
   }
 
-  const inputOptions = suggestions.map(
-    ({ student_number, first_names, last_name }) => ({
-      value: student_number,
-      label: `${first_names} ${last_name}`
-    })
-  )
+  const inputOptions = suggestions.map(toReactSelectOption)
 
   return (
     <ReactSelect
+      defaultValue={defaultUser && toReactSelectOption(defaultUser)}
       isLoading={isLoading}
       options={inputOptions}
       onChange={handleChange}
@@ -45,6 +48,22 @@ const AutocompletedUserSelect = ({
       isClearable
     />
   )
+}
+
+const autosuggestUserShape = PropTypes.shape({
+  student_number: PropTypes.string.isRequired,
+  first_names: PropTypes.string.isRequired,
+  last_name: PropTypes.string.isRequired
+})
+
+AutocompletedUserSelect.propTypes = {
+  // connected props
+  suggestions: PropTypes.arrayOf(autosuggestUserShape).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  // own props
+  onUserIdChange: PropTypes.func.isRequired,
+  defaultUser: autosuggestUserShape
 }
 
 const mapStateToProps = (state) => ({

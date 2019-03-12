@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import groupManagementService from '../../services/groupManagement'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
+import AutocompletedUserSelect from './AutocompletedUserSelect'
 
 const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
   return (
@@ -120,8 +121,8 @@ class SingleGroupEdit extends React.Component {
     this.setState({ studentIds: event.target.value })
   }
 
-  handleInstructorChange = (event) => {
-    this.setState({ instructorId: event.target.value })
+  handleInstructorChange = (newInstructorId) => {
+    this.setState({ instructorId: newInstructorId })
   }
 
   handleTopicChange = (e) => {
@@ -132,6 +133,7 @@ class SingleGroupEdit extends React.Component {
     const {
       group,
       topics,
+      users,
       deleteGroup,
       updateExistingGroup,
       toggleEditMode,
@@ -139,6 +141,10 @@ class SingleGroupEdit extends React.Component {
       setError,
       clearNotifications
     } = this.props
+
+    const defaultInstructor =
+      group.instructorId &&
+      users.find((user) => user.student_number === group.instructorId)
 
     return (
       <div style={{ allign: 'top' }}>
@@ -179,11 +185,10 @@ class SingleGroupEdit extends React.Component {
           rows="8"
         />
         <p>Change instructor</p>
-        {/*<TextField
-          inputProps={{ className: `edit-group-no__${group.id}__instructor` }}
-          value={this.state.instructorId || ''}
-          onChange={this.handleInstructorChange}
-        />*/}
+        <AutocompletedUserSelect
+          defaultUser={defaultInstructor}
+          onUserIdChange={this.handleInstructorChange}
+        />
         <Button
           style={{ marginLeft: '10px', height: '30px', float: 'right' }}
           color="primary"
