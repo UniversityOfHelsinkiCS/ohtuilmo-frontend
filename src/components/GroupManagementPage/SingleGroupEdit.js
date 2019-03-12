@@ -5,28 +5,13 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 
 import groupManagementService from '../../services/groupManagement'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
-import AutocompletedUserSelect from './AutocompletedUserSelect'
 
-const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
-  return (
-    <Select
-      value={groupTopicID}
-      onChange={(e) => onTopicSelectChange(e.target.value)}
-    >
-      {topics.map((topic) => (
-        <MenuItem key={topic.id} value={topic.id}>
-          {topic.content.title}
-        </MenuItem>
-      ))}
-    </Select>
-  )
-}
+import AutocompletedUserSelect from './AutocompletedUserSelect'
+import TopicSelect from './TopicSelect'
 
 const updateCreatedGroup = async (event, props) => {
   event.preventDefault()
