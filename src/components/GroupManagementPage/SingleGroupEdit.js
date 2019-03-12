@@ -145,6 +145,8 @@ class SingleGroupEdit extends React.Component {
         />
         <p>Change instructor</p>
         <AutocompletedUserSelect
+          className={`edit-group-no__${group.id}__instructor`}
+          classNamePrefix={`edit-group-no__${group.id}__instructor`}
           selectedUser={this.state.instructor}
           defaultUser={defaultInstructor}
           onSelectedUserChange={this.handleInstructorChange}

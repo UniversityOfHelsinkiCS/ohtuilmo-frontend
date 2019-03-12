@@ -15,6 +15,8 @@ const getOptionLabel = (option) => `${option.first_names} ${option.last_name}`
 const getOptionValue = (option) => option.student_number
 
 const AutocompletedUserSelect = ({
+  className,
+  classNamePrefix,
   selectedUser,
   onSelectedUserChange,
   defaultUser
@@ -51,6 +53,8 @@ const AutocompletedUserSelect = ({
       getOptionLabel={getOptionLabel}
       defaultValue={defaultUser}
       placeholder="Search by name"
+      className={className}
+      classNamePrefix={classNamePrefix}
     />
   )
 }
@@ -62,6 +66,8 @@ const autosuggestResultShape = PropTypes.shape({
 })
 
 AutocompletedUserSelect.propTypes = {
+  className: PropTypes.string,
+  classNamePrefix: PropTypes.string,
   selectedUser: autosuggestResultShape,
   defaultUser: autosuggestResultShape,
   onSelectedUserChange: PropTypes.func.isRequired

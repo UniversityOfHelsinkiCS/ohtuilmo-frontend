@@ -138,6 +138,8 @@ const GroupCreationForm = ({
 
             <FormInput label="Instructor">
               <AutocompletedUserSelect
+                className="create-group-form__instructor"
+                classNamePrefix="create-group-form__instructor"
                 selectedUser={groupInstructor}
                 onSelectedUserChange={onInstructorChange}
               />
