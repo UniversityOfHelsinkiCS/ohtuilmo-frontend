@@ -19,6 +19,35 @@ describe('Group Management Page', () => {
     })
   })
 
+  describe('Viewing a group', () => {
+    beforeEach(() => {
+      cy.get('.configuration-selector').click()
+      cy.get('.configuration-1').click()
+    })
+
+    it('deletes a student', () => {
+      cy.get('.edit-group-no__1__delete-student-no__1').click()
+      cy.get('.view-group-no__1__container .group-students').should(
+        'not.contain',
+        '012345688'
+      )
+      cy.get('.notification').should('have.text', 'Student deleted!')
+    })
+
+    it('deletes an instructor', () => {
+      cy.get('.edit-group-no__1__delete-instructor').click()
+      cy.get('.view-group-no__1__container .group-instructor').should(
+        'not.contain',
+        '012345698'
+      )
+      cy.get('.view-group-no__1__container .group-instructor').should(
+        'contain',
+        'No instructor assigned'
+      )
+      cy.get('.notification').should('have.text', 'Instructor deleted!')
+    })
+  })
+
   describe('Editing a group', () => {
     beforeEach(() => {
       cy.get('.configuration-selector').click()

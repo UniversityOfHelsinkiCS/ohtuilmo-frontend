@@ -149,7 +149,7 @@ const SingleGroupView = ({
                 clearNotifications
               })
             }
-            className={`edit-group-no__${groupId}__delete_instructor`}
+            className={`edit-group-no__${groupId}__delete-instructor`}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
@@ -223,6 +223,16 @@ const SingleGroupView = ({
 const deleteFromGroupStudent = async (event, props) => {
   event.preventDefault()
 
+  const confirm = window.confirm(
+    `Are you sure you want to delete student ${props.student} from a group ${
+      props.group.name
+    }? `
+  )
+
+  if (!confirm) {
+    return
+  }
+
   const {
     id,
     name,
@@ -256,6 +266,16 @@ const deleteFromGroupStudent = async (event, props) => {
 
 const deleteFromGroupInstructor = async (event, props) => {
   event.preventDefault()
+
+  const confirm = window.confirm(
+    `Are you sure you want to delete instructor ${
+      props.group.instructorId
+    } from a group ${props.group.name}? `
+  )
+
+  if (!confirm) {
+    return
+  }
 
   const { id, name, topicId, studentIds, configurationId } = props.group
 
