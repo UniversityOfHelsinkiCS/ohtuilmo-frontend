@@ -96,3 +96,27 @@ Cypress.Commands.add('createRegistrationQuestionSet', (name, questions) => {
     })
   })
 })
+
+Cypress.Commands.add('deleteReviewQuestions', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/reviewQuestions',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        cy.request({
+          url: `/api/reviewQuestions/${set.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})

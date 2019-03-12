@@ -68,15 +68,15 @@ const cancelEditingQuestionSet = (selector) => {
 describe('Review-questions page', () => {
   beforeEach(() => {
     cy.loginAsAdmin()
-    cy.deleteRegistrationQuestions()
+    cy.deleteReviewQuestions()
   })
 
-  describe('Registration question set creation', () => {
+  describe('Review question set creation', () => {
     beforeEach(() => {
       cy.visit('/administration/peer-review-questions')
     })
 
-    it('creates a new registration question set', () => {
+    it('creates a new review question set', () => {
       createQuestionSet('No options tester 1', [
         {
           type: 'radio',
@@ -103,142 +103,237 @@ describe('Review-questions page', () => {
         .find('.question-set-item')
         .should('have.length', 1)
     })
-    /*
-        it('creates questions of type scale, text and <empty>', () => {
-          createQuestionSet('k2000', [
-            {
-              question: 'This is a title'
-            },
-            {
-              question: 'Rate your yeet 1-5',
-              type: 'scale'
-            },
-            { question: 'Your life story plz', type: 'text' }
-          ])
-    
-          cy.get(
-            '.question-set-item__content .registration-questions-table-row'
-          ).should('have.length', 3)
-          cy.get('.question-set-item__content').contains('This is a title')
-          cy.get('.question-set-item__content').contains('Rate your yeet 1-5')
-          cy.get('.question-set-item__content').contains('scale')
-          cy.get('.question-set-item__content').contains('Your life story plz')
-          cy.get('.question-set-item__content').contains('text')
-        })
-    
-        it('does not allow creation if name is duplicate', () => {
-          createQuestionSet('k2000', [{ question: 'foo?', type: 'scale' }])
-          createQuestionSet('k2000', [{ question: 'foo?', type: 'scale' }])
-    
-          cy.get('.notification').contains('name already in use')
-          cy.get('.registration-question-set-list')
-            .find('.question-set-item')
-            .should('have.length', 1)
-        })
-    
-        it('does not allow creation if JSON is malformed', () => {
-          submitCreationForm('k3000', '.-a,1:"#123-')
-    
-          cy.get('.question-set-form').contains('Field contains invalid JSON')
-          cy.get('.registration-question-set-list')
-            .find('.question-set-item')
-            .should('have.length', 0)
-        })
-      })
-    
-      describe('Registration question set editing', () => {
-        beforeEach(() => {
-          cy.createRegistrationQuestionSet('k2000', [
-            { question: 'foo?', type: 'text' }
-          ])
-          cy.visit('/administration/registration-questions')
-        })
-    
-        it('does not save changes if both name and questions are empty', () => {
-          editQuestionSet('.question-set-item')
-          clearEditingQuestionSetInputs('.question-set-item-editor')
-          // "required" attr should prevent submit now
-          saveEditingQuestionSet('.question-set-item-editor')
-          // since the submit was prevented, the component is still
-          // .question-set-item-editor and not .question-set-item
-          cy.get('.question-set-item-editor')
-        })
-    
-        it('shows error if new JSON is invalid', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSetJson(
-            '.question-set-item-editor',
-            '..-12.31-23.1-23.asdasc'
-          )
-          saveEditingQuestionSet('.question-set-item-editor')
-          cy.get('.question-set-form').contains('Field contains invalid JSON')
-        })
-    
-        it('shows error if new JSON is not an array', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSetJson('.question-set-item-editor', '{"foo":123}')
-          saveEditingQuestionSet('.question-set-item-editor')
-          cy.get('.question-set-form').contains('Questions should be an array')
-        })
-    
-        it('edits name without changing questions', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSetName('.question-set-item-editor', 'k2021')
-          saveEditingQuestionSet('.question-set-item-editor')
-    
-          cy.get('.question-set-item__title').should('have.text', 'k2021')
-          cy.get(
-            '.question-set-item__content .registration-questions-table-row'
-          ).should('have.length', 1)
-          cy.get('.question-set-item__content').contains('foo?')
-        })
-    
-        it('edits questions without changing name', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSet('.question-set-item-editor', [
-            { question: 'foo!', type: 'text' }
-          ])
-          saveEditingQuestionSet('.question-set-item-editor')
-    
-          cy.get('.question-set-item__title').should('have.text', 'k2000')
-          cy.get(
-            '.question-set-item__content .registration-questions-table-row'
-          ).should('have.length', 1)
-          cy.get('.question-set-item__content').contains('foo!')
-          cy.get('.question-set-item__content').contains('text')
-        })
-    
-        it('does not modify set if cancel is clicked', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSetName('.question-set-item-editor', 'foobar')
-          replaceEditingQuestionSet('.question-set-item-editor', [
-            { question: 'foo!', type: 'text' }
-          ])
-          cancelEditingQuestionSet('.question-set-item-editor')
-    
-          cy.get('.question-set-item__title').should('have.text', 'k2000')
-          cy.get(
-            '.question-set-item__content .registration-questions-table-row'
-          ).should('have.length', 1)
-          cy.get('.question-set-item__content').contains('foo?')
-          cy.get('.question-set-item__content').contains('text')
-        })
-    
-        it('edits both name and questions correctly', () => {
-          editQuestionSet('.question-set-item')
-          replaceEditingQuestionSetName('.question-set-item-editor', 'k5555')
-          replaceEditingQuestionSet('.question-set-item-editor', [
-            { question: 'this is a title' },
-            { question: 'this is a scale', type: 'scale' }
-          ])
-          saveEditingQuestionSet('.question-set-item-editor')
-    
-          cy.get('.question-set-item__title').should('have.text', 'k5555')
-          cy.get(
-            '.question-set-item__content .registration-questions-table-row'
-          ).should('have.length', 2)
-          cy.get('.question-set-item__content').contains('this is a title')
-          cy.get('.question-set-item__content').contains('this is a scale')
-        })*/
+
+    it('creates questions set with options', () => {
+      createQuestionSet('With options tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'radio',
+          options: [
+            'Dont know',
+            'Not at all',
+            'Little',
+            'Decent',
+            'Much',
+            'Super'
+          ]
+        }
+      ])
+
+      cy.get(
+        '.question-set-item__content .registration-questions-table-row'
+      ).should('have.length', 1)
+      cy.get('.question-set-item__content').contains(
+        'Do we have a right header here?'
+      )
+      cy.get('.question-set-item__content').contains(
+        'I hope we do have a descirption also'
+      )
+      cy.get('.question-set-item__content').contains('radio')
+      cy.get('.question-set-item__content').contains('Dont know')
+      cy.get('.question-set-item__content').contains('Super')
+    })
+
+    it('does not allow creation if name is duplicate', () => {
+      createQuestionSet('Info tester', [
+        {
+          type: 'info',
+          header: 'Just a text field plz?',
+          description: 'Right?'
+        }
+      ])
+      createQuestionSet('Info tester', [
+        {
+          type: 'info',
+          header: 'Just a text field plz?',
+          description: 'Right?'
+        }
+      ])
+      cy.get('.notification').contains('name already in use')
+      cy.get('.peer-review-question-set-list')
+        .find('.question-set-item')
+        .should('have.length', 1)
+    })
+
+    it('does not allow creation if JSON is malformed', () => {
+      submitCreationForm('Malformed json', '.-a,1:"#123-')
+
+      cy.get('.question-set-form').contains('Field contains invalid JSON')
+      cy.get('.peer-review-question-set-list')
+        .find('.question-set-item')
+        .should('have.length', 0)
+    })
+  })
+
+  describe('Review question set editing', () => {
+    beforeEach(() => {
+      cy.visit('/administration/peer-review-questions')
+    })
+
+    it('does not save changes if both name and questions are empty', () => {
+      createQuestionSet('With options tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'radio',
+          options: [
+            'Dont know',
+            'Not at all',
+            'Little',
+            'Decent',
+            'Much',
+            'Super'
+          ]
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      clearEditingQuestionSetInputs('.question-set-item-editor')
+      // "required" attr should prevent submit now
+      saveEditingQuestionSet('.question-set-item-editor')
+      // since the submit was prevented, the component is still
+      // .question-set-item-editor and not .question-set-item
+      cy.get('.question-set-item-editor')
+    })
+
+    it('shows error if new JSON is invalid', () => {
+      createQuestionSet('No options tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'radio'
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSetJson(
+        '.question-set-item-editor',
+        '..-12.31-23.1-23.asdasc'
+      )
+      saveEditingQuestionSet('.question-set-item-editor')
+      cy.get('.question-set-form').contains('Field contains invalid JSON')
+    })
+
+    it('shows error if new JSON is not an array', () => {
+      createQuestionSet('Number question tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'number'
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSetJson('.question-set-item-editor', '{"foo":123}')
+      saveEditingQuestionSet('.question-set-item-editor')
+      cy.get('.question-set-form').contains('Questions should be an array')
+    })
+
+    it('edits name without changing questions', () => {
+      createQuestionSet('With options tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'radio',
+          options: [
+            'Dont know',
+            'Not at all',
+            'Little',
+            'Decent',
+            'Much',
+            'Super'
+          ]
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSetName('.question-set-item-editor', 'New name')
+      saveEditingQuestionSet('.question-set-item-editor')
+
+      cy.get('.question-set-item__title').should('have.text', 'New name')
+      cy.get(
+        '.question-set-item__content .registration-questions-table-row'
+      ).should('have.length', 1)
+      cy.get('.question-set-item__content').contains('Little')
+    })
+
+    it('edits questions without changing name', () => {
+      createQuestionSet('Number question tester', [
+        {
+          header: 'Do we have a right header here?',
+          description: 'I hope we do have a descirption also',
+          type: 'number'
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSet('.question-set-item-editor', [
+        {
+          header: 'Nice, edited question',
+          description: 'Some edited questions',
+          type: 'radio'
+        }
+      ])
+      saveEditingQuestionSet('.question-set-item-editor')
+
+      cy.get('.question-set-item__title').should(
+        'have.text',
+        'Number question tester'
+      )
+      cy.get(
+        '.question-set-item__content .registration-questions-table-row'
+      ).should('have.length', 1)
+      cy.get('.question-set-item__content').contains('radio')
+    })
+
+    it('does not modify set if cancel is clicked', () => {
+      createQuestionSet('Info tester', [
+        {
+          header: 'Info tester',
+          description: 'This is info tester',
+          type: 'info'
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSetName('.question-set-item-editor', 'foobar')
+      replaceEditingQuestionSet('.question-set-item-editor', [
+        {
+          header: 'This could be edited but will be canceled..',
+          description: 'Is this real?',
+          type: 'info'
+        }
+      ])
+      cancelEditingQuestionSet('.question-set-item-editor')
+
+      cy.get('.question-set-item__title').should('have.text', 'Info tester')
+      cy.get(
+        '.question-set-item__content .registration-questions-table-row'
+      ).should('have.length', 1)
+      cy.get('.question-set-item__content').contains('tester')
+      cy.get('.question-set-item__content').contains('info')
+    })
+
+    it('edits both name and questions correctly', () => {
+      createQuestionSet('Info tester', [
+        {
+          header: 'Info tester',
+          description: 'This is info tester',
+          type: 'info'
+        }
+      ])
+      editQuestionSet('.question-set-item')
+      replaceEditingQuestionSetName('.question-set-item-editor', 'New name 2')
+      replaceEditingQuestionSet('.question-set-item-editor', [
+        {
+          header: 'Radio tester edited',
+          description: 'This is now radio tester',
+          type: 'radio'
+        }
+      ])
+      saveEditingQuestionSet('.question-set-item-editor')
+
+      cy.get('.question-set-item__title').should('have.text', 'New name 2')
+      cy.get(
+        '.question-set-item__content .registration-questions-table-row'
+      ).should('have.length', 1)
+      cy.get('.question-set-item__content').contains('Radio tester edited')
+      cy.get('.question-set-item__content').contains('radio')
+    })
   })
 })
