@@ -1,81 +1,62 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import ReactSelect from 'react-select'
+import AsyncSelect from 'react-select/lib/Async'
 
-import groupManagementActions from '../../reducers/actions/groupManagementActions'
+import autocomplete from '../../services/autocomplete'
+
+/** @typedef {{ student_number: string, first_names: string, last_name: string }} AutocompleteResult */
 
 const MIN_CHARS = 2
 
-const toReactSelectOption = (autocompleteUser) => ({
-  value: autocompleteUser.student_number,
-  label: `${autocompleteUser.first_names} ${autocompleteUser.last_name}`
-})
+/** @param {AutocompleteResult} option */
+const getOptionLabel = (option) => `${option.first_names} ${option.last_name}`
 
-const AutocompletedUserSelect = ({
-  defaultUser,
-  suggestions,
-  isLoading,
-  onSearch,
-  onUserIdChange
-}) => {
-  const handleInputChange = (text) => {
-    if (text.length >= MIN_CHARS) {
-      onSearch(text)
-    }
-  }
+/** @param {AutocompleteResult} option */
+const getOptionValue = (option) => option.student_number
 
+const AutocompletedUserSelect = ({ defaultUser, onUserIdChange }) => {
+  /** @param {AutocompleteResult} selectedOption */
   const handleChange = (selectedOption, { action }) => {
     if (action === 'clear') {
       // selectedOption is null
       onUserIdChange('')
     } else if (action === 'select-option') {
-      // selectedOption = { value, label }
-      onUserIdChange(selectedOption.value)
+      // selectedOption is one of the result objects returned by the
+      // autocomplete service
+      onUserIdChange(selectedOption.student_number)
     }
   }
 
-  const inputOptions = suggestions.map(toReactSelectOption)
+  const handleLoadOptions = async (inputValue) => {
+    if (inputValue.length < MIN_CHARS) {
+      return
+    }
+
+    return await autocomplete.findUsersByPartialName(inputValue)
+  }
 
   return (
-    <ReactSelect
-      defaultValue={defaultUser && toReactSelectOption(defaultUser)}
-      isLoading={isLoading}
-      options={inputOptions}
-      onChange={handleChange}
-      onInputChange={handleInputChange}
-      placeholder="Search by name"
+    <AsyncSelect
+      cacheOptions
+      defaultOptions
       isClearable
+      loadOptions={handleLoadOptions}
+      onChange={handleChange}
+      getOptionValue={getOptionValue}
+      getOptionLabel={getOptionLabel}
+      defaultValue={defaultUser}
+      placeholder="Search by name"
     />
   )
 }
 
-const autosuggestUserShape = PropTypes.shape({
-  student_number: PropTypes.string.isRequired,
-  first_names: PropTypes.string.isRequired,
-  last_name: PropTypes.string.isRequired
-})
-
 AutocompletedUserSelect.propTypes = {
-  // connected props
-  suggestions: PropTypes.arrayOf(autosuggestUserShape).isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  onSearch: PropTypes.func.isRequired,
-  // own props
   onUserIdChange: PropTypes.func.isRequired,
-  defaultUser: autosuggestUserShape
+  defaultUser: PropTypes.shape({
+    student_number: PropTypes.string.isRequired,
+    first_names: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired
+  })
 }
 
-const mapStateToProps = (state) => ({
-  isLoading: state.groupPage.userAutocompleteLoading,
-  suggestions: state.groupPage.userAutocompleteSuggestions
-})
-
-const mapDispatchToProps = {
-  onSearch: groupManagementActions.fetchUserAutocompleteSuggestions
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AutocompletedUserSelect)
+export default AutocompletedUserSelect

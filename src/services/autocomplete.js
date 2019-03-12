@@ -4,7 +4,11 @@ import { getUserToken } from '../utils/functions'
 
 const url = `${BACKEND_API_BASE}/autocomplete`
 
-const findUserByPartialName = async (partialName) => {
+/**
+ * @returns {AutocompleteResult[]}
+ * @typedef {{ student_number: string, first_names: string, last_name: string }} AutocompleteResult
+ */
+const findUsersByPartialName = async (partialName) => {
   // returns 400 if less than 3 characters passed!
   const response = await axios.get(`${url}/users`, {
     params: {
@@ -17,4 +21,4 @@ const findUserByPartialName = async (partialName) => {
   return response.data
 }
 
-export default { findUserByPartialName }
+export default { findUsersByPartialName }
