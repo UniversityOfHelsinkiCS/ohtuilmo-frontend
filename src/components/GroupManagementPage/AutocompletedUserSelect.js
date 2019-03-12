@@ -14,16 +14,20 @@ const getOptionLabel = (option) => `${option.first_names} ${option.last_name}`
 /** @param {AutocompleteResult} option */
 const getOptionValue = (option) => option.student_number
 
-const AutocompletedUserSelect = ({ defaultUser, onUserIdChange }) => {
+const AutocompletedUserSelect = ({
+  selectedUser,
+  onSelectedUserChange,
+  defaultUser
+}) => {
   /** @param {AutocompleteResult} selectedOption */
   const handleChange = (selectedOption, { action }) => {
     if (action === 'clear') {
       // selectedOption is null
-      onUserIdChange('')
+      onSelectedUserChange(null)
     } else if (action === 'select-option') {
       // selectedOption is one of the result objects returned by the
       // autocomplete service
-      onUserIdChange(selectedOption.student_number)
+      onSelectedUserChange(selectedOption)
     }
   }
 
@@ -40,6 +44,7 @@ const AutocompletedUserSelect = ({ defaultUser, onUserIdChange }) => {
       cacheOptions
       defaultOptions
       isClearable
+      value={selectedUser}
       loadOptions={handleLoadOptions}
       onChange={handleChange}
       getOptionValue={getOptionValue}
@@ -50,13 +55,16 @@ const AutocompletedUserSelect = ({ defaultUser, onUserIdChange }) => {
   )
 }
 
+const autosuggestResultShape = PropTypes.shape({
+  student_number: PropTypes.string.isRequired,
+  first_names: PropTypes.string.isRequired,
+  last_name: PropTypes.string.isRequired
+})
+
 AutocompletedUserSelect.propTypes = {
-  onUserIdChange: PropTypes.func.isRequired,
-  defaultUser: PropTypes.shape({
-    student_number: PropTypes.string.isRequired,
-    first_names: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired
-  })
+  selectedUser: autosuggestResultShape,
+  defaultUser: autosuggestResultShape,
+  onSelectedUserChange: PropTypes.func.isRequired
 }
 
 export default AutocompletedUserSelect

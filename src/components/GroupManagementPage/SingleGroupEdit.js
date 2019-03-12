@@ -36,7 +36,7 @@ const updateCreatedGroup = async (event, props) => {
     name,
     topicId,
     studentIds,
-    instructorId,
+    instructor,
     configurationId
   } = props.group
 
@@ -51,7 +51,7 @@ const updateCreatedGroup = async (event, props) => {
       name: name,
       topicId: topicId,
       configurationId: configurationId,
-      instructorId: instructorId,
+      instructorId: instructor ? instructor.student_number : '',
       studentIds: splitStudents
     })
 
@@ -66,39 +66,6 @@ const updateCreatedGroup = async (event, props) => {
   }
 }
 
-const deleteExistingGroup = async (event, props) => {
-  event.preventDefault()
-
-  const {
-    id,
-    name,
-    topicId,
-    studentIds,
-    configurationId,
-    instructorId
-  } = props.group
-
-  const groupToDelete = {
-    id: id,
-    name: name,
-    topicId: topicId,
-    configurationId: configurationId,
-    instructorId: instructorId,
-    studentIds: studentIds
-  }
-
-  try {
-    await groupManagementService.del({
-      id: id
-    })
-    props.deleteGroup(groupToDelete)
-
-    props.setSuccess('Group deleted!')
-  } catch (e) {
-    props.setError(`Failed to delte! ${e.response.data.error}`)
-  }
-}
-
 class SingleGroupEdit extends React.Component {
   constructor(props) {
     super(props)
@@ -108,7 +75,9 @@ class SingleGroupEdit extends React.Component {
       name: props.group.name,
       topicId: props.group.topicId,
       configurationId: props.group.configurationId,
-      instructorId: props.group.instructorId,
+      instructor: props.users.find(
+        (user) => user.student_number === props.group.instructorId
+      ),
       studentIds: props.group.studentIds.join('\n')
     }
   }
@@ -121,12 +90,29 @@ class SingleGroupEdit extends React.Component {
     this.setState({ studentIds: event.target.value })
   }
 
-  handleInstructorChange = (newInstructorId) => {
-    this.setState({ instructorId: newInstructorId })
+  handleInstructorChange = (newInstructor) => {
+    this.setState({ instructor: newInstructor })
   }
 
   handleTopicChange = (e) => {
     this.setState({ topicId: e })
+  }
+
+  handleGroupDelete = async (e) => {
+    e.preventDefault()
+
+    const groupId = this.state.id
+
+    try {
+      await groupManagementService.del({
+        id: groupId
+      })
+      this.props.deleteGroup(groupId)
+
+      this.props.setSuccess('Group deleted!')
+    } catch (e) {
+      this.props.setError(`Failed to delte! ${e.response.data.error}`)
+    }
   }
 
   render() {
@@ -134,7 +120,6 @@ class SingleGroupEdit extends React.Component {
       group,
       topics,
       users,
-      deleteGroup,
       updateExistingGroup,
       toggleEditMode,
       setSuccess,
@@ -149,18 +134,7 @@ class SingleGroupEdit extends React.Component {
     return (
       <div style={{ allign: 'top' }}>
         Edit group: {group.name}
-        <IconButton
-          aria-label="Delete"
-          onClick={(event) =>
-            deleteExistingGroup(event, {
-              group: this.state,
-              deleteGroup,
-              setSuccess,
-              setError,
-              clearNotifications
-            })
-          }
-        >
+        <IconButton aria-label="Delete" onClick={this.handleGroupDelete}>
           <DeleteIcon fontSize="large" />
         </IconButton>
         <p>Edit group name</p>
@@ -186,8 +160,9 @@ class SingleGroupEdit extends React.Component {
         />
         <p>Change instructor</p>
         <AutocompletedUserSelect
+          selectedUser={this.state.instructor}
           defaultUser={defaultInstructor}
-          onUserIdChange={this.handleInstructorChange}
+          onSelectedUserChange={this.handleInstructorChange}
         />
         <Button
           style={{ marginLeft: '10px', height: '30px', float: 'right' }}

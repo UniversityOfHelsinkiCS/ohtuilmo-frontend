@@ -55,7 +55,7 @@ const saveGroup = async (event, props) => {
     groupName,
     students,
     groupTopicID,
-    groupInstructorID,
+    groupInstructor,
     groupConfigurationID
   } = props
 
@@ -69,7 +69,7 @@ const saveGroup = async (event, props) => {
       name: groupName,
       topicId: groupTopicID,
       configurationId: groupConfigurationID,
-      instructorId: groupInstructorID,
+      instructorId: groupInstructor ? groupInstructor.student_number : '',
       studentIds: splitStudents
     })
     props.createGroupSuccsess(createdGroup)
@@ -85,8 +85,8 @@ const GroupCreationForm = ({
   onNameChangeForm,
   students,
   onStudentFormChange,
-  groupInstructorID,
-  onInstructorIdChange,
+  groupInstructor,
+  onInstructorChange,
   topics,
   onTopicSelectChange,
   groupTopicID,
@@ -104,7 +104,7 @@ const GroupCreationForm = ({
             groupName,
             students,
             groupTopicID,
-            groupInstructorID,
+            groupInstructor,
             groupConfigurationID,
             createGroupSuccsess,
             setSuccess,
@@ -137,12 +137,10 @@ const GroupCreationForm = ({
             </FormInput>
 
             <FormInput label="Instructor">
-              {/*<NameInput
-                value={groupInstructorID}
-                onChange={onInstructorIdChange}
-                inputProps={{ className: 'create-group-form__instructor' }}
-              />*/}
-              <AutocompletedUserSelect onUserIdChange={onInstructorIdChange} />
+              <AutocompletedUserSelect
+                selectedUser={groupInstructor}
+                onSelectedUserChange={onInstructorChange}
+              />
             </FormInput>
           </tbody>
         </table>
@@ -166,7 +164,7 @@ const mapStateToPropsForm = (state) => ({
   groupName: state.groupPage.groupName,
   students: state.groupPage.students,
   groupTopicID: state.groupPage.groupTopicID,
-  groupInstructorID: state.groupPage.groupInstructorID,
+  groupInstructor: state.groupPage.groupInstructor,
   groupConfigurationID: state.groupPage.groupConfigurationID,
   groups: state.groupPage.groups,
   topics: state.topicListPage.topics,
@@ -178,7 +176,7 @@ const mapDispatchToPropsForm = {
   onNameChangeForm: groupManagementActions.updateCreateGroupFormName,
   onStudentFormChange: groupManagementActions.updateStudentsForm,
   onTopicSelectChange: groupManagementActions.updateGroupTopicID,
-  onInstructorIdChange: groupManagementActions.updateGroupInstructorID,
+  onInstructorChange: groupManagementActions.updateGroupInstructor,
   onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
   deleteFromGroupAction: groupManagementActions.deleteFromGroup,
   updateExistingGroup: groupManagementActions.updateExistingGroup,

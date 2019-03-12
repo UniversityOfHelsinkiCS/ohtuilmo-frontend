@@ -2,7 +2,7 @@ const initialState = {
   groupName: '',
   students: '',
   groupTopicID: '',
-  groupInstructorID: '',
+  groupInstructor: null, // autosuggested user
   groupConfigurationID: '',
   groups: [],
   users: []
@@ -25,10 +25,10 @@ const groupPageReducer = (state = initialState, action) => {
       ...state,
       groupTopicID: action.payload
     }
-  case 'UPDATE_INSTRUCTOR_ID':
+  case 'UPDATE_INSTRUCTOR':
     return {
       ...state,
-      groupInstructorID: action.payload
+      groupInstructor: action.payload
     }
   case 'UPDATE_GROUP_CONFIGURATION_ID':
     return {
@@ -66,9 +66,7 @@ const groupPageReducer = (state = initialState, action) => {
   case 'DELETE_GROUP':
     return {
       ...state,
-      groups: state.groups.map((group) =>
-        group.id === action.payload.id ? '' : group
-      )
+      groups: state.groups.filter((group) => group.id !== action.payload)
     }
   case 'SET_USERS':
     return {
