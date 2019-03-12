@@ -47,6 +47,7 @@ const adminItems = (history) => {
       handler: () => history.push('/administration/registrationmanagement')
     },
     {
+      className: 'group-management-menu-item',
       text: 'Group Management',
       handler: () => history.push('/administration/groups')
     }

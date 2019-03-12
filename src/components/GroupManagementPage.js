@@ -43,19 +43,30 @@ const StudentInput = ({ value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         multiline
         rows="8"
+        inputProps={{ className: 'create-group-form__student-input' }}
       />
     </div>
   )
 }
 
-const TopicSelect = ({ topics, onTopicSelectChange, groupTopicID }) => {
+const TopicSelect = ({
+  topics,
+  onTopicSelectChange,
+  groupTopicID,
+  className
+}) => {
   return (
     <Select
+      className={className}
       value={groupTopicID}
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
       {topics.map((topic) => (
-        <MenuItem key={topic.id} value={topic.id}>
+        <MenuItem
+          key={topic.id}
+          value={topic.id}
+          className={`topic-menu-item-no__${topic.id}`}
+        >
           {topic.content.title}
         </MenuItem>
       ))}
@@ -70,11 +81,16 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      className="configuration-selector"
       value={groupConfigurationID}
       onChange={(e) => onConfigurationChange(e.target.value)}
     >
       {configurations.map((configuration) => (
-        <MenuItem key={configuration.id} value={configuration.id}>
+        <MenuItem
+          key={configuration.id}
+          value={configuration.id}
+          className={`configuration-${configuration.id}`}
+        >
           {configuration.name}
         </MenuItem>
       ))}
@@ -82,11 +98,12 @@ const ConfigurationSelect = ({
   )
 }
 
-const NameInput = ({ value, onChange, ...textFieldProps }) => (
+const NameInput = ({ value, onChange, inputProps, ...textFieldProps }) => (
   <TextField
     value={value}
     onChange={(e) => onChange(e.target.value)}
     variant="standard"
+    inputProps={inputProps}
     {...textFieldProps}
   />
 )
@@ -101,6 +118,8 @@ const SingleGroupView = ({
   setError,
   clearNotifications
 }) => {
+  console.log(group)
+
   const thisTopic = topics.filter((topic) => topic.id === group.topicId)
 
   const topicName = thisTopic[0].content.title
@@ -112,7 +131,7 @@ const SingleGroupView = ({
     return `${namedUser.first_names} ${namedUser.last_name} (${user})`
   }
 
-  const getGroupInstructor = () => {
+  const getGroupInstructor = (groupId) => {
     if (group.instructorId === null) {
       return <div>No instructor assigned</div>
     } else {
@@ -130,6 +149,7 @@ const SingleGroupView = ({
                 clearNotifications
               })
             }
+            className={`edit-group-no__${groupId}__delete-instructor`}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
@@ -139,39 +159,52 @@ const SingleGroupView = ({
   }
 
   return (
-    <div style={{ align: 'top' }}>
-      {group.name}
+    <div
+      className={`view-group-no__${group.id}__container`}
+      style={{ align: 'top' }}
+    >
+      <div className="group-name">{group.name}</div>
 
       <div>
-        <p>topic</p>
+        <div className="group-topic">
+          <p>Topic</p>
 
-        {topicName}
+          {topicName}
+        </div>
 
-        <p>students</p>
+        <div className="group-students">
+          <p>Students</p>
 
-        {group.studentIds.map((student) => (
-          <div key={student}>
-            {getUserNames(student)}
+          {group.studentIds.map((student, index) => (
+            <div key={student}>
+              {getUserNames(student)}
 
-            <IconButton
-              aria-label="Delete"
-              onClick={(event) =>
-                deleteFromGroupStudent(event, {
-                  group,
-                  student,
-                  deleteFromGroupAction,
-                  setSuccess,
-                  setError,
-                  clearNotifications
-                })
-              }
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </div>
-        ))}
-        <p>Instructor</p>
-        {getGroupInstructor()}
+              <IconButton
+                aria-label="Delete"
+                onClick={(event) =>
+                  deleteFromGroupStudent(event, {
+                    group,
+                    student,
+                    deleteFromGroupAction,
+                    setSuccess,
+                    setError,
+                    clearNotifications
+                  })
+                }
+                className={`edit-group-no__${
+                  group.id
+                }__delete-student-no__${index}`}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </div>
+          ))}
+        </div>
+
+        <div className="group-instructor">
+          <p>Instructor</p>
+          {getGroupInstructor(group.id)}
+        </div>
       </div>
 
       <Button
@@ -179,6 +212,7 @@ const SingleGroupView = ({
         color="primary"
         variant="contained"
         onClick={() => toggleEditMode()}
+        className={`enable-edit-group-no__${group.id}`}
       >
         Edit
       </Button>
@@ -188,6 +222,16 @@ const SingleGroupView = ({
 
 const deleteFromGroupStudent = async (event, props) => {
   event.preventDefault()
+
+  const confirm = window.confirm(
+    `Are you sure you want to delete student ${props.student} from a group ${
+      props.group.name
+    }? `
+  )
+
+  if (!confirm) {
+    return
+  }
 
   const {
     id,
@@ -222,6 +266,16 @@ const deleteFromGroupStudent = async (event, props) => {
 
 const deleteFromGroupInstructor = async (event, props) => {
   event.preventDefault()
+
+  const confirm = window.confirm(
+    `Are you sure you want to delete instructor ${
+      props.group.instructorId
+    } from a group ${props.group.name}? `
+  )
+
+  if (!confirm) {
+    return
+  }
 
   const { id, name, topicId, studentIds, configurationId } = props.group
 
@@ -326,26 +380,34 @@ class SingleGroupEdit extends React.Component {
               clearNotifications: this.props.clearNotifications
             })
           }
+          className={`edit-group-no__${group.id}__delete-button`}
         >
           <DeleteIcon fontSize="large" />
         </IconButton>
         <p>Edit group name</p>
-        <TextField value={this.state.name} onChange={this.handleNameChange} />
+        <TextField
+          inputProps={{ className: `edit-group-no__${group.id}__name` }}
+          value={this.state.name}
+          onChange={this.handleNameChange}
+        />
         <p>Change topic</p>
         <TopicSelect
           topics={this.props.topics}
           onTopicSelectChange={this.handleTopicChange}
           groupTopicID={this.state.topicId}
+          className="edit-group-form-topic__selector"
         />
         <p>Add new students</p>
         <TextField
+          inputProps={{ className: `edit-group-no__${group.id}__students` }}
           value={this.state.studentIds}
           onChange={this.handleStudentChange}
           multiline
           rows="8"
         />
-        <p>Add instructor</p>
+        <p>Change instructor</p>
         <TextField
+          inputProps={{ className: `edit-group-no__${group.id}__instructor` }}
           value={this.state.instructorId || ''}
           onChange={this.handleInstructorChange}
         />
@@ -363,6 +425,7 @@ class SingleGroupEdit extends React.Component {
               clearNotifications: this.props.clearNotifications
             })
           }
+          className={`edit-group-no__${group.id}__save-button`}
         >
           Save
         </Button>
@@ -371,6 +434,7 @@ class SingleGroupEdit extends React.Component {
           color="primary"
           variant="contained"
           onClick={() => this.props.toggleEditMode()}
+          className={`edit-group-no__${group.id}__cancel-button`}
         >
           Cancel
         </Button>
@@ -408,9 +472,9 @@ const updateCreatedGroup = async (event, props) => {
 
     props.updateExistingGroup(updatedGroup)
 
-    props.setSuccess('Group updated!')
-
     props.toggleEditMode()
+
+    props.setSuccess('Group updated!')
   } catch (e) {
     console.log(e)
     props.setError(`Failed to updated group! ${e.response.data.error}`)
@@ -431,11 +495,11 @@ class GroupViewer extends React.Component {
     }))
     if (this.state.editMode) {
       this.props.setSuccess(
-        `Editing for group ${this.props.group.name}  disabled!`
+        `Editing for group ${this.props.group.name} disabled!`
       )
     } else {
       this.props.setSuccess(
-        `Editing for group ${this.props.group.name}  enabled!`
+        `Editing for group ${this.props.group.name} enabled!`
       )
     }
   }
@@ -590,11 +654,16 @@ const GroupCreationForm = ({
                 topics={topics}
                 onTopicSelectChange={onTopicSelectChange}
                 groupTopicID={groupTopicID}
+                className="create-group-form-topic__selector"
               />
             </FormInput>
 
             <FormInput label="Group name">
-              <NameInput value={groupName} onChange={onNameChangeForm} />
+              <NameInput
+                value={groupName}
+                onChange={onNameChangeForm}
+                inputProps={{ className: 'create-group-form__name' }}
+              />
             </FormInput>
 
             <FormInput label="Students">
@@ -605,6 +674,7 @@ const GroupCreationForm = ({
               <NameInput
                 value={groupInstructorID}
                 onChange={onInstructorIdChange}
+                inputProps={{ className: 'create-group-form__instructor' }}
               />
             </FormInput>
           </tbody>
@@ -614,6 +684,7 @@ const GroupCreationForm = ({
           color="primary"
           variant="contained"
           type="submit"
+          className="create-group-submit"
         >
           Add group
         </Button>
