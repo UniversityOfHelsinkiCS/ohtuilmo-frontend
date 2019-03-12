@@ -32,7 +32,6 @@ class GroupViewer extends React.Component {
         <SingleGroupEdit
           group={this.props.group}
           toggleEditMode={this.toggleEditMode}
-          deleteGroup={this.props.deletGroup}
         />
       )
     } else {

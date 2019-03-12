@@ -9,9 +9,6 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import groupManagementService from '../../services/groupManagement'
-
-import topicListPageActions from '../../reducers/actions/topicListPageActions'
-import adminPageActions from '../../reducers/actions/adminPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
@@ -132,20 +129,29 @@ class SingleGroupEdit extends React.Component {
   }
 
   render() {
-    const group = this.state
+    const {
+      group,
+      topics,
+      deleteGroup,
+      updateExistingGroup,
+      toggleEditMode,
+      setSuccess,
+      setError,
+      clearNotifications
+    } = this.props
 
     return (
       <div style={{ allign: 'top' }}>
-        Edit group: {this.props.group.name}
+        Edit group: {group.name}
         <IconButton
           aria-label="Delete"
           onClick={(event) =>
             deleteExistingGroup(event, {
-              group,
-              deleteGroup: this.props.deleteGroup,
-              setSuccess: this.props.setSuccess,
-              setError: this.props.setError,
-              clearNotifications: this.props.clearNotifications
+              group: this.state,
+              deleteGroup,
+              setSuccess,
+              setError,
+              clearNotifications
             })
           }
         >
@@ -159,7 +165,7 @@ class SingleGroupEdit extends React.Component {
         />
         <p>Change topic</p>
         <TopicSelect
-          topics={this.props.topics}
+          topics={topics}
           onTopicSelectChange={this.handleTopicChange}
           groupTopicID={this.state.topicId}
           className="edit-group-form-topic__selector"
@@ -173,23 +179,23 @@ class SingleGroupEdit extends React.Component {
           rows="8"
         />
         <p>Change instructor</p>
-        <TextField
+        {/*<TextField
           inputProps={{ className: `edit-group-no__${group.id}__instructor` }}
           value={this.state.instructorId || ''}
           onChange={this.handleInstructorChange}
-        />
+        />*/}
         <Button
           style={{ marginLeft: '10px', height: '30px', float: 'right' }}
           color="primary"
           variant="contained"
           onClick={(event) =>
             updateCreatedGroup(event, {
-              group,
-              updateExistingGroup: this.props.updateExistingGroup,
-              toggleEditMode: this.props.toggleEditMode,
-              setSuccess: this.props.setSuccess,
-              setError: this.props.setError,
-              clearNotifications: this.props.clearNotifications
+              group: this.state,
+              updateExistingGroup,
+              toggleEditMode,
+              setSuccess,
+              setError,
+              clearNotifications
             })
           }
           className={`edit-group-no__${group.id}__save-button`}
@@ -200,7 +206,7 @@ class SingleGroupEdit extends React.Component {
           style={{ marginLeft: '10px', height: '30px', float: 'right' }}
           color="primary"
           variant="contained"
-          onClick={() => this.props.toggleEditMode()}
+          onClick={() => toggleEditMode()}
           className={`edit-group-no__${group.id}__cancel-button`}
         >
           Cancel
@@ -210,32 +216,15 @@ class SingleGroupEdit extends React.Component {
   }
 }
 
-// Todo: these were copypasted from GroupManagementPage - figure out what props
-//       are actually used
 const mapStateToPropsForm = (state) => ({
-  groupName: state.groupPage.groupName,
-  students: state.groupPage.students,
-  groupTopicID: state.groupPage.groupTopicID,
-  groupInstructorID: state.groupPage.groupInstructorID,
-  groupConfigurationID: state.groupPage.groupConfigurationID,
-  groups: state.groupPage.groups,
   topics: state.topicListPage.topics,
-  configurations: state.adminPage.configurations,
   users: state.groupPage.users
 })
 
 const mapDispatchToPropsForm = {
-  onNameChangeForm: groupManagementActions.updateCreateGroupFormName,
-  onStudentFormChange: groupManagementActions.updateStudentsForm,
   onTopicSelectChange: groupManagementActions.updateGroupTopicID,
-  onInstructorIdChange: groupManagementActions.updateGroupInstructorID,
-  onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
-  deleteFromGroupAction: groupManagementActions.deleteFromGroup,
   updateExistingGroup: groupManagementActions.updateExistingGroup,
-  createGroupSuccsess: groupManagementActions.createGroupSuccsess,
   deleteGroup: groupManagementActions.deleteGroup,
-  updateTopicsForm: topicListPageActions.updateTopics,
-  updateConfigurations: adminPageActions.updateConfigurations,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess
 }
