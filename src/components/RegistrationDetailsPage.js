@@ -6,6 +6,7 @@ import ReactDragList from 'react-drag-list'
 import registrationActions from '../reducers/actions/registrationActions'
 
 import peerReviewService from '../services/peerReview'
+import groupManagementService from '../services/groupManagement'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -154,8 +155,42 @@ const RegistrationAnswers = ({ questions }) => {
   )
 }
 
+const GroupDetails = ({ group }) => {
+  if (group === null || group === undefined || group.id === -100) {
+    return (
+      <div>
+        <h2>This user is currently not part of any group.</h2>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2>{group.groupName}</h2>
+        {group.students.map((member, index) => {
+          return (
+            <p>
+              {index + 1}. {member.first_names} {member.last_name}
+            </p>
+          )
+        })}
+        <h3>Ohjaaja</h3>
+        <p>{group.instructor}</p>
+      </div>
+    )
+  }
+}
+
 class RegistrationDetailsPage extends React.Component {
+  state = { group: null }
+
+  async componentDidMount() {
+    const myGroup = await groupManagementService.getByStudent()
+    this.setState({
+      group: myGroup
+    })
+  }
   render() {
+    const { group } = this.state
     const {
       student,
       preferred_topics,
@@ -178,6 +213,7 @@ class RegistrationDetailsPage extends React.Component {
         <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />
+        <GroupDetails group={group} />
       </div>
     )
   }
@@ -186,7 +222,8 @@ class RegistrationDetailsPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ownRegistration: state.registration,
-    peerReviewOpen: state.registrationManagement.peerReviewOpen
+    peerReviewOpen: state.registrationManagement.peerReviewOpen,
+    group: state.group
   }
 }
 
