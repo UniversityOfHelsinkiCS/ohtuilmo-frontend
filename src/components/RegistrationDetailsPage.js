@@ -156,7 +156,7 @@ const RegistrationAnswers = ({ questions }) => {
 }
 
 const GroupDetails = ({ group }) => {
-  if (group === null || group === undefined) {
+  if (!group) {
     return (
       <div>
         <h2>This user is currently not part of any group.</h2>
