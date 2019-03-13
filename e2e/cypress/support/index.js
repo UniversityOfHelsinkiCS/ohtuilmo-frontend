@@ -120,3 +120,21 @@ Cypress.Commands.add('deleteReviewQuestions', () => {
     })
   })
 })
+
+Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/reviewQuestions',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        questions
+      }
+    })
+  })
+})

@@ -174,7 +174,7 @@ class AdminPage extends React.Component {
         </div>
         <h3>Questions</h3>
         <div>
-          <ExpansionPanel>
+          <ExpansionPanel data-cy="expansion-registration-questions">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
                 style={{
@@ -226,7 +226,7 @@ class AdminPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel data-cy="expansion-review-questions-1">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
                 style={{
@@ -251,6 +251,7 @@ class AdminPage extends React.Component {
             </ExpansionPanelDetails>
             <ExpansionPanelActions>
               <Select
+                data-cy="select-review-questions-1"
                 name="review1"
                 value={
                   this.props.selectedReview1
@@ -263,7 +264,11 @@ class AdminPage extends React.Component {
                   Pick review 1 questions
                 </MenuItem>
                 {this.props.allReviewQuestions.map((item) => (
-                  <MenuItem key={item.id} value={item}>
+                  <MenuItem
+                    key={item.id}
+                    value={item}
+                    data-cy="menu-item-review-questions-1"
+                  >
                     {item.name}
                   </MenuItem>
                 ))}
@@ -278,7 +283,7 @@ class AdminPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
-          <ExpansionPanel>
+          <ExpansionPanel data-cy="expansion-review-questions-2">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
                 style={{
