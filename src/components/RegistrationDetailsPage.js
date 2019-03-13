@@ -156,6 +156,7 @@ const RegistrationAnswers = ({ questions }) => {
 }
 
 const GroupDetails = ({ group }) => {
+  console.log(group)
   if (group === null || group === undefined || group.id === -100) {
     return (
       <div>
@@ -184,7 +185,10 @@ class RegistrationDetailsPage extends React.Component {
   state = { group: null }
 
   async componentDidMount() {
+    console.log('component did mount')
     const myGroup = await groupManagementService.getByStudent()
+    console.log('mygroup just after await ', myGroup)
+
     this.setState({
       group: myGroup
     })
@@ -199,7 +203,7 @@ class RegistrationDetailsPage extends React.Component {
     } = this.props.ownRegistration
 
     const { peerReviewOpen } = this.props
-
+    console.log('group just before returning render ', group)
     return (
       <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
