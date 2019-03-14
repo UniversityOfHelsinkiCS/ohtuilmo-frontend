@@ -118,7 +118,6 @@ const SingleGroupView = ({
   setError,
   clearNotifications
 }) => {
-  console.log(group)
 
   const thisTopic = topics.filter((topic) => topic.id === group.topicId)
 
@@ -457,7 +456,13 @@ const updateCreatedGroup = async (event, props) => {
 
   const splitStudents = studentIds
     .split(/[;,\n]/)
-    .map((student) => student.trim())
+    .map((student) => {
+      if (student.length < 9) {
+        return '0' + student.trim()
+      } else {
+        return student.trim()
+      }
+    })
     .filter((str) => !!str)
 
   try {
@@ -595,7 +600,13 @@ const saveGroup = async (event, props) => {
 
   const splitStudents = students
     .split(/[;,\n]/)
-    .map((student) => student.trim())
+    .map((student) => {
+      if (student.length < 9) {
+        return '0' + student.trim()
+      } else {
+        return student.trim()
+      }
+    })
     .filter((str) => !!str)
 
   try {
