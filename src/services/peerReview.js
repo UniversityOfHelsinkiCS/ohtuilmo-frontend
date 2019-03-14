@@ -11,7 +11,7 @@ const get = async () => {
   return response.data
 }
 const getAnswersByInstructor = async () => {
-  const response = await axios.get(url, {
+  const response = await axios.get(url + '/forInstructor', {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
   return response.data
