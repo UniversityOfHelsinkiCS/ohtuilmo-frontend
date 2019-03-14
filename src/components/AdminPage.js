@@ -389,6 +389,7 @@ class AdminPage extends React.Component {
             type="submit"
             color="primary"
             variant="contained"
+            data-cy="edit-existing-configuration-submit"
             onClick={this.updateConfig}
           >
             Edit existing configuration

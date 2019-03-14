@@ -138,3 +138,55 @@ Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
     })
   })
 })
+
+Cypress.Commands.add('createGroup', (groupData) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    console.log('GROUP I CREATED', groupData)
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    cy.request({
+      url: '/api/groups',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        topicId,
+        configurationId,
+        instructorId,
+        studentIds
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('deleteAllGroups', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/groups',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allGroups = res.body
+      //if(allGroup ==! undefined) {
+      for (const group of allGroups) {
+        cy.request({
+          url: `/api/groups/${group.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
