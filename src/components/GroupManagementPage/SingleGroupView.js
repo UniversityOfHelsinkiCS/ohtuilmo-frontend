@@ -13,8 +13,7 @@ const SingleGroupView = ({
   deleteFromGroupAction,
   toggleEditMode,
   setSuccess,
-  setError,
-  clearNotifications
+  setError
 }) => {
   const thisTopic = topics.filter((topic) => topic.id === group.topicId)
 
@@ -41,8 +40,7 @@ const SingleGroupView = ({
                 group,
                 deleteFromGroupAction,
                 setSuccess,
-                setError,
-                clearNotifications
+                setError
               })
             }
             className={`edit-group-no__${groupId}__delete-instructor`}
@@ -83,8 +81,7 @@ const SingleGroupView = ({
                     student,
                     deleteFromGroupAction,
                     setSuccess,
-                    setError,
-                    clearNotifications
+                    setError
                   })
                 }
                 className={`edit-group-no__${

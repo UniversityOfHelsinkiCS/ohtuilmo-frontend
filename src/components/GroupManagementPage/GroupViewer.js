@@ -45,7 +45,6 @@ class GroupViewer extends React.Component {
             toggleEditMode={this.toggleEditMode}
             setSuccess={this.props.setSuccess}
             setError={this.props.setError}
-            clearNotifications={this.props.clearNotifications}
           />
         </div>
       )

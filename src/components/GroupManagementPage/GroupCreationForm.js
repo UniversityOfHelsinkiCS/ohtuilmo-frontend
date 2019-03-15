@@ -7,8 +7,6 @@ import Button from '@material-ui/core/Button'
 
 import groupManagementService from '../../services/groupManagement'
 
-import topicListPageActions from '../../reducers/actions/topicListPageActions'
-import adminPageActions from '../../reducers/actions/adminPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
@@ -95,12 +93,12 @@ const GroupCreationForm = ({
   onInstructorChange,
   topics,
   onTopicSelectChange,
+
   groupTopicID,
   groupConfigurationID,
   createGroupSuccsess,
   setSuccess,
-  setError,
-  clearNotifications
+  setError
 }) => {
   return (
     <div>
@@ -114,8 +112,7 @@ const GroupCreationForm = ({
             groupConfigurationID,
             createGroupSuccsess,
             setSuccess,
-            setError,
-            clearNotifications
+            setError
           })
         }
       >
@@ -166,18 +163,13 @@ const GroupCreationForm = ({
   )
 }
 
-// Todo: these were copypasted from GroupManagementPage - figure out what props
-//       are actually used
 const mapStateToPropsForm = (state) => ({
   groupName: state.groupPage.groupName,
   students: state.groupPage.students,
   groupTopicID: state.groupPage.groupTopicID,
   groupInstructor: state.groupPage.groupInstructor,
   groupConfigurationID: state.groupPage.groupConfigurationID,
-  groups: state.groupPage.groups,
-  topics: state.topicListPage.topics,
-  configurations: state.adminPage.configurations,
-  users: state.groupPage.users
+  topics: state.topicListPage.topics
 })
 
 const mapDispatchToPropsForm = {
@@ -185,13 +177,7 @@ const mapDispatchToPropsForm = {
   onStudentFormChange: groupManagementActions.updateStudentsForm,
   onTopicSelectChange: groupManagementActions.updateGroupTopicID,
   onInstructorChange: groupManagementActions.updateGroupInstructor,
-  onConfigurationChange: groupManagementActions.updateGroupConfigurationID,
-  deleteFromGroupAction: groupManagementActions.deleteFromGroup,
-  updateExistingGroup: groupManagementActions.updateExistingGroup,
   createGroupSuccsess: groupManagementActions.createGroupSuccsess,
-  deleteGroup: groupManagementActions.deleteGroup,
-  updateTopicsForm: topicListPageActions.updateTopics,
-  updateConfigurations: adminPageActions.updateConfigurations,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess
 }
