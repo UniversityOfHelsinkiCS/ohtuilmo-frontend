@@ -60,9 +60,15 @@ const saveGroup = async (event, props) => {
   } = props
 
   const splitStudents = students
-    .split(/[;,\n]/)
-    .map((student) => student.trim())
+    .split(/[;, \n]/)
     .filter((str) => !!str)
+    .map((student) => {
+      if (student.length < 9) {
+        return '0' + student.trim()
+      } else {
+        return student.trim()
+      }
+    })
 
   try {
     const createdGroup = await groupManagementService.create({

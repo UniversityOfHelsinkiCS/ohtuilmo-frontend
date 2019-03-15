@@ -163,6 +163,8 @@ class RegistrationDetailsPage extends React.Component {
       createdAt
     } = this.props.ownRegistration
 
+    const { peerReviewOpen } = this.props
+
     return (
       <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
@@ -172,7 +174,7 @@ class RegistrationDetailsPage extends React.Component {
           Registration date: {formatDate(createdAt)}
         </Typography>
 
-        <PeerReviewInfo />
+        {peerReviewOpen && <PeerReviewInfo />}
         <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />
@@ -183,7 +185,8 @@ class RegistrationDetailsPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ownRegistration: state.registration
+    ownRegistration: state.registration,
+    peerReviewOpen: state.registrationManagement.peerReviewOpen
   }
 }
 

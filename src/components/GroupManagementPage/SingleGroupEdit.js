@@ -26,9 +26,15 @@ const updateCreatedGroup = async (event, props) => {
   } = props.group
 
   const splitStudents = studentIds
-    .split(/[;,\n]/)
-    .map((student) => student.trim())
+    .split(/[;, \n]/)
     .filter((str) => !!str)
+    .map((student) => {
+      if (student.length < 9) {
+        return '0' + student.trim()
+      } else {
+        return student.trim()
+      }
+    })
 
   try {
     const updatedGroup = await groupManagementService.put({
