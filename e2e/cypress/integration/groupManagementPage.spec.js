@@ -96,21 +96,21 @@ describe('Group Management Page', () => {
     })
 
     it('changes instructor', () => {
-      cy.get('.create-group-form__instructor').click()
+      cy.get('.edit-group-no__1__instructor').click()
 
-      cy.get('.create-group-form__instructor')
+      cy.get('.edit-group-no__1__instructor')
         .find('input')
         .type('{backspace}', { force: true })
 
-      cy.get('.create-group-form__instructor')
+      cy.get('.edit-group-no__1__instructor')
         .find('input')
         .type('Testaaja', { force: true })
 
-      cy.get('.create-group-form__instructor').find(
-        '.create-group-form__instructor__option'
+      cy.get('.edit-group-no__1__instructor').find(
+        '.edit-group-no__1__instructor'
       )
 
-      cy.get('.create-group-form__instructor')
+      cy.get('.edit-group-no__1__instructor')
         .find('input')
         .type('{enter}', { force: true })
 
