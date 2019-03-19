@@ -3,7 +3,7 @@ const initialState = {
   isInitializing: true,
   peers: [],
   groupsLoading: true,
-  answerFound: false,
+  submittedReviews: [],
   questions: '',
   configurationId: ''
 }
@@ -34,10 +34,10 @@ const peerReviewReducer = (state = initialState, action) => {
       peers: action.payload,
       groupsLoading: false
     }
-  case 'ANSWER_FOUND':
+  case 'SET_SUBMITTED_REVIEWS':
     return {
       ...state,
-      answerFound: action.payload
+      submittedReviews: action.payload
     }
   case 'LOADING':
     return {

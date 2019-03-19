@@ -43,12 +43,8 @@ class PeerReview extends React.Component {
 
         this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
         this.props.createPeers(group.students)
-        const answerFound = await peerReviewService.get()
-        if (answerFound) {
-          this.props.setAnswerFoundTrue(true)
-        } else {
-          this.props.setAnswerFoundTrue(false)
-        }
+        const submittedReviews = await peerReviewService.get()
+        this.props.setSubmittedReviews(submittedReviews)
       } else {
         this.props.setLoading(false)
       }
@@ -118,7 +114,7 @@ class PeerReview extends React.Component {
     )
     if (!answer) return
     try {
-      await peerReviewService.create({
+      const createdReview = await peerReviewService.create({
         peerReview: {
           answer_sheet: answerSheet,
           user_id: getUser().student_number,
@@ -126,8 +122,11 @@ class PeerReview extends React.Component {
           review_round: this.props.reviewRound
         }
       })
-      this.props.setAnswerFoundTrue(true)
+      this.props.setSubmittedReviews(
+        this.props.submittedReviews.concat(createdReview)
+      )
       this.props.setSuccess('Peer review saved!')
+      this.props.history.push('/')
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError(e.response.data.error)
@@ -140,11 +139,12 @@ class PeerReview extends React.Component {
       updateAnswer,
       peers,
       groupsLoading,
-      answerFound,
+      submittedReviews,
       isInitializing,
       questionObject,
       configurationId,
-      reviewOpen
+      reviewOpen,
+      reviewRound
     } = this.props
 
     if (isInitializing) {
@@ -169,7 +169,7 @@ class PeerReview extends React.Component {
           </h1>
         </div>
       )
-    } else if (answerFound === true) {
+    } else if (submittedReviews.length >= reviewRound) {
       return (
         <div className="peer-review-container">
           <h1 className="peer-review-container__h1">
@@ -385,7 +385,7 @@ const mapStateToProps = (state) => {
     isInitializing: state.peerReviewPage.isInitializing,
     peers: state.peerReviewPage.peers,
     groupsLoading: state.peerReviewPage.groupsLoading,
-    answerFound: state.peerReviewPage.answerFound,
+    submittedReviews: state.peerReviewPage.submittedReviews,
     questionObject: state.peerReviewPage.questions,
     configurationId: state.peerReviewPage.configurationId,
     reviewRound: state.registrationManagement.peerReviewRound,
