@@ -125,7 +125,11 @@ class SingleGroupEdit extends React.Component {
     return (
       <div style={{ allign: 'top' }}>
         Edit group: {group.name}
-        <IconButton aria-label="Delete" onClick={this.handleGroupDelete}>
+        <IconButton
+          aria-label="Delete"
+          onClick={this.handleGroupDelete}
+          className={`edit-group-no__${group.id}__delete-button`}
+        >
           <DeleteIcon fontSize="large" />
         </IconButton>
         <p>Edit group name</p>

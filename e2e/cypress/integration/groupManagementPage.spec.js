@@ -106,10 +106,6 @@ describe('Group Management Page', () => {
         .find('input')
         .type('Testaaja', { force: true })
 
-      cy.get('.edit-group-no__1__instructor').find(
-        '.edit-group-no__1__instructor'
-      )
-
       cy.get('.edit-group-no__1__instructor')
         .find('input')
         .type('{enter}', { force: true })
