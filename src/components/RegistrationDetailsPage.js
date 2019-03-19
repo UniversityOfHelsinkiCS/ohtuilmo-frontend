@@ -157,18 +157,14 @@ const RegistrationAnswers = ({ questions }) => {
 
 const GroupDetails = ({ groupDetails }) => {
   if (!groupDetails) {
-    return (
-      <div>
-        <h2>This user is currently not part of any group.</h2>
-      </div>
-    )
+    return <div />
   } else {
     return (
       <div>
         <h2>{groupDetails.groupName}</h2>
         {groupDetails.students.map((member, index) => {
           return (
-            <p>
+            <p key={index}>
               {index + 1}. {member.first_names} {member.last_name}
             </p>
           )
@@ -181,16 +177,14 @@ const GroupDetails = ({ groupDetails }) => {
 }
 
 class RegistrationDetailsPage extends React.Component {
-  state = { groupDetails: null }
-
   async componentDidMount() {
     const myGroup = await groupManagementService.getByStudent()
-    this.setState({
-      groupDetails: myGroup
-    })
+    if (myGroup) {
+      this.props.initializeMyGroup(myGroup)
+    }
   }
   render() {
-    const { groupDetails } = this.state
+    const { myGroup } = this.props
     const {
       student,
       preferred_topics,
@@ -212,7 +206,7 @@ class RegistrationDetailsPage extends React.Component {
         <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />
-        <GroupDetails groupDetails={groupDetails} />
+        <GroupDetails groupDetails={myGroup} />
       </div>
     )
   }
@@ -222,12 +216,13 @@ const mapStateToProps = (state) => {
   return {
     ownRegistration: state.registration,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
-    groupDetails: state.groupDetails
+    myGroup: state.registration.myGroup
   }
 }
 
 const mapDispatchToProps = {
-  fetchRegistration: registrationActions.fetchRegistration
+  fetchRegistration: registrationActions.fetchRegistration,
+  ...registrationActions
 }
 
 const ConnectedRegistrationDetailsPage = connect(

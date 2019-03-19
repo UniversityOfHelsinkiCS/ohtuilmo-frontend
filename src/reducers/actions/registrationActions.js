@@ -22,4 +22,11 @@ const fetchRegistration = () => {
   }
 }
 
-export default { clearRegistration, fetchRegistration }
+const initializeMyGroup = (myGroup) => {
+  return {
+    type: 'INITIALIZE_MYGROUP',
+    payload: myGroup
+  }
+}
+
+export default { clearRegistration, fetchRegistration, initializeMyGroup }
