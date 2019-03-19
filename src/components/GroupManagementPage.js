@@ -359,6 +359,8 @@ class SingleGroupEdit extends React.Component {
 
   handleTopicChange = (e) => {
     this.setState({ topicId: e })
+    const thistopic = this.props.topics.find((topic) => topic.id === e)
+    this.setState({ name: thistopic.content.title })
   }
 
   render() {
@@ -640,6 +642,13 @@ const GroupCreationForm = ({
   setError,
   clearNotifications
 }) => {
+
+  const handleTopicChange = (topicid) => {
+    onTopicSelectChange(topicid)
+    const thistopic = topics.find((topic) => topic.id === topicid)
+    onNameChangeForm(thistopic.content.title)
+  }
+
   return (
     <div>
       <form
@@ -662,7 +671,7 @@ const GroupCreationForm = ({
             <FormInput label="Topic">
               <TopicSelect
                 topics={topics}
-                onTopicSelectChange={onTopicSelectChange}
+                onTopicSelectChange={handleTopicChange}
                 groupTopicID={groupTopicID}
                 className="create-group-form-topic__selector"
               />
