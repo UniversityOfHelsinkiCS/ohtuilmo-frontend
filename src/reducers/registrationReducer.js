@@ -1,8 +1,4 @@
-const initialState = {
-  myGroup: null
-}
-
-const registrationReducer = (state = initialState, action) => {
+const registrationReducer = (state = null, action) => {
   switch (action.type) {
   case 'SET_REGISTRATION':
     return {
@@ -10,12 +6,6 @@ const registrationReducer = (state = initialState, action) => {
     }
   case 'CLEAR_REGISTRATION':
     return null
-
-  case 'INITIALIZE_MYGROUP':
-    return {
-      ...state,
-      myGroup: action.payload
-    }
   default:
     return state
   }

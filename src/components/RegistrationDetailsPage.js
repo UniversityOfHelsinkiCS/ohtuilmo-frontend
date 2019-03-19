@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
 import registrationActions from '../reducers/actions/registrationActions'
+import myGroupActions from '../reducers/actions/myGroupActions'
 
 import peerReviewService from '../services/peerReview'
-import groupManagementService from '../services/groupManagement'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -178,13 +178,11 @@ const GroupDetails = ({ groupDetails }) => {
 
 class RegistrationDetailsPage extends React.Component {
   async componentDidMount() {
-    const myGroup = await groupManagementService.getByStudent()
-    if (myGroup) {
-      this.props.initializeMyGroup(myGroup)
-    }
+    await this.props.initializeMyGroup()
   }
   render() {
     const { myGroup } = this.props
+    console.log('myGroup: ', myGroup)
     const {
       student,
       preferred_topics,
@@ -216,13 +214,13 @@ const mapStateToProps = (state) => {
   return {
     ownRegistration: state.registration,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
-    myGroup: state.registration.myGroup
+    myGroup: state.registrationDetails.myGroup
   }
 }
 
 const mapDispatchToProps = {
   fetchRegistration: registrationActions.fetchRegistration,
-  ...registrationActions
+  initializeMyGroup: myGroupActions.initializeMyGroup
 }
 
 const ConnectedRegistrationDetailsPage = connect(
