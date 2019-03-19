@@ -35,10 +35,38 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const PeerReviewsGroups = ({ answersJson }) => {
-  return JSON.stringify(answersJson, null, 2)
-}
+const Answers = ({ answers }) => {
+  console.log('testi ', answers)
+  return (
+    <div>
+      <GroupsInstructed />
 
+      <p>testi</p>
+    </div>
+  )
+}
+/* const NumberAnswer = (answers) => {
+  console.log(answer.answer.round1Answers[0].answer_sheet[0].type)
+  return (
+    <div>
+      <p>numberAnswer</p>
+    </div>
+  )
+}
+const TextAnswer = () => {
+  return (
+    <div>
+      <p>textAnswer</p>
+    </div>
+  )
+}
+const RadioAnswer = () => {
+  return (
+    <div>
+      <p>radioAnswer</p>
+    </div>
+  )
+} */
 class InstructorPage extends React.Component {
   state = { myGroups: null, answersJson: null }
 
@@ -54,12 +82,13 @@ class InstructorPage extends React.Component {
 
   render() {
     const { myGroups, answersJson } = this.state
+    console.log(answersJson)
+
     if (myGroups) {
       return (
         <div className="instructor-container">
           <h2>Ohjaat seuraavia ryhmiä: </h2>
-          <GroupsInstructed myGroups={myGroups} />
-          <PeerReviewsGroups answersJson={answersJson} />
+          <Answers myGroups={myGroups} answers={answersJson.answers} />
         </div>
       )
     } else {
