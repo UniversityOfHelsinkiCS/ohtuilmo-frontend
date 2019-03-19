@@ -1,7 +1,6 @@
 describe('Answering peer review', () => {
   beforeEach(() => {
     cy.loginAsAdmin()
-    //(cy.deleteAllGroups()
     cy.deleteReviewQuestions()
     cy.deleteAllGroups()
     cy.createGroup({
@@ -34,14 +33,11 @@ describe('Answering peer review', () => {
         options: ['Cant say', 'Not at all', 'Little', 'Decent', 'Good', 'Super']
       }
     ])
-    cy.visit('/administration')
-    cy.get('[data-cy=expansion-review-questions-1]').click()
-    cy.get('[data-cy=select-review-questions-1]').click()
-    cy.get('[data-cy=menu-item-review-questions-1]').click()
-    cy.get('[data-cy=edit-existing-configuration-submit]').click()
-    cy.visit('administration/registrationmanagement')
-    cy.get('[data-cy=peer-review-open-switch]').click()
-    cy.get('[data-cy=save-configuration-submit]').click()
+    cy.setPeerReviewOneActive(
+      'Konfiguraatio 1',
+      1,
+      'Super nice review questions'
+    )
   })
 
   it('peer review is open', () => {

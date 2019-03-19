@@ -190,3 +190,43 @@ Cypress.Commands.add('deleteAllGroups', () => {
     })
   })
 })
+
+Cypress.Commands.add(
+  'setPeerReviewOneActive',
+  (configurationName, configurationId, questionSetName) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+      findReviewQuestionId(authHeaders, questionSetName).then((setId) => {
+        cy.request({
+          url: `api/configurations/${configurationId}`,
+          method: 'PUT',
+          headers: authHeaders,
+          body: {
+            name: configurationName,
+            review_question_set_1_id: setId
+          }
+        })
+      })
+    })
+  }
+)
+
+const findReviewQuestionId = (authHeaders, questionSetName) => {
+  return cy
+    .request({
+      url: '/api/reviewQuestions',
+      method: 'GET',
+      headers: authHeaders
+    })
+    .then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        if (set.name === questionSetName) {
+          return set.id
+        }
+      }
+    })
+}
