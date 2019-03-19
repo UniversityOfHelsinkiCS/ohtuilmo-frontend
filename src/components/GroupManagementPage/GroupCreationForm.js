@@ -12,13 +12,14 @@ import groupManagementActions from '../../reducers/actions/groupManagementAction
 
 import TopicSelect from './TopicSelect'
 import AutocompletedUserSelect from './AutocompletedUserSelect'
+import './GroupCreationForm.css'
 
 const FormInput = ({ label, children }) => (
   <tr>
-    <td>
+    <td className="form-input__label">
       <Typography variant="caption">{label}</Typography>
     </td>
-    <td>{children}</td>
+    <td className="form-input__control">{children}</td>
   </tr>
 )
 

@@ -161,33 +161,35 @@ class SingleGroupEdit extends React.Component {
           defaultUser={defaultInstructor}
           onSelectedUserChange={this.handleInstructorChange}
         />
-        <Button
-          style={{ marginLeft: '10px', height: '30px', float: 'right' }}
-          color="primary"
-          variant="contained"
-          onClick={(event) =>
-            updateCreatedGroup(event, {
-              group: this.state,
-              updateExistingGroup,
-              toggleEditMode,
-              setSuccess,
-              setError,
-              clearNotifications
-            })
-          }
-          className={`edit-group-no__${group.id}__save-button`}
-        >
-          Save
-        </Button>
-        <Button
-          style={{ marginLeft: '10px', height: '30px', float: 'right' }}
-          color="primary"
-          variant="contained"
-          onClick={() => toggleEditMode()}
-          className={`edit-group-no__${group.id}__cancel-button`}
-        >
-          Cancel
-        </Button>
+        <p>
+          <Button
+            style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+            color="primary"
+            variant="contained"
+            onClick={(event) =>
+              updateCreatedGroup(event, {
+                group: this.state,
+                updateExistingGroup,
+                toggleEditMode,
+                setSuccess,
+                setError,
+                clearNotifications
+              })
+            }
+            className={`edit-group-no__${group.id}__save-button`}
+          >
+            Save
+          </Button>
+          <Button
+            style={{ marginLeft: '10px', height: '30px', float: 'right' }}
+            color="primary"
+            variant="contained"
+            onClick={() => toggleEditMode()}
+            className={`edit-group-no__${group.id}__cancel-button`}
+          >
+            Cancel
+          </Button>
+        </p>
       </div>
     )
   }
