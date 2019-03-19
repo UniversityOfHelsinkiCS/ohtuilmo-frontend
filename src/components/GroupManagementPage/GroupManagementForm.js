@@ -56,8 +56,6 @@ const GroupManagementForm = ({
   )
 }
 
-// Todo: these were copypasted from GroupManagementPage - figure out what props
-//       are actually used
 const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
   groups: state.groupPage.groups,
