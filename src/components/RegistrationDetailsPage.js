@@ -182,7 +182,6 @@ class RegistrationDetailsPage extends React.Component {
   }
   render() {
     const { myGroup } = this.props
-    console.log('myGroup: ', myGroup)
     const {
       student,
       preferred_topics,
