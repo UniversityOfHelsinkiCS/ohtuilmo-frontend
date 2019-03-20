@@ -3,16 +3,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 //Services
-import groupManagementService from '../services/groupManagement'
 import peerReviewService from '../services/peerReview'
 
-const GroupsInstructed = ({ myGroups }) => {
-  return myGroups.map((myGroup, index) => {
-    return <GroupDetails key={index} myGroup={myGroup} />
-  })
-}
-
-const GroupDetails = ({ myGroup }) => {
+const GroupDetails = (myGroup) => {
   if (!myGroup) {
     return (
       <div>
@@ -22,11 +15,11 @@ const GroupDetails = ({ myGroup }) => {
   } else {
     return (
       <div>
-        <h2>{myGroup.groupName}</h2>
-        {myGroup.students.map((member, index) => {
+        {myGroup.group.map((member, index) => {
           return (
-            <p>
-              {index + 1}. {member.first_names} {member.last_name}
+            <p key={index}>
+              {index + 1}. {member.student.first_names}
+              {member.student.last_name}
             </p>
           )
         })}
@@ -35,48 +28,110 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const PeerReviewsGroups = ({ answersJson }) => {
-  return JSON.stringify(answersJson, null, 2)
+const Answers = (answers) => {
+  if (answers) {
+    return (
+      <div>
+        <h2>Groups</h2>
+
+        {answers.answersJson.map((group, index) => {
+          return (
+            <div key={index}>
+              <h3>{group.group.name}</h3>
+              <GroupDetails group={group.round1Answers} />
+              <GroupAnswers group={group.round1Answers} />
+            </div>
+          )
+        })}
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <p>Loading</p>
+      </div>
+    )
+  }
+}
+
+const GroupAnswers = (answers) => {
+  console.log('groupAnswers ', answers)
+
+  return (
+    <div>
+      <h3>Vastaukset</h3>
+      {answers.group[0].answer_sheet.map((question, index) => {
+        if (question.type === 'text' || question.type === 'number') {
+          return (
+            <TextNumberAnswer
+              answers={answers}
+              question={question}
+              questionNumber={index}
+            />
+          )
+        } else if (question.type === 'radio') {
+          return <RadioAnswer />
+        }
+      })}
+    </div>
+  )
+}
+
+const TextNumberAnswer = ({ answers, question, questionNumber }) => {
+  console.log('q number ', questionNumber)
+  console.log('text ', answers.group[0].answer_sheet[1].answer)
+
+  const asd = answers.group.map((member) => {
+    return member.answer_sheet[questionNumber].answer
+  })
+  return (
+    <div>
+      <p>{question.questionHeader}</p>
+      {asd.map((answer, index) => {
+        return <p key={index}>{answer}</p>
+      })}
+    </div>
+  )
+}
+
+const RadioAnswer = () => {
+  return (
+    <div>
+      <p>Radiokyssäri not yet implemented</p>
+    </div>
+  )
 }
 
 class InstructorPage extends React.Component {
-  state = { myGroups: null, answersJson: null }
+  state = { answersJson: null }
 
   async componentDidMount() {
-    const myGroups = await groupManagementService.getByInstructor()
     const peerReviewData = await peerReviewService.getAnswersByInstructor()
 
     this.setState({
-      myGroups: myGroups,
       answersJson: peerReviewData
     })
   }
 
   render() {
-    const { myGroups, answersJson } = this.state
-    if (myGroups) {
+    const { answersJson } = this.state
+    if (answersJson) {
       return (
         <div className="instructor-container">
-          <h2>Ohjaat seuraavia ryhmiä: </h2>
-          <GroupsInstructed myGroups={myGroups} />
-          <PeerReviewsGroups answersJson={answersJson} />
+          <h2>Sivu on testauksessa</h2>
+          <Answers answersJson={answersJson.answers} />
+          {/*         <GlobalStatistics />
+           */}
         </div>
       )
     } else {
-      return (
-        <div>
-          <p>Loading</p>
-        </div>
-      )
+      return <div>Loading</div>
     }
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    myGroups: state.myGroups,
-    answersJson: state.peerReviewData
-  }
+const mapStateToProps = () => {
+  return {}
 }
 
 const ConnectedInstructorPage = connect(mapStateToProps)(InstructorPage)
