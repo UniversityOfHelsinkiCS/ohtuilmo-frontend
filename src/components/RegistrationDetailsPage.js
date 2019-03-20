@@ -22,6 +22,19 @@ const formatDate = (date) => {
   return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
 }
 
+class CourseMaterial extends React.Component {
+  render() {
+    return (
+      <div>
+        <h2>Course material</h2>
+        <a href="https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti">
+          Course page
+        </a>
+      </div>
+    )
+  }
+}
+
 const PeerReviewLink = () => (
   <Link to="/peerreview" data-cy="peerreviewlink">
     Click here to submit your peer review
@@ -174,6 +187,7 @@ class RegistrationDetailsPage extends React.Component {
           Registration date: {formatDate(createdAt)}
         </Typography>
 
+        <CourseMaterial />
         {peerReviewOpen && <PeerReviewInfo />}
         <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
