@@ -165,12 +165,6 @@ class InstructorPage extends React.Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {}
-}
-
-const ConnectedInstructorPage = connect(mapStateToProps)(InstructorPage)
-
-// mapDispatchToProps
+const ConnectedInstructorPage = connect(null)(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)
