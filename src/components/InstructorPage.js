@@ -67,7 +67,12 @@ const GroupAnswers = (answers) => {
             </div>
           )
         } else if (question.type === 'radio') {
-          return <RadioAnswer /* answers={answers} questionNumber={index} */ />
+          return (
+            <div>
+              <h3>{question.questionHeader}</h3>
+              <RadioAnswer answers={answers} questionNumber={index} />
+            </div>
+          )
         }
       })}
     </div>
@@ -85,8 +90,8 @@ const TextNumberAnswer = ({ answers, questionNumber }) => {
   })
 }
 
-const RadioAnswer = (/* { answers, questionNumber } */) => {
-  /*   const peers = answers.group.map((member) => {
+const RadioAnswer = ({ answers, questionNumber }) => {
+  const peers = answers.group.map((member) => {
     return member.student.last_name
   })
   return (
@@ -100,12 +105,13 @@ const RadioAnswer = (/* { answers, questionNumber } */) => {
         </thead>
         <tbody>
           {answers.group.map((member, index) => {
-            console.log('peers', member.answer_sheet[questionNumber].peers)
             return (
-              <tr>
-                {member.answer_sheet[questionNumber].peers.map(
-                  (peer, index2) => {
-                    return <th>{peer}</th>
+              <tr key={index}>
+                {member.student.last_name}
+
+                {Object.entries(member.answer_sheet[questionNumber].peers).map(
+                  ([nimi, numero]) => {
+                    return <th key={nimi}>{numero}</th>
                   }
                 )}
               </tr>
@@ -114,9 +120,9 @@ const RadioAnswer = (/* { answers, questionNumber } */) => {
         </tbody>
       </table>
     </div>
-  ) */
+  )
 }
-/* const PeerHeaders = ({ peers }) => {
+const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
       <th className="peer-review-box__radio-header" key={optionId}>
@@ -124,7 +130,7 @@ const RadioAnswer = (/* { answers, questionNumber } */) => {
       </th>
     )
   })
-} */
+}
 
 class InstructorPage extends React.Component {
   state = { answersJson: null }
@@ -139,6 +145,7 @@ class InstructorPage extends React.Component {
 
   render() {
     const { answersJson } = this.state
+    console.log(answersJson)
     if (answersJson) {
       return (
         <div className="instructor-container">
