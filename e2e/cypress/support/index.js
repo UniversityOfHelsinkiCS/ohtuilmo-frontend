@@ -144,7 +144,6 @@ Cypress.Commands.add('createGroup', (groupData) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
-    console.log('GROUP I CREATED', groupData)
     const {
       name,
       topicId,
@@ -179,13 +178,58 @@ Cypress.Commands.add('deleteAllGroups', () => {
       headers: authHeaders
     }).then((res) => {
       const allGroups = res.body
-      //if(allGroup ==! undefined) {
       for (const group of allGroups) {
         cy.request({
           url: `/api/groups/${group.id}`,
           method: 'DELETE',
           headers: authHeaders
         })
+      }
+    })
+  })
+})
+
+Cypress.Commands.add(
+  'createNewTopic',
+  (newTopicName, customerName, topicDescription) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+      cy.request({
+        url: '/api/topics',
+        method: 'POST',
+        headers: authHeaders,
+        active: true,
+        body: {
+          content: {
+            email: 'asiakas@asiakas.com',
+            title: newTopicName,
+            description: topicDescription,
+            environment: 'Web',
+            customerName: customerName,
+            additionalInfo: '',
+            specialRequests: ''
+          }
+        }
+      })
+    })
+  }
+)
+
+Cypress.Commands.add('setTopicActive', (topicId) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `api/topics/${topicId}`,
+      method: 'PUT',
+      headers: authHeaders,
+      body: {
+        topic: {
+          active: true
+        }
       }
     })
   })
@@ -206,6 +250,23 @@ Cypress.Commands.add(
           body: {
             name: configurationName,
             review_question_set_1_id: setId
+          }
+        })
+        cy.request({
+          url: '/api/registrationManagement',
+          method: 'POST',
+          headers: authHeaders,
+          body: {
+            registrationManagement: {
+              peer_review_open: true,
+              peer_review_round: 1,
+              project_registration_open: true,
+              project_registration_message: '',
+              project_registration_info:
+                'Project registration will be open until DD.MM.2019.',
+              topic_registration_open: true,
+              topic_registration_message: ''
+            }
           }
         })
       })

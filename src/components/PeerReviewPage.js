@@ -285,6 +285,7 @@ const Question = ({
 
         <input
           type="number"
+          data-cy={`input_number_${question.header}`}
           value={answerSheet[questionId].answer}
           onChange={(e) =>
             textFieldHandler(e.target.value, questionId, updateAnswer)
