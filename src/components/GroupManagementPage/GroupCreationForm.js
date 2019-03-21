@@ -101,6 +101,11 @@ const GroupCreationForm = ({
   setSuccess,
   setError
 }) => {
+  const handleTopicChange = (topicid) => {
+    onTopicSelectChange(topicid)
+    const thistopic = topics.find((topic) => topic.id === topicid)
+    onNameChangeForm(thistopic.content.title)
+  }
   return (
     <div>
       <form
@@ -122,7 +127,7 @@ const GroupCreationForm = ({
             <FormInput label="Topic">
               <TopicSelect
                 topics={topics}
-                onTopicSelectChange={onTopicSelectChange}
+                onTopicSelectChange={handleTopicChange}
                 groupTopicID={groupTopicID}
                 className="create-group-form-topic__selector"
               />
