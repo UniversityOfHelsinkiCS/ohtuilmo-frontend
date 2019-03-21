@@ -55,52 +55,76 @@ const Answers = (answers) => {
 }
 
 const GroupAnswers = (answers) => {
-  console.log('groupAnswers ', answers)
-
   return (
     <div>
-      <h3>Vastaukset</h3>
+      <h2>Vastaukset</h2>
       {answers.group[0].answer_sheet.map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
-            <TextNumberAnswer
-              answers={answers}
-              question={question}
-              questionNumber={index}
-            />
+            <div>
+              <h3>{question.questionHeader}</h3>
+              <TextNumberAnswer answers={answers} questionNumber={index} />
+            </div>
           )
         } else if (question.type === 'radio') {
-          return <RadioAnswer />
+          return <RadioAnswer /* answers={answers} questionNumber={index} */ />
         }
       })}
     </div>
   )
 }
 
-const TextNumberAnswer = ({ answers, question, questionNumber }) => {
-  console.log('q number ', questionNumber)
-  console.log('text ', answers.group[0].answer_sheet[1].answer)
+const TextNumberAnswer = ({ answers, questionNumber }) => {
+  return answers.group.map((member) => {
+    return (
+      <p>
+        {member.student.last_name}
+        <br /> {member.answer_sheet[questionNumber].answer}
+      </p>
+    )
+  })
+}
 
-  const asd = answers.group.map((member) => {
-    return member.answer_sheet[questionNumber].answer
+const RadioAnswer = (/* { answers, questionNumber } */) => {
+  /*   const peers = answers.group.map((member) => {
+    return member.student.last_name
   })
   return (
     <div>
-      <p>{question.questionHeader}</p>
-      {asd.map((answer, index) => {
-        return <p key={index}>{answer}</p>
-      })}
+      <table>
+        <thead>
+          <tr>
+            <th />
+            <PeerHeaders peers={peers} />
+          </tr>
+        </thead>
+        <tbody>
+          {answers.group.map((member, index) => {
+            console.log('peers', member.answer_sheet[questionNumber].peers)
+            return (
+              <tr>
+                {member.answer_sheet[questionNumber].peers.map(
+                  (peer, index2) => {
+                    return <th>{peer}</th>
+                  }
+                )}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
-  )
+  ) */
 }
-
-const RadioAnswer = () => {
-  return (
-    <div>
-      <p>Radiokyssäri not yet implemented</p>
-    </div>
-  )
-}
+/* const PeerHeaders = ({ peers }) => {
+  return peers.map((option, optionId) => {
+    return (
+      <th className="peer-review-box__radio-header" key={optionId}>
+        {option}
+      </th>
+    )
+  })
+} */
 
 class InstructorPage extends React.Component {
   state = { answersJson: null }
