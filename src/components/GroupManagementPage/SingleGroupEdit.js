@@ -85,8 +85,13 @@ class SingleGroupEdit extends React.Component {
     this.setState({ instructor: newInstructor })
   }
 
-  handleTopicChange = (e) => {
-    this.setState({ topicId: e })
+  handleTopicChange = (newTopicId) => {
+    const thistopic = this.props.topics.find((topic) => topic.id === newTopicId)
+
+    this.setState({
+      topicId: newTopicId,
+      name: thistopic.content.title
+    })
   }
 
   handleGroupDelete = async (e) => {
