@@ -18,10 +18,10 @@ const createPeers = (peers) => {
     payload: peers
   }
 }
-const setAnswerFoundTrue = (found) => {
+const setSubmittedReviews = (submittedReviews) => {
   return {
-    type: 'ANSWER_FOUND',
-    payload: found
+    type: 'SET_SUBMITTED_REVIEWS',
+    payload: submittedReviews
   }
 }
 const setLoading = (loading) => {
@@ -49,7 +49,7 @@ export default {
   updateAnswer,
   initializeAnswerSheet,
   createPeers,
-  setAnswerFoundTrue,
+  setSubmittedReviews,
   setLoading,
   setQuestions,
   setConfiguration

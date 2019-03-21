@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 
 import registrationActions from '../reducers/actions/registrationActions'
+import myGroupActions from '../reducers/actions/myGroupActions'
 
 import peerReviewService from '../services/peerReview'
-import groupManagementService from '../services/groupManagement'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -36,59 +36,65 @@ class CourseMaterial extends React.Component {
   }
 }
 
-const PeerReviewLink = () => (
-  <Link to="/peerreview" data-cy="peerreviewlink">
-    Click here to submit your peer review
-  </Link>
-)
-
-const PeerReviewSubmitted = ({ submitDate }) => (
-  <span>
-    Thank you for answering!
-    <br />
-    Peer review created at {formatDate(submitDate)}
-  </span>
-)
-
 class PeerReviewInfo extends React.Component {
-  state = { submittedReview: false }
+  constructor(props) {
+    super(props)
+    this.state = { submittedReviews: [] }
+  }
 
   async componentDidMount() {
     const data = await peerReviewService.get()
-    this.setState({
-      submittedReview: data
-    })
+    if (data) {
+      this.setState({
+        submittedReviews: data
+      })
+    }
   }
 
   render() {
-    const { submittedReview } = this.state
+    const { submittedReviews } = this.state
+    const { peerReviewOpen, peerReviewRound, groupDetails } = this.props
 
     return (
       <div>
-        <h2>Peer review open</h2>
-        <Typography variant="body1" gutterBottom>
-          {submittedReview ? (
-            <PeerReviewSubmitted submitDate={submittedReview.createdAt} />
-          ) : (
-            <PeerReviewLink />
-          )}
-        </Typography>
-
-        <br />
+        {(peerReviewOpen || submittedReviews.length > 0) && groupDetails ? (
+          <div>
+            <h2>Peer reviews</h2>
+            {submittedReviews.length > 0 && (
+              <div>
+                {submittedReviews.map((review, index) => {
+                  return (
+                    <Typography variant="body1" gutterBottom key={index}>
+                      Peer review {review.review_round} submission date:{' '}
+                      {formatDate(review.createdAt)}
+                    </Typography>
+                  )
+                })}
+              </div>
+            )}
+            {peerReviewOpen && peerReviewRound > submittedReviews.length && (
+              <div>
+                <Link to="/peerreview" data-cy="peerreviewlink">
+                  Click here to submit peer review {peerReviewRound}
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : null}
       </div>
     )
   }
 }
 
+const extractCallingName = (firstNames) => {
+  if (firstNames.includes('*')) {
+    return firstNames.split('*')[1].split(' ')[0]
+  }
+  return firstNames.split(' ')[0]
+}
+
 const UserDetails = ({ student }) => {
   const { first_names, last_name, student_number, email } = student
-
-  const extractCallingName = (firstNames) => {
-    if (firstNames.includes('*')) {
-      return firstNames.split('*')[1].split(' ')[0]
-    }
-    return firstNames.split(' ')[0]
-  }
 
   return (
     <div>
@@ -169,56 +175,52 @@ const RegistrationAnswers = ({ questions }) => {
 }
 
 const GroupDetails = ({ groupDetails }) => {
-  if (!groupDetails) {
-    return (
-      <div>
-        <h2>This user is currently not part of any group.</h2>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <h2>{groupDetails.groupName}</h2>
-        {groupDetails.students.map((member, index) => {
-          return (
-            <p>
-              {index + 1}. {extractCallingName(member.first_names)}
-              {member.last_name}
-            </p>
-          )
-        })}
-        <h3>Ohjaaja</h3>
-        <p>{groupDetails.instructor}</p>
-      </div>
-    )
-  }
-}
-const extractCallingName = (firstNames) => {
-  if (firstNames.includes('*')) {
-    return firstNames.split('*')[1].split(' ')[0]
-  }
-  return firstNames.split(' ')[0]
+  return (
+    <div>
+      <h2>Group</h2>
+      {groupDetails ? (
+        <div>
+          <h4>Name</h4>
+          <Typography variant="body1" gutterBottom>
+            {groupDetails.groupName}
+          </Typography>
+          <h4>Instructor</h4>
+          <Typography variant="body1" gutterBottom>
+            {groupDetails.instructor}
+          </Typography>
+          <h4>Members</h4>
+          {groupDetails.students.map((member) => {
+            return (
+              <Typography variant="body1">
+                {extractCallingName(member.first_names)} {member.last_name}
+              </Typography>
+            )
+          })}
+        </div>
+      ) : (
+        <Typography variant="body1" gutterBottom>
+          not assigned yet
+        </Typography>
+      )}
+    </div>
+  )
 }
 
 class RegistrationDetailsPage extends React.Component {
-  state = { groupDetails: null }
-
   async componentDidMount() {
-    const myGroup = await groupManagementService.getByStudent()
-    this.setState({
-      groupDetails: myGroup
-    })
+    await this.props.initializeMyGroup()
   }
+
   render() {
-    const { groupDetails } = this.state
+    const { groupDetails } = this.props
     const {
       student,
       preferred_topics,
       questions,
       createdAt
     } = this.props.ownRegistration
+    const { peerReviewOpen, peerReviewRound } = this.props
 
-    const { peerReviewOpen } = this.props
     return (
       <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
@@ -227,11 +229,14 @@ class RegistrationDetailsPage extends React.Component {
         <Typography variant="body1" gutterBottom>
           Registration date: {formatDate(createdAt)}
         </Typography>
-
         <CourseMaterial />
-        {peerReviewOpen && <PeerReviewInfo />}
-        <UserDetails student={student} />
+        <PeerReviewInfo
+          peerReviewOpen={peerReviewOpen}
+          peerReviewRound={peerReviewRound}
+          groupDetails={groupDetails}
+        />
         <GroupDetails groupDetails={groupDetails} />
+        <UserDetails student={student} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />
       </div>
@@ -243,12 +248,14 @@ const mapStateToProps = (state) => {
   return {
     ownRegistration: state.registration,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
-    groupDetails: state.groupDetails
+    groupDetails: state.registrationDetails.myGroup,
+    peerReviewRound: state.registrationManagement.peerReviewRound
   }
 }
 
 const mapDispatchToProps = {
-  fetchRegistration: registrationActions.fetchRegistration
+  fetchRegistration: registrationActions.fetchRegistration,
+  initializeMyGroup: myGroupActions.initializeMyGroup
 }
 
 const ConnectedRegistrationDetailsPage = connect(
