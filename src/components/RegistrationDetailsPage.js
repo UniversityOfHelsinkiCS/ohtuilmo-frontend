@@ -6,6 +6,7 @@ import ReactDragList from 'react-drag-list'
 import registrationActions from '../reducers/actions/registrationActions'
 
 import peerReviewService from '../services/peerReview'
+import groupManagementService from '../services/groupManagement'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -167,8 +168,49 @@ const RegistrationAnswers = ({ questions }) => {
   )
 }
 
+const GroupDetails = ({ groupDetails }) => {
+  if (!groupDetails) {
+    return (
+      <div>
+        <h2>This user is currently not part of any group.</h2>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2>{groupDetails.groupName}</h2>
+        {groupDetails.students.map((member, index) => {
+          return (
+            <p>
+              {index + 1}. {extractCallingName(member.first_names)}
+              {member.last_name}
+            </p>
+          )
+        })}
+        <h3>Ohjaaja</h3>
+        <p>{groupDetails.instructor}</p>
+      </div>
+    )
+  }
+}
+const extractCallingName = (firstNames) => {
+  if (firstNames.includes('*')) {
+    return firstNames.split('*')[1].split(' ')[0]
+  }
+  return firstNames.split(' ')[0]
+}
+
 class RegistrationDetailsPage extends React.Component {
+  state = { groupDetails: null }
+
+  async componentDidMount() {
+    const myGroup = await groupManagementService.getByStudent()
+    this.setState({
+      groupDetails: myGroup
+    })
+  }
   render() {
+    const { groupDetails } = this.state
     const {
       student,
       preferred_topics,
@@ -177,7 +219,6 @@ class RegistrationDetailsPage extends React.Component {
     } = this.props.ownRegistration
 
     const { peerReviewOpen } = this.props
-
     return (
       <div className="registration-details-container">
         <Typography variant="h4" gutterBottom>
@@ -190,6 +231,7 @@ class RegistrationDetailsPage extends React.Component {
         <CourseMaterial />
         {peerReviewOpen && <PeerReviewInfo />}
         <UserDetails student={student} />
+        <GroupDetails groupDetails={groupDetails} />
         <PreferredTopics topics={preferred_topics} />
         <RegistrationAnswers questions={questions} />
       </div>
@@ -200,7 +242,8 @@ class RegistrationDetailsPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ownRegistration: state.registration,
-    peerReviewOpen: state.registrationManagement.peerReviewOpen
+    peerReviewOpen: state.registrationManagement.peerReviewOpen,
+    groupDetails: state.groupDetails
   }
 }
 

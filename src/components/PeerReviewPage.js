@@ -30,29 +30,27 @@ class PeerReview extends React.Component {
     try {
       const group = await groupManagementService.getByStudent()
       if (group) {
-        if (group.id !== -100) {
-          const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
-            group.configurationId,
-            this.props.reviewRound
-          )
+        const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
+          group.configurationId,
+          this.props.reviewRound
+        )
 
-          const questionObject = { questions: reviewQuestionsSet.questions }
+        const questionObject = { questions: reviewQuestionsSet.questions }
 
-          this.props.setQuestions(questionObject)
+        this.props.setQuestions(questionObject)
 
-          this.props.setConfiguration(group.configurationId)
+        this.props.setConfiguration(group.configurationId)
 
-          this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
-          this.props.createPeers(group.students)
-          const answerFound = await peerReviewService.get()
-          if (answerFound) {
-            this.props.setAnswerFoundTrue(true)
-          } else {
-            this.props.setAnswerFoundTrue(false)
-          }
+        this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
+        this.props.createPeers(group.students)
+        const answerFound = await peerReviewService.get()
+        if (answerFound) {
+          this.props.setAnswerFoundTrue(true)
         } else {
-          this.props.setLoading(false)
+          this.props.setAnswerFoundTrue(false)
         }
+      } else {
+        this.props.setLoading(false)
       }
     } catch (e) {
       console.log('error happened', e.response)
