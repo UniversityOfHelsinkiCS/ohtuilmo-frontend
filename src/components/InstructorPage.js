@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+import './InstructorPage.css'
+
 //Services
 import peerReviewService from '../services/peerReview'
 
@@ -61,14 +63,14 @@ const GroupAnswers = (answers) => {
       {answers.group[0].answer_sheet.map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
-            <div>
+            <div key={index}>
               <h3>{question.questionHeader}</h3>
               <TextNumberAnswer answers={answers} questionNumber={index} />
             </div>
           )
         } else if (question.type === 'radio') {
           return (
-            <div>
+            <div key={index}>
               <h3>{question.questionHeader}</h3>
               <RadioAnswer answers={answers} questionNumber={index} />
             </div>
@@ -80,9 +82,9 @@ const GroupAnswers = (answers) => {
 }
 
 const TextNumberAnswer = ({ answers, questionNumber }) => {
-  return answers.group.map((member) => {
+  return answers.group.map((member, index) => {
     return (
-      <p>
+      <p key={index}>
         {member.student.last_name}
         <br /> {member.answer_sheet[questionNumber].answer}
       </p>
@@ -96,9 +98,9 @@ const RadioAnswer = ({ answers, questionNumber }) => {
   })
   return (
     <div>
-      <table>
+      <table className="radio-button-table">
         <thead>
-          <tr>
+          <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
           </tr>
@@ -107,11 +109,15 @@ const RadioAnswer = ({ answers, questionNumber }) => {
           {answers.group.map((member, index) => {
             return (
               <tr key={index}>
-                {member.student.last_name}
+                <th className="peer-header">{member.student.last_name}</th>
 
                 {Object.entries(member.answer_sheet[questionNumber].peers).map(
                   ([nimi, numero]) => {
-                    return <th key={nimi}>{numero}</th>
+                    return (
+                      <th className="radio-button" key={nimi}>
+                        {numero}
+                      </th>
+                    )
                   }
                 )}
               </tr>
@@ -125,7 +131,7 @@ const RadioAnswer = ({ answers, questionNumber }) => {
 const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
-      <th className="peer-review-box__radio-header" key={optionId}>
+      <th className="radio-header" key={optionId}>
         {option}
       </th>
     )
@@ -151,8 +157,6 @@ class InstructorPage extends React.Component {
         <div className="instructor-container">
           <h2>Sivu on testauksessa</h2>
           <Answers answersJson={answersJson.answers} />
-          {/*         <GlobalStatistics />
-           */}
         </div>
       )
     } else {
