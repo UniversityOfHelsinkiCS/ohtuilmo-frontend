@@ -13,7 +13,21 @@ describe('Group Management Page', () => {
       cy.get('.topic-menu-item-no__1').click()
       cy.get('.create-group-form__name').type('Ryhmä A')
       cy.get('.create-group-form__student-input').type('012345678, 012345688')
-      cy.get('.create-group-form__instructor').type('012345698')
+
+      cy.get('.create-group-form__instructor').click()
+
+      cy.get('.create-group-form__instructor')
+        .find('input')
+        .type('Angela', { force: true })
+
+      cy.get('.create-group-form__instructor').find(
+        '.create-group-form__instructor__option'
+      )
+
+      cy.get('.create-group-form__instructor')
+        .find('input')
+        .type('{enter}', { force: true })
+
       cy.get('.create-group-submit').click()
       cy.get('.notification').should('have.text', 'Group saved!')
     })
@@ -82,9 +96,20 @@ describe('Group Management Page', () => {
     })
 
     it('changes instructor', () => {
+      cy.get('.edit-group-no__1__instructor').click()
+
       cy.get('.edit-group-no__1__instructor')
-        .clear()
-        .type('012345678')
+        .find('input')
+        .type('{backspace}', { force: true })
+
+      cy.get('.edit-group-no__1__instructor')
+        .find('input')
+        .type('Testaaja', { force: true })
+
+      cy.get('.edit-group-no__1__instructor')
+        .find('input')
+        .type('{enter}', { force: true })
+
       cy.get('.edit-group-no__1__save-button').click()
       cy.get('.notification').should('have.text', 'Group updated!')
       cy.get('.view-group-no__1__container .group-instructor').should(

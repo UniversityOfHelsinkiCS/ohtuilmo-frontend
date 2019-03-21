@@ -13,9 +13,9 @@ const updateGroupTopicID = (topicID) => ({
   payload: topicID
 })
 
-const updateGroupInstructorID = (groupInstructorID) => ({
-  type: 'UPDATE_INSTRUCTOR_ID',
-  payload: groupInstructorID
+const updateGroupInstructor = (groupInstructor) => ({
+  type: 'UPDATE_INSTRUCTOR',
+  payload: groupInstructor
 })
 
 const updateGroupConfigurationID = (groupConfigurationID) => ({
@@ -43,9 +43,9 @@ const updateExistingGroup = (group) => ({
   payload: group
 })
 
-const deleteGroup = (group) => ({
+const deleteGroup = (groupId) => ({
   type: 'DELETE_GROUP',
-  payload: group
+  payload: groupId
 })
 
 const setUsers = (users) => ({
@@ -57,7 +57,7 @@ export default {
   updateCreateGroupFormName,
   updateStudentsForm,
   updateGroupTopicID,
-  updateGroupInstructorID,
+  updateGroupInstructor,
   updateGroupConfigurationID,
   createGroupSuccsess,
   setGroups,
