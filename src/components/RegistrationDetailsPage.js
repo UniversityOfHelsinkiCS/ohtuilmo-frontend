@@ -7,7 +7,6 @@ import registrationActions from '../reducers/actions/registrationActions'
 import myGroupActions from '../reducers/actions/myGroupActions'
 
 import peerReviewService from '../services/peerReview'
-import groupManagementService from '../services/groupManagement'
 
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
@@ -176,11 +175,6 @@ const RegistrationAnswers = ({ questions }) => {
 }
 
 const GroupDetails = ({ groupDetails }) => {
-  const leftPad = (string) => {
-    const pad = '  '
-    return pad.concat(string)
-  }
-
   return (
     <div>
       <h2>Group</h2>
