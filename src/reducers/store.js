@@ -20,6 +20,7 @@ import peerReviewReducer from './peerReviewReducer'
 import myGroupReducer from './myGroupReducer'
 import emailTemplatesReducer from './emailTemplatesReducer'
 import instructorPageReducer from './instructorPageReducer'
+import customerReviewPageReducer from './customerReviewPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -40,7 +41,8 @@ const reducer = combineReducers({
   peerReviewPage: peerReviewReducer,
   registrationDetails: myGroupReducer,
   emailTemplates: emailTemplatesReducer,
-  instructorPage: instructorPageReducer
+  instructorPage: instructorPageReducer,
+  customerReviewPage: customerReviewPageReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

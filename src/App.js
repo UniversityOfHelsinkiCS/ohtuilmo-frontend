@@ -24,6 +24,7 @@ import GroupManagementPage from './components/GroupManagementPage'
 import PeerReviewPage from './components/PeerReviewPage'
 import EmailTemplatesPage from './components/EmailTemplatesPage'
 import InstructorPage from './components/InstructorPage'
+import CustomerReviewPage from './components/CustomerReviewPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
@@ -165,6 +166,11 @@ class App extends Component {
                 exact
                 path="/administration/email-templates"
                 render={() => <EmailTemplatesPage />}
+              />
+              <Route
+                exact
+                path="/customer-review/:id"
+                render={(props) => <CustomerReviewPage {...props} />}
               />
               <Route
                 exact
