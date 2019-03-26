@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+
 // MUI
 import {
   FormControlLabel,
@@ -10,12 +11,17 @@ import {
   Card,
   TextField,
   Switch,
-  Button
+  Button,
+  FormControl,
+  FormHelperText
 } from '@material-ui/core'
+
 // Actions
 import appActions from '../reducers/actions/appActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import registrationManagementActions from '../reducers/actions/registrationManagementActions'
+import adminPageActions from '../reducers/actions/adminPageActions'
+
 // Services
 import registrationManagementService from '../services/registrationManagement'
 
@@ -36,12 +42,20 @@ class RegistrationManagement extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    if (this.props.configurations.length === 0) {
+      await this.props.fetchConfigurations()
+    }
+  }
+
   saveConfiguration = async (event) => {
     event.preventDefault()
 
     const {
+      peerReviewConf,
       peerReviewOpen,
       peerReviewRound,
+      projectConf,
       projectOpen,
       projectMessage,
       topicOpen,
@@ -57,8 +71,10 @@ class RegistrationManagement extends React.Component {
     try {
       await registrationManagementService.create({
         registrationManagement: {
+          peer_review_conf: peerReviewConf,
           peer_review_open: peerReviewOpen,
           peer_review_round: peerReviewRound,
+          project_registration_conf: projectConf,
           project_registration_open: projectOpen,
           project_registration_message: projectMessage,
           project_registration_info: projectInfo,
@@ -79,15 +95,19 @@ class RegistrationManagement extends React.Component {
 
   render() {
     const {
+      peerReviewConf,
       peerReviewOpen,
       peerReviewRound,
+      projectConf,
       projectOpen,
+      projectInfo,
       projectMessage,
       topicOpen,
       topicMessage,
-      projectInfo,
+      updatePeerReviewConf,
       updatePeerReviewOpen,
       updatePeerReviewRound,
+      updateProjectRegistrationConf,
       updateProjectRegistrationOpen,
       updateProjectRegistrationMessage,
       updateProjectRegistrationInfo,
@@ -97,6 +117,23 @@ class RegistrationManagement extends React.Component {
 
     const cardStyle = {
       marginBottom: '10px'
+    }
+
+    const configurationMenuItems = () => {
+      const { configurations } = this.props
+      return []
+        .concat(
+          <MenuItem value={-1} key={-1} disabled>
+            <em>Pick one</em>
+          </MenuItem>
+        )
+        .concat(
+          configurations.map((configuration) => (
+            <MenuItem value={configuration.id} key={configuration.id}>
+              {configuration.name}
+            </MenuItem>
+          ))
+        )
     }
 
     return (
@@ -120,6 +157,21 @@ class RegistrationManagement extends React.Component {
                 }
                 label="Project registration open"
               />
+              <p />
+              <FormControl>
+                <Select
+                  value={projectConf ? projectConf : -1}
+                  onChange={(event) => {
+                    updateProjectRegistrationConf(event.target.value)
+                  }}
+                >
+                  {configurationMenuItems()}
+                </Select>
+                <FormHelperText>
+                  Active configuration for project registration
+                </FormHelperText>
+              </FormControl>
+
               <TextField
                 fullWidth
                 label="Registration status message"
@@ -177,15 +229,35 @@ class RegistrationManagement extends React.Component {
                 data-cy="peer-review-open-switch"
               />
               <p />
-              <Select
-                value={peerReviewRound}
-                onChange={(event) => {
-                  updatePeerReviewRound(event.target.value)
-                }}
-              >
-                <MenuItem value={1}>Review round 1</MenuItem>
-                <MenuItem value={2}>Review round 2</MenuItem>
-              </Select>
+              <FormControl>
+                <Select
+                  value={peerReviewConf ? peerReviewConf : -1}
+                  onChange={(event) => {
+                    updatePeerReviewConf(event.target.value)
+                  }}
+                >
+                  {configurationMenuItems()}
+                </Select>
+                <FormHelperText>
+                  Active configuration for peer review
+                </FormHelperText>
+              </FormControl>
+              <p />
+              <FormControl>
+                <Select
+                  value={peerReviewRound ? peerReviewRound : -1}
+                  onChange={(event) => {
+                    updatePeerReviewRound(event.target.value)
+                  }}
+                >
+                  <MenuItem value={-1} disabled>
+                    <em>Pick one</em>
+                  </MenuItem>
+                  <MenuItem value={1}>Review round 1</MenuItem>
+                  <MenuItem value={2}>Review round 2</MenuItem>
+                </Select>
+                <FormHelperText>Select review round</FormHelperText>
+              </FormControl>
             </CardContent>
           </Card>
 
@@ -205,14 +277,17 @@ class RegistrationManagement extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    peerReviewConf: state.registrationManagement.peerReviewConf,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
     peerReviewRound: state.registrationManagement.peerReviewRound,
+    projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
     projectInfo: state.registrationManagement.projectRegistrationInfo,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
-    isLoading: state.app.isLoading
+    isLoading: state.app.isLoading,
+    configurations: state.adminPage.configurations
   }
 }
 
@@ -220,7 +295,8 @@ const mapDispatchToProps = {
   ...registrationManagementActions,
   ...appActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchConfigurations: adminPageActions.fetchConfigurations
 }
 
 const ConnectedRegistrationManagement = connect(

@@ -11,9 +11,9 @@ const getAll = async () => {
   return response.data
 }
 
-const getActive = async () => {
-  const response = await axios.get(url + '/active')
-  return response.data.configuration
+const getById = async (id) => {
+  const response = await axios.get(`${url}/${id}`)
+  return response.data
 }
 
 const create = async (configuration) => {
@@ -30,4 +30,4 @@ const update = async (configuration, id) => {
   return response.data
 }
 
-export default { getAll, getActive, create, update }
+export default { getById, getAll, create, update }

@@ -49,11 +49,12 @@ class RegistrationPage extends React.Component {
 
   async fetchQuestions() {
     try {
-      const fetchedConfiguration = await configurationService.getActive()
-      let fetchedQuestions =
-        fetchedConfiguration.registration_question_set.questions
-      fetchedQuestions = fetchedQuestions ? fetchedQuestions : []
-      this.props.updateQuestions(fetchedQuestions)
+      const { projectConf } = this.props
+      const response = await configurationService.getById(projectConf)
+      console.log(response)
+      let questions = response.registration_question_set.questions
+      questions = questions ? questions : []
+      this.props.updateQuestions(questions)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching questions', 3000)
@@ -266,6 +267,7 @@ const mapStateToProps = (state) => {
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
     email: state.registrationPage.email,
+    projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectInfo: state.registrationManagement.projectRegistrationInfo
   }

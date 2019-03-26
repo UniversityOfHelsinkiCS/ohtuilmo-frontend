@@ -4,8 +4,10 @@ const fetchRegistrationManagement = () => {
   return async (dispatch) => {
     const response = await registrationManagementService.get()
     const {
+      peer_review_conf,
       peer_review_open,
       peer_review_round,
+      project_registration_conf,
       project_registration_open,
       project_registration_message,
       project_registration_info,
@@ -16,8 +18,10 @@ const fetchRegistrationManagement = () => {
     dispatch({
       type: 'SET_REGISTRATION_MANAGEMENT',
       payload: {
+        peerReviewConf: peer_review_conf,
         peerReviewOpen: peer_review_open,
         peerReviewRound: peer_review_round,
+        projectRegistrationConf: project_registration_conf,
         projectRegistrationOpen: project_registration_open,
         projectRegistrationMessage: project_registration_message,
         projectRegistrationInfo: project_registration_info,
@@ -25,6 +29,13 @@ const fetchRegistrationManagement = () => {
         topicRegistrationMessage: topic_registration_message
       }
     })
+  }
+}
+
+const updatePeerReviewConf = (peerReviewConf) => {
+  return {
+    type: 'UPDATE_PEER_REVIEW_CONF',
+    payload: peerReviewConf
   }
 }
 
@@ -39,6 +50,13 @@ const updatePeerReviewRound = (peerReviewRound) => {
   return {
     type: 'UPDATE_PEER_REVIEW_ROUND',
     payload: peerReviewRound
+  }
+}
+
+const updateProjectRegistrationConf = (projectRegistrationConf) => {
+  return {
+    type: 'UPDATE_PROJECT_REGISTRATION_CONF',
+    payload: projectRegistrationConf
   }
 }
 
@@ -78,9 +96,11 @@ const updateTopicRegistrationMessage = (topicRegistrationMessage) => {
 }
 
 export default {
+  updatePeerReviewConf,
   fetchRegistrationManagement,
   updatePeerReviewOpen,
   updatePeerReviewRound,
+  updateProjectRegistrationConf,
   updateProjectRegistrationOpen,
   updateProjectRegistrationMessage,
   updateProjectRegistrationInfo,

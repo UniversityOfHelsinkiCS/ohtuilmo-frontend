@@ -177,9 +177,9 @@ const GroupDetails = ({ groupDetails }) => {
             {groupDetails.instructor}
           </Typography>
           <h4>Members</h4>
-          {groupDetails.students.map((member) => {
+          {groupDetails.students.map((member, index) => {
             return (
-              <Typography variant="body1">
+              <Typography variant="body1" key={index}>
                 {extractCallingName(member.first_names)} {member.last_name}
               </Typography>
             )

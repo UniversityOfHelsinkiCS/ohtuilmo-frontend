@@ -1,3 +1,12 @@
+import configurationService from '../../services/configuration'
+
+const fetchConfigurations = () => {
+  return async (dispatch) => {
+    const response = await configurationService.getAll()
+    dispatch({ type: 'SET_CONFIGURATIONS', payload: response.configurations })
+  }
+}
+
 const setConfigurations = (configurations) => {
   return {
     type: 'SET_CONFIGURATIONS',
@@ -82,6 +91,7 @@ const updateNewStatus = (status) => {
 }
 
 export default {
+  fetchConfigurations,
   setConfigurations,
   updateConfigurations,
   updateSelectedConfig,

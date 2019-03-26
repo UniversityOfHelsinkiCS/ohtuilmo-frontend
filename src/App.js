@@ -32,7 +32,7 @@ import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
-import PeerReviewPageActions from './reducers/actions/peerReviewPageActions'
+import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -210,8 +210,7 @@ const mapDispatchToProps = {
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistration: registrationActions.clearRegistration,
-  ...registrationmanagementActions,
-  ...PeerReviewPageActions
+  ...peerReviewPageActions
 }
 
 const ConnectedApp = connect(
