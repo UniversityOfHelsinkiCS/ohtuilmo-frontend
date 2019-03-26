@@ -26,6 +26,7 @@ import EmailTemplatesPage from './components/EmailTemplatesPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
+import userService from './services/user'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -65,13 +66,13 @@ class App extends Component {
   }
 
   userCheck = async () => {
-    let token
     try {
-      token = JSON.parse(window.localStorage.getItem('loggedInUser')).token
-      await tokenCheckService.userCheck(token)
-      this.props.updateUser(
-        JSON.parse(window.localStorage.getItem('loggedInUser'))
-      )
+      let user = JSON.parse(window.localStorage.getItem('loggedInUser'))
+      await tokenCheckService.userCheck(user.token)
+      const { isInstructor } = await userService.checkInstructor()
+      user.user.instructor = isInstructor
+
+      this.props.updateUser(user)
       return true
     } catch (e) {
       console.log(e.response)
