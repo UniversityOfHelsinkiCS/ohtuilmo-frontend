@@ -14,7 +14,7 @@ const get = async () => {
 
 const update = async (user) => {
   const config = {
-    headers: { 'Authorization': 'bearer ' + getUserToken() }
+    headers: { Authorization: 'bearer ' + getUserToken() }
   }
   const response = await axios.put(
     url + `/${user.student_number}`,
@@ -24,5 +24,12 @@ const update = async (user) => {
   return response.data
 }
 
+const checkInstructor = async () => {
+  const config = {
+    headers: { Authorization: 'bearer ' + getUserToken() }
+  }
+  const response = await axios.get(`${url}/isInstructor`, config)
+  return response.data
+}
 
-export default { get, update }
+export default { get, update, checkInstructor }
