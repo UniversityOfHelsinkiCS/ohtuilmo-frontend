@@ -31,11 +31,12 @@ const GroupDetails = (myGroup) => {
 }
 
 const Answers = (answers) => {
+  console.log(answers)
+
   if (answers) {
     return (
       <div>
         <h2>Groups</h2>
-
         {answers.answersJson.map((group, index) => {
           return (
             <div key={index}>
@@ -151,12 +152,11 @@ class InstructorPage extends React.Component {
 
   render() {
     const { answersJson } = this.state
-    console.log(answersJson)
     if (answersJson) {
       return (
         <div className="instructor-container">
           <h2>Sivu on testauksessa</h2>
-          <Answers answersJson={answersJson.answers} />
+          <Answers answersJson={answersJson} />
         </div>
       )
     } else {
