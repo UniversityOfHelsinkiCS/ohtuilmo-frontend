@@ -44,6 +44,7 @@ const SingleGroupView = ({
               })
             }
             className={`edit-group-no__${groupId}__delete-instructor`}
+            data-cy="delete-instructor-button"
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
@@ -87,6 +88,7 @@ const SingleGroupView = ({
                 className={`edit-group-no__${
                   group.id
                 }__delete-student-no__${index}`}
+                data-cy="delete-student-button"
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
@@ -106,6 +108,7 @@ const SingleGroupView = ({
         variant="contained"
         onClick={() => toggleEditMode()}
         className={`enable-edit-group-no__${group.id}`}
+        data-cy="edit-group-button"
       >
         Edit
       </Button>

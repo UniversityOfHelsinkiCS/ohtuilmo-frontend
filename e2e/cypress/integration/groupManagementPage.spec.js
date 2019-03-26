@@ -40,7 +40,9 @@ describe('Group Management Page', () => {
     })
 
     it('deletes a student', () => {
-      cy.get('.edit-group-no__1__delete-student-no__1').click()
+      cy.get('[data-cy=delete-student-button]')
+        .eq(1)
+        .click()
       cy.get('.view-group-no__1__container .group-students').should(
         'not.contain',
         '012345688'
@@ -49,15 +51,15 @@ describe('Group Management Page', () => {
     })
 
     it('deletes an instructor', () => {
-      cy.get('.edit-group-no__1__delete-instructor').click()
-      cy.get('.view-group-no__1__container .group-instructor').should(
-        'not.contain',
-        '012345698'
-      )
-      cy.get('.view-group-no__1__container .group-instructor').should(
-        'contain',
-        'No instructor assigned'
-      )
+      cy.get('[data-cy=delete-instructor-button]')
+        .eq(0)
+        .click()
+      cy.get('.group-instructor')
+        .eq(0)
+        .should('not.contain', '012345698')
+      cy.get('.group-instructor')
+        .eq(0)
+        .should('contain', 'No instructor assigned')
       cy.get('.notification').should('have.text', 'Instructor deleted!')
     })
   })
@@ -67,70 +69,68 @@ describe('Group Management Page', () => {
       cy.createNewTopic('Aihe B', 'Customer for Aihe B', 'Super nice topic')
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
-      cy.get('.enable-edit-group-no__1').click()
+      cy.get('[data-cy=edit-group-button]')
+        .eq(0)
+        .click()
       cy.get('.notification')
         .should('contain', 'Editing for group')
         .should('contain', 'enabled!')
     })
 
     it('changes group name', () => {
-      cy.get('.edit-group-no__1__name')
+      cy.get('[data-cy=edit-group-name-field]')
         .clear()
         .type('Ryhmä B')
-      cy.get('.edit-group-no__1__save-button').click()
+      cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
-      cy.get('.view-group-no__1__container .group-name').should(
-        'contain',
-        'Ryhmä B'
-      )
+      cy.get('.group-name')
+        .eq(0)
+        .should('contain', 'Ryhmä B')
     })
 
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector').click()
       cy.get('.topic-menu-item-no__2').click()
-      cy.get('.edit-group-no__1__save-button').click()
+      cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
-      cy.get('.view-group-no__1__container .group-topic').should(
-        'contain',
-        'Aihe B'
-      )
+      cy.get('.group-topic')
+        .eq(0)
+        .should('contain', 'Aihe B')
     })
 
     it('changes instructor', () => {
-      cy.get('.edit-group-no__1__instructor').click()
+      cy.get('.edit-group-instructor').click()
 
-      cy.get('.edit-group-no__1__instructor')
+      cy.get('.edit-group-instructor')
         .find('input')
         .type('{backspace}', { force: true })
 
-      cy.get('.edit-group-no__1__instructor')
+      cy.get('.edit-group-instructor')
         .find('input')
         .type('Testaaja', { force: true })
 
-      cy.get('.edit-group-no__1__instructor')
+      cy.get('.edit-group-instructor__option')
+
+      cy.get('.edit-group-instructor')
         .find('input')
         .type('{enter}', { force: true })
 
-      cy.get('.edit-group-no__1__save-button').click()
+      cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
-      cy.get('.view-group-no__1__container .group-instructor').should(
-        'contain',
-        '012345678'
-      )
+      cy.get('.group-instructor')
+        .eq(0)
+        .should('contain', '012345678')
     })
 
     it('adds new student', () => {
-      cy.get('.edit-group-no__1__students').type(', 012345698')
-      cy.get('.edit-group-no__1__save-button').click()
+      cy.get('[data-cy=edit-students-input]').type(', 012345698')
+      cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
-      cy.get('.view-group-no__1__container .group-students').should(
-        'contain',
-        '012345698'
-      )
+      cy.get('.group-students').should('contain', '012345698')
     })
 
     it('deletes a group', () => {
-      cy.get('.edit-group-no__1__delete-button').click()
+      cy.get('[data-cy=edit-group-delete-button]').click()
       cy.get('.notification').should('have.text', 'Group deleted!')
     })
   })
