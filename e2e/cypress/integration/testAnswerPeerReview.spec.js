@@ -47,16 +47,49 @@ describe('Answering peer review', () => {
   })
 
   it('shows an error if none of the fields is filled', () => {
-    cy.contains('Lähetä').click()
+    cy.contains('Submit').click()
     cy.contains('You must answer all questions')
   })
-  it('nänänä', () => {
+  it('shows an error if only one of the fields is filled', () => {
     cy.get(
       '[data-cy="input_number_Previous experiene in software developement"]'
     )
       .type('{backspace}')
       .type('123')
-    cy.contains('Lähetä').click()
+    cy.contains('Submit').click()
     cy.contains('You must answer all questions')
+  })
+  it('shows an error if not all of the radio button questions is answered', () => {
+    cy.get(
+      '[data-cy="input_number_Previous experiene in software developement"]'
+    )
+      .type('{backspace}')
+      .type('123')
+    cy.get('[data-cy="input_number_Without option?"]')
+      .type('{backspace}')
+      .type('123')
+    cy.get('[name="Ok and with optionTimo *Teppo Tellervo Testaaja"]')
+      .eq(3)
+      .click()
+    cy.contains('Submit').click()
+    cy.contains('You must answer all questions')
+  })
+  it('shows a submit confimation when all field and butotns are filled properly', () => {
+    cy.get(
+      '[data-cy="input_number_Previous experiene in software developement"]'
+    )
+      .type('{backspace}')
+      .type('123')
+    cy.get('[data-cy="input_number_Without option?"]')
+      .type('{backspace}')
+      .type('123')
+    cy.get('[name="Ok and with optionTimo *Teppo Tellervo Testaaja"]')
+      .eq(2)
+      .click()
+    cy.get('[name="Ok and with optionDonald John Trump"]')
+      .eq(5)
+      .click()
+    cy.contains('Submit').click()
+    cy.contains('Peer review saved!')
   })
 })

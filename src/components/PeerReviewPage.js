@@ -197,7 +197,7 @@ class PeerReview extends React.Component {
                 this.Submit(event, answerSheet, configurationId)
               }
             >
-              Lähetä
+              Submit
             </Button>
           </div>
         </div>
