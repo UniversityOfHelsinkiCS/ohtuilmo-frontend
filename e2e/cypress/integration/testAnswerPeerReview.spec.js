@@ -1,8 +1,9 @@
 describe('Answering peer review', () => {
-  beforeEach(() => {
+  before(() => {
     cy.loginAsAdmin()
     cy.deleteReviewQuestions()
     cy.deleteAllGroups()
+    cy.deleteAllPeerReviews()
     cy.createGroup({
       name: 'The group of the groups',
       topicId: 1,
@@ -38,19 +39,23 @@ describe('Answering peer review', () => {
       1,
       'Super nice review questions'
     )
-    cy.loginAsRegisteredUser()
-    cy.visit('/peerreview')
   })
 
   it('peer review is open', () => {
+    cy.loginAsRegisteredUser()
+    cy.visit('/peerreview')
     cy.get('.peer-review-container').contains('This is info')
   })
 
   it('shows an error if none of the fields is filled', () => {
+    cy.loginAsRegisteredUser()
+    cy.visit('/peerreview')
     cy.contains('Submit').click()
     cy.contains('You must answer all questions')
   })
   it('shows an error if only one of the fields is filled', () => {
+    cy.loginAsRegisteredUser()
+    cy.visit('/peerreview')
     cy.get(
       '[data-cy="input_number_Previous experiene in software developement"]'
     )
@@ -60,6 +65,8 @@ describe('Answering peer review', () => {
     cy.contains('You must answer all questions')
   })
   it('shows an error if not all of the radio button questions is answered', () => {
+    cy.loginAsRegisteredUser()
+    cy.visit('/peerreview')
     cy.get(
       '[data-cy="input_number_Previous experiene in software developement"]'
     )
@@ -75,6 +82,8 @@ describe('Answering peer review', () => {
     cy.contains('You must answer all questions')
   })
   it('shows a submit confimation when all field and butotns are filled properly', () => {
+    cy.loginAsRegisteredUser()
+    cy.visit('/peerreview')
     cy.get(
       '[data-cy="input_number_Previous experiene in software developement"]'
     )

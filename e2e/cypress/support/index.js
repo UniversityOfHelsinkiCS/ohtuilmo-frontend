@@ -274,6 +274,28 @@ Cypress.Commands.add(
   }
 )
 
+Cypress.Commands.add('deleteAllPeerReviews', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/peerreview/all',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allReviews = res.body
+      for (const review of allReviews) {
+        cy.request({
+          url: `/api/peerreview/${review.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
 const findReviewQuestionId = (authHeaders, questionSetName) => {
   return cy
     .request({
