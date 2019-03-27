@@ -39,7 +39,7 @@ class PeerReview extends React.Component {
 
         this.props.setQuestions(questionObject)
 
-        this.props.setConfiguration(group.configurationId)
+        this.props.setConfiguration(this.props.peerReviewConf)
 
         this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
         this.props.createPeers(group.students)
@@ -389,6 +389,7 @@ const mapStateToProps = (state) => {
     submittedReviews: state.peerReviewPage.submittedReviews,
     questionObject: state.peerReviewPage.questions,
     configurationId: state.peerReviewPage.configurationId,
+    reviewConf: state.registrationManagement.peerReviewConf,
     reviewRound: state.registrationManagement.peerReviewRound,
     reviewOpen: state.registrationManagement.peerReviewOpen
   }
