@@ -7,7 +7,10 @@ import './InstructorPage.css'
 //Services
 import peerReviewService from '../services/peerReview'
 
-const GroupDetails = (myGroup) => {
+//Actions
+import instructorPageActions from '../reducers/actions/instructorPageActions'
+
+const GroupDetails = ({ myGroup }) => {
   if (!myGroup) {
     return (
       <div>
@@ -17,11 +20,10 @@ const GroupDetails = (myGroup) => {
   } else {
     return (
       <div>
-        {myGroup.group.map((member, index) => {
+        {myGroup.map((member, index) => {
           return (
             <p key={index}>
-              {index + 1}. {member.student.first_names}
-              {member.student.last_name}
+              {index + 1}. {member}
             </p>
           )
         })}
@@ -30,19 +32,20 @@ const GroupDetails = (myGroup) => {
   }
 }
 
-const Answers = (answers) => {
-  console.log(answers)
-
+const Answers = ({ answers }) => {
   if (answers) {
     return (
       <div>
-        <h2>Groups</h2>
-        {answers.answersJson.map((group, index) => {
+        {answers.map((projectGroup, index) => {
           return (
             <div key={index}>
-              <h3>{group.group.name}</h3>
-              <GroupDetails group={group.round1Answers} />
-              <GroupAnswers group={group.round1Answers} />
+              <hr />
+              <br />
+              <h1>{projectGroup.group.name}</h1>
+              <h3>Ohjaaja: {projectGroup.group.instructorName}</h3>
+              <GroupDetails myGroup={projectGroup.group.studentNames} />
+              <GroupAnswers answers={projectGroup.round1Answers} />
+              <br />
             </div>
           )
         })}
@@ -57,11 +60,12 @@ const Answers = (answers) => {
   }
 }
 
-const GroupAnswers = (answers) => {
+const GroupAnswers = ({ answers }) => {
+  console.log('group answers', answers)
   return (
     <div>
       <h2>Vastaukset</h2>
-      {answers.group[0].answer_sheet.map((question, index) => {
+      {answers[0].answer_sheet.map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
             <div key={index}>
@@ -83,7 +87,7 @@ const GroupAnswers = (answers) => {
 }
 
 const TextNumberAnswer = ({ answers, questionNumber }) => {
-  return answers.group.map((member, index) => {
+  return answers.map((member, index) => {
     return (
       <p key={index}>
         {member.student.last_name}
@@ -94,7 +98,7 @@ const TextNumberAnswer = ({ answers, questionNumber }) => {
 }
 
 const RadioAnswer = ({ answers, questionNumber }) => {
-  const peers = answers.group.map((member) => {
+  const peers = answers.map((member) => {
     return member.student.last_name
   })
   return (
@@ -107,7 +111,7 @@ const RadioAnswer = ({ answers, questionNumber }) => {
           </tr>
         </thead>
         <tbody>
-          {answers.group.map((member, index) => {
+          {answers.map((member, index) => {
             return (
               <tr key={index}>
                 <th className="peer-header">{member.student.last_name}</th>
@@ -152,11 +156,11 @@ class InstructorPage extends React.Component {
 
   render() {
     const { answersJson } = this.state
+    console.log('json: ', answersJson)
     if (answersJson) {
       return (
         <div className="instructor-container">
-          <h2>Sivu on testauksessa</h2>
-          <Answers answersJson={answersJson} />
+          <Answers answers={answersJson} />
         </div>
       )
     } else {
@@ -164,7 +168,20 @@ class InstructorPage extends React.Component {
     }
   }
 }
+const mapDispatchToProps = {
+  ...instructorPageActions
+}
 
-const ConnectedInstructorPage = connect(null)(InstructorPage)
+const mapStateToProps = (state) => {
+  return {
+    configurations: state.instructorPage.configurations,
+    currentConfiguration: state.instructorPage.currentConfiguration
+  }
+}
+
+const ConnectedInstructorPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)
