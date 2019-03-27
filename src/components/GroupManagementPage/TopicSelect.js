@@ -16,11 +16,7 @@ const TopicSelect = ({
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
       {topics.map((topic) => (
-        <MenuItem
-          key={topic.id}
-          value={topic.id}
-          className={`topic-menu-item-no__${topic.id}`}
-        >
+        <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
           {topic.content.title}
         </MenuItem>
       ))}

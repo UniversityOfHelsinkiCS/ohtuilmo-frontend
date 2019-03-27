@@ -10,7 +10,9 @@ describe('Group Management Page', () => {
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
       cy.get('.create-group-form-topic__selector').click()
-      cy.get('.topic-menu-item-no__1').click()
+      cy.get('.topic-menu-item')
+        .contains('Aihe A')
+        .click()
       cy.get('.create-group-form__name').type('Ryhmä A')
       cy.get('.create-group-form__student-input').type('012345678, 012345688')
 
@@ -43,10 +45,9 @@ describe('Group Management Page', () => {
       cy.get('[data-cy=delete-student-button]')
         .eq(1)
         .click()
-      cy.get('.view-group-no__1__container .group-students').should(
-        'not.contain',
-        '012345688'
-      )
+      cy.get('.group-students')
+        .eq(0)
+        .should('not.contain', '012345688')
       cy.get('.notification').should('have.text', 'Student deleted!')
     })
 
@@ -90,7 +91,9 @@ describe('Group Management Page', () => {
 
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector').click()
-      cy.get('.topic-menu-item-no__2').click()
+      cy.get('.topic-menu-item')
+        .contains('Aihe B')
+        .click()
       cy.get('[data-cy=edit-group-save-button]').click()
       cy.get('.notification').should('have.text', 'Group updated!')
       cy.get('.group-topic')
