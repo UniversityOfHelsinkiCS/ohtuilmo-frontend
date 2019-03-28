@@ -1,0 +1,11 @@
+.email-template__fields {
+  display: flex;
+}
+
+.email-template__field {
+  flex: 50%;
+}
+
+.email-template__field:not(:last-of-type) {
+  margin-right: 10px;
+}
