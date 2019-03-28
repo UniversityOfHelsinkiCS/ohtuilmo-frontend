@@ -13,9 +13,17 @@ const fetchEmailTemplatesFailed = () => ({
   type: 'FETCH_EMAIL_TEMPLATES_FAILED'
 })
 
+const updateEmailTemplatesRequest = () => ({
+  type: 'UPDATE_EMAIL_TEMPLATES_REQUEST'
+})
+
 const updateEmailTemplatesSuccess = (templates) => ({
   type: 'UPDATE_EMAIL_TEMPLATES_SUCCESS',
   payload: templates
+})
+
+const updateEmailTemplatesFailed = () => ({
+  type: 'UPDATE_EMAIL_TEMPLATES_FAILED'
 })
 
 const fetchEmailTemplates = () => {
@@ -34,8 +42,15 @@ const fetchEmailTemplates = () => {
 
 const updateEmailTemplates = (templates) => {
   return async (dispatch) => {
-    const updatedTemplates = await emailService.updateTemplates(templates)
-    dispatch(updateEmailTemplatesSuccess(updatedTemplates))
+    dispatch(updateEmailTemplatesRequest())
+    try {
+      const updatedTemplates = await emailService.updateTemplates(templates)
+      dispatch(updateEmailTemplatesSuccess(updatedTemplates))
+    } catch (e) {
+      dispatch(updateEmailTemplatesFailed())
+      // re-throw to let UI handle domain-specific error message
+      throw e
+    }
   }
 }
 
