@@ -27,9 +27,33 @@ const setQuestions = (questions) => {
   }
 }
 
+const setGroupName = (group) => {
+  return {
+    type: 'SET_GROUP_NAME',
+    payload: group
+  }
+}
+
+const setGroupId = (groupId) => {
+  return {
+    type: 'SET_GROUP_ID',
+    payload: groupId
+  }
+}
+
+const setConfiguration = (configurationId) => {
+  return {
+    type: 'SET_CONFIGURATION',
+    payload: configurationId
+  }
+}
+
 export default {
   updateAnswer,
   initializeAnswerSheet,
   setLoading,
-  setQuestions
+  setQuestions,
+  setGroupName,
+  setGroupId,
+  setConfiguration
 }

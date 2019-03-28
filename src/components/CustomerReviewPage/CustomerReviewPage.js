@@ -8,10 +8,12 @@ import Button from '@material-ui/core/Button'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import customerReviewPageActions from '../../reducers/actions/customerReviewPageActions'
 
-import questionSet from '../questions/questions_data.json'
+import customerReviewService from '../../services/customerReview'
+
+/* import questionSet from '../questions/questions_data.json' */
 
 const Questions = ({ questions, answerSheet, updateAnswer }) => {
-  console.log('qMap', questions)
+
   return (
     <div>
       {questions.map((question, questionId) => {
@@ -87,26 +89,31 @@ class CustomerReviewPage extends React.Component {
   componentWillMount() {}
 
   async componentDidMount() {
+
+    const id = this.props.match.params.id
+    console.log(id)
+
     try {
-      /* const fetchedGroups = await groupManagementService.get() */
 
-      console.log('cDM start')
 
-      this.props.setQuestions(questionSet.questions)
-      console.log('cwm q0', this.props.questionObject)
+      const group = await customerReviewService.getDataForReview(id)
 
-      console.log('preFetch')
-      this.fetchCustomerReviewQuestions(questionSet.questions)
-      console.log('postFetch')
+      this.props.setGroupName(group.groupName)
+      this.props.setGroupId(group.groupId)
+      this.props.setConfiguration(group.configuration)
+      const reviewQuestionSet = await customerReviewService.getReviewQuestions(group.configuration)
 
-      /* this.props.setGroups(fetchedGroups) */
+      this.props.setQuestions(reviewQuestionSet.questions)
+
+      this.fetchCustomerReviewQuestions(this.props.questionObject)
+
     } catch (e) {
       this.props.setError('Some error happened')
     }
   }
 
   async fetchCustomerReviewQuestions(questionObject) {
-    console.log('qO', questionObject)
+
 
     const initializeNumberAnswer = (question, questionId) => {
       return {
@@ -147,7 +154,20 @@ class CustomerReviewPage extends React.Component {
     )
     if (!answer) return
     try {
-      console.log(answerSheet)
+
+
+      await customerReviewService.create({
+        customerReview: {
+          answer_sheet: answerSheet,
+          group_id: this.props.groupId,
+          configuration_id: this.props.configuration
+        }
+      })
+
+
+
+
+
 
       this.props.setSuccess('Review saved!')
       this.props.history.push('/')
@@ -162,12 +182,10 @@ class CustomerReviewPage extends React.Component {
       answerSheet,
       updateAnswer,
       isInitializing,
-      questionObject
+      questionObject,
+      groupName,
     } = this.props
-    console.log(questionSet.questions)
 
-    console.log('question object', questionObject)
-    console.log('answerSheet', answerSheet)
 
     if (isInitializing) {
       return (
@@ -179,6 +197,7 @@ class CustomerReviewPage extends React.Component {
       return (
         <div>
           <h2>Customer review</h2>
+          <h3>{groupName}</h3>
 
           <Questions
             questions={questionObject}
@@ -207,7 +226,10 @@ const mapStateToProps = (state) => {
     groups: state.groupPage.groups,
     answerSheet: state.customerReviewPage.answerSheet,
     isInitializing: state.customerReviewPage.isInitializing,
-    questionObject: state.customerReviewPage.questions
+    questionObject: state.customerReviewPage.questions,
+    groupName: state.customerReviewPage.groupName,
+    groupId: state.customerReviewPage.groupId,
+    configuration: state.customerReviewPage.configuration
   }
 }
 
@@ -216,6 +238,9 @@ const mapDispatchToProps = {
   initializeAnswerSheet: customerReviewPageActions.initializeAnswerSheet,
   setLoading: customerReviewPageActions.setLoading,
   setQuestions: customerReviewPageActions.setQuestions,
+  setGroupName: customerReviewPageActions.setGroupName,
+  setGroupId: customerReviewPageActions.setGroupId,
+  setConfiguration: customerReviewPageActions.setConfiguration,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess
 }

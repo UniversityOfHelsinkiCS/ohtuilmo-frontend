@@ -1,7 +1,10 @@
 const initialState = {
   answerSheet: [],
   isInitializing: true,
-  questions: ''
+  questions: '',
+  groupName: '',
+  groupId: '',
+  configuration: ''
 }
 
 const customerReviewPageReducer = (state = initialState, action) => {
@@ -33,6 +36,21 @@ const customerReviewPageReducer = (state = initialState, action) => {
     return {
       ...state,
       questions: action.payload
+    }
+  case 'SET_GROUP_NAME':
+    return{
+      ...state,
+      groupName: action.payload
+    }
+  case 'SET_GROUP_ID':
+    return{
+      ...state,
+      groupId: action.payload
+    }
+  case 'SET_CONFIGURATION':
+    return{
+      ...state,
+      configuration: action.payload
     }
   default:
     return state
