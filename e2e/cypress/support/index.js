@@ -96,3 +96,220 @@ Cypress.Commands.add('createRegistrationQuestionSet', (name, questions) => {
     })
   })
 })
+
+Cypress.Commands.add('deleteReviewQuestions', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/reviewQuestions',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        cy.request({
+          url: `/api/reviewQuestions/${set.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/reviewQuestions',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        questions
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createGroup', (groupData) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    cy.request({
+      url: '/api/groups',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        topicId,
+        configurationId,
+        instructorId,
+        studentIds
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('deleteAllGroups', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/groups',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allGroups = res.body
+      for (const group of allGroups) {
+        cy.request({
+          url: `/api/groups/${group.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+Cypress.Commands.add(
+  'createNewTopic',
+  (newTopicName, customerName, topicDescription) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+      cy.request({
+        url: '/api/topics',
+        method: 'POST',
+        headers: authHeaders,
+        active: true,
+        body: {
+          content: {
+            email: 'asiakas@asiakas.com',
+            title: newTopicName,
+            description: topicDescription,
+            environment: 'Web',
+            customerName: customerName,
+            additionalInfo: '',
+            specialRequests: ''
+          }
+        }
+      })
+    })
+  }
+)
+
+Cypress.Commands.add('setTopicActive', (topicId) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `api/topics/${topicId}`,
+      method: 'PUT',
+      headers: authHeaders,
+      body: {
+        topic: {
+          active: true
+        }
+      }
+    })
+  })
+})
+
+Cypress.Commands.add(
+  'setPeerReviewOneActive',
+  (configurationName, configurationId, questionSetName) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+      findReviewQuestionId(authHeaders, questionSetName).then((setId) => {
+        cy.request({
+          url: `api/configurations/${configurationId}`,
+          method: 'PUT',
+          headers: authHeaders,
+          body: {
+            name: configurationName,
+            review_question_set_1_id: setId
+          }
+        })
+        cy.request({
+          url: '/api/registrationManagement',
+          method: 'POST',
+          headers: authHeaders,
+          body: {
+            registrationManagement: {
+              peer_review_open: true,
+              peer_review_round: 1,
+              project_registration_open: true,
+              project_registration_message: '',
+              project_registration_info:
+                'Project registration will be open until DD.MM.2019.',
+              topic_registration_open: true,
+              topic_registration_message: ''
+            }
+          }
+        })
+      })
+    })
+  }
+)
+
+Cypress.Commands.add('deleteAllPeerReviews', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/peerreview/all',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const allReviews = res.body
+      for (const review of allReviews) {
+        cy.request({
+          url: `/api/peerreview/${review.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+const findReviewQuestionId = (authHeaders, questionSetName) => {
+  return cy
+    .request({
+      url: '/api/reviewQuestions',
+      method: 'GET',
+      headers: authHeaders
+    })
+    .then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        if (set.name === questionSetName) {
+          return set.id
+        }
+      }
+    })
+}

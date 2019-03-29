@@ -174,6 +174,7 @@ class RegistrationManagement extends React.Component {
                   />
                 }
                 label="Peer review open"
+                data-cy="peer-review-open-switch"
               />
               <p />
               <Select
@@ -188,7 +189,12 @@ class RegistrationManagement extends React.Component {
             </CardContent>
           </Card>
 
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            data-cy="save-configuration-submit"
+          >
             Save Configuration
           </Button>
         </form>

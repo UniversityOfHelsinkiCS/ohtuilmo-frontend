@@ -66,7 +66,7 @@ function setup() {
 
 function teardown() {
     printProgress 'TEARDOWN (0/1)' 'Tearing down infra with docker-compose down'
-    $dco down
+    $dco down -v
     printProgress 'TEARDOWN (1/1)' 'Teardown complete!'
 }
 

@@ -134,12 +134,16 @@ class SingleGroupEdit extends React.Component {
           aria-label="Delete"
           onClick={this.handleGroupDelete}
           className={`edit-group-no__${group.id}__delete-button`}
+          data-cy="edit-group-delete-button"
         >
           <DeleteIcon fontSize="large" />
         </IconButton>
         <p>Edit group name</p>
         <TextField
-          inputProps={{ className: `edit-group-no__${group.id}__name` }}
+          inputProps={{
+            className: `edit-group-no__${group.id}__name`,
+            'data-cy': 'edit-group-name-field'
+          }}
           value={this.state.name}
           onChange={this.handleNameChange}
         />
@@ -152,16 +156,20 @@ class SingleGroupEdit extends React.Component {
         />
         <p>Add new students</p>
         <TextField
-          inputProps={{ className: `edit-group-no__${group.id}__students` }}
+          inputProps={{
+            className: `edit-group-no__${group.id}__students`,
+            'data-cy': 'edit-students-input'
+          }}
           value={this.state.studentIds}
           onChange={this.handleStudentChange}
+          data-cy="edit-group-students"
           multiline
           rows="8"
         />
         <p>Change instructor</p>
         <AutocompletedUserSelect
-          className={`edit-group-no__${group.id}__instructor`}
-          classNamePrefix={`edit-group-no__${group.id}__instructor`}
+          className="edit-group-instructor"
+          classNamePrefix="edit-group-instructor"
           selectedUser={this.state.instructor}
           defaultUser={defaultInstructor}
           onSelectedUserChange={this.handleInstructorChange}
@@ -182,6 +190,7 @@ class SingleGroupEdit extends React.Component {
               })
             }
             className={`edit-group-no__${group.id}__save-button`}
+            data-cy="edit-group-save-button"
           >
             Save
           </Button>
