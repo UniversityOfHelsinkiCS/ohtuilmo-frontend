@@ -11,6 +11,7 @@ import peerReviewService from '../services/peerReview'
 import Typography from '@material-ui/core/Typography'
 import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
 import TopicDialog from './TopicDialog'
+import CourseMaterial from './common/CourseMaterial'
 
 import './RegistrationDetailsPage.css'
 
@@ -21,19 +22,6 @@ import './RegistrationDetailsPage.css'
 const formatDate = (date) => {
   const parsedDate = new Date(date).toLocaleString('fi-FI')
   return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
-}
-
-class CourseMaterial extends React.Component {
-  render() {
-    return (
-      <div>
-        <h2>Course material</h2>
-        <a href="https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti">
-          Course page
-        </a>
-      </div>
-    )
-  }
 }
 
 class PeerReviewInfo extends React.Component {

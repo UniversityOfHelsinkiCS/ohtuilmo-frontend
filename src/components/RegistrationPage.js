@@ -16,7 +16,8 @@ import userService from '../services/user'
 import registrationService from '../services/registration'
 import configurationService from '../services/configuration'
 // components
-import LoadingSpinner from '../components/common/LoadingSpinner'
+import LoadingSpinner from './common/LoadingSpinner'
+import CourseMaterial from './common/CourseMaterial'
 import TopicDialog from './TopicDialog'
 import UserDetails from './UserDetails'
 import './RegistrationPage.css'
@@ -197,6 +198,8 @@ class RegistrationPage extends React.Component {
         </div>
         <form onSubmit={this.submitRegistration}>
           <div className="section registration-form">
+            <CourseMaterial />
+            <br />
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
             <p>Please fill your email</p>
