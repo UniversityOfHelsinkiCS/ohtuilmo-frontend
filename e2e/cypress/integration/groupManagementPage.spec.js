@@ -69,7 +69,6 @@ describe('Group Management Page', () => {
 
   describe('Editing a group', () => {
     beforeEach(() => {
-      cy.createNewTopic('Aihe B', 'Customer for Aihe B', 'Super nice topic')
       cy.get('.configuration-selector').click()
       cy.get('.configuration-1').click()
       cy.get('[data-cy=edit-group-button]')
