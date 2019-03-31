@@ -24,6 +24,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
+import adminPageActions from '../reducers/actions/adminPageActions'
 
 const buttonTheme = createMuiTheme({
   palette: {
@@ -67,6 +68,9 @@ class TopicListPage extends React.Component {
       console.log('error happened', e.response)
       this.props.setError('Some error happened', 3000)
     }
+    if (this.props.configurations.length === 0) {
+      await this.props.fetchConfigurations()
+    }
   }
 
   handleActiveChange = (topic) => async (event) => {
@@ -85,21 +89,10 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleFilterChange = (event) => {
-    event.preventDefault()
-    const filter = event.target.value
-    if (filter === 'active' || filter === 'inactive') {
-      this.props.updateFilter(filter)
-    } else {
-      this.props.updateFilter('all')
-    }
-  }
-
   showTopic = (topic) => {
     const filter = this.props.filter
-    if (filter === 'active' || filter === 'inactive') {
-      const active = filter === 'active'
-      return topic.active === active
+    if (filter !== 0) {
+      return topic.configuration_id === filter
     } else {
       return true
     }
@@ -154,7 +147,23 @@ class TopicListPage extends React.Component {
       topicTitle = this.state.selectedTopic.content.title
       topicOwner = this.state.selectedTopic.content.email
     }
-    console.log(this.state.selectedTopic)
+
+    const configurationMenuItems = () => {
+      const { configurations } = this.props
+      return []
+        .concat(
+          <MenuItem value={0} key={0}>
+            All configurations
+          </MenuItem>
+        )
+        .concat(
+          configurations.map((configuration) => (
+            <MenuItem value={configuration.id} key={configuration.id}>
+              {configuration.name}
+            </MenuItem>
+          ))
+        )
+    }
 
     return (
       <div className="topics-container">
@@ -182,10 +191,11 @@ class TopicListPage extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Select value={this.props.filter} onChange={this.handleFilterChange}>
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value="active">Active</MenuItem>
-          <MenuItem value="inactive">Inactive</MenuItem>
+        <Select
+          value={this.props.filter}
+          onChange={(event) => this.props.updateFilter(event.target.value)}
+        >
+          {configurationMenuItems()}
         </Select>
         <Typography align="right" variant="subtitle1">
           Active
@@ -258,7 +268,7 @@ class TopicListPage extends React.Component {
                     />
                   </ListItemSecondaryAction>
                 </ListItem>
-                <Divider inset />
+                <Divider variant="inset" />
               </List>
             )
           } else {
@@ -273,14 +283,16 @@ class TopicListPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     topics: state.topicListPage.topics,
-    filter: state.topicListPage.filter
+    filter: state.topicListPage.filter,
+    configurations: state.adminPage.configurations
   }
 }
 
 const mapDispatchToProps = {
   ...topicListPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchConfigurations: adminPageActions.fetchConfigurations
 }
 
 const ConnectedTopicListPage = connect(

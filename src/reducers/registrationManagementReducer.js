@@ -6,6 +6,7 @@ const initialState = {
   projectRegistrationOpen: false,
   projectRegistrationMessage: 'Registration is closed.',
   projectRegistrationInfo: '',
+  topicRegistrationConf: 0,
   topicRegistrationOpen: false,
   topicRegistrationMessage: 'Registration is closed.'
 }
@@ -22,6 +23,7 @@ const registrationManagementReducer = (state = initialState, action) => {
       projectRegistrationOpen: action.payload.projectRegistrationOpen,
       projectRegistrationMessage: action.payload.projectRegistrationMessage,
       projectRegistrationInfo: action.payload.projectRegistrationInfo,
+      topicRegistrationConf: action.payload.topicRegistrationConf,
       topicRegistrationOpen: action.payload.topicRegistrationOpen,
       topicRegistrationMessage: action.payload.topicRegistrationMessage
     }
@@ -59,6 +61,11 @@ const registrationManagementReducer = (state = initialState, action) => {
     return {
       ...state,
       projectRegistrationInfo: action.payload
+    }
+  case 'UPDATE_TOPIC_REGISTRATION_CONF':
+    return {
+      ...state,
+      topicRegistrationConf: action.payload
     }
   case 'UPDATE_TOPIC_REGISTRATION_OPEN':
     return {

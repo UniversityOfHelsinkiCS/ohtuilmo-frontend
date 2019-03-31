@@ -16,7 +16,10 @@ class TopicFormPage extends React.Component {
   submitForm = async (event) => {
     event.preventDefault()
     try {
-      const content = { content: this.props.content }
+      const content = {
+        content: this.props.content,
+        configuration_id: this.props.topicConf
+      }
       const createdTopic = await topicService.create(content)
 
       this.props.setSuccess('Topic proposal submitted succesfully!', 10000)
@@ -80,7 +83,8 @@ const mapStateToProps = (state) => {
     showInfo: state.topicFormPage.showInfo,
     preview: state.topicFormPage.preview,
     isSaved: state.topicFormPage.isSaved,
-    secretId: state.topicFormPage.secretId
+    secretId: state.topicFormPage.secretId,
+    topicConf: state.registrationManagement.topicRegistrationConf
   }
 }
 

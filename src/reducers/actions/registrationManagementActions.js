@@ -11,6 +11,7 @@ const fetchRegistrationManagement = () => {
       project_registration_open,
       project_registration_message,
       project_registration_info,
+      topic_registration_conf,
       topic_registration_open,
       topic_registration_message
     } = response.registrationManagement
@@ -25,6 +26,7 @@ const fetchRegistrationManagement = () => {
         projectRegistrationOpen: project_registration_open,
         projectRegistrationMessage: project_registration_message,
         projectRegistrationInfo: project_registration_info,
+        topicRegistrationConf: topic_registration_conf,
         topicRegistrationOpen: topic_registration_open,
         topicRegistrationMessage: topic_registration_message
       }
@@ -81,6 +83,13 @@ const updateProjectRegistrationInfo = (projectRegistrationInfo) => {
   }
 }
 
+const updateTopicRegistrationConf = (topicRegistrationConf) => {
+  return {
+    type: 'UPDATE_TOPIC_REGISTRATION_CONF',
+    payload: topicRegistrationConf
+  }
+}
+
 const updateTopicRegistrationOpen = (topicRegistrationOpen) => {
   return {
     type: 'UPDATE_TOPIC_REGISTRATION_OPEN',
@@ -104,6 +113,7 @@ export default {
   updateProjectRegistrationOpen,
   updateProjectRegistrationMessage,
   updateProjectRegistrationInfo,
+  updateTopicRegistrationConf,
   updateTopicRegistrationOpen,
   updateTopicRegistrationMessage
 }

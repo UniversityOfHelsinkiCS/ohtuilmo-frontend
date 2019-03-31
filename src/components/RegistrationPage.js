@@ -51,7 +51,6 @@ class RegistrationPage extends React.Component {
     try {
       const { projectConf } = this.props
       const response = await configurationService.getById(projectConf)
-      console.log(response)
       let questions = response.registration_question_set.questions
       questions = questions ? questions : []
       this.props.updateQuestions(questions)

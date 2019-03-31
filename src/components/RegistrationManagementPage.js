@@ -58,6 +58,7 @@ class RegistrationManagement extends React.Component {
       projectConf,
       projectOpen,
       projectMessage,
+      topicConf,
       topicOpen,
       topicMessage,
       projectInfo,
@@ -78,6 +79,7 @@ class RegistrationManagement extends React.Component {
           project_registration_open: projectOpen,
           project_registration_message: projectMessage,
           project_registration_info: projectInfo,
+          topic_registration_conf: topicConf,
           topic_registration_open: topicOpen,
           topic_registration_message: topicMessage
         }
@@ -102,6 +104,7 @@ class RegistrationManagement extends React.Component {
       projectOpen,
       projectInfo,
       projectMessage,
+      topicConf,
       topicOpen,
       topicMessage,
       updatePeerReviewConf,
@@ -111,6 +114,7 @@ class RegistrationManagement extends React.Component {
       updateProjectRegistrationOpen,
       updateProjectRegistrationMessage,
       updateProjectRegistrationInfo,
+      updateTopicRegistrationConf,
       updateTopicRegistrationOpen,
       updateTopicRegistrationMessage
     } = this.props
@@ -204,6 +208,20 @@ class RegistrationManagement extends React.Component {
                 }
                 label="Topic registration open"
               />
+              <p />
+              <FormControl>
+                <Select
+                  value={topicConf ? topicConf : -1}
+                  onChange={(event) => {
+                    updateTopicRegistrationConf(event.target.value)
+                  }}
+                >
+                  {configurationMenuItems()}
+                </Select>
+                <FormHelperText>
+                  Active configuration for topic registration
+                </FormHelperText>
+              </FormControl>
               <TextField
                 fullWidth
                 label="Registration status message"
@@ -284,6 +302,7 @@ const mapStateToProps = (state) => {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
     projectInfo: state.registrationManagement.projectRegistrationInfo,
+    topicConf: state.registrationManagement.topicRegistrationConf,
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     isLoading: state.app.isLoading,
