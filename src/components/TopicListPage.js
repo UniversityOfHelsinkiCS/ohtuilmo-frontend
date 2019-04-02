@@ -288,7 +288,7 @@ TopicListPage.propTypes = {
   updateTopics: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
-  setSuccess: PropTypes.func.isRequired,
+  setSuccess: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
