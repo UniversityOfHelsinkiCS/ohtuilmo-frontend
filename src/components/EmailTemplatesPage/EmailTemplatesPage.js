@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Paper from '@material-ui/core/Paper'
-import LinearProgress from '@material-ui/core/LinearProgress'
 
 import emailTemplatesActions from '../../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
@@ -12,7 +11,7 @@ import * as notificationActions from '../../reducers/actions/notificationActions
 import './EmailTemplatesPage.css'
 import { templatesShape } from './commonPropTypes'
 import EmailTemplatesForm from './EmailTemplatesForm'
-import { classes } from './common'
+import LoadingCover from '../common/LoadingCover'
 
 class EmailTemplatesPage extends React.Component {
   componentWillMount() {
@@ -69,13 +68,6 @@ class EmailTemplatesPage extends React.Component {
     )
   }
 }
-
-const LoadingCover = ({ className }) => (
-  <div className={classes('loading-cover', className)}>
-    <p className="loading-cover__text">Loading...</p>
-    <LinearProgress className="loading-cover__indicator" color="secondary" />
-  </div>
-)
 
 EmailTemplatesPage.propTypes = {
   history: PropTypes.shape({

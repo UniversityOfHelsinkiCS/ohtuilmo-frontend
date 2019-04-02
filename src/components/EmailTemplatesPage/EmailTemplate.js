@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField'
 
 import './EmailTemplate.css'
 import { templateShape } from './commonPropTypes'
-import { classes } from './common'
+import { classes } from '../util'
 
 const TemplateTextField = ({ className, ...props }) => (
   <TextField
