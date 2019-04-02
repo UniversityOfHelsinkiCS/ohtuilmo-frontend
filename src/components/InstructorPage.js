@@ -146,18 +146,24 @@ const PeerHeaders = ({ peers }) => {
 const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
   let summa = 0
   let counter = 0
-  console.log(numberOfPeers)
   return answers.map((answer) => {
     return Object.entries(answer.answer_sheet[questionNumber].peers).map(
       ([nimi, numero]) => {
         if (nimi === member) {
           summa += numero
           counter++
+          const reviewString =
+            member +
+            '. Reviewed by ' +
+            answer.student.first_names +
+            ' ' +
+            answer.student.last_name
+
           if (counter === numberOfPeers) {
             return (
-              <React.Fragment>
+              <React.Fragment key={reviewString}>
                 <th className="radio-button">
-                  <p>{numero}</p>
+                  <p data-info={reviewString}>{numero}</p>
                 </th>
                 <th className="radio-button">
                   <p>{(summa / numberOfPeers).toFixed(2)}</p>
@@ -166,8 +172,8 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
             )
           }
           return (
-            <th className="radio-button">
-              <p>{numero}</p>
+            <th key={reviewString} className="radio-button">
+              <p data-info={reviewString}>{numero}</p>
             </th>
           )
         }
