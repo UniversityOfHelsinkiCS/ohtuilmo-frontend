@@ -16,10 +16,6 @@ import Button from '@material-ui/core/Button'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 
 import emailService from '../services/email'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
@@ -34,12 +30,6 @@ const buttonTheme = createMuiTheme({
 })
 
 class TopicListPage extends React.Component {
-  state = {
-    open: false,
-    selectedTopic: null,
-    selectedMessageType: null
-  }
-
   async componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
@@ -95,55 +85,22 @@ class TopicListPage extends React.Component {
   }
 
   handleEmailButtonPress = (topic, messageType) => async () => {
-    this.setState({
-      open: true,
-      selectedTopic: topic,
-      selectedMessageType: messageType
-    })
-  }
+    const topicTitle = topic.content.title
+    const ownerEmail = topic.content.email
+    const confirmMessage = `Do you want to send an email of type ${messageType} to the owner of topic '${topicTitle}' (${ownerEmail})`
 
-  handleDialogAccept = async () => {
+    if (!window.confirm(confirmMessage)) {
+      return
+    }
+
     try {
-      await emailService.sendCustomerEmail(
-        this.state.selectedTopic.content.email,
-        this.state.selectedMessageType
-      )
+      await emailService.sendCustomerEmail(topic.content.email, messageType)
     } catch (e) {
       console.log(e)
-    }
-    this.handleDialogClose()
-  }
-
-  handleDialogClose = () => {
-    this.setState({ open: false })
-  }
-
-  parseMessageType = (messageType) => {
-    switch (messageType) {
-    case 'acceptEng':
-      return 'Topic accepted (ENG)'
-    case 'rejectEng':
-      return 'Topic rejected (ENG)'
-    case 'acceptFin':
-      return 'Topic accepted (FIN)'
-    case 'rejectFin':
-      return 'Topic rejected (FIN)'
-    default:
-      return 'unknown message type'
     }
   }
 
   render() {
-    let topicTitle = ''
-    let topicOwner = ''
-    let parsedMessageType = this.parseMessageType(
-      this.state.selectedMessageType
-    )
-    if (this.state.selectedTopic) {
-      topicTitle = this.state.selectedTopic.content.title
-      topicOwner = this.state.selectedTopic.content.email
-    }
-
     const configurationMenuItems = () => {
       const { configurations } = this.props
       return []
@@ -163,30 +120,6 @@ class TopicListPage extends React.Component {
 
     return (
       <div className="topics-container">
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleDialogClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {'Email confirmation'}
-          </DialogTitle>
-          <DialogContent>
-            <Typography id="alert-dialog-description">
-              Do you want to send an email of type '{parsedMessageType}' to the
-              owner of topic '{topicTitle}' ({topicOwner})?
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleDialogAccept} color="primary">
-              Accept
-            </Button>
-            <Button onClick={this.handleDialogClose} color="primary" autoFocus>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
         <Select
           value={this.props.filter}
           onChange={(event) => this.props.updateFilter(event.target.value)}
