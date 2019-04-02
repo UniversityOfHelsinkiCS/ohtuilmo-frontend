@@ -9,8 +9,6 @@ import ListItem from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Switch from '@material-ui/core/Switch'
 import Divider from '@material-ui/core/Divider'
-import topicService from '../services/topic'
-import emailService from '../services/email'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
@@ -23,6 +21,8 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
+import topicService from '../services/topic'
+import emailService from '../services/email'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import configurationPageActions from '../reducers/actions/configurationPageActions'
@@ -59,15 +59,10 @@ class TopicListPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAll()
-      //sorts topics based on timestamp
-      const sortedTopics = fetchedTopics.sort((t1, t2) =>
-        t1.createdAt > t2.createdAt ? -1 : t1.createdAt < t2.createdAt ? 1 : 0
-      )
-      this.props.updateTopics(sortedTopics)
+      await this.props.fetchTopics()
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Some error happened', 3000)
+      this.props.setError('An error occurred while loading data!', 3000)
     }
     if (this.props.configurations.length === 0) {
       await this.props.fetchConfigurations()
@@ -284,8 +279,9 @@ class TopicListPage extends React.Component {
 TopicListPage.propTypes = {
   filter: PropTypes.string.isRequired,
   topics: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
-  updateTopics: PropTypes.func.isRequired,
+  fetchTopics: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired
@@ -293,14 +289,15 @@ TopicListPage.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    topics: state.topicListPage.topics,
+    topics: state.topicListPage.topics.data,
+    isLoading: state.topicListPage.topics.isLoading,
     filter: state.topicListPage.filter,
     configurations: state.configurationPage.configurations
   }
 }
 
 const mapDispatchToProps = {
-  updateTopics: topicListPageActions.updateTopics,
+  fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
