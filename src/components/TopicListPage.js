@@ -71,8 +71,14 @@ class TopicListPage extends React.Component {
   handleActiveChange = (topic) => async (event) => {
     event.preventDefault()
     try {
-      await this.props.setTopicActive(topic, !topic.active)
-      this.props.setSuccess('Topic', 3000)
+      const newActiveState = !topic.active
+      await this.props.setTopicActive(topic, newActiveState)
+
+      const activeDescription = newActiveState ? 'active' : 'inactive'
+      this.props.setSuccess(
+        `Topic '${topic.content.title}' has been set ${activeDescription}.`,
+        3000
+      )
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Some error happened', 3000)
