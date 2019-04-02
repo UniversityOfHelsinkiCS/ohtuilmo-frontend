@@ -158,7 +158,7 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
                   <p>{numero}</p>
                 </th>
                 <th className="radio-button">
-                  <p>{summa / numberOfPeers}</p>
+                  <p>{(summa / numberOfPeers).toFixed(2)}</p>
                 </th>
               </React.Fragment>
             )
