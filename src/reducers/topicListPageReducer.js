@@ -21,18 +21,6 @@ const isTopicsLoading = (state = false, action) => {
   }
 }
 
-const isUpdateLoading = (state = false, action) => {
-  switch (action.type) {
-  case 'TOPIC_PAGE_UPDATE_TOPIC_REQUEST':
-    return true
-  case 'TOPIC_PAGE_UPDATE_TOPIC_SUCCESS':
-  case 'TOPIC_PAGE_UPDATE_TOPIC_FAILED':
-    return false
-  default:
-    return state
-  }
-}
-
 const updateTopic = (topics, updatedTopic) =>
   topics.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic))
 
@@ -50,6 +38,5 @@ const topics = (state = [], action) => {
 export default combineReducers({
   filter,
   topics,
-  isTopicsLoading,
-  isUpdateLoading
+  isTopicsLoading
 })
