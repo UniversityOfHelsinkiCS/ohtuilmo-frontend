@@ -24,6 +24,9 @@ import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 
+import LoadingCover from './common/LoadingCover'
+import './TopicListPage.css'
+
 const buttonTheme = createMuiTheme({
   palette: {
     primary: green,
@@ -129,6 +132,8 @@ class TopicListPage extends React.Component {
   }
 
   render() {
+    const { filter, topics, isLoading } = this.props
+
     const configurationMenuItems = () => {
       const { configurations } = this.props
       return []
@@ -148,8 +153,12 @@ class TopicListPage extends React.Component {
 
     return (
       <div className="topics-container">
+        {isLoading && (
+          <LoadingCover className="topics-container__loading-cover" />
+        )}
+
         <Select
-          value={this.props.filter}
+          value={filter}
           onChange={(event) => this.props.updateFilter(event.target.value)}
         >
           {configurationMenuItems()}
@@ -158,7 +167,7 @@ class TopicListPage extends React.Component {
           Active
         </Typography>
 
-        {this.props.topics.map((topic) => {
+        {topics.map((topic) => {
           if (this.showTopic(topic)) {
             return (
               <List key={topic.id}>
