@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -280,6 +281,16 @@ class TopicListPage extends React.Component {
   }
 }
 
+TopicListPage.propTypes = {
+  filter: PropTypes.string.isRequired,
+  topics: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  updateTopics: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  setSuccess: PropTypes.func.isRequired,
+}
+
 const mapStateToProps = (state) => {
   return {
     topics: state.topicListPage.topics,
@@ -289,7 +300,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...topicListPageActions,
+  updateTopics: topicListPageActions.updateTopics,
+  updateFilter: topicListPageActions.updateFilter,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations
