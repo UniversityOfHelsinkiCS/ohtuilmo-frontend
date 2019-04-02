@@ -9,7 +9,7 @@ const filter = (state = 0, action) => {
   }
 }
 
-const isTopicsLoading = (state = true, action) => {
+const isTopicsLoading = (state = false, action) => {
   switch (action.type) {
   case 'TOPIC_PAGE_FETCH_TOPICS_REQUEST':
     return true
@@ -21,7 +21,7 @@ const isTopicsLoading = (state = true, action) => {
   }
 }
 
-const isUpdateLoading = (state = true, action) => {
+const isUpdateLoading = (state = false, action) => {
   switch (action.type) {
   case 'TOPIC_PAGE_UPDATE_TOPIC_REQUEST':
     return true

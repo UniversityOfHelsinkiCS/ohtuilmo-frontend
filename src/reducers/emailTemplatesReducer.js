@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-const isLoading = (state = true, action) => {
+const isLoading = (state = false, action) => {
   switch (action.type) {
   case 'FETCH_EMAIL_TEMPLATES_REQUEST':
   case 'UPDATE_EMAIL_TEMPLATES_REQUEST':
