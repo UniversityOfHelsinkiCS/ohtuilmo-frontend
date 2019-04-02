@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+import Button from '@material-ui/core/Button'
+
 import './InstructorPage.css'
 
 //Services
@@ -173,6 +175,22 @@ const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
     )
   })
 }
+const DownloadButton = ({ jsonData, fileName }) => {
+  const data = `text/json;charset=utf-8,${encodeURIComponent(jsonData)}`
+  const href = `data:${data}`
+
+  return (
+    <Button
+      component="a"
+      href={href}
+      download={fileName}
+      variant="contained"
+      color="primary"
+    >
+      Download as JSON
+    </Button>
+  )
+}
 
 class InstructorPage extends React.Component {
   state = { answersJson: null }
@@ -184,12 +202,16 @@ class InstructorPage extends React.Component {
       answersJson: peerReviewData
     })
   }
-
   render() {
     const { answersJson } = this.state
+
     if (answersJson) {
       return (
         <div className="instructor-container">
+          <DownloadButton
+            jsonData={JSON.stringify(answersJson)}
+            fileName="peerReviews.json"
+          />
           <Answers answers={answersJson} />
         </div>
       )
