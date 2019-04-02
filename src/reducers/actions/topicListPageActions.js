@@ -20,6 +20,19 @@ const fetchTopicsSuccess = (topics) => ({
   payload: topics
 })
 
+const updateTopicRequest = () => ({
+  type: 'TOPIC_PAGE_UPDATE_TOPIC_REQUEST'
+})
+
+const updateTopicFailed = () => ({
+  type: 'TOPIC_PAGE_UPDATE_TOPIC_FAILED'
+})
+
+const updateTopicSuccess = (updatedTopic) => ({
+  type: 'TOPIC_PAGE_UPDATE_TOPIC_SUCCESS',
+  payload: updatedTopic
+})
+
 const fetchTopics = () => {
   return async (dispatch) => {
     dispatch(fetchTopicsRequest())
@@ -37,7 +50,29 @@ const fetchTopics = () => {
   }
 }
 
+/**
+ * @param {string} topicId
+ * @param {boolean} newActiveState
+ */
+const setTopicActive = (topic, newActiveState) => {
+  return async (dispatch) => {
+    dispatch(updateTopicRequest())
+    try {
+      const stagedTopic = {
+        ...topic,
+        active: newActiveState
+      }
+      const updatedTopic = await topicService.update(stagedTopic)
+      dispatch(updateTopicSuccess(updatedTopic))
+    } catch (e) {
+      dispatch(updateTopicFailed())
+      throw e
+    }
+  }
+}
+
 export default {
   fetchTopics,
+  setTopicActive,
   updateFilter
 }

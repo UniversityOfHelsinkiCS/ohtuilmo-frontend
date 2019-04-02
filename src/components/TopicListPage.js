@@ -21,7 +21,6 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-import topicService from '../services/topic'
 import emailService from '../services/email'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -72,13 +71,8 @@ class TopicListPage extends React.Component {
   handleActiveChange = (topic) => async (event) => {
     event.preventDefault()
     try {
-      topic.active = !topic.active
-      const updatedTopics = this.props.topics.map((topic2) => {
-        return topic2.id === topic.id ? topic : topic2
-      })
-      await topicService.update(topic)
-      this.props.updateTopics(updatedTopics)
-      this.props.setSuccess('Topic update submitted succesfully!', 3000)
+      await this.props.setTopicActive(topic, !topic.active)
+      this.props.setSuccess('Topic', 3000)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Some error happened', 3000)
@@ -282,16 +276,18 @@ TopicListPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   fetchTopics: PropTypes.func.isRequired,
+  setTopicActive: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
+  const { topicListPage } = state
   return {
-    topics: state.topicListPage.topics.data,
-    isLoading: state.topicListPage.topics.isLoading,
-    filter: state.topicListPage.filter,
+    topics: topicListPage.topics,
+    isLoading: topicListPage.isTopicsLoading || topicListPage.isUpdateLoading,
+    filter: topicListPage.filter,
     configurations: state.configurationPage.configurations
   }
 }
@@ -299,6 +295,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
+  setTopicActive: topicListPageActions.setTopicActive,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations
