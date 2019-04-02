@@ -61,7 +61,6 @@ const Answers = ({ answers }) => {
 }
 
 const GroupAnswers = ({ answers }) => {
-  console.log('group answers', answers)
   return (
     <div>
       <h2>Vastaukset</h2>
@@ -99,7 +98,7 @@ const TextNumberAnswer = ({ answers, questionNumber }) => {
 
 const RadioAnswer = ({ answers, questionNumber }) => {
   const peers = answers.map((member) => {
-    return member.student.last_name
+    return member.student.first_names + ' ' + member.student.last_name
   })
   return (
     <div>
@@ -108,23 +107,22 @@ const RadioAnswer = ({ answers, questionNumber }) => {
           <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
+            <th className="radio-header">Keskiarvo</th>
           </tr>
         </thead>
         <tbody>
-          {answers.map((member, index) => {
+          {peers.map((member, index) => {
             return (
               <tr key={index}>
-                <th className="peer-header">{member.student.last_name}</th>
-
-                {Object.entries(member.answer_sheet[questionNumber].peers).map(
-                  ([nimi, numero]) => {
-                    return (
-                      <th className="radio-button" key={nimi}>
-                        {numero}
-                      </th>
-                    )
-                  }
-                )}
+                <th className="peer-header">
+                  <p>{member}</p>
+                </th>
+                <PeerRows
+                  member={member}
+                  answers={answers}
+                  questionNumber={questionNumber}
+                  numberOfPeers={peers.length}
+                />
               </tr>
             )
           })}
@@ -133,12 +131,45 @@ const RadioAnswer = ({ answers, questionNumber }) => {
     </div>
   )
 }
+
 const PeerHeaders = ({ peers }) => {
   return peers.map((option, optionId) => {
     return (
       <th className="radio-header" key={optionId}>
         {option}
       </th>
+    )
+  })
+}
+const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
+  let summa = 0
+  let counter = 0
+  console.log(numberOfPeers)
+  return answers.map((answer) => {
+    return Object.entries(answer.answer_sheet[questionNumber].peers).map(
+      ([nimi, numero]) => {
+        if (nimi === member) {
+          summa += numero
+          counter++
+          if (counter === numberOfPeers) {
+            return (
+              <React.Fragment>
+                <th className="radio-button">
+                  <p>{numero}</p>
+                </th>
+                <th className="radio-button">
+                  <p>{summa / numberOfPeers}</p>
+                </th>
+              </React.Fragment>
+            )
+          }
+          return (
+            <th className="radio-button">
+              <p>{numero}</p>
+            </th>
+          )
+        }
+      }
     )
   })
 }
@@ -156,7 +187,6 @@ class InstructorPage extends React.Component {
 
   render() {
     const { answersJson } = this.state
-    console.log('json: ', answersJson)
     if (answersJson) {
       return (
         <div className="instructor-container">
