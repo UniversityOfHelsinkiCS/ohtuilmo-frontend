@@ -6,14 +6,7 @@ import Button from '@material-ui/core/Button'
 import { templatesShape } from './commonPropTypes'
 import EmailTemplate from './EmailTemplate'
 
-const topicReplacements = [
-  {
-    token: '{{topicName}}',
-    replacer: () => {
-      throw new Error('unimplemented')
-    }
-  }
-]
+const topicAcceptRejectReplacements = ['{{topicName}}']
 
 const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
   const [templates, setTemplates] = useState(initialTemplates)
@@ -40,7 +33,6 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
   }
 
   const { topicAccepted, topicRejected } = templates
-  const topicAcceptRejectTokens = topicReplacements.map((_) => _.token)
 
   return (
     <form className="email-templates-form" onSubmit={handleSubmit}>
@@ -48,13 +40,13 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
         <EmailTemplate
           name="Topic proposal accepted"
           template={topicAccepted}
-          availableReplacements={topicAcceptRejectTokens}
+          availableReplacements={topicAcceptRejectReplacements}
           onTemplateEdited={createHandleTemplateEdited('topicAccepted')}
         />
         <EmailTemplate
           name="Topic proposal rejected"
           template={topicRejected}
-          availableReplacements={topicAcceptRejectTokens}
+          availableReplacements={topicAcceptRejectReplacements}
           onTemplateEdited={createHandleTemplateEdited('topicRejected')}
         />
       </div>

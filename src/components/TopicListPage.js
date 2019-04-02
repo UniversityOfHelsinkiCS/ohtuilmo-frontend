@@ -18,7 +18,9 @@ import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
 import emailService from '../services/email'
+import { getEmailTemplateRenderer } from '../utils/functions'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
+import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 
@@ -48,7 +50,10 @@ class TopicListPage extends React.Component {
 
   async componentDidMount() {
     try {
-      await this.props.fetchTopics()
+      await Promise.all([
+        this.props.fetchTopics(),
+        this.props.fetchEmailTemplates()
+      ])
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('An error occurred while loading data!', 3000)
@@ -84,17 +89,40 @@ class TopicListPage extends React.Component {
     }
   }
 
-  handleEmailButtonPress = (topic, messageType) => async () => {
+  /**
+   * @param {object} topic
+   * @param {string} messageType
+   * @param {string} messageLang
+   */
+  handleEmailButtonPress = (topic, messageType, messageLang) => async () => {
+    const { emailTemplates } = this.props
+    const templateRenderer = getEmailTemplateRenderer(messageType)
+
+    /** e.g.
+     * topicAccepted: {   <-- messageType
+     *   finnish: '', <-- messageLang
+     *   english: ''
+     * }
+     */
+    const emailTemplate = emailTemplates[messageType][messageLang]
+    const renderedEmail = templateRenderer(topic, emailTemplate)
+
     const topicTitle = topic.content.title
     const ownerEmail = topic.content.email
-    const confirmMessage = `Do you want to send an email of type ${messageType} to the owner of topic '${topicTitle}' (${ownerEmail})`
+    const confirmMessage =
+      `Do you want to send the following email to the owner of '${topicTitle}' (${ownerEmail})?` +
+      `\n\n${renderedEmail}`
 
     if (!window.confirm(confirmMessage)) {
       return
     }
 
     try {
-      await emailService.sendCustomerEmail(topic.content.email, messageType)
+      await emailService.sendCustomerEmail(
+        topic.content.email,
+        messageType,
+        messageLang
+      )
     } catch (e) {
       console.log(e)
     }
@@ -152,7 +180,8 @@ class TopicListPage extends React.Component {
                         value="Finnish-Yes"
                         onClick={this.handleEmailButtonPress(
                           topic,
-                          'acceptFin'
+                          'topicAccepted',
+                          'finnish'
                         )}
                       >
                         Finnish-Yes
@@ -163,7 +192,8 @@ class TopicListPage extends React.Component {
                         value="Finnish-No"
                         onClick={this.handleEmailButtonPress(
                           topic,
-                          'rejectFin'
+                          'topicRejected',
+                          'finnish'
                         )}
                       >
                         Finnish-No
@@ -174,7 +204,8 @@ class TopicListPage extends React.Component {
                         value="English-Yes"
                         onClick={this.handleEmailButtonPress(
                           topic,
-                          'acceptEng'
+                          'topicAccepted',
+                          'english'
                         )}
                       >
                         English-Yes
@@ -185,7 +216,8 @@ class TopicListPage extends React.Component {
                         value="English-No"
                         onClick={this.handleEmailButtonPress(
                           topic,
-                          'rejectEng'
+                          'topicRejected',
+                          'english'
                         )}
                       >
                         English-No
@@ -212,20 +244,25 @@ class TopicListPage extends React.Component {
 TopicListPage.propTypes = {
   filter: PropTypes.string.isRequired,
   topics: PropTypes.array.isRequired,
+  emailTemplates: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   fetchTopics: PropTypes.func.isRequired,
   setTopicActive: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
+  fetchEmailTemplates: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const { topicListPage } = state
+  const { topicListPage, emailTemplates } = state
   return {
     topics: topicListPage.topics,
-    isLoading: topicListPage.isTopicsLoading || topicListPage.isUpdateLoading,
+    // don't show loading cover for update loadings; active state changes are
+    // done in quick succession and their "loading" doesn't affect page usage
+    isLoading: topicListPage.isTopicsLoading || emailTemplates.isLoading,
+    emailTemplates: emailTemplates.templates,
     filter: topicListPage.filter,
     configurations: state.configurationPage.configurations
   }
@@ -235,6 +272,7 @@ const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
   setTopicActive: topicListPageActions.setTopicActive,
+  fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations

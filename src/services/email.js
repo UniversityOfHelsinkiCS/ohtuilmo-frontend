@@ -4,8 +4,12 @@ import { getUserToken } from '../utils/functions'
 
 const url = `${BACKEND_API_BASE}/email`
 
-const sendCustomerEmail = async (address, messageType) => {
-  const response = await axios.post(url + '/send', { address, messageType })
+const sendCustomerEmail = async (address, messageType, messageLanguage) => {
+  const response = await axios.post(url + '/send', {
+    address,
+    messageType,
+    messageLanguage
+  })
   return response.data.message
 }
 
