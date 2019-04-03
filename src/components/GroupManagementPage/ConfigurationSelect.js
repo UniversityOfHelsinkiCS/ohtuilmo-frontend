@@ -22,6 +22,7 @@ const ConfigurationSelect = ({
           key={configuration.id}
           value={configuration.id}
           className={`configuration-${configuration.id}`}
+          data-cy="configuration"
         >
           {configuration.name}
         </MenuItem>

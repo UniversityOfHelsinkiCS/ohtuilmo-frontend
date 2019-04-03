@@ -133,7 +133,6 @@ class SingleGroupEdit extends React.Component {
         <IconButton
           aria-label="Delete"
           onClick={this.handleGroupDelete}
-          className={`edit-group-no__${group.id}__delete-button`}
           data-cy="edit-group-delete-button"
         >
           <DeleteIcon fontSize="large" />
@@ -189,7 +188,6 @@ class SingleGroupEdit extends React.Component {
                 clearNotifications
               })
             }
-            className={`edit-group-no__${group.id}__save-button`}
             data-cy="edit-group-save-button"
           >
             Save
@@ -199,7 +197,6 @@ class SingleGroupEdit extends React.Component {
             color="primary"
             variant="contained"
             onClick={() => toggleEditMode()}
-            className={`edit-group-no__${group.id}__cancel-button`}
           >
             Cancel
           </Button>
