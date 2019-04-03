@@ -124,7 +124,8 @@ class TopicListPage extends React.Component {
       await emailService.sendCustomerEmail(
         topic.content.email,
         messageType,
-        messageLang
+        messageLang,
+        { topicName: topicTitle }
       )
     } catch (e) {
       console.log(e)
