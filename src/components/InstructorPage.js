@@ -10,7 +10,7 @@ import './InstructorPage.css'
 import peerReviewService from '../services/peerReview'
 
 //Actions
-import instructorPageActions from '../reducers/actions/instructorPageActions'
+//import instructorPageActions from '../reducers/actions/instructorPageActions'
 
 const GroupDetails = ({ myGroup }) => {
   if (!myGroup) {
@@ -226,9 +226,6 @@ class InstructorPage extends React.Component {
     }
   }
 }
-const mapDispatchToProps = {
-  ...instructorPageActions
-}
 
 const mapStateToProps = (state) => {
   return {
@@ -237,9 +234,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const ConnectedInstructorPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InstructorPage)
+const ConnectedInstructorPage = connect(mapStateToProps)(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)
