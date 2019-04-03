@@ -171,7 +171,7 @@ class TopicListPage extends React.Component {
         {topics.map((topic) => {
           if (this.showTopic(topic)) {
             return (
-              <List key={topic.id}>
+              <List key={topic.id} data-cy-topic-name={topic.content.title}>
                 <ListItem>
                   <Link to={'/topics/' + topic.id}>
                     <ListItemText primary={topic.content.title} />

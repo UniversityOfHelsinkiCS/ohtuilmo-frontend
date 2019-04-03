@@ -39,7 +39,10 @@ const EmailTemplate = ({
   const helperText = `Available parameters: ${availableReplacements.join(', ')}`
 
   return (
-    <div className={classes('email-template', className)}>
+    <div
+      className={classes('email-template', className)}
+      data-cy-template={name}
+    >
       <h3 className="email-template__title">{name}</h3>
       <div className="email-template__fields">
         <TemplateTextField
@@ -47,14 +50,14 @@ const EmailTemplate = ({
           value={finnish}
           onChange={createHandleTemplateEdited('finnish')}
           helperText={helperText}
-          className="email-template__field"
+          className="email-template__field email-template__field--finnish"
         />
         <TemplateTextField
           label="English"
           value={english}
           onChange={createHandleTemplateEdited('english')}
           helperText={helperText}
-          className="email-template__field"
+          className="email-template__field email-template__field--english"
         />
       </div>
     </div>

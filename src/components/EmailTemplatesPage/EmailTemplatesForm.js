@@ -53,6 +53,7 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
       <hr />
       <Button
         disabled={disabled}
+        className="email-templates-form__submit-button"
         type="submit"
         variant="contained"
         color="primary"
