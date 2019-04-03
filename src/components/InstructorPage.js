@@ -62,24 +62,41 @@ const Answers = ({ answers }) => {
   }
 }
 
+const getQuestions = (answers) => {
+  // The same questions are found in every answer, so just grab the answers
+  // from the first one
+  return answers[0].answer_sheet.map((question) => {
+    return {
+      type: question.type,
+      questionHeader: question.questionHeader
+    }
+  })
+}
+
+const Question = ({ title, children }) => (
+  <div>
+    <h3>{title}</h3>
+    {children}
+  </div>
+)
+
 const GroupAnswers = ({ answers }) => {
+  console.log(answers)
   return (
     <div>
       <h2>Vastaukset</h2>
-      {answers[0].answer_sheet.map((question, index) => {
+      {getQuestions(answers).map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
-            <div key={index}>
-              <h3>{question.questionHeader}</h3>
+            <Question key={index} title={question.questionHeader}>
               <TextNumberAnswer answers={answers} questionNumber={index} />
-            </div>
+            </Question>
           )
         } else if (question.type === 'radio') {
           return (
-            <div key={index}>
-              <h3>{question.questionHeader}</h3>
+            <Question key={index} title={question.questionHeader}>
               <RadioAnswer answers={answers} questionNumber={index} />
-            </div>
+            </Question>
           )
         }
       })}
@@ -88,14 +105,18 @@ const GroupAnswers = ({ answers }) => {
 }
 
 const TextNumberAnswer = ({ answers, questionNumber }) => {
-  return answers.map((member, index) => {
-    return (
-      <p key={index}>
-        {member.student.last_name}
-        <br /> {member.answer_sheet[questionNumber].answer}
-      </p>
-    )
-  })
+  return (
+    <div>
+      {answers.map((member, index) => {
+        return (
+          <div key={index}>
+            <p>{member.student.last_name}</p>
+            <p>{member.answer_sheet[questionNumber].answer}</p>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 const RadioAnswer = ({ answers, questionNumber }) => {
@@ -143,44 +164,29 @@ const PeerHeaders = ({ peers }) => {
     )
   })
 }
-const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
-  let summa = 0
-  let counter = 0
-  return answers.map((answer) => {
-    return Object.entries(answer.answer_sheet[questionNumber].peers).map(
-      ([nimi, numero]) => {
-        if (nimi === member) {
-          summa += numero
-          counter++
-          const reviewString =
-            member +
-            '. Reviewed by ' +
-            answer.student.first_names +
-            ' ' +
-            answer.student.last_name
 
-          if (counter === numberOfPeers) {
-            return (
-              <React.Fragment key={reviewString}>
-                <th className="radio-button">
-                  <p data-info={reviewString}>{numero}</p>
-                </th>
-                <th className="radio-button">
-                  <p>{(summa / numberOfPeers).toFixed(2)}</p>
-                </th>
-              </React.Fragment>
-            )
-          }
-          return (
-            <th key={reviewString} className="radio-button">
-              <p data-info={reviewString}>{numero}</p>
-            </th>
-          )
-        }
-      }
-    )
-  })
+const sum = (arr) => arr.reduce((sum, value) => sum + value, 0)
+const average = (arr) => sum(arr) / arr.length
+
+const PeerRows = ({ member, answers, questionNumber }) => {
+  const otherPeersRatingOfMember = answers
+    .map((peersSubmission) => peersSubmission.answer_sheet)
+    .map((peersAnswerSheet) => peersAnswerSheet[questionNumber].peers[member])
+
+  const averageRating = average(otherPeersRatingOfMember)
+
+  return (
+    <React.Fragment>
+      {otherPeersRatingOfMember.map((rating, index) => (
+        <td className="radio-button" key={`peer-row-${index}`}>
+          {rating}
+        </td>
+      ))}
+      <td className="radio-button">{averageRating.toFixed(2)}</td>
+    </React.Fragment>
+  )
 }
+
 const DownloadButton = ({ jsonData, fileName }) => {
   const data = `text/json;charset=utf-8,${encodeURIComponent(jsonData)}`
   const href = `data:${data}`
