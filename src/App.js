@@ -26,6 +26,7 @@ import PeerReviewPage from './components/PeerReviewPage'
 import EmailTemplatesPage from './components/EmailTemplatesPage'
 import InstructorPage from './components/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
+import InstructorReviewPage from './components/InstructorReviewPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
@@ -199,6 +200,11 @@ class App extends Component {
                 exact
                 path="/instructorpage"
                 render={() => <InstructorPage />}
+              />
+              <Route
+                exact
+                path="/instructorreviewpage"
+                render={() => <InstructorReviewPage />}
               />
 
               <Route
