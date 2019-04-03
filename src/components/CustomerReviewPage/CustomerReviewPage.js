@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-
+import './CustomerReviewPage.css'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
@@ -10,7 +10,6 @@ import customerReviewPageActions from '../../reducers/actions/customerReviewPage
 
 import customerReviewService from '../../services/customerReview'
 
-/* import questionSet from '../questions/questions_data.json' */
 
 const Questions = ({ questions, answerSheet, updateAnswer }) => {
 
@@ -40,8 +39,8 @@ const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
 
         <TextField
           value={answerSheet[questionId].answer}
-          rows="4"
-          style={{ width: 400 }}
+          rows="8"
+          style={{ width: 800 }}
           multiline
           variant="outlined"
           onChange={(e) =>
@@ -53,12 +52,14 @@ const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
   } else if (question.type === 'number') {
     return (
       <div className="customer-review-box">
-        <h3>{question.header}</h3>
+        <h3 className="customer-review-box__h3">{question.header}</h3>
         <p>{question.description}</p>
 
         <input
           type="number"
           value={answerSheet[questionId].answer}
+          style={{ 'fontSize': '16', 'lineHeight': '2em' }}
+          variant="outlined"
           onChange={(e) =>
             textFieldHandler(e.target.value, questionId, updateAnswer)
           }
@@ -91,13 +92,12 @@ class CustomerReviewPage extends React.Component {
   async componentDidMount() {
 
     const id = this.props.match.params.id
-    console.log(id)
 
     try {
 
-
       const group = await customerReviewService.getDataForReview(id)
 
+      this.props.setReview(group.hasAnswered)
       this.props.setGroupName(group.groupName)
       this.props.setGroupId(group.groupId)
       this.props.setConfiguration(group.configuration)
@@ -182,6 +182,7 @@ class CustomerReviewPage extends React.Component {
       answerSheet,
       updateAnswer,
       isInitializing,
+      hasReviewed,
       questionObject,
       groupName,
     } = this.props
@@ -193,11 +194,17 @@ class CustomerReviewPage extends React.Component {
           <h1 className="customer-review-container__h1">Loading!</h1>
         </div>
       )
+    } if (hasReviewed){
+      return(
+        <div>
+          <h1>You have given a review already</h1>
+        </div>
+      )
     } else {
       return (
-        <div>
-          <h2>Customer review</h2>
-          <h3>{groupName}</h3>
+        <div className="customer-review-container">
+          <h1 className="customer-review-container__h1">Customer review</h1>
+          <h1 className="customer-review-container__h1">{groupName}</h1>
 
           <Questions
             questions={questionObject}
@@ -226,6 +233,7 @@ const mapStateToProps = (state) => {
     groups: state.groupPage.groups,
     answerSheet: state.customerReviewPage.answerSheet,
     isInitializing: state.customerReviewPage.isInitializing,
+    hasReviewed: state.customerReviewPage.hasReviewed,
     questionObject: state.customerReviewPage.questions,
     groupName: state.customerReviewPage.groupName,
     groupId: state.customerReviewPage.groupId,
@@ -237,6 +245,7 @@ const mapDispatchToProps = {
   updateAnswer: customerReviewPageActions.updateAnswer,
   initializeAnswerSheet: customerReviewPageActions.initializeAnswerSheet,
   setLoading: customerReviewPageActions.setLoading,
+  setReview: customerReviewPageActions.setReview,
   setQuestions: customerReviewPageActions.setQuestions,
   setGroupName: customerReviewPageActions.setGroupName,
   setGroupId: customerReviewPageActions.setGroupId,

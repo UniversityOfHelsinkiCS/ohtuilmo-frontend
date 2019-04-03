@@ -20,6 +20,13 @@ const setLoading = (loading) => {
   }
 }
 
+const setReview = (review) => {
+  return {
+    type: 'SET_REVIEW',
+    payload: review
+  }
+}
+
 const setQuestions = (questions) => {
   return {
     type: 'SET_QUESTIONS',
@@ -52,6 +59,7 @@ export default {
   updateAnswer,
   initializeAnswerSheet,
   setLoading,
+  setReview,
   setQuestions,
   setGroupName,
   setGroupId,

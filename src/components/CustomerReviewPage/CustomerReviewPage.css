@@ -1,0 +1,27 @@
+.customer-review-box {
+    text-align: center;
+    width: 70%;
+    border: 2px solid black;
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-radius: 25px;
+  }
+  
+  .customer-review-container__h1,
+  .customer-review-box__h3 {
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 650px) {
+    .customer-review-box {
+      border: 0px solid black;
+      padding-left: 5px;
+      margin-left: 5px;
+    }
+  }
+  
+
+  

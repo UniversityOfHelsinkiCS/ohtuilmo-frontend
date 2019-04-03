@@ -1,6 +1,7 @@
 const initialState = {
   answerSheet: [],
   isInitializing: true,
+  hasReviewed: false,
   questions: '',
   groupName: '',
   groupId: '',
@@ -31,6 +32,11 @@ const customerReviewPageReducer = (state = initialState, action) => {
     return {
       ...state,
       isInitializing: action.payload
+    }
+  case 'SET_REVIEW':
+    return {
+      ...state,
+      hasReviewed: action.payload
     }
   case 'SET_QUESTIONS':
     return {
