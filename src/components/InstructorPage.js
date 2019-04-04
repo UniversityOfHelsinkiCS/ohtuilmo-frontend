@@ -35,7 +35,6 @@ const GroupDetails = ({ myGroup }) => {
 }
 
 const Answers = ({ answers }) => {
-  console.log(answers)
   if (answers) {
     return (
       <div>
@@ -96,7 +95,6 @@ const Question = ({ title, children }) => (
 )
 
 const GroupAnswers = ({ answers }) => {
-  console.log(answers)
   return (
     <div>
       {getQuestions(answers).map((question, index) => {
