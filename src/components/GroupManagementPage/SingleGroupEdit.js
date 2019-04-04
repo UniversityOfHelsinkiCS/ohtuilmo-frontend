@@ -128,7 +128,7 @@ class SingleGroupEdit extends React.Component {
       users.find((user) => user.student_number === group.instructorId)
 
     return (
-      <div style={{ allign: 'top' }}>
+      <div style={{ align: 'top', minWidth: '400px' }}>
         Edit group: {group.name}
         <IconButton
           aria-label="Delete"

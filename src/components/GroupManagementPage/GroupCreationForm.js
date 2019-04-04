@@ -124,7 +124,7 @@ const GroupCreationForm = ({
           })
         }
       >
-        <table style={{ width: '397px' }}>
+        <table style={{ minWidth: '400px' }}>
           <tbody>
             <FormInput label="Topic">
               <TopicSelect
