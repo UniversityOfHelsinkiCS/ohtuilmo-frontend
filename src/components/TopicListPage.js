@@ -127,8 +127,17 @@ class TopicListPage extends React.Component {
         messageLang,
         { topicName: topicTitle }
       )
+      this.props.setSuccess(`Email sent to ${ownerEmail}.`)
     } catch (e) {
-      console.log(e)
+      console.error(e)
+      if (e.response && e.response.data && e.response.data.error) {
+        console.error(`Failed to send email to ${ownerEmail}`, e.response.data)
+
+        const msg = `Failed to send email. Check console for details. Error message: '${
+          e.response.data.error
+        }'`
+        this.props.setError(msg, 10000)
+      }
     }
   }
 
