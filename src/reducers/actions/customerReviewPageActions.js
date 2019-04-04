@@ -55,6 +55,13 @@ const setConfiguration = (configurationId) => {
   }
 }
 
+const setNoGroup =  (noGroupFound) => {
+  return {
+    type: 'SET_NOGROUP',
+    payload: noGroupFound
+  }
+}
+
 export default {
   updateAnswer,
   initializeAnswerSheet,
@@ -63,5 +70,6 @@ export default {
   setQuestions,
   setGroupName,
   setGroupId,
-  setConfiguration
+  setConfiguration,
+  setNoGroup
 }

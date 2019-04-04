@@ -5,7 +5,8 @@ const initialState = {
   questions: '',
   groupName: '',
   groupId: '',
-  configuration: ''
+  configuration: '',
+  noGroup: false
 }
 
 const customerReviewPageReducer = (state = initialState, action) => {
@@ -57,6 +58,12 @@ const customerReviewPageReducer = (state = initialState, action) => {
     return{
       ...state,
       configuration: action.payload
+    }
+  case 'SET_NOGROUP':
+    return{
+      ...state,
+      noGroup: action.payload,
+      isInitializing: false
     }
   default:
     return state

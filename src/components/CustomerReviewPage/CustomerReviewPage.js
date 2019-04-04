@@ -10,9 +10,7 @@ import customerReviewPageActions from '../../reducers/actions/customerReviewPage
 
 import customerReviewService from '../../services/customerReview'
 
-
 const Questions = ({ questions, answerSheet, updateAnswer }) => {
-
   return (
     <div>
       {questions.map((question, questionId) => {
@@ -58,7 +56,7 @@ const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
         <input
           type="number"
           value={answerSheet[questionId].answer}
-          style={{ 'fontSize': '16', 'lineHeight': '2em' }}
+          style={{ fontSize: '16', lineHeight: '2em' }}
           variant="outlined"
           onChange={(e) =>
             textFieldHandler(e.target.value, questionId, updateAnswer)
@@ -90,31 +88,32 @@ class CustomerReviewPage extends React.Component {
   componentWillMount() {}
 
   async componentDidMount() {
-
     const id = this.props.match.params.id
-
     try {
-
       const group = await customerReviewService.getDataForReview(id)
 
-      this.props.setReview(group.hasAnswered)
-      this.props.setGroupName(group.groupName)
-      this.props.setGroupId(group.groupId)
-      this.props.setConfiguration(group.configuration)
-      const reviewQuestionSet = await customerReviewService.getReviewQuestions(group.configuration)
+      if (group) {
+        this.props.setReview(group.hasAnswered)
+        this.props.setGroupName(group.groupName)
+        this.props.setGroupId(group.groupId)
+        this.props.setConfiguration(group.configuration)
+        const reviewQuestionSet = await customerReviewService.getReviewQuestions(
+          group.configuration
+        )
 
-      this.props.setQuestions(reviewQuestionSet.questions)
+        this.props.setQuestions(reviewQuestionSet.questions)
 
-      this.fetchCustomerReviewQuestions(this.props.questionObject)
-
+        this.fetchCustomerReviewQuestions(this.props.questionObject)
+      } else {
+        console.log('päästiin elseen')
+        this.props.setNoGroup(true)
+      }
     } catch (e) {
       this.props.setError('Some error happened')
     }
   }
 
   async fetchCustomerReviewQuestions(questionObject) {
-
-
     const initializeNumberAnswer = (question, questionId) => {
       return {
         type: 'number',
@@ -154,8 +153,6 @@ class CustomerReviewPage extends React.Component {
     )
     if (!answer) return
     try {
-
-
       await customerReviewService.create({
         customerReview: {
           answer_sheet: answerSheet,
@@ -163,11 +160,6 @@ class CustomerReviewPage extends React.Component {
           configuration_id: this.props.configuration
         }
       })
-
-
-
-
-
 
       this.props.setSuccess('Review saved!')
       this.props.history.push('/')
@@ -185,8 +177,8 @@ class CustomerReviewPage extends React.Component {
       hasReviewed,
       questionObject,
       groupName,
+      noGroup
     } = this.props
-
 
     if (isInitializing) {
       return (
@@ -194,10 +186,22 @@ class CustomerReviewPage extends React.Component {
           <h1 className="customer-review-container__h1">Loading!</h1>
         </div>
       )
-    } if (hasReviewed){
-      return(
-        <div>
-          <h1>You have given a review already</h1>
+    }
+    if (hasReviewed) {
+      return (
+        <div className="customer-review-container">
+          <h1 className="customer-review-container__h1">
+            You have given a review already
+          </h1>
+        </div>
+      )
+    }
+    if (noGroup) {
+      return (
+        <div className="customer-review-container">
+          <h1 className="customer-review-container__h1">
+            No group assigned for topic!
+          </h1>
         </div>
       )
     } else {
@@ -237,7 +241,8 @@ const mapStateToProps = (state) => {
     questionObject: state.customerReviewPage.questions,
     groupName: state.customerReviewPage.groupName,
     groupId: state.customerReviewPage.groupId,
-    configuration: state.customerReviewPage.configuration
+    configuration: state.customerReviewPage.configuration,
+    noGroup: state.customerReviewPage.noGroup
   }
 }
 
@@ -250,6 +255,7 @@ const mapDispatchToProps = {
   setGroupName: customerReviewPageActions.setGroupName,
   setGroupId: customerReviewPageActions.setGroupId,
   setConfiguration: customerReviewPageActions.setConfiguration,
+  setNoGroup: customerReviewPageActions.setNoGroup,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess
 }
