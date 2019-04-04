@@ -12,7 +12,7 @@ import { MenuItem, Button } from '@material-ui/core'
 // Actions
 import appActions from '../../reducers/actions/appActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
-import adminPageActions from '../../reducers/actions/adminPageActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 
 // Services
 import registrationManagementService from '../../services/registrationManagement'
@@ -151,7 +151,7 @@ const mapStateToProps = (state) => {
     topicOpen: state.registrationManagement.topicRegistrationOpen,
     topicMessage: state.registrationManagement.topicRegistrationMessage,
     isLoading: state.app.isLoading,
-    configurations: state.adminPage.configurations
+    configurations: state.configurationPage.configurations
   }
 }
 
@@ -159,7 +159,7 @@ const mapDispatchToProps = {
   updateIsLoading: appActions.updateIsLoading,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: adminPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations
 }
 
 const ConnectedRegistrationManagement = connect(

@@ -33,7 +33,7 @@ const ConfigurationSelect = ({
 
 const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
-  configurations: state.adminPage.configurations
+  configurations: state.configurationPage.configurations
 })
 
 const mapDispatchToPropsForm = {

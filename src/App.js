@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history'
 import './App.css'
 
 // Components
-import AdminPage from './components/AdminPage'
+import ConfigurationPage from './components/ConfigurationPage'
 import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
@@ -136,8 +136,8 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/administration"
-                render={() => <AdminPage />}
+                path="/administration/configuration"
+                render={() => <ConfigurationPage />}
               />
               <Route
                 exact

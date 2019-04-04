@@ -21,14 +21,14 @@ import registrationQuestionSetService from '../services/registrationQuestionSet'
 import reviewQuestionSetService from '../services/peerReviewQuestionSet'
 
 // Actions
-import adminPageActions from '../reducers/actions/adminPageActions'
+import configurationPageActions from '../reducers/actions/configurationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import questionsFormPageActions from '../reducers/actions/questionsFormPageActions'
 
 import RegistrationQuestionsTable from './RegistrationQuestionsTable'
 import PeerReviewQuestionsTable from './PeerReviewQuestionsTable'
 
-class AdminPage extends React.Component {
+class ConfigurationPage extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
@@ -373,29 +373,29 @@ class AdminPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    configurations: state.adminPage.configurations,
-    selectedConfig: state.adminPage.selectedConfig,
-    allRegistrationQuestions: state.adminPage.allRegistrationQuestions,
-    allReviewQuestions: state.adminPage.allReviewQuestions,
-    selectedRegister: state.adminPage.selectedRegister,
-    selectedReview1: state.adminPage.selectedReview1,
-    selectedReview2: state.adminPage.selectedReview2,
-    form: state.adminPage.form,
-    isNew: state.adminPage.isNew
+    configurations: state.configurationPage.configurations,
+    selectedConfig: state.configurationPage.selectedConfig,
+    allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
+    allReviewQuestions: state.configurationPage.allReviewQuestions,
+    selectedRegister: state.configurationPage.selectedRegister,
+    selectedReview1: state.configurationPage.selectedReview1,
+    selectedReview2: state.configurationPage.selectedReview2,
+    form: state.configurationPage.form,
+    isNew: state.configurationPage.isNew
   }
 }
 
 const mapDispatchToProps = {
-  ...adminPageActions,
+  ...configurationPageActions,
   ...questionsFormPageActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: adminPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations
 }
 
-const ConnectedAdminPage = connect(
+const ConnectedconfigurationPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AdminPage)
+)(ConfigurationPage)
 
-export default withRouter(ConnectedAdminPage)
+export default withRouter(ConnectedconfigurationPage)

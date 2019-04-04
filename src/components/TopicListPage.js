@@ -24,7 +24,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
-import adminPageActions from '../reducers/actions/adminPageActions'
+import configurationPageActions from '../reducers/actions/configurationPageActions'
 
 const buttonTheme = createMuiTheme({
   palette: {
@@ -284,7 +284,7 @@ const mapStateToProps = (state) => {
   return {
     topics: state.topicListPage.topics,
     filter: state.topicListPage.filter,
-    configurations: state.adminPage.configurations
+    configurations: state.configurationPage.configurations
   }
 }
 
@@ -292,7 +292,7 @@ const mapDispatchToProps = {
   ...topicListPageActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchConfigurations: adminPageActions.fetchConfigurations
+  fetchConfigurations: configurationPageActions.fetchConfigurations
 }
 
 const ConnectedTopicListPage = connect(

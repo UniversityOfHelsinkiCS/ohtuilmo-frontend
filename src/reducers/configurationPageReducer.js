@@ -16,7 +16,7 @@ const initialState = {
   isNew: true
 }
 
-const adminPageReducer = (state = initialState, action) => {
+const configurationPageReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'SET_CONFIGURATIONS':
     return {
@@ -120,4 +120,4 @@ const adminPageReducer = (state = initialState, action) => {
   return state
 }
 
-export default adminPageReducer
+export default configurationPageReducer

@@ -16,8 +16,8 @@ const assertIsOnRegistrationDetailsPage = () => {
 
 describe('Page access and redirect tests', () => {
   describe('Page access without authentication', () => {
-    it('/administration redirects user to login page', () => {
-      cy.visit('/administration')
+    it('/administration/configuration redirects user to login page', () => {
+      cy.visit('/administration/configuration')
       assertIsOnLoginPage()
     })
 
@@ -68,8 +68,8 @@ describe('Page access and redirect tests', () => {
       cy.visit('/')
     })
 
-    it('/administration redirects user to landing page', () => {
-      cy.visit('/administration')
+    it('/administration/configuration redirects user to landing page', () => {
+      cy.visit('/administration/configuration')
       assertIsOnLandingPage()
     })
 
@@ -133,10 +133,10 @@ describe('Page access and redirect tests', () => {
       cy.visit('/')
     })
 
-    it('renders /administration when visited', () => {
+    it('renders /administration/configuration when visited', () => {
       cy.get('.nav-menu-button').click()
-      cy.get('.administration-menu-item').click()
-      cy.url().should('contain', '/administration')
+      cy.get('.configuration-menu-item').click()
+      cy.url().should('contain', '/administration/configuration')
       cy.contains('Change configuration')
     })
 

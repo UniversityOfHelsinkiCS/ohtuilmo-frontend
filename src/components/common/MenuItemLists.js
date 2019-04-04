@@ -41,9 +41,9 @@ const adminItems = (history) => {
       handler: () => history.push('/topics')
     },
     {
-      className: 'administration-menu-item',
-      text: 'Administration',
-      handler: () => history.push('/administration')
+      className: 'configuration-menu-item',
+      text: 'Configuration',
+      handler: () => history.push('/administration/configuration')
     },
     {
       className: 'registration-management-menu-item',
