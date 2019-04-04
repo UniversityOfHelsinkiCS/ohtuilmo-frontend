@@ -48,7 +48,7 @@ class App extends Component {
     this.fetchRegistrationManagement()
     if (window.localStorage.getItem('loggedInUser')) {
       this.props.updateIsLoading(true)
-      this.userCheck()
+      this.userCheck() // Paluuarvoa ei tarkasteta
       this.props.updateIsLoading(false)
     }
   }
@@ -68,7 +68,7 @@ class App extends Component {
   userCheck = async () => {
     try {
       let user = JSON.parse(window.localStorage.getItem('loggedInUser'))
-      await tokenCheckService.userCheck(user.token)
+      await tokenCheckService.userCheck(user.token) // Paluuarvoa ei tarkasteta
       const { isInstructor } = await userService.checkInstructor()
       user.user.instructor = isInstructor
 
