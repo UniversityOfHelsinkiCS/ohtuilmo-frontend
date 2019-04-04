@@ -1,22 +1,35 @@
 const visitTopicsPage = () => cy.visit('/topics')
 
 describe('Topic list page', () => {
-  describe('email preview', () => {
-    beforeEach(() => {
-      cy.loginAsAdmin()
-      cy.updateAllEmailTemplates({
-        topicAccepted: {
-          finnish: 'Projekti {{topicName}} hyväksytty.',
-          english: 'Project {{topicName}} was accepted.'
-        },
-        topicRejected: {
-          finnish: 'Projekti {{topicName}} hylätty.',
-          english: 'Project {{topicName}} was rejected.'
-        }
-      })
-      visitTopicsPage()
+  beforeEach(() => {
+    cy.loginAsAdmin()
+    cy.updateAllEmailTemplates({
+      topicAccepted: {
+        finnish: 'Projekti {{topicName}} hyväksytty.',
+        english: 'Project {{topicName}} was accepted.'
+      },
+      topicRejected: {
+        finnish: 'Projekti {{topicName}} hylätty.',
+        english: 'Project {{topicName}} was rejected.'
+      }
     })
+    visitTopicsPage()
+  })
 
+  describe('email sending', () => {
+    const topicName = 'Aihe A'
+    const emailAddress = 'aasia@kas'
+
+    it.only('shows a success popup after sending an email', () => {
+      cy.get(`[data-cy-topic-name="${topicName}"]`)
+        .find('button[value="Finnish-Yes"]')
+        .click()
+
+      cy.get('.notification').contains(`Email sent to ${emailAddress}.`)
+    })
+  })
+
+  describe('email preview', () => {
     const topicName = 'Aihe A'
 
     it('shows the correctly rendered email confirm for topic accepted (finnish) template', () => {
