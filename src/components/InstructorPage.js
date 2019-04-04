@@ -35,6 +35,7 @@ const GroupDetails = ({ myGroup }) => {
 }
 
 const Answers = ({ answers }) => {
+  console.log(answers)
   if (answers) {
     return (
       <div>
@@ -46,7 +47,21 @@ const Answers = ({ answers }) => {
               <h1>{projectGroup.group.name}</h1>
               <h3>Ohjaaja: {projectGroup.group.instructorName}</h3>
               <GroupDetails myGroup={projectGroup.group.studentNames} />
-              <GroupAnswers answers={projectGroup.round1Answers} />
+
+              {projectGroup.round1Answers.length > 0 ? (
+                <div>
+                  <h2>Ensimmäisen vertaisarvioinnin vastaukset</h2>
+                  <GroupAnswers answers={projectGroup.round1Answers} />
+                </div>
+              ) : null}
+
+              {projectGroup.round2Answers.length > 0 ? (
+                <div>
+                  <h2>Toisen vertaisarvioinnin vastaukset</h2>
+                  <GroupAnswers answers={projectGroup.round2Answers} />
+                </div>
+              ) : null}
+
               <br />
             </div>
           )
@@ -84,7 +99,6 @@ const GroupAnswers = ({ answers }) => {
   console.log(answers)
   return (
     <div>
-      <h2>Vastaukset</h2>
       {getQuestions(answers).map((question, index) => {
         if (question.type === 'text' || question.type === 'number') {
           return (
