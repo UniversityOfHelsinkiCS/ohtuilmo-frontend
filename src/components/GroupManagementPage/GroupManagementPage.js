@@ -44,7 +44,7 @@ class GroupManagementPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAllActive()
+      const fetchedTopics = await topicService.getAll()
 
       const fetchedConfiguration = await configurationService.getAll()
 
