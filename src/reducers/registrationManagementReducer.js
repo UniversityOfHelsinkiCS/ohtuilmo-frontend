@@ -1,4 +1,5 @@
 const initialState = {
+  registrationManagementFetched: false,
   peerReviewConf: 0,
   peerReviewOpen: false,
   peerReviewRound: 1,
@@ -15,7 +16,7 @@ const registrationManagementReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'SET_REGISTRATION_MANAGEMENT':
     return {
-      ...state,
+      registrationManagementFetched: true,
       peerReviewConf: action.payload.peerReviewConf,
       peerReviewOpen: action.payload.peerReviewOpen,
       peerReviewRound: action.payload.peerReviewRound,

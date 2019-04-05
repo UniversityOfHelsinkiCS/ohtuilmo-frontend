@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 // MUI
@@ -24,6 +24,8 @@ import './RegistrationPage.css'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
+import registrationActions from '../reducers/actions/registrationActions'
+import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
 class RegistrationPage extends React.Component {
   async componentWillMount() {
@@ -42,9 +44,37 @@ class RegistrationPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    /**
+     * If user goes straight to /register, registrationmanagement needs to be fetched first.
+     */
+    if (!this.props.registrationManagementFetched) {
+      await this.fetchRegistrationManagement()
+    }
+    this.fetchOwnregistration()
     this.fetchTopics()
     this.fetchQuestions()
+  }
+
+  async fetchRegistrationManagement() {
+    try {
+      await this.props.fetchRegistrationManagement()
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError(
+        'Error fetching registration management configuration',
+        5000
+      )
+    }
+  }
+
+  async fetchOwnregistration() {
+    try {
+      await this.props.fetchRegistration()
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Error fetching own registration', 3000)
+    }
   }
 
   async fetchQuestions() {
@@ -126,8 +156,12 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
+    if (this.ownRegistration) {
+      return <h2>You have already registered to current project.</h2>
+    }
+
     if (!this.props.projectOpen) {
-      return <Redirect to="/" />
+      return <h2>Registration is not currently open.</h2>
     }
 
     if (!this.props.user) {
@@ -268,14 +302,20 @@ const mapStateToProps = (state) => {
     email: state.registrationPage.email,
     projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
-    projectInfo: state.registrationManagement.projectRegistrationInfo
+    projectInfo: state.registrationManagement.projectRegistrationInfo,
+    ownRegistration: state.registration,
+    registrationManagementFetched:
+      state.registrationManagement.registrationManagementFetched
   }
 }
 
 const mapDispatchToProps = {
   ...registrationPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchRegistration: registrationActions.fetchRegistration,
+  fetchRegistrationManagement:
+    registrationmanagementActions.fetchRegistrationManagement
 }
 
 const ConnectedRegistrationPage = connect(

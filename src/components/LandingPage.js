@@ -12,9 +12,14 @@ class LandingPage extends React.Component {
   }
 
   fetchOwnregistration = async () => {
-    await this.props.fetchRegistration()
-    if (this.props.ownRegistration) {
-      this.props.history.push('/registrationdetails')
+    try {
+      await this.props.fetchRegistration()
+      if (this.props.ownRegistration) {
+        this.props.history.push('/registrationdetails')
+      }
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Error fetching own registration', 3000)
     }
   }
 
