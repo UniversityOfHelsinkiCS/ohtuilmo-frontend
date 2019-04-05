@@ -201,12 +201,23 @@ class RegistrationDetailsPage extends React.Component {
 
   render() {
     const { groupDetails } = this.props
-    const {
-      student,
-      preferred_topics,
-      questions,
-      createdAt
-    } = this.props.ownRegistration
+
+    /**
+     * Show primarily peer review registration, secondarily project registration
+     */
+    const { ownRegistrations, peerReviewConf, projectConf } = this.props
+
+    const projectReg = ownRegistrations.find(
+      (registration) => registration.configuration_id === projectConf
+    )
+
+    const reviewConf = ownRegistrations.find(
+      (registration) => registration.configuration_id === peerReviewConf
+    )
+
+    const registration = reviewConf ? reviewConf : projectReg
+
+    const { student, preferred_topics, questions, createdAt } = registration
     const { peerReviewOpen, peerReviewRound } = this.props
 
     return (
@@ -234,15 +245,17 @@ class RegistrationDetailsPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ownRegistration: state.registration,
+    ownRegistrations: state.registrations,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
     groupDetails: state.registrationDetails.myGroup,
-    peerReviewRound: state.registrationManagement.peerReviewRound
+    peerReviewRound: state.registrationManagement.peerReviewRound,
+    peerReviewConf: state.registrationManagement.peerReviewConf,
+    projectConf: state.registrationManagement.projectConf
   }
 }
 
 const mapDispatchToProps = {
-  fetchRegistration: registrationActions.fetchRegistration,
+  fetchRegistrations: registrationActions.fetchRegistrations,
   initializeMyGroup: myGroupActions.initializeMyGroup
 }
 

@@ -8,13 +8,13 @@ import registrationActions from '../reducers/actions/registrationActions'
 
 class LandingPage extends React.Component {
   componentDidMount() {
-    this.fetchOwnregistration()
+    this.fetchOwnregistrations()
   }
 
-  fetchOwnregistration = async () => {
+  fetchOwnregistrations = async () => {
     try {
-      await this.props.fetchRegistration()
-      if (this.props.ownRegistration) {
+      await this.props.fetchRegistrations()
+      if (this.props.ownRegistrations.length > 0) {
         this.props.history.push('/registrationdetails')
       }
     } catch (e) {
@@ -43,12 +43,12 @@ const mapStateToProps = (state) => {
   return {
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectMessage: state.registrationManagement.projectRegistrationMessage,
-    ownRegistration: state.registration
+    ownRegistrations: state.registrations
   }
 }
 
 const mapDispatchToProps = {
-  fetchRegistration: registrationActions.fetchRegistration
+  fetchRegistrations: registrationActions.fetchRegistrations
 }
 
 const ConnectedLandingPage = connect(

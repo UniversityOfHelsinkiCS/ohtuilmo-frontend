@@ -51,7 +51,7 @@ class RegistrationPage extends React.Component {
     if (!this.props.registrationManagementFetched) {
       await this.fetchRegistrationManagement()
     }
-    this.fetchOwnregistration()
+    this.fetchOwnregistrations()
     this.fetchTopics()
     this.fetchQuestions()
   }
@@ -68,9 +68,9 @@ class RegistrationPage extends React.Component {
     }
   }
 
-  async fetchOwnregistration() {
+  async fetchOwnregistrations() {
     try {
-      await this.props.fetchRegistration()
+      await this.props.fetchRegistrations()
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching own registration', 3000)
@@ -156,15 +156,22 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
-    if (this.ownRegistration) {
+    const { ownRegistrations, projectOpen, user, projectConf } = this.props
+
+    if (
+      ownRegistrations.length > 0 &&
+      ownRegistrations.find(
+        (registration) => registration.configuration_id === projectConf
+      )
+    ) {
       return <h2>You have already registered to current project.</h2>
     }
 
-    if (!this.props.projectOpen) {
+    if (!projectOpen) {
       return <h2>Registration is not currently open.</h2>
     }
 
-    if (!this.props.user) {
+    if (!user) {
       return <LoadingSpinner />
     }
 
@@ -303,7 +310,7 @@ const mapStateToProps = (state) => {
     projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
     projectInfo: state.registrationManagement.projectRegistrationInfo,
-    ownRegistration: state.registration,
+    ownRegistrations: state.registrations,
     registrationManagementFetched:
       state.registrationManagement.registrationManagementFetched
   }
@@ -313,7 +320,7 @@ const mapDispatchToProps = {
   ...registrationPageActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
-  fetchRegistration: registrationActions.fetchRegistration,
+  fetchRegistrations: registrationActions.fetchRegistrations,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement
 }

@@ -33,7 +33,7 @@ const reducer = combineReducers({
   registrationQuestionsPage: registrationQuestionsPageReducer,
   peerReviewQuestionsPage: peerReviewQuestionsPageReducer,
   registrationManagement: registrationManagementReducer,
-  registration: registrationReducer,
+  registrations: registrationReducer,
   groupPage: groupPageReducer,
   peerReviewPage: peerReviewReducer,
   registrationDetails: myGroupReducer

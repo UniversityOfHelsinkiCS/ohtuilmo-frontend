@@ -1,10 +1,8 @@
-const registrationReducer = (state = null, action) => {
+const registrationReducer = (state = [], action) => {
   switch (action.type) {
-  case 'SET_REGISTRATION':
-    return {
-      ...action.payload
-    }
-  case 'CLEAR_REGISTRATION':
+  case 'SET_REGISTRATIONS':
+    return action.payload
+  case 'CLEAR_REGISTRATIONS':
     return null
   default:
     return state
