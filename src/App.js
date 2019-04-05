@@ -83,7 +83,7 @@ class App extends Component {
     this.props.updateIsLoading(true)
     window.localStorage.clear()
     this.props.updateUser('')
-    this.props.clearRegistration()
+    this.props.clearRegistrations()
     this.props.updateIsLoading(false)
     history.push('/login')
   }
@@ -209,7 +209,7 @@ const mapDispatchToProps = {
   ...appActions,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
-  clearRegistration: registrationActions.clearRegistration,
+  clearRegistrations: registrationActions.clearRegistrations,
   ...peerReviewPageActions
 }
 

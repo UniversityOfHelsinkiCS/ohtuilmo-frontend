@@ -14,6 +14,11 @@ const assertIsOnRegistrationDetailsPage = () => {
   cy.get('.registration-details-container').should('be.visible')
 }
 
+const assertIsAlreadyRegistered = () => {
+  cy.url().should('include', '/register')
+  cy.contains('You have already registered to current project')
+}
+
 describe('Page access and redirect tests', () => {
   describe('Page access without authentication', () => {
     it('/administration/configuration redirects user to login page', () => {
@@ -121,9 +126,9 @@ describe('Page access and redirect tests', () => {
       assertIsOnRegistrationDetailsPage()
     })
 
-    it('/register redirects to /registrationdetails', () => {
+    it('/register shows "already registered" message', () => {
       cy.visit('/register')
-      assertIsOnRegistrationDetailsPage()
+      assertIsAlreadyRegistered()
     })
   })
 
