@@ -128,7 +128,7 @@ class SingleGroupEdit extends React.Component {
       users.find((user) => user.student_number === group.instructorId)
 
     return (
-      <div style={{ allign: 'top' }}>
+      <div style={{ align: 'top', minWidth: '400px' }}>
         Edit group: {group.name}
         <IconButton
           aria-label="Delete"
@@ -143,6 +143,7 @@ class SingleGroupEdit extends React.Component {
             className: `edit-group-no__${group.id}__name`,
             'data-cy': 'edit-group-name-field'
           }}
+          fullWidth={true}
           value={this.state.name}
           onChange={this.handleNameChange}
         />
@@ -152,6 +153,7 @@ class SingleGroupEdit extends React.Component {
           onTopicSelectChange={this.handleTopicChange}
           groupTopicID={this.state.topicId}
           className="edit-group-form-topic__selector"
+          fullWidth={true}
         />
         <p>Add new students</p>
         <TextField
@@ -164,6 +166,7 @@ class SingleGroupEdit extends React.Component {
           data-cy="edit-group-students"
           multiline
           rows="8"
+          fullWidth={true}
         />
         <p>Change instructor</p>
         <AutocompletedUserSelect
@@ -172,6 +175,7 @@ class SingleGroupEdit extends React.Component {
           selectedUser={this.state.instructor}
           defaultUser={defaultInstructor}
           onSelectedUserChange={this.handleInstructorChange}
+          fullWidth={true}
         />
         <p>
           <Button

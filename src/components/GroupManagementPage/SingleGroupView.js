@@ -53,7 +53,7 @@ const SingleGroupView = ({
   }
 
   return (
-    <div style={{ align: 'top' }}>
+    <div style={{ align: 'top', minWidth: '400px' }}>
       <div className="group-name">{group.name}</div>
 
       <div>
