@@ -51,6 +51,11 @@ describe('Page access and redirect tests', () => {
       assertIsOnLoginPage()
     })
 
+    it('/administration/email-templates redirects user to login page', () => {
+      cy.visit('/administration/email-templates')
+      assertIsOnLoginPage()
+    })
+
     it('/registrationdetails redirects user to login page', () => {
       cy.visit('/registrationdetails')
       assertIsOnLoginPage()
@@ -100,6 +105,11 @@ describe('Page access and redirect tests', () => {
 
     it('/administration/registrationmanagement redirects user to landing page', () => {
       cy.visit('/administration/registrationmanagement')
+      assertIsOnLandingPage()
+    })
+
+    it('/administration/email-templates redirects user to login page', () => {
+      cy.visit('/administration/email-templates')
       assertIsOnLandingPage()
     })
 
@@ -175,6 +185,13 @@ describe('Page access and redirect tests', () => {
       cy.get('.registration-management-menu-item').click()
       cy.url().should('contain', '/administration/registrationmanagement')
       cy.contains('Registration and review management')
+    })
+
+    it('renders /administration/email-templates when visited', () => {
+      cy.get('.nav-menu-button').click()
+      cy.get('.email-templates-menu-item').click()
+      cy.url().should('contain', '/administration/email-templates')
+      cy.get('.email-templates-page').should('be.visible')
     })
 
     it('renders /topics when visited', () => {

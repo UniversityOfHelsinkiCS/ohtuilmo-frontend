@@ -54,6 +54,11 @@ const adminItems = (history) => {
       className: 'group-management-menu-item',
       text: 'Group Management',
       handler: () => history.push('/administration/groups')
+    },
+    {
+      className: 'email-templates-menu-item',
+      text: 'Email Templates',
+      handler: () => history.push('/administration/email-templates')
     }
   ]
 

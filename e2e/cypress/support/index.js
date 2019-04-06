@@ -316,3 +316,57 @@ const findReviewQuestionId = (authHeaders, questionSetName) => {
       }
     })
 }
+
+Cypress.Commands.add('deleteAllEmailTemplates', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: '/api/email/templates',
+      method: 'DELETE',
+      headers: authHeaders
+    })
+  })
+})
+
+const defaultEmailTemplates = () => ({
+  topicAccepted: { finnish: '', english: '' },
+  topicRejected: { finnish: '', english: '' }
+})
+
+Cypress.Commands.add(
+  'updateEmailTemplate',
+  (templateName, templateLanguage, text) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+
+      const body = defaultEmailTemplates()
+      body[templateName][templateLanguage] = text
+
+      cy.request({
+        url: '/api/email/templates',
+        method: 'POST',
+        headers: authHeaders,
+        body
+      })
+    })
+  }
+)
+
+Cypress.Commands.add('updateAllEmailTemplates', (body) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/email/templates',
+      method: 'POST',
+      headers: authHeaders,
+      body
+    })
+  })
+})

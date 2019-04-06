@@ -15,3 +15,34 @@ export const getUser = () => {
   }
   return user
 }
+
+const replaceTopicName = (template, replacement) =>
+  template.replace(/{{topicName}}/g, replacement)
+
+const emailTemplateRenderers = {
+  /**
+   * @param {object} topic
+   * @param {string} template
+   * @returns {string}
+   */
+  topicAccepted: (topic, template) => {
+    const topicName = topic.content.title
+    return replaceTopicName(template, topicName)
+  },
+  /**
+   * @param {object} topic
+   * @param {string} template
+   * @returns {string}
+   */
+  topicRejected: (topic, template) => {
+    const topicName = topic.content.title
+    return replaceTopicName(template, topicName)
+  }
+}
+
+/**
+ * @param {'topicAccepted' | 'topicRejected'} templateName
+ */
+export const getEmailTemplateRenderer = (templateName) => {
+  return emailTemplateRenderers[templateName]
+}

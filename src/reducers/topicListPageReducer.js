@@ -1,23 +1,42 @@
-const initialState = {
-  topics: [],
-  filter: 0
-}
+import { combineReducers } from 'redux'
 
-const topicListPageReducer = (state = initialState, action) => {
+const filter = (state = 0, action) => {
   switch (action.type) {
-  case 'UPDATE_TOPICS':
-    return {
-      ...state,
-      topics: action.payload
-    }
-  case 'UPDATE_FILTER':
-    return {
-      ...state,
-      filter: action.payload
-    }
+  case 'TOPIC_PAGE_UPDATE_FILTER':
+    return action.payload
   default:
+    return state
   }
-  return state
 }
 
-export default topicListPageReducer
+const isTopicsLoading = (state = false, action) => {
+  switch (action.type) {
+  case 'TOPIC_PAGE_FETCH_TOPICS_REQUEST':
+    return true
+  case 'TOPIC_PAGE_FETCH_TOPICS_SUCCESS':
+  case 'TOPIC_PAGE_FETCH_TOPICS_FAILED':
+    return false
+  default:
+    return state
+  }
+}
+
+const updateTopic = (topics, updatedTopic) =>
+  topics.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic))
+
+const topics = (state = [], action) => {
+  switch (action.type) {
+  case 'TOPIC_PAGE_FETCH_TOPICS_SUCCESS':
+    return action.payload
+  case 'TOPIC_PAGE_UPDATE_TOPIC_SUCCESS':
+    return updateTopic(state, action.payload)
+  default:
+    return state
+  }
+}
+
+export default combineReducers({
+  filter,
+  topics,
+  isTopicsLoading
+})

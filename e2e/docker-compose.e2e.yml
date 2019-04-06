@@ -29,6 +29,7 @@ services:
       - NODE_ENV=production
       - PORT=3001
       - SECRET=yoursecrethere
+      - EMAIL_ENABLED=false
 
   db:
     image: postgres:10.6
