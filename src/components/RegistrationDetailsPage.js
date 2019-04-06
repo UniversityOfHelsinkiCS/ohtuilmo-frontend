@@ -24,6 +24,13 @@ const formatDate = (date) => {
   return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
 }
 
+const extractCallingName = (firstNames) => {
+  if (firstNames.includes('*')) {
+    return firstNames.split('*')[1].split(' ')[0]
+  }
+  return firstNames.split(' ')[0]
+}
+
 class PeerReviewInfo extends React.Component {
   constructor(props) {
     super(props)
@@ -74,11 +81,36 @@ class PeerReviewInfo extends React.Component {
   }
 }
 
-const extractCallingName = (firstNames) => {
-  if (firstNames.includes('*')) {
-    return firstNames.split('*')[1].split(' ')[0]
-  }
-  return firstNames.split(' ')[0]
+const GroupDetails = ({ groupDetails }) => {
+  return (
+    <div>
+      <h2>Group</h2>
+      {groupDetails ? (
+        <div>
+          <h4>Name</h4>
+          <Typography variant="body1" gutterBottom>
+            {groupDetails.groupName}
+          </Typography>
+          <h4>Instructor</h4>
+          <Typography variant="body1" gutterBottom>
+            {groupDetails.instructor}
+          </Typography>
+          <h4>Members</h4>
+          {groupDetails.students.map((member, index) => {
+            return (
+              <Typography variant="body1" key={index}>
+                {extractCallingName(member.first_names)} {member.last_name}
+              </Typography>
+            )
+          })}
+        </div>
+      ) : (
+        <Typography variant="body1" gutterBottom>
+          not assigned yet
+        </Typography>
+      )}
+    </div>
+  )
 }
 
 const UserDetails = ({ student }) => {
@@ -162,38 +194,6 @@ const RegistrationAnswers = ({ questions }) => {
   )
 }
 
-const GroupDetails = ({ groupDetails }) => {
-  return (
-    <div>
-      <h2>Group</h2>
-      {groupDetails ? (
-        <div>
-          <h4>Name</h4>
-          <Typography variant="body1" gutterBottom>
-            {groupDetails.groupName}
-          </Typography>
-          <h4>Instructor</h4>
-          <Typography variant="body1" gutterBottom>
-            {groupDetails.instructor}
-          </Typography>
-          <h4>Members</h4>
-          {groupDetails.students.map((member) => {
-            return (
-              <Typography variant="body1">
-                {extractCallingName(member.first_names)} {member.last_name}
-              </Typography>
-            )
-          })}
-        </div>
-      ) : (
-        <Typography variant="body1" gutterBottom>
-          not assigned yet
-        </Typography>
-      )}
-    </div>
-  )
-}
-
 class RegistrationDetailsPage extends React.Component {
   async componentDidMount() {
     await this.props.initializeMyGroup()
@@ -201,12 +201,23 @@ class RegistrationDetailsPage extends React.Component {
 
   render() {
     const { groupDetails } = this.props
-    const {
-      student,
-      preferred_topics,
-      questions,
-      createdAt
-    } = this.props.ownRegistration
+
+    /**
+     * Show primarily peer review registration, secondarily project registration
+     */
+    const { ownRegistrations, peerReviewConf, projectConf } = this.props
+
+    const projectReg = ownRegistrations.find(
+      (registration) => registration.configuration_id === projectConf
+    )
+
+    const reviewConf = ownRegistrations.find(
+      (registration) => registration.configuration_id === peerReviewConf
+    )
+
+    const registration = reviewConf ? reviewConf : projectReg
+
+    const { student, preferred_topics, questions, createdAt } = registration
     const { peerReviewOpen, peerReviewRound } = this.props
 
     return (
@@ -234,15 +245,17 @@ class RegistrationDetailsPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ownRegistration: state.registration,
+    ownRegistrations: state.registrations,
     peerReviewOpen: state.registrationManagement.peerReviewOpen,
     groupDetails: state.registrationDetails.myGroup,
-    peerReviewRound: state.registrationManagement.peerReviewRound
+    peerReviewRound: state.registrationManagement.peerReviewRound,
+    peerReviewConf: state.registrationManagement.peerReviewConf,
+    projectConf: state.registrationManagement.projectConf
   }
 }
 
 const mapDispatchToProps = {
-  fetchRegistration: registrationActions.fetchRegistration,
+  fetchRegistrations: registrationActions.fetchRegistrations,
   initializeMyGroup: myGroupActions.initializeMyGroup
 }
 

@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history'
 import './App.css'
 
 // Components
-import AdminPage from './components/AdminPage'
+import ConfigurationPage from './components/ConfigurationPage'
 import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
@@ -32,7 +32,7 @@ import * as notificationActions from './reducers/actions/notificationActions'
 import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
-import PeerReviewPageActions from './reducers/actions/peerReviewPageActions'
+import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -83,7 +83,7 @@ class App extends Component {
     this.props.updateIsLoading(true)
     window.localStorage.clear()
     this.props.updateUser('')
-    this.props.clearRegistration()
+    this.props.clearRegistrations()
     this.props.updateIsLoading(false)
     history.push('/login')
   }
@@ -136,8 +136,8 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/administration"
-                render={() => <AdminPage />}
+                path="/administration/configuration"
+                render={() => <ConfigurationPage />}
               />
               <Route
                 exact
@@ -209,9 +209,8 @@ const mapDispatchToProps = {
   ...appActions,
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
-  clearRegistration: registrationActions.clearRegistration,
-  ...registrationmanagementActions,
-  ...PeerReviewPageActions
+  clearRegistrations: registrationActions.clearRegistrations,
+  ...peerReviewPageActions
 }
 
 const ConnectedApp = connect(

@@ -1,7 +1,7 @@
 describe('Review-questions page', () => {
   beforeEach(() => {
     cy.loginAsAdmin()
-    cy.visit('/administration')
+    cy.visit('/administration/configuration')
     cy.deleteReviewQuestions()
     cy.createReviewQuestionSet('Super nice review questions', [
       {

@@ -258,12 +258,15 @@ Cypress.Commands.add(
           headers: authHeaders,
           body: {
             registrationManagement: {
+              peer_review_conf: 1,
               peer_review_open: true,
               peer_review_round: 1,
+              project_registration_conf: 1,
               project_registration_open: true,
               project_registration_message: '',
               project_registration_info:
                 'Project registration will be open until DD.MM.2019.',
+              topic_registration_conf: 1,
               topic_registration_open: true,
               topic_registration_message: ''
             }

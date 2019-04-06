@@ -1,6 +1,6 @@
 const initialState = {
   topics: [],
-  filter: 'all'
+  filter: 0
 }
 
 const topicListPageReducer = (state = initialState, action) => {

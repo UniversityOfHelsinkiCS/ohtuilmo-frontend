@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './TopicFormPage.css'
+
 // MUI
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -13,19 +14,21 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Divider from '@material-ui/core/Divider'
+
 // Service
 import configurationService from '../services/configuration'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
 import reviewQuestionSetService from '../services/peerReviewQuestionSet'
+
 // Actions
-import adminPageActions from '../reducers/actions/adminPageActions'
+import configurationPageActions from '../reducers/actions/configurationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import questionsFormPageActions from '../reducers/actions/questionsFormPageActions'
 
 import RegistrationQuestionsTable from './RegistrationQuestionsTable'
 import PeerReviewQuestionsTable from './PeerReviewQuestionsTable'
 
-class AdminPage extends React.Component {
+class ConfigurationPage extends React.Component {
   componentWillMount() {
     try {
       if (window.localStorage.getItem('loggedInUser') === null) {
@@ -42,31 +45,10 @@ class AdminPage extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.fetchConfigurations()
+  async componentDidMount() {
     this.setQuestions()
-  }
-
-  fetchConfigurations = async () => {
-    try {
-      const response = await configurationService.getAll()
-      this.props.setConfigurations(response.configurations)
-      if (this.props.configurations.length > 0) {
-        const selected = this.props.configurations.find(
-          (c) => c.active === true
-        )
-        if (selected) {
-          this.props.updateSelectedConfig(selected)
-          this.props.updateConfigForm(this.props.selectedConfig)
-        }
-        this.props.updateNewStatus(false)
-      } else {
-        this.props.selectNewConfig()
-        this.props.updateNewStatus(true)
-      }
-    } catch (e) {
-      console.log('error happened', e)
-      this.props.setError('Error fetching configurations', 5000)
+    if (this.props.configurations.length === 0) {
+      await this.props.fetchConfigurations()
     }
   }
 
@@ -106,7 +88,7 @@ class AdminPage extends React.Component {
 
   saveNewConfig = async (event) => {
     event.preventDefault()
-    const configuration = { ...this.props.form, active: true }
+    const configuration = { ...this.props.form }
     try {
       const response = await configurationService.create(configuration)
       this.props.setConfigurations([
@@ -115,7 +97,7 @@ class AdminPage extends React.Component {
       ])
       this.props.updateSelectedConfig(response.configuration)
       this.props.updateNewStatus(false)
-      this.props.setSuccess('New configuration saved and set active', 5000)
+      this.props.setSuccess('New configuration saved', 5000)
     } catch (e) {
       console.log(e)
       this.props.setError('Error saving new configuration', 5000)
@@ -125,7 +107,7 @@ class AdminPage extends React.Component {
   updateConfig = async (event) => {
     event.preventDefault()
     try {
-      const configuration = { ...this.props.form, active: true }
+      const configuration = { ...this.props.form }
       const response = await configurationService.update(
         configuration,
         this.props.selectedConfig.id
@@ -133,7 +115,7 @@ class AdminPage extends React.Component {
       this.props.updateConfigurations(response.configuration)
       this.props.updateSelectedConfig(response.configuration)
       this.props.updateConfigForm(response.configuration)
-      this.props.setSuccess('Configuration updated and set active', 5000)
+      this.props.setSuccess('Configuration updated', 5000)
     } catch (e) {
       console.log(e)
       this.props.setError('Error saving edits to configuration', 5000)
@@ -380,21 +362,10 @@ class AdminPage extends React.Component {
         <Button
           color="primary"
           variant="contained"
-          onClick={this.saveNewConfig}
+          onClick={this.props.isNew ? this.saveNewConfig : this.updateConfig}
         >
-          Save new configuration
+          Save
         </Button>
-        {!this.props.isNew && (
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            data-cy="edit-existing-configuration-submit"
-            onClick={this.updateConfig}
-          >
-            Edit existing configuration
-          </Button>
-        )}
       </div>
     )
   }
@@ -402,28 +373,29 @@ class AdminPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    configurations: state.adminPage.configurations,
-    selectedConfig: state.adminPage.selectedConfig,
-    allRegistrationQuestions: state.adminPage.allRegistrationQuestions,
-    allReviewQuestions: state.adminPage.allReviewQuestions,
-    selectedRegister: state.adminPage.selectedRegister,
-    selectedReview1: state.adminPage.selectedReview1,
-    selectedReview2: state.adminPage.selectedReview2,
-    form: state.adminPage.form,
-    isNew: state.adminPage.isNew
+    configurations: state.configurationPage.configurations,
+    selectedConfig: state.configurationPage.selectedConfig,
+    allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
+    allReviewQuestions: state.configurationPage.allReviewQuestions,
+    selectedRegister: state.configurationPage.selectedRegister,
+    selectedReview1: state.configurationPage.selectedReview1,
+    selectedReview2: state.configurationPage.selectedReview2,
+    form: state.configurationPage.form,
+    isNew: state.configurationPage.isNew
   }
 }
 
 const mapDispatchToProps = {
-  ...adminPageActions,
+  ...configurationPageActions,
   ...questionsFormPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchConfigurations: configurationPageActions.fetchConfigurations
 }
 
-const ConnectedAdminPage = connect(
+const ConnectedconfigurationPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AdminPage)
+)(ConfigurationPage)
 
-export default withRouter(ConnectedAdminPage)
+export default withRouter(ConnectedconfigurationPage)

@@ -10,7 +10,7 @@ import groupManagementService from '../../services/groupManagement'
 import userService from '../../services/user'
 
 import topicListPageActions from '../../reducers/actions/topicListPageActions'
-import adminPageActions from '../../reducers/actions/adminPageActions'
+import configurationPageActions from '../../reducers/actions/configurationPageActions'
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import groupManagementActions from '../../reducers/actions/groupManagementActions'
 
@@ -44,7 +44,7 @@ class GroupManagementPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAllActive()
+      const fetchedTopics = await topicService.getAll()
 
       const fetchedConfiguration = await configurationService.getAll()
 
@@ -89,14 +89,14 @@ class GroupManagementPage extends React.Component {
 
 const mapStateToProps = (state) => ({
   topics: state.topicListPage.topics,
-  configurations: state.adminPage.configurations,
+  configurations: state.configurationPage.configurations,
   groups: state.groupPage.groups,
   users: state.groupPage.users
 })
 
 const mapDispatchToProps = {
   updateTopics: topicListPageActions.updateTopics,
-  setConfigurations: adminPageActions.setConfigurations,
+  setConfigurations: configurationPageActions.setConfigurations,
   setGroups: groupManagementActions.setGroups,
   setUsers: groupManagementActions.setUsers,
   setError: notificationActions.setError,

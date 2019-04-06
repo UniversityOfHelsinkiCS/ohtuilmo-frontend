@@ -1,25 +1,25 @@
 import registrationService from '../../services/registration'
 
-const clearRegistration = () => {
+const clearRegistrations = () => {
   return {
-    type: 'CLEAR_REGISTRATION'
+    type: 'CLEAR_REGISTRATIONS'
   }
 }
 
-const fetchRegistration = () => {
+const fetchRegistrations = () => {
   return async (dispatch) => {
-    const registration = await registrationService.getOwn()
-    if (registration) {
+    const registrations = await registrationService.getOwn()
+    if (registrations) {
       dispatch({
-        type: 'SET_REGISTRATION',
-        payload: registration
+        type: 'SET_REGISTRATIONS',
+        payload: registrations
       })
     } else {
       dispatch({
-        type: 'CLEAR_REGISTRATION'
+        type: 'CLEAR_REGISTRATIONS'
       })
     }
   }
 }
 
-export default { clearRegistration, fetchRegistration }
+export default { clearRegistrations, fetchRegistrations }

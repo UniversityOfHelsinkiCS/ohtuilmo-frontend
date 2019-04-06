@@ -9,7 +9,7 @@ import notificationReducer from './notificationReducer'
 import topicFormReducer from './topicFormReducer'
 import viewTopicPageReducer from './viewTopicPageReducer'
 import registrationPageReducer from './registrationPageReducer'
-import adminPageReducer from './adminPageReducer'
+import configurationPageReducer from './configurationPageReducer'
 import questionsFormPageReducer from './questionsFormPageReducer'
 import registrationQuestionsPageReducer from './registrationQuestionsPageReducer'
 import peerReviewQuestionsPageReducer from './peerReviewQuestionsPageReducer'
@@ -28,12 +28,12 @@ const reducer = combineReducers({
   notifications: notificationReducer,
   viewTopicPage: viewTopicPageReducer,
   registrationPage: registrationPageReducer,
-  adminPage: adminPageReducer,
+  configurationPage: configurationPageReducer,
   questionsFormPage: questionsFormPageReducer,
   registrationQuestionsPage: registrationQuestionsPageReducer,
   peerReviewQuestionsPage: peerReviewQuestionsPageReducer,
   registrationManagement: registrationManagementReducer,
-  registration: registrationReducer,
+  registrations: registrationReducer,
   groupPage: groupPageReducer,
   peerReviewPage: peerReviewReducer,
   registrationDetails: myGroupReducer

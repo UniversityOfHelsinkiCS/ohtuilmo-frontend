@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ReactDragList from 'react-drag-list'
 // MUI
@@ -24,6 +24,8 @@ import './RegistrationPage.css'
 // Actions
 import registrationPageActions from '../reducers/actions/registrationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
+import registrationActions from '../reducers/actions/registrationActions'
+import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
 class RegistrationPage extends React.Component {
   async componentWillMount() {
@@ -42,18 +44,46 @@ class RegistrationPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    /**
+     * If user goes straight to /register, registrationmanagement needs to be fetched first.
+     */
+    if (!this.props.registrationManagementFetched) {
+      await this.fetchRegistrationManagement()
+    }
+    this.fetchOwnregistrations()
     this.fetchTopics()
     this.fetchQuestions()
   }
 
+  async fetchRegistrationManagement() {
+    try {
+      await this.props.fetchRegistrationManagement()
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError(
+        'Error fetching registration management configuration',
+        5000
+      )
+    }
+  }
+
+  async fetchOwnregistrations() {
+    try {
+      await this.props.fetchRegistrations()
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Error fetching own registration', 3000)
+    }
+  }
+
   async fetchQuestions() {
     try {
-      const fetchedConfiguration = await configurationService.getActive()
-      let fetchedQuestions =
-        fetchedConfiguration.registration_question_set.questions
-      fetchedQuestions = fetchedQuestions ? fetchedQuestions : []
-      this.props.updateQuestions(fetchedQuestions)
+      const { projectConf } = this.props
+      const response = await configurationService.getById(projectConf)
+      let questions = response.registration_question_set.questions
+      questions = questions ? questions : []
+      this.props.updateQuestions(questions)
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Error fetching questions', 3000)
@@ -126,11 +156,22 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
-    if (!this.props.projectOpen) {
-      return <Redirect to="/" />
+    const { ownRegistrations, projectOpen, user, projectConf } = this.props
+
+    if (
+      ownRegistrations.length > 0 &&
+      ownRegistrations.find(
+        (registration) => registration.configuration_id === projectConf
+      )
+    ) {
+      return <h2>You have already registered to current project.</h2>
     }
 
-    if (!this.props.user) {
+    if (!projectOpen) {
+      return <h2>Registration is not currently open.</h2>
+    }
+
+    if (!user) {
       return <LoadingSpinner />
     }
 
@@ -266,15 +307,22 @@ const mapStateToProps = (state) => {
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,
     email: state.registrationPage.email,
+    projectConf: state.registrationManagement.projectRegistrationConf,
     projectOpen: state.registrationManagement.projectRegistrationOpen,
-    projectInfo: state.registrationManagement.projectRegistrationInfo
+    projectInfo: state.registrationManagement.projectRegistrationInfo,
+    ownRegistrations: state.registrations,
+    registrationManagementFetched:
+      state.registrationManagement.registrationManagementFetched
   }
 }
 
 const mapDispatchToProps = {
   ...registrationPageActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchRegistrations: registrationActions.fetchRegistrations,
+  fetchRegistrationManagement:
+    registrationmanagementActions.fetchRegistrationManagement
 }
 
 const ConnectedRegistrationPage = connect(

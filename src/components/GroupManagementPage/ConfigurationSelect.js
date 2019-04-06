@@ -22,6 +22,7 @@ const ConfigurationSelect = ({
           key={configuration.id}
           value={configuration.id}
           className={`configuration-${configuration.id}`}
+          data-cy="configuration"
         >
           {configuration.name}
         </MenuItem>
@@ -32,7 +33,7 @@ const ConfigurationSelect = ({
 
 const mapStateToPropsForm = (state) => ({
   groupConfigurationID: state.groupPage.groupConfigurationID,
-  configurations: state.adminPage.configurations
+  configurations: state.configurationPage.configurations
 })
 
 const mapDispatchToPropsForm = {

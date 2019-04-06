@@ -13,10 +13,10 @@ const initialState = {
     review_question_set_1_id: null,
     review_question_set_2_id: null
   },
-  isNew: false
+  isNew: true
 }
 
-const adminPageReducer = (state = initialState, action) => {
+const configurationPageReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'SET_CONFIGURATIONS':
     return {
@@ -96,7 +96,8 @@ const adminPageReducer = (state = initialState, action) => {
       form: {
         name: action.payload.name,
         content: action.payload.content,
-        registration_question_set_id: action.payload.registration_question_set_id,
+        registration_question_set_id:
+            action.payload.registration_question_set_id,
         review_question_set_1_id: action.payload.review_question_set_1_id,
         review_question_set_2_id: action.payload.review_question_set_2_id
       }
@@ -119,4 +120,4 @@ const adminPageReducer = (state = initialState, action) => {
   return state
 }
 
-export default adminPageReducer
+export default configurationPageReducer

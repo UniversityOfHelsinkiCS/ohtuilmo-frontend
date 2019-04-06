@@ -25,7 +25,7 @@ const getOwn = async () => {
   if (response.status === 204) {
     return null
   }
-  return response.data.registration
+  return response.data.registrations
 }
 
 export default { create, getOwn }

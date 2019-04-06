@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -7,7 +8,8 @@ const TopicSelect = ({
   topics,
   onTopicSelectChange,
   groupTopicID,
-  className
+  className,
+  groupConfig
 }) => {
   return (
     <Select
@@ -15,13 +17,23 @@ const TopicSelect = ({
       value={groupTopicID}
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
-      {topics.map((topic) => (
-        <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
-          {topic.content.title}
-        </MenuItem>
-      ))}
+      {topics
+        .filter((topic) => topic.configuration_id === groupConfig)
+        .map((topic) => (
+          <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
+            {topic.content.title}
+          </MenuItem>
+        ))}
     </Select>
   )
 }
 
-export default TopicSelect
+const mapStateToProps = (state) => {
+  return {
+    groupConfig: state.groupPage.groupConfigurationID
+  }
+}
+
+const ConnectedTopicSelect = connect(mapStateToProps)(TopicSelect)
+
+export default ConnectedTopicSelect

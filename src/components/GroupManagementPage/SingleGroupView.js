@@ -26,7 +26,7 @@ const SingleGroupView = ({
     return `${namedUser.first_names} ${namedUser.last_name} (${user})`
   }
 
-  const getGroupInstructor = (groupId) => {
+  const getGroupInstructor = () => {
     if (group.instructorId === null) {
       return <div>No instructor assigned</div>
     } else {
@@ -43,7 +43,6 @@ const SingleGroupView = ({
                 setError
               })
             }
-            className={`edit-group-no__${groupId}__delete-instructor`}
             data-cy="delete-instructor-button"
           >
             <DeleteIcon fontSize="small" />
@@ -54,10 +53,7 @@ const SingleGroupView = ({
   }
 
   return (
-    <div
-      className={`view-group-no__${group.id}__container`}
-      style={{ align: 'top' }}
-    >
+    <div style={{ align: 'top' }}>
       <div className="group-name">{group.name}</div>
 
       <div>
@@ -70,7 +66,7 @@ const SingleGroupView = ({
         <div className="group-students">
           <p>Students</p>
 
-          {group.studentIds.map((student, index) => (
+          {group.studentIds.map((student) => (
             <div key={student}>
               {getUserNames(student)}
 
@@ -85,9 +81,6 @@ const SingleGroupView = ({
                     setError
                   })
                 }
-                className={`edit-group-no__${
-                  group.id
-                }__delete-student-no__${index}`}
                 data-cy="delete-student-button"
               >
                 <DeleteIcon fontSize="small" />
@@ -107,7 +100,6 @@ const SingleGroupView = ({
         color="primary"
         variant="contained"
         onClick={() => toggleEditMode()}
-        className={`enable-edit-group-no__${group.id}`}
         data-cy="edit-group-button"
       >
         Edit

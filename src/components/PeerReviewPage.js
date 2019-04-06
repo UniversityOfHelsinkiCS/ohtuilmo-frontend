@@ -31,15 +31,13 @@ class PeerReview extends React.Component {
       const group = await groupManagementService.getByStudent()
       if (group) {
         const reviewQuestionsSet = await peerReviewService.getReviewQuestions(
-          group.configurationId,
+          this.props.reviewConf,
           this.props.reviewRound
         )
 
         const questionObject = { questions: reviewQuestionsSet.questions }
 
         this.props.setQuestions(questionObject)
-
-        this.props.setConfiguration(group.configurationId)
 
         this.fetchPeerReviewQuestions(group.students, reviewQuestionsSet)
         this.props.createPeers(group.students)
@@ -106,7 +104,7 @@ class PeerReview extends React.Component {
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
 
-  Submit = async (event, answerSheet, configurationId) => {
+  Submit = async (event, answerSheet, reviewConf) => {
     event.preventDefault()
 
     const answer = window.confirm(
@@ -118,7 +116,7 @@ class PeerReview extends React.Component {
         peerReview: {
           answer_sheet: answerSheet,
           user_id: getUser().student_number,
-          configuration_id: configurationId,
+          configuration_id: reviewConf,
           review_round: this.props.reviewRound
         }
       })
@@ -142,7 +140,7 @@ class PeerReview extends React.Component {
       submittedReviews,
       isInitializing,
       questionObject,
-      configurationId,
+      reviewConf,
       reviewOpen,
       reviewRound
     } = this.props
@@ -193,9 +191,7 @@ class PeerReview extends React.Component {
               margin-left="auto"
               variant="contained"
               color="primary"
-              onClick={(event) =>
-                this.Submit(event, answerSheet, configurationId)
-              }
+              onClick={(event) => this.Submit(event, answerSheet, reviewConf)}
             >
               Submit
             </Button>
@@ -388,7 +384,7 @@ const mapStateToProps = (state) => {
     groupsLoading: state.peerReviewPage.groupsLoading,
     submittedReviews: state.peerReviewPage.submittedReviews,
     questionObject: state.peerReviewPage.questions,
-    configurationId: state.peerReviewPage.configurationId,
+    reviewConf: state.registrationManagement.peerReviewConf,
     reviewRound: state.registrationManagement.peerReviewRound,
     reviewOpen: state.registrationManagement.peerReviewOpen
   }
