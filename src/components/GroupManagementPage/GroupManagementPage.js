@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import topicService from '../../services/topic'
 import configurationService from '../../services/configuration'
 import groupManagementService from '../../services/groupManagement'
 import userService from '../../services/user'
@@ -44,8 +43,6 @@ class GroupManagementPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const fetchedTopics = await topicService.getAll()
-
       const fetchedConfiguration = await configurationService.getAll()
 
       const fetchedGroups = await groupManagementService.get()
@@ -55,7 +52,7 @@ class GroupManagementPage extends React.Component {
       this.props.setUsers(fetchedUsers)
 
       this.props.setGroups(fetchedGroups)
-      this.props.updateTopics(fetchedTopics)
+      await this.props.fetchTopics()
       this.props.setConfigurations(fetchedConfiguration.configurations)
     } catch (e) {
       this.props.setError('Some error happened')
@@ -100,7 +97,8 @@ const mapDispatchToProps = {
   setGroups: groupManagementActions.setGroups,
   setUsers: groupManagementActions.setUsers,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  fetchTopics: topicListPageActions.fetchTopics
 }
 
 export default connect(

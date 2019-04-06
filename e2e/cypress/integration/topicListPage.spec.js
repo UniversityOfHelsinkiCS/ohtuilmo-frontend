@@ -20,7 +20,7 @@ describe('Topic list page', () => {
     const topicName = 'Aihe A'
     const emailAddress = 'aasia@kas'
 
-    it.only('shows a success popup after sending an email', () => {
+    it('shows a success popup after sending an email', () => {
       cy.get(`[data-cy-topic-name="${topicName}"]`)
         .find('button[value="Finnish-Yes"]')
         .click()
