@@ -18,7 +18,9 @@ const TopicSelect = ({
       onChange={(e) => onTopicSelectChange(e.target.value)}
     >
       {topics
-        .filter((topic) => topic.configuration_id === groupConfig)
+        .filter(
+          (topic) => topic.active && topic.configuration_id === groupConfig
+        )
         .map((topic) => (
           <MenuItem key={topic.id} value={topic.id} className="topic-menu-item">
             {topic.content.title}
