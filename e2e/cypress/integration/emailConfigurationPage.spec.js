@@ -178,7 +178,7 @@ describe('Email configuration page', () => {
     })
   })
 
-  describe('loading indicator', () => {
+  describe.skip('loading indicator', () => {
     const initialTemplateText = 'Hei\n\nJotain hyväksyttiin {{topicName}}.'
 
     beforeEach(() => {
