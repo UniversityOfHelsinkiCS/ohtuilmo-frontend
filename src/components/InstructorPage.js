@@ -9,14 +9,11 @@ import './InstructorPage.css'
 //Services
 import peerReviewService from '../services/peerReview'
 
-//Actions
-//import instructorPageActions from '../reducers/actions/instructorPageActions'
-
 const GroupDetails = ({ myGroup }) => {
   if (!myGroup) {
     return (
       <div>
-        <h2>This user is currently not part of any group.</h2>
+        <h2>There are currently no students in your group.</h2>
       </div>
     )
   } else {
@@ -44,22 +41,31 @@ const Answers = ({ answers }) => {
               <hr />
               <br />
               <h1>{projectGroup.group.name}</h1>
-              <h3>Ohjaaja: {projectGroup.group.instructorName}</h3>
+              <h3>Instructor: {projectGroup.group.instructorName}</h3>
               <GroupDetails myGroup={projectGroup.group.studentNames} />
 
               {projectGroup.round1Answers.length > 0 ? (
                 <div>
-                  <h2>Ensimmäisen vertaisarvioinnin vastaukset</h2>
+                  <h2>Peer review answers from the first round.</h2>
                   <GroupAnswers answers={projectGroup.round1Answers} />
                 </div>
-              ) : null}
+              ) : (
+                <h2>
+                  This group hasn't answered to the first peer review round yet.
+                </h2>
+              )}
 
               {projectGroup.round2Answers.length > 0 ? (
                 <div>
-                  <h2>Toisen vertaisarvioinnin vastaukset</h2>
+                  <h2>Peer review answers from the second round.</h2>
                   <GroupAnswers answers={projectGroup.round2Answers} />
                 </div>
-              ) : null}
+              ) : (
+                <h2>
+                  This group hasn't answered to the second peer review round
+                  yet.
+                </h2>
+              )}
 
               <br />
             </div>
@@ -110,6 +116,8 @@ const GroupAnswers = ({ answers }) => {
               <RadioAnswer answers={answers} questionNumber={index} />
             </Question>
           )
+        } else {
+          return <div />
         }
       })}
     </div>
@@ -142,7 +150,7 @@ const RadioAnswer = ({ answers, questionNumber }) => {
           <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
-            <th className="radio-header">Keskiarvo</th>
+            <th className="radio-header">Mean</th>
           </tr>
         </thead>
         <tbody>
