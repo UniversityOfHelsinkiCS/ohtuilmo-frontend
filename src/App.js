@@ -23,6 +23,7 @@ import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 import GroupManagementPage from './components/GroupManagementPage'
 import PeerReviewPage from './components/PeerReviewPage'
 import EmailTemplatesPage from './components/EmailTemplatesPage'
+import InstructorPage from './components/InstructorPage'
 
 // Services
 import tokenCheckService from './services/tokenCheck'
@@ -181,6 +182,11 @@ class App extends Component {
                 exact
                 path="/administration/registrationmanagement"
                 render={() => <RegistrationManagementPage />}
+              />
+              <Route
+                exact
+                path="/instructorpage"
+                render={() => <InstructorPage />}
               />
 
               <Route

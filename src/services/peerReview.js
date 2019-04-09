@@ -10,6 +10,12 @@ const get = async () => {
   })
   return response.data
 }
+const getAnswersByInstructor = async () => {
+  const response = await axios.get(url + '/forInstructor', {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  return response.data
+}
 
 const create = async (peerReview) => {
   const response = await axios.post(url, peerReview, {
@@ -30,4 +36,4 @@ const getReviewQuestions = async (configurationId, reviewRound) => {
   return response.data
 }
 
-export default { get, create, getReviewQuestions }
+export default { get, create, getReviewQuestions, getAnswersByInstructor }
