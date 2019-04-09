@@ -19,7 +19,11 @@ import Divider from '@material-ui/core/Divider'
 import configurationService from '../services/configuration'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
 import reviewQuestionSetService from '../services/peerReviewQuestionSet'
+<<<<<<< eebf4562a4e94f092b125248f84f90bccbbb509f:src/components/ConfigurationPage.js
 
+=======
+import customerReviewQuestionService from '../services/customerReviewQuestionSet'
+>>>>>>> admin selector for customer-review:src/components/AdminPage.js
 // Actions
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -59,6 +63,9 @@ class ConfigurationPage extends React.Component {
 
       const reviewQuestions = await reviewQuestionSetService.getAll()
       this.props.setReviewQuestions(reviewQuestions)
+
+      const customerReviewQuestions = await customerReviewQuestionService.getAll()
+      this.props.setCustomerReviewQuestions(customerReviewQuestions)
     } catch (e) {
       console.log('error happened', e)
       this.props.setError('Error fetching question sets', 5000)
@@ -83,6 +90,9 @@ class ConfigurationPage extends React.Component {
       this.props.updateSelectedReviewQuestions1(event.target.value)
     } else if (event.target.name === 'review2') {
       this.props.updateSelectedReviewQuestions2(event.target.value)
+    } else if (event.target.name === 'customer-review') {
+      this.props.updateSelectedCustomerReviewQuestions(event.target.value)
+      console.log(this.props.selectedCustomerReviewQuestions)
     }
   }
 
@@ -317,6 +327,79 @@ class ConfigurationPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
+
+
+
+
+
+
+
+
+
+          <ExpansionPanel data-cy="expansion-customer-review-questions">
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <p>Customer review questions</p>
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+                <Divider />
+                {this.props.selectedCustomerReviewQuestions && (
+                  <PeerReviewQuestionsTable
+                    questions={this.props.selectedCustomerReviewQuestions.questions}
+                  />
+                )}
+              </div>
+            </ExpansionPanelDetails>
+            <ExpansionPanelActions>
+              <Select
+                name="customer-review"
+                value={
+                  this.props.selectedCustomerReviewQuestions
+                    ? this.props.selectedCustomerReviewQuestions
+                    : 'default'
+                }
+                onChange={this.handleQuestionSetChange}
+              >
+                <MenuItem value="default" disabled>
+                  Pick customer review questions
+                </MenuItem>
+                {this.props.allCustomerReviewQuestions.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                style={{ marginRight: '10px', height: '40px' }}
+                color="primary"
+                variant="contained"
+                onClick={this.goToAddReviewQuestions}
+              >
+                Configure
+              </Button>
+            </ExpansionPanelActions>
+          </ExpansionPanel>
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
         <h3>Customer emails</h3>
         <div>
@@ -373,6 +456,7 @@ class ConfigurationPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+<<<<<<< eebf4562a4e94f092b125248f84f90bccbbb509f:src/components/ConfigurationPage.js
     configurations: state.configurationPage.configurations,
     selectedConfig: state.configurationPage.selectedConfig,
     allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
@@ -382,11 +466,29 @@ const mapStateToProps = (state) => {
     selectedReview2: state.configurationPage.selectedReview2,
     form: state.configurationPage.form,
     isNew: state.configurationPage.isNew
+=======
+    configurations: state.adminPage.configurations,
+    selectedConfig: state.adminPage.selectedConfig,
+    allRegistrationQuestions: state.adminPage.allRegistrationQuestions,
+    allReviewQuestions: state.adminPage.allReviewQuestions,
+    allCustomerReviewQuestions: state.adminPage.allCustomerReviewQuestions,
+    selectedRegister: state.adminPage.selectedRegister,
+    selectedReview1: state.adminPage.selectedReview1,
+    selectedReview2: state.adminPage.selectedReview2,
+    selectedCustomerReviewQuestions: state.adminPage.selectedCustomerReview,
+    form: state.adminPage.form,
+    isNew: state.adminPage.isNew
+>>>>>>> admin selector for customer-review:src/components/AdminPage.js
   }
 }
 
 const mapDispatchToProps = {
+<<<<<<< eebf4562a4e94f092b125248f84f90bccbbb509f:src/components/ConfigurationPage.js
   ...configurationPageActions,
+=======
+  ...adminPageActions,
+  /*   updateSelectedCustomerReviewQuestions: adminPageActions.updateSelectedCustomerReviewQuestions, */
+>>>>>>> admin selector for customer-review:src/components/AdminPage.js
   ...questionsFormPageActions,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,

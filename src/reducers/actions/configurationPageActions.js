@@ -42,6 +42,13 @@ const setReviewQuestions = (questions) => {
   }
 }
 
+const setCustomerReviewQuestions = (questions) => {
+  return {
+    type: 'SET_CUSTOMER_REVIEW_QUESTIONS',
+    payload: questions
+  }
+}
+
 const updateSelectedRegistrationQuestions = (selected) => {
   return {
     type: 'UPDATE_SELECTED_REGISTRATION_QUESTIONS',
@@ -59,6 +66,13 @@ const updateSelectedReviewQuestions1 = (selected) => {
 const updateSelectedReviewQuestions2 = (selected) => {
   return {
     type: 'UPDATE_SELECTED_REVIEW_QUESTIONS_2',
+    payload: selected
+  }
+}
+
+const updateSelectedCustomerReviewQuestions = (selected) => {
+  return {
+    type: 'UPDATE_SELECTED_CUSTOMER_REVIEW_QUESTIONS',
     payload: selected
   }
 }
@@ -97,9 +111,11 @@ export default {
   updateSelectedConfig,
   setRegistrationQuestions,
   setReviewQuestions,
+  setCustomerReviewQuestions,
   updateSelectedRegistrationQuestions,
   updateSelectedReviewQuestions1,
   updateSelectedReviewQuestions2,
+  updateSelectedCustomerReviewQuestions,
   selectNewConfig,
   updateConfigForm,
   updateConfigName,
