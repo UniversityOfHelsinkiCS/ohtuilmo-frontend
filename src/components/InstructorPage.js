@@ -32,54 +32,46 @@ const GroupDetails = ({ myGroup }) => {
 }
 
 const Answers = ({ answers }) => {
-  if (answers) {
-    return (
-      <div>
-        {answers.map((projectGroup, index) => {
-          return (
-            <div key={index}>
-              <hr />
-              <br />
-              <h1>{projectGroup.group.name}</h1>
-              <h3>Instructor: {projectGroup.group.instructorName}</h3>
-              <GroupDetails myGroup={projectGroup.group.studentNames} />
+  return (
+    <div>
+      {answers.map((projectGroup, index) => {
+        return (
+          <div key={index}>
+            <hr />
+            <br />
+            <h1>{projectGroup.group.name}</h1>
+            <h3>Instructor: {projectGroup.group.instructorName}</h3>
+            <GroupDetails myGroup={projectGroup.group.studentNames} />
 
-              {projectGroup.round1Answers.length > 0 ? (
-                <div>
-                  <h2>Peer review answers from the first round.</h2>
-                  <GroupAnswers answers={projectGroup.round1Answers} />
-                </div>
-              ) : (
-                <h2>
-                  This group hasn't answered to the first peer review round yet.
-                </h2>
-              )}
+            {projectGroup.round1Answers.length > 0 ? (
+              <div>
+                <h2>Peer review answers from the first round.</h2>
+                <GroupAnswers answers={projectGroup.round1Answers} />
+              </div>
+            ) : (
+              <h2>
+                This group hasn't answered to the first peer review round yet.
+              </h2>
+            )}
 
-              {projectGroup.round2Answers.length > 0 ? (
-                <div>
-                  <h2>Peer review answers from the second round.</h2>
-                  <GroupAnswers answers={projectGroup.round2Answers} />
-                </div>
-              ) : (
-                <h2>
-                  This group hasn't answered to the second peer review round
-                  yet.
-                </h2>
-              )}
+            {projectGroup.round2Answers.length > 0 ? (
+              <div>
+                <h2>Peer review answers from the second round.</h2>
+                <GroupAnswers answers={projectGroup.round2Answers} />
+              </div>
+            ) : (
+              <h2>
+                This group hasn't answered to the second peer review round
+                yet.
+              </h2>
+            )}
 
-              <br />
-            </div>
-          )
-        })}
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <p>Loading</p>
-      </div>
-    )
-  }
+            <br />
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 const getQuestions = (answers) => {
@@ -117,7 +109,7 @@ const GroupAnswers = ({ answers }) => {
             </Question>
           )
         } else {
-          return <div />
+          return null
         }
       })}
     </div>
@@ -244,19 +236,19 @@ class InstructorPage extends React.Component {
   render() {
     const { answersJson } = this.state
 
-    if (answersJson) {
-      return (
-        <div className="instructor-container">
-          <DownloadButton
-            jsonData={JSON.stringify(answersJson)}
-            fileName="peerReviews.json"
-          />
-          <Answers answers={answersJson} />
-        </div>
-      )
-    } else {
-      return <div>Loading</div>
+    if (!answersJson) {
+      return <div className="instructor-container">Loading</div>
     }
+
+    return (
+      <div className="instructor-container">
+        <DownloadButton
+          jsonData={JSON.stringify(answersJson)}
+          fileName="peerReviews.json"
+        />
+        <Answers answers={answersJson} />
+      </div>
+    )
   }
 }
 
