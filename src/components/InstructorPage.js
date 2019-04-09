@@ -147,6 +147,13 @@ const RadioAnswer = ({ answers, questionNumber }) => {
     <div>
       <table className="radio-button-table">
         <thead>
+          <tr className="radio-inforow">
+            <th />
+            <th colspan={peers.length} className="radio-infoheader">
+              Reviewers
+            </th>
+            <th />
+          </tr>
           <tr className="radio-row">
             <th />
             <PeerHeaders peers={peers} />
