@@ -1,10 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { getUser } from '../utils/functions'
 
 import './InstructorReviewPage.css'
 import questionsJson from './questions/instructor_data'
 //Actions
+import appActions from '../reducers/actions/appActions'
+import * as notificationActions from '../reducers/actions/notificationActions'
 import instructorReviewPageActions from '../reducers/actions/instructorReviewPageActions.js'
 //import groupManagement from '../services/groupManagement'
 
@@ -13,6 +16,7 @@ import TextField from '@material-ui/core/TextField'
 
 import groupManagementService from '../services/groupManagement'
 import Button from '@material-ui/core/Button'
+import instructorReviewService from '../services/instructorReview'
 
 class InstructorReviewPage extends React.Component {
   componentWillMount() {
@@ -80,7 +84,28 @@ class InstructorReviewPage extends React.Component {
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
   Submit = async (event, answerSheet) => {
-    console.log(answerSheet)
+    event.preventDefault()
+
+    const answer = window.confirm(
+      'Answers can not be changed after submitting. Continue?'
+    )
+    if (!answer) return
+    try {
+      const createdReview = await instructorReviewService.create({
+        instructorReview: {
+          answer_sheet: answerSheet,
+          user_id: getUser().student_number
+        }
+      })
+      this.props.setSubmittedReviews(
+        this.props.submittedReviews.concat(createdReview)
+      )
+      this.props.setSuccess('Instructor review saved!')
+      this.props.history.push('/')
+    } catch (e) {
+      console.log('error happened', e)
+      this.props.setError(e.response.data.error)
+    }
   }
   render() {
     const { answerSheet, updateAnswer } = this.props
@@ -113,7 +138,9 @@ const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
     return (
       <div key={index}>
-        <h1>{student.name.first_names + ' ' + student.name.last_name}</h1>
+        <h1 className="student-name">
+          {student.name.first_names + ' ' + student.name.last_name}
+        </h1>
         <Questions
           studentAnswers={student.answers}
           updateAnswer={updateAnswer}
@@ -195,7 +222,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...instructorReviewPageActions
+  ...instructorReviewPageActions,
+  ...notificationActions,
+  ...appActions
 }
 const ConnectedInstructorReviewPage = connect(
   mapStateToProps,
