@@ -21,6 +21,7 @@ import myGroupReducer from './myGroupReducer'
 import emailTemplatesReducer from './emailTemplatesReducer'
 import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
+import customerReviewQuestionsPageReducer from './customerRevieQuestionsPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   questionsFormPage: questionsFormPageReducer,
   registrationQuestionsPage: registrationQuestionsPageReducer,
   peerReviewQuestionsPage: peerReviewQuestionsPageReducer,
+  customerReviewQuestionsPage: customerReviewQuestionsPageReducer,
   registrationManagement: registrationManagementReducer,
   registrations: registrationReducer,
   groupPage: groupPageReducer,

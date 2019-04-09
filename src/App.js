@@ -18,6 +18,7 @@ import Notification from './components/common/Notification'
 import LoadingSpinner from './components/common/LoadingSpinner'
 import RegistrationQuestionsPage from './components/RegistrationQuestionsPage'
 import PeerReviewQuestionsPage from './components/PeerReviewQuestionsPage'
+import CustomerReviewQuestionsPage from './components/CustomerReviewQuestionsPage'
 import RegistrationManagementPage from './components/RegistrationManagementPage'
 import RegistrationDetailsPage from './components/RegistrationDetailsPage'
 import GroupManagementPage from './components/GroupManagementPage'
@@ -146,6 +147,11 @@ class App extends Component {
                 exact
                 path="/administration/participants"
                 render={() => <ParticipantsPage />}
+              />
+              <Route
+                exact
+                path="/administration/customer-review-questions"
+                render={() => <CustomerReviewQuestionsPage />}
               />
               <Route
                 exact
