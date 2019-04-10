@@ -88,7 +88,6 @@ class ConfigurationPage extends React.Component {
       this.props.updateSelectedReviewQuestions2(event.target.value)
     } else if (event.target.name === 'customer-review') {
       this.props.updateSelectedCustomerReviewQuestions(event.target.value)
-      console.log(this.props.selectedCustomerReviewQuestions)
     }
   }
 
@@ -165,7 +164,7 @@ class ConfigurationPage extends React.Component {
           />
         </div>
         <h3>Questions</h3>
-        <div>
+        <div style={{ paddingBottom: 10 }}>
           <ExpansionPanel data-cy="expansion-registration-questions">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
@@ -327,15 +326,6 @@ class ConfigurationPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
-
-
-
-
-
-
-
-
-
           <ExpansionPanel data-cy="expansion-customer-review-questions">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
@@ -352,9 +342,11 @@ class ConfigurationPage extends React.Component {
             <ExpansionPanelDetails>
               <div>
                 <Divider />
-                {this.props.selectedCustomerReviewQuestions && (
+                {this.props.selectedCustomerReview && (
                   <PeerReviewQuestionsTable
-                    questions={this.props.selectedCustomerReviewQuestions.questions}
+                    questions={
+                      this.props.selectedCustomerReview.questions
+                    }
                   />
                 )}
               </div>
@@ -363,8 +355,8 @@ class ConfigurationPage extends React.Component {
               <Select
                 name="customer-review"
                 value={
-                  this.props.selectedCustomerReviewQuestions
-                    ? this.props.selectedCustomerReviewQuestions
+                  this.props.selectedCustomerReview
+                    ? this.props.selectedCustomerReview
                     : 'default'
                 }
                 onChange={this.handleQuestionSetChange}
@@ -388,59 +380,6 @@ class ConfigurationPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-        <h3>Customer emails</h3>
-        <div>
-          <TextField
-            fullWidth
-            label="Hyväksytty (Suomi)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hylätty (Suomi)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hyväksytty (Englanti)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hylätty (Englanti)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
         </div>
         <Button
           color="primary"
@@ -455,18 +394,32 @@ class ConfigurationPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const {
+    configurations,
+    selectedConfig,
+    allRegistrationQuestions,
+    allReviewQuestions,
+    allCustomerReviewQuestions,
+    selectedRegister,
+    selectedReview1,
+    selectedReview2,
+    selectedCustomerReview,
+    form,
+    isNew
+  } = state.configurationPage
+
   return {
-    configurations: state.configurationPage.configurations,
-    selectedConfig: state.configurationPage.selectedConfig,
-    allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
-    allReviewQuestions: state.configurationPage.allReviewQuestions,
-    allCustomerReviewQuestions: state.configurationPage.allCustomerReviewQuestions,
-    selectedRegister: state.configurationPage.selectedRegister,
-    selectedReview1: state.configurationPage.selectedReview1,
-    selectedReview2: state.configurationPage.selectedReview2,
-    selectedCustomerReviewQuestions: state.configurationPage.selectedCustomerReview,
-    form: state.configurationPage.form,
-    isNew: state.configurationPage.isNew
+    configurations,
+    selectedConfig,
+    allRegistrationQuestions,
+    allReviewQuestions,
+    allCustomerReviewQuestions,
+    selectedRegister,
+    selectedReview1,
+    selectedReview2,
+    selectedCustomerReview,
+    form,
+    isNew
   }
 }
 
