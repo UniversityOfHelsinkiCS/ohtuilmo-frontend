@@ -11,13 +11,13 @@ const initialState = {
 
 const customerReviewPageReducer = (state = initialState, action) => {
   switch (action.type) {
-  case 'INITIALIZE_ANSWER_SHEET':
+  case 'CUSTOMER_REVIEW_INITIALIZE_ANSWER_SHEET':
     return {
       ...state,
       answerSheet: action.payload,
       isInitializing: false
     }
-  case 'UPDATE_ANSWER':
+  case 'CUSTOMER_REVIEW_UPDATE_ANSWER':
     return {
       ...state,
       answerSheet: [
@@ -29,37 +29,37 @@ const customerReviewPageReducer = (state = initialState, action) => {
         ...state.answerSheet.slice(action.questionId + 1)
       ]
     }
-  case 'LOADING':
+  case 'CUSTOMER_REVIEW_LOADING':
     return {
       ...state,
       isInitializing: action.payload
     }
-  case 'SET_REVIEW':
+  case 'CUSTOMER_REVIEW_SET_REVIEW':
     return {
       ...state,
       hasReviewed: action.payload
     }
-  case 'SET_QUESTIONS':
+  case 'CUSTOMER_REVIEW_SET_QUESTIONS':
     return {
       ...state,
       questions: action.payload
     }
-  case 'SET_GROUP_NAME':
+  case 'CUSTOMER_REVIEW_SET_GROUP_NAME':
     return{
       ...state,
       groupName: action.payload
     }
-  case 'SET_GROUP_ID':
+  case 'CUSTOMER_REVIEW_SET_GROUP_ID':
     return{
       ...state,
       groupId: action.payload
     }
-  case 'SET_CONFIGURATION':
+  case 'CUSTOMER_REVIEW_SET_CONFIGURATION':
     return{
       ...state,
       configuration: action.payload
     }
-  case 'SET_NOGROUP':
+  case 'CUSTOMER_REVIEW_SET_NOGROUP':
     return{
       ...state,
       noGroup: action.payload,
