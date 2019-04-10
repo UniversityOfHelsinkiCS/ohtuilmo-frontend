@@ -12,5 +12,11 @@ const create = async (instructorReview) => {
 
   return response.data
 }
+const get = async () => {
+  const response = await axios.get(url, {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  return response.data
+}
 
-export default { create }
+export default { get, create }

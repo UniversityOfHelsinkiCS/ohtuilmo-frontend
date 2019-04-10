@@ -3,9 +3,7 @@ const initialState = {
   isInitializing: true,
   groupMembers: [],
   groupsLoading: true,
-  submittedReviews: [],
-  questions: '',
-  configurationId: ''
+  submittedReview: false
 }
 
 const updateQuestionAnswer = (question, answer) => ({ ...question, answer })
@@ -58,10 +56,10 @@ const instructorReviewReducer = (state = initialState, action) => {
       groupMembers: action.payload,
       groupsLoading: false
     }
-  case 'INSTRUCTOR_SET_SUBMITTED_REVIEWS':
+  case 'INSTRUCTOR_SET_SUBMITTED_REVIEW':
     return {
       ...state,
-      submittedReviews: action.payload
+      submittedReview: action.payload
     }
   case 'INSTRUCTOR_LOADING':
     return {

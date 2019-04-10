@@ -34,6 +34,11 @@ class InstructorReviewPage extends React.Component {
       const group = await groupManagementService.getByInstructor()
       if (group) {
         this.fetchInstructorReviewQuestions(group[0].students, questionsJson)
+        const hasAnswered = await instructorReviewService.get()
+        if (hasAnswered.length > 0) {
+          console.log('set submitted true')
+          this.props.setSubmittedReview(true)
+        }
       } else {
         this.props.setLoading(false)
       }
@@ -91,25 +96,30 @@ class InstructorReviewPage extends React.Component {
     )
     if (!answer) return
     try {
-      const createdReview = await instructorReviewService.create({
+      await instructorReviewService.create({
         instructorReview: {
           answer_sheet: answerSheet,
           user_id: getUser().student_number
         }
       })
-      this.props.setSubmittedReviews(
-        this.props.submittedReviews.concat(createdReview)
-      )
+
       this.props.setSuccess('Instructor review saved!')
       this.props.history.push('/')
     } catch (e) {
-      console.log('error happened', e)
-      this.props.setError(e.response.data.error)
+      // console.log('error happened', e)
+      // this.props.setError(e.response.data.error)
     }
   }
   render() {
-    const { answerSheet, updateAnswer } = this.props
-    if (answerSheet) {
+    const { answerSheet, updateAnswer, submittedReview } = this.props
+    console.log('Vastaus:', submittedReview)
+    if (submittedReview === true) {
+      return (
+        <div>
+          <h3>Review sent.</h3>
+        </div>
+      )
+    } else if (answerSheet) {
       return (
         <div>
           <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
@@ -217,7 +227,8 @@ const numberFieldHandler = (value, userId, questionId, updateAnswer) => {
 
 const mapStateToProps = (state) => {
   return {
-    answerSheet: state.instructorReviewPage.answerSheet
+    answerSheet: state.instructorReviewPage.answerSheet,
+    submittedReview: state.instructorReviewPage.submittedReview
   }
 }
 

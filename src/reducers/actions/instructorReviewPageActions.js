@@ -19,10 +19,10 @@ const createStudents = (students) => {
     payload: students
   }
 }
-const setSubmittedReviews = (submittedReviews) => {
+const setSubmittedReview = (submittedReview) => {
   return {
-    type: 'INSTRUCTOR_SET_SUBMITTED_REVIEWS',
-    payload: submittedReviews
+    type: 'INSTRUCTOR_SET_SUBMITTED_REVIEW',
+    payload: submittedReview
   }
 }
 const setLoading = (loading) => {
@@ -50,7 +50,7 @@ export default {
   updateAnswer,
   initializeAnswerSheet,
   createStudents,
-  setSubmittedReviews,
+  setSubmittedReview,
   setLoading,
   setQuestions,
   setConfiguration
