@@ -13,10 +13,17 @@ const updateAnswer = (answer, userId, questionId) => {
     question: questionId
   }
 }
+//Ei käytössä
 const createStudents = (students) => {
   return {
     type: 'INSTRUCTOR_CREATE_STUDENTS',
     payload: students
+  }
+}
+const setGroup = (group) => {
+  return {
+    type: 'SET_INSTRUCTOR_REVIEW_GROUP',
+    payload: group
   }
 }
 const setSubmittedReview = (submittedReview) => {
@@ -25,20 +32,21 @@ const setSubmittedReview = (submittedReview) => {
     payload: submittedReview
   }
 }
+//Ei käytössä
 const setLoading = (loading) => {
   return {
     type: 'INSTRUCTOR_LOADING',
     payload: loading
   }
 }
-
+//Ei käytössä
 const setQuestions = (questions) => {
   return {
     type: 'INSTRUCTOR_SET_QUESTIONS',
     payload: questions
   }
 }
-
+//Ei käytössä
 const setConfiguration = (configurationId) => {
   return {
     type: 'INSTRUCTOR_SET_CONFIGURATION',
@@ -53,5 +61,6 @@ export default {
   setSubmittedReview,
   setLoading,
   setQuestions,
-  setConfiguration
+  setConfiguration,
+  setGroup
 }

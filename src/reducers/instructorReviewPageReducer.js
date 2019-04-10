@@ -3,7 +3,8 @@ const initialState = {
   isInitializing: true,
   groupMembers: [],
   groupsLoading: true,
-  submittedReview: false
+  submittedReview: false,
+  group: []
 }
 
 const updateQuestionAnswer = (question, answer) => ({ ...question, answer })
@@ -47,6 +48,12 @@ const instructorReviewReducer = (state = initialState, action) => {
         action.question,
         action.answer
       )
+    }
+  }
+  case 'SET_INSTRUCTOR_REVIEW_GROUP': {
+    return {
+      ...state,
+      group: action.payload
     }
   }
 

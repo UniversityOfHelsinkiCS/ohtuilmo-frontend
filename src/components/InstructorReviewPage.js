@@ -33,6 +33,7 @@ class InstructorReviewPage extends React.Component {
     try {
       const group = await groupManagementService.getByInstructor()
       if (group) {
+        this.props.setGroup(group)
         this.fetchInstructorReviewQuestions(group[0].students, questionsJson)
         const hasAnswered = await instructorReviewService.get()
         if (hasAnswered.length > 0) {
@@ -88,16 +89,18 @@ class InstructorReviewPage extends React.Component {
     })
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
-  Submit = async (event, answerSheet) => {
+  Submit = async (event, answerSheet, groupName) => {
     event.preventDefault()
 
     const answer = window.confirm(
       'Answers can not be changed after submitting. Continue?'
     )
+    console.log(groupName)
     if (!answer) return
     try {
       await instructorReviewService.create({
         instructorReview: {
+          group_name: groupName,
           answer_sheet: answerSheet,
           user_id: getUser().student_number
         }
@@ -111,24 +114,28 @@ class InstructorReviewPage extends React.Component {
     }
   }
   render() {
-    const { answerSheet, updateAnswer, submittedReview } = this.props
-    console.log('Vastaus:', submittedReview)
+    const { answerSheet, updateAnswer, submittedReview, group } = this.props
+
     if (submittedReview === true) {
       return (
         <div>
           <h3>Review sent.</h3>
         </div>
       )
-    } else if (answerSheet) {
+    } else if (answerSheet && group.length > 0) {
       return (
         <div>
+          <h1>{group[0].groupName}</h1>
+
           <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
           <Button
             margin-right="auto"
             margin-left="auto"
             variant="contained"
             color="primary"
-            onClick={(event) => this.Submit(event, answerSheet)}
+            onClick={(event) =>
+              this.Submit(event, answerSheet, group[0].groupName)
+            }
           >
             Submit
           </Button>
@@ -228,7 +235,8 @@ const numberFieldHandler = (value, userId, questionId, updateAnswer) => {
 const mapStateToProps = (state) => {
   return {
     answerSheet: state.instructorReviewPage.answerSheet,
-    submittedReview: state.instructorReviewPage.submittedReview
+    submittedReview: state.instructorReviewPage.submittedReview,
+    group: state.instructorReviewPage.group
   }
 }
 
