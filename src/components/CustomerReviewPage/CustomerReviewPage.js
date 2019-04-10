@@ -105,7 +105,6 @@ class CustomerReviewPage extends React.Component {
 
         this.fetchCustomerReviewQuestions(this.props.questionObject)
       } else {
-        console.log('päästiin elseen')
         this.props.setNoGroup(true)
       }
     } catch (e) {
