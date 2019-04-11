@@ -18,8 +18,9 @@ import customerReviewService from '../../services/customerReview'
  */
 
 /** @type {InputComponent} */
-const TextInput = ({ value, onChange }) => (
+const TextInput = ({ value, onChange, ...textFieldProps }) => (
   <TextField
+    {...textFieldProps}
     value={value}
     rows="8"
     fullWidth
@@ -30,8 +31,9 @@ const TextInput = ({ value, onChange }) => (
 )
 
 /** @type {InputComponent} */
-const NumberInput = ({ value, onChange }) => (
+const NumberInput = ({ value, onChange, ...inputProps }) => (
   <input
+    {...inputProps}
     type="number"
     value={value}
     style={{ fontSize: 'inherit', lineHeight: '2em' }}
@@ -60,6 +62,7 @@ const Question = ({ question, answer, onAnswerChange }) => {
     <InputComponent
       value={answer}
       onChange={(e) => onAnswerChange(e.target.value)}
+      required
     />
   )
 
@@ -152,7 +155,7 @@ class CustomerReviewPage extends React.Component {
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
 
-  handleSubmit = async (event, answerSheet) => {
+  handleSubmit = async (event) => {
     event.preventDefault()
 
     const answer = window.confirm(
@@ -162,7 +165,7 @@ class CustomerReviewPage extends React.Component {
     try {
       await customerReviewService.create({
         customerReview: {
-          answer_sheet: answerSheet,
+          answer_sheet: this.props.answerSheet,
           group_id: this.props.groupId,
           configuration_id: this.props.configuration
         }
@@ -218,22 +221,24 @@ class CustomerReviewPage extends React.Component {
           <h1 className="customer-review-container__h1">{groupName}</h1>
 
           <Paper elevation={1} className="customer-review-container__main">
-            <Questions
-              questions={questionObject}
-              answerSheet={answerSheet}
-              onAnswerUpdate={updateAnswer}
-            />
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button
-                margin-right="auto"
-                margin-left="auto"
-                variant="contained"
-                color="primary"
-                onClick={(event) => this.handleSubmit(event, answerSheet)}
-              >
-                Submit
-              </Button>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+              <Questions
+                questions={questionObject}
+                answerSheet={answerSheet}
+                onAnswerUpdate={updateAnswer}
+              />
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  margin-right="auto"
+                  margin-left="auto"
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
           </Paper>
         </div>
       )
