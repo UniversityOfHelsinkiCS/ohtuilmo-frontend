@@ -12,46 +12,54 @@ import customerReviewPageActions from '../../reducers/actions/customerReviewPage
 
 import customerReviewService from '../../services/customerReview'
 
-const textFieldHandler = (questionId, updateAnswer) => (e) =>
-  updateAnswer(e.target.value, questionId)
+/**
+ * @typedef {{value: any, onChange: function}} InputComponentProps
+ * @typedef {(props: InputComponentProps) => any} InputComponent
+ */
 
-const TextInput = ({ answerSheet, questionId, updateAnswer }) => (
+/** @type {InputComponent} */
+const TextInput = ({ value, onChange }) => (
   <TextField
-    value={answerSheet[questionId].answer}
+    value={value}
     rows="8"
     fullWidth
     multiline
     variant="outlined"
-    onChange={textFieldHandler(questionId, updateAnswer)}
+    onChange={onChange}
   />
 )
 
-const NumberInput = ({ answerSheet, questionId, updateAnswer }) => (
+/** @type {InputComponent} */
+const NumberInput = ({ value, onChange }) => (
   <input
     type="number"
-    value={answerSheet[questionId].answer}
+    value={value}
     style={{ fontSize: 'inherit', lineHeight: '2em' }}
     variant="outlined"
-    onChange={textFieldHandler(questionId, updateAnswer)}
+    onChange={onChange}
   />
 )
 
+/**
+ * Gets the input component for the specified question type, or returns
+ * undefined if none found.
+ * @returns {InputComponent | undefined}
+ */
 const getQuestionInputComponent = (type) => {
-  const components = {
+  const typeToComponent = {
     text: TextInput,
     number: NumberInput
   }
-  return components[type]
+  return typeToComponent[type]
 }
 
-const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
+const Question = ({ question, answer, onAnswerChange }) => {
   const InputComponent = getQuestionInputComponent(question.type)
 
   const input = InputComponent && (
     <InputComponent
-      answerSheet={answerSheet}
-      questionId={questionId}
-      updateAnswer={updateAnswer}
+      value={answer}
+      onChange={(e) => onAnswerChange(e.target.value)}
     />
   )
 
@@ -66,17 +74,19 @@ const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
   )
 }
 
-const Questions = ({ questions, answerSheet, updateAnswer }) => {
+const Questions = ({ questions, answerSheet, onAnswerUpdate }) => {
   return (
     <div className="customer-review-questions">
       {questions.map((question, questionId) => {
+        const currentAnswer = answerSheet[questionId].answer
+        const onAnswerChange = (answer) => onAnswerUpdate(answer, questionId)
+
         return (
           <Question
             key={questionId}
             question={question}
-            questionId={questionId}
-            answerSheet={answerSheet}
-            updateAnswer={updateAnswer}
+            answer={currentAnswer}
+            onAnswerChange={onAnswerChange}
           />
         )
       })}
@@ -211,7 +221,7 @@ class CustomerReviewPage extends React.Component {
             <Questions
               questions={questionObject}
               answerSheet={answerSheet}
-              updateAnswer={updateAnswer}
+              onAnswerUpdate={updateAnswer}
             />
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Button
