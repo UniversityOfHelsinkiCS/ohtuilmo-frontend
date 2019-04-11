@@ -48,6 +48,13 @@ const setGroupId = (groupId) => {
   }
 }
 
+const setTopicId = (topicId) => {
+  return {
+    type: 'CUSTOMER_REVIEW_SET_TOPIC_ID',
+    payload: topicId
+  }
+}
+
 const setConfiguration = (configurationId) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_CONFIGURATION',
@@ -70,6 +77,7 @@ export default {
   setQuestions,
   setGroupName,
   setGroupId,
+  setTopicId,
   setConfiguration,
   setNoGroup
 }

@@ -137,11 +137,11 @@ class CustomerReviewPage extends React.Component {
     const id = this.props.match.params.id
     try {
       const group = await customerReviewService.getDataForReview(id)
-
       if (group) {
         this.props.setReview(group.hasAnswered)
         this.props.setGroupName(group.groupName)
         this.props.setGroupId(group.groupId)
+        this.props.setTopicId(group.topicId)
         this.props.setConfiguration(group.configuration)
         const reviewQuestionSet = await customerReviewService.getReviewQuestions(
           group.configuration
@@ -211,6 +211,7 @@ class CustomerReviewPage extends React.Component {
         customerReview: {
           answer_sheet: this.props.answerSheet,
           group_id: this.props.groupId,
+          topic_id: this.props.topicId,
           configuration_id: this.props.configuration
         }
       })
@@ -299,6 +300,7 @@ const mapStateToProps = (state) => {
     questionObject: state.customerReviewPage.questions,
     groupName: state.customerReviewPage.groupName,
     groupId: state.customerReviewPage.groupId,
+    topicId: state.customerReviewPage.topicId,
     configuration: state.customerReviewPage.configuration,
     noGroup: state.customerReviewPage.noGroup
   }
@@ -312,6 +314,7 @@ const mapDispatchToProps = {
   setQuestions: customerReviewPageActions.setQuestions,
   setGroupName: customerReviewPageActions.setGroupName,
   setGroupId: customerReviewPageActions.setGroupId,
+  setTopicId: customerReviewPageActions.setTopicId,
   setConfiguration: customerReviewPageActions.setConfiguration,
   setNoGroup: customerReviewPageActions.setNoGroup,
   setError: notificationActions.setError,

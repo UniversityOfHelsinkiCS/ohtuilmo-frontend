@@ -5,6 +5,7 @@ const initialState = {
   questions: '',
   groupName: '',
   groupId: '',
+  topicId: '',
   configuration: '',
   noGroup: false
 }
@@ -53,6 +54,11 @@ const customerReviewPageReducer = (state = initialState, action) => {
     return{
       ...state,
       groupId: action.payload
+    }
+  case 'CUSTOMER_REVIEW_SET_TOPIC_ID':
+    return{
+      ...state,
+      topicId: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_CONFIGURATION':
     return{
