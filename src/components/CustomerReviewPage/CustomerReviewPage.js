@@ -2,17 +2,73 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import './CustomerReviewPage.css'
+import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import customerReviewPageActions from '../../reducers/actions/customerReviewPageActions'
 
 import customerReviewService from '../../services/customerReview'
 
+const textFieldHandler = (questionId, updateAnswer) => (e) =>
+  updateAnswer(e.target.value, questionId)
+
+const TextInput = ({ answerSheet, questionId, updateAnswer }) => (
+  <TextField
+    value={answerSheet[questionId].answer}
+    rows="8"
+    fullWidth
+    multiline
+    variant="outlined"
+    onChange={textFieldHandler(questionId, updateAnswer)}
+  />
+)
+
+const NumberInput = ({ answerSheet, questionId, updateAnswer }) => (
+  <input
+    type="number"
+    value={answerSheet[questionId].answer}
+    style={{ fontSize: 'inherit', lineHeight: '2em' }}
+    variant="outlined"
+    onChange={textFieldHandler(questionId, updateAnswer)}
+  />
+)
+
+const getQuestionInputComponent = (type) => {
+  const components = {
+    text: TextInput,
+    number: NumberInput
+  }
+  return components[type]
+}
+
+const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
+  const InputComponent = getQuestionInputComponent(question.type)
+
+  const input = InputComponent && (
+    <InputComponent
+      answerSheet={answerSheet}
+      questionId={questionId}
+      updateAnswer={updateAnswer}
+    />
+  )
+
+  return (
+    <div className="customer-review-box">
+      <Typography variant="h6" className="customer-review-box__header">
+        {question.header}
+      </Typography>
+      <p>{question.description}</p>
+      {input}
+    </div>
+  )
+}
+
 const Questions = ({ questions, answerSheet, updateAnswer }) => {
   return (
-    <div>
+    <div className="customer-review-questions">
       {questions.map((question, questionId) => {
         return (
           <Question
@@ -28,65 +84,7 @@ const Questions = ({ questions, answerSheet, updateAnswer }) => {
   )
 }
 
-const Question = ({ question, questionId, answerSheet, updateAnswer }) => {
-  if (question.type === 'text') {
-    return (
-      <div className="customer-review-box">
-        <h3 className="customer-review-box__h3">{question.header}</h3>
-        <p>{question.description}</p>
-
-        <TextField
-          value={answerSheet[questionId].answer}
-          rows="8"
-          style={{ width: 800 }}
-          multiline
-          variant="outlined"
-          onChange={(e) =>
-            textFieldHandler(e.target.value, questionId, updateAnswer)
-          }
-        />
-      </div>
-    )
-  } else if (question.type === 'number') {
-    return (
-      <div className="customer-review-box">
-        <h3 className="customer-review-box__h3">{question.header}</h3>
-        <p>{question.description}</p>
-
-        <input
-          type="number"
-          value={answerSheet[questionId].answer}
-          style={{ fontSize: '16', lineHeight: '2em' }}
-          variant="outlined"
-          onChange={(e) =>
-            textFieldHandler(e.target.value, questionId, updateAnswer)
-          }
-        />
-      </div>
-    )
-  } else if (question.type === 'info') {
-    return (
-      <div className="customer-review-box">
-        <h3>{question.header}</h3>
-        <p>{question.description}</p>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <p>Incorrect question type</p>
-      </div>
-    )
-  }
-}
-
-const textFieldHandler = (value, questionId, updateAnswer) => {
-  updateAnswer(value, questionId)
-}
-
 class CustomerReviewPage extends React.Component {
-  componentWillMount() {}
-
   async componentDidMount() {
     const id = this.props.match.params.id
     try {
@@ -209,22 +207,24 @@ class CustomerReviewPage extends React.Component {
           <h1 className="customer-review-container__h1">Customer review</h1>
           <h1 className="customer-review-container__h1">{groupName}</h1>
 
-          <Questions
-            questions={questionObject}
-            answerSheet={answerSheet}
-            updateAnswer={updateAnswer}
-          />
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              margin-right="auto"
-              margin-left="auto"
-              variant="contained"
-              color="primary"
-              onClick={(event) => this.Submit(event, answerSheet)}
-            >
-              Submit
-            </Button>
-          </div>
+          <Paper elevation={1} className="customer-review-container__main">
+            <Questions
+              questions={questionObject}
+              answerSheet={answerSheet}
+              updateAnswer={updateAnswer}
+            />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                margin-right="auto"
+                margin-left="auto"
+                variant="contained"
+                color="primary"
+                onClick={(event) => this.Submit(event, answerSheet)}
+              >
+                Submit
+              </Button>
+            </div>
+          </Paper>
         </div>
       )
     }
