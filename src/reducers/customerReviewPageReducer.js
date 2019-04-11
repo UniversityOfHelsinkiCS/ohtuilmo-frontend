@@ -46,27 +46,27 @@ const customerReviewPageReducer = (state = initialState, action) => {
       questions: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_GROUP_NAME':
-    return{
+    return {
       ...state,
       groupName: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_GROUP_ID':
-    return{
+    return {
       ...state,
       groupId: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_TOPIC_ID':
-    return{
+    return {
       ...state,
       topicId: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_CONFIGURATION':
-    return{
+    return {
       ...state,
       configuration: action.payload
     }
   case 'CUSTOMER_REVIEW_SET_NOGROUP':
-    return{
+    return {
       ...state,
       noGroup: action.payload,
       isInitializing: false

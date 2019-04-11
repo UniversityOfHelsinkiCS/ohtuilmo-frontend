@@ -62,7 +62,7 @@ const setConfiguration = (configurationId) => {
   }
 }
 
-const setNoGroup =  (noGroupFound) => {
+const setNoGroup = (noGroupFound) => {
   return {
     type: 'CUSTOMER_REVIEW_SET_NOGROUP',
     payload: noGroupFound

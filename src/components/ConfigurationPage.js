@@ -344,9 +344,7 @@ class ConfigurationPage extends React.Component {
                 <Divider />
                 {this.props.selectedCustomerReview && (
                   <PeerReviewQuestionsTable
-                    questions={
-                      this.props.selectedCustomerReview.questions
-                    }
+                    questions={this.props.selectedCustomerReview.questions}
                   />
                 )}
               </div>

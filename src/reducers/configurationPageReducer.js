@@ -117,10 +117,11 @@ const configurationPageReducer = (state = initialState, action) => {
         name: action.payload.name,
         content: action.payload.content,
         registration_question_set_id:
-            action.payload.registration_question_set_id,
+          action.payload.registration_question_set_id,
         review_question_set_1_id: action.payload.review_question_set_1_id,
         review_question_set_2_id: action.payload.review_question_set_2_id,
-        customer_review_question_set_id: action.payload.customer_review_question_set_id
+        customer_review_question_set_id:
+          action.payload.customer_review_question_set_id
       }
     }
   case 'UPDATE_CONFIG_NAME':
