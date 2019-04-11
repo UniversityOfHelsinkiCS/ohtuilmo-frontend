@@ -21,7 +21,7 @@ import myGroupReducer from './myGroupReducer'
 import emailTemplatesReducer from './emailTemplatesReducer'
 import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
-import customerReviewQuestionsPageReducer from './customerRevieQuestionsPageReducer'
+import customerReviewQuestionsPageReducer from './customerReviewQuestionsPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
