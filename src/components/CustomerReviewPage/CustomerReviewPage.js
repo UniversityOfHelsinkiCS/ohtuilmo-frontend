@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
+import Radio from '@material-ui/core/Radio'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import RadioGroup from '@material-ui/core/RadioGroup'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import customerReviewPageActions from '../../reducers/actions/customerReviewPageActions'
@@ -13,12 +16,15 @@ import customerReviewPageActions from '../../reducers/actions/customerReviewPage
 import customerReviewService from '../../services/customerReview'
 
 /**
- * @typedef {{value: any, onChange: function}} InputComponentProps
+ * @typedef {{value: any, onValueChange: function, options?: object}} InputComponentProps
  * @typedef {(props: InputComponentProps) => any} InputComponent
  */
 
+const passEventValueTo = (callback) => (e) => callback(e.target.value)
+const withParseInt = (callback) => (value) => callback(parseInt(value, 10))
+
 /** @type {InputComponent} */
-const TextInput = ({ value, onChange, ...textFieldProps }) => (
+const TextInput = ({ value, onValueChange, ...textFieldProps }) => (
   <TextField
     {...textFieldProps}
     value={value}
@@ -26,21 +32,48 @@ const TextInput = ({ value, onChange, ...textFieldProps }) => (
     fullWidth
     multiline
     variant="outlined"
-    onChange={onChange}
+    onChange={passEventValueTo(onValueChange)}
   />
 )
 
 /** @type {InputComponent} */
-const NumberInput = ({ value, onChange, ...inputProps }) => (
+const NumberInput = ({ value, onValueChange, ...inputProps }) => (
   <input
     {...inputProps}
     type="number"
     value={value}
     style={{ fontSize: 'inherit', lineHeight: '2em' }}
     variant="outlined"
-    onChange={onChange}
+    onChange={passEventValueTo(withParseInt(onValueChange))}
   />
 )
+
+const defaultOptions = ['1', '2', '3', '4', '5']
+
+/** @type {InputComponent} */
+const RangeInput = ({ value, onValueChange, options }) => {
+  const makeRadio = () => <Radio color="primary" />
+
+  const inputs = (options || defaultOptions).map((option) => (
+    <FormControlLabel
+      key={option}
+      value={`${option}`}
+      control={makeRadio()}
+      label={`${option}`}
+      labelPlacement="top"
+    />
+  ))
+
+  return (
+    <RadioGroup
+      value={`${value}`}
+      onChange={passEventValueTo(onValueChange)}
+      row
+    >
+      {inputs}
+    </RadioGroup>
+  )
+}
 
 /**
  * Gets the input component for the specified question type, or returns
@@ -50,7 +83,8 @@ const NumberInput = ({ value, onChange, ...inputProps }) => (
 const getQuestionInputComponent = (type) => {
   const typeToComponent = {
     text: TextInput,
-    number: NumberInput
+    number: NumberInput,
+    range: RangeInput
   }
   return typeToComponent[type]
 }
@@ -61,7 +95,8 @@ const Question = ({ question, answer, onAnswerChange }) => {
   const input = InputComponent && (
     <InputComponent
       value={answer}
-      onChange={(e) => onAnswerChange(e.target.value)}
+      onValueChange={onAnswerChange}
+      options={question.options}
       required
     />
   )
@@ -142,14 +177,23 @@ class CustomerReviewPage extends React.Component {
       }
     }
 
+    const initializeRangeAnswer = (question, questionId) => ({
+      type: 'range',
+      questionHeader: question.header,
+      questionOptions: question.options,
+      id: questionId,
+      answer: null
+    })
+
+    const initializers = {
+      number: initializeNumberAnswer,
+      text: initializeTextAnswer,
+      range: initializeRangeAnswer
+    }
+
     const tempAnswerSheet = questionObject.map((question, questionID) => {
-      if (question.type === 'text') {
-        return initializeTextAnswer(question, questionID)
-      } else if (question.type === 'number') {
-        return initializeNumberAnswer(question, questionID)
-      } else {
-        return question
-      }
+      const initializer = initializers[question.type]
+      return initializer ? initializer(question, questionID) : question
     })
 
     this.props.initializeAnswerSheet(tempAnswerSheet)
