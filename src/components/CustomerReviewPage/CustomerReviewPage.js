@@ -152,7 +152,7 @@ class CustomerReviewPage extends React.Component {
     this.props.initializeAnswerSheet(tempAnswerSheet)
   }
 
-  Submit = async (event, answerSheet) => {
+  handleSubmit = async (event, answerSheet) => {
     event.preventDefault()
 
     const answer = window.confirm(
@@ -229,7 +229,7 @@ class CustomerReviewPage extends React.Component {
                 margin-left="auto"
                 variant="contained"
                 color="primary"
-                onClick={(event) => this.Submit(event, answerSheet)}
+                onClick={(event) => this.handleSubmit(event, answerSheet)}
               >
                 Submit
               </Button>
