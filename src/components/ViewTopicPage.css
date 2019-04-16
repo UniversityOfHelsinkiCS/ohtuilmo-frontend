@@ -6,3 +6,11 @@
 .topic-view {
   max-width: 800px;
 }
+
+.topics-container__list-headings {
+  float: right;
+}
+
+.topics-container__list-headings_active {
+  padding-right: 18px;
+}

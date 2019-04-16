@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import orange from '@material-ui/core/colors/orange'
 
 import emailService from '../services/email'
 import { getEmailTemplateRenderer } from '../utils/functions'
@@ -27,12 +28,23 @@ import configurationPageActions from '../reducers/actions/configurationPageActio
 import LoadingCover from './common/LoadingCover'
 import './TopicListPage.css'
 
-const buttonTheme = createMuiTheme({
+const buttonTheme1 = createMuiTheme({
   palette: {
     primary: green,
     secondary: red
   }
 })
+
+const buttonTheme2 = createMuiTheme({
+  palette: {
+    primary: green,
+    secondary: orange
+  }
+})
+
+const reviewButtonStyle = {
+  width: 140
+}
 
 class TopicListPage extends React.Component {
   async componentWillMount() {
@@ -143,7 +155,6 @@ class TopicListPage extends React.Component {
 
   render() {
     const { filter, topics, isLoading } = this.props
-
     const configurationMenuItems = () => {
       const { configurations } = this.props
       return []
@@ -173,9 +184,23 @@ class TopicListPage extends React.Component {
         >
           {configurationMenuItems()}
         </Select>
-        <Typography align="right" variant="subtitle1">
-          Active
-        </Typography>
+        <div
+          style={{ display: 'flex' }}
+          class="topics-container__list-headings"
+        >
+          <Typography
+            variant="h3"
+            class="topics-container__list-headings_active"
+          >
+            Active
+          </Typography>
+          <Typography
+            variant="h3"
+            class="topics-container__list-headings_review"
+          >
+            Customer review
+          </Typography>
+        </div>
 
         {topics.map((topic) => {
           if (this.showTopic(topic)) {
@@ -192,7 +217,7 @@ class TopicListPage extends React.Component {
                     secondary={`created: ${topic.createdAt}`}
                   />
                   <ListItemSecondaryAction>
-                    <MuiThemeProvider theme={buttonTheme}>
+                    <MuiThemeProvider theme={buttonTheme1}>
                       <Button
                         color="primary"
                         variant="outlined"
@@ -246,6 +271,7 @@ class TopicListPage extends React.Component {
                       checked={topic.active}
                       onChange={this.handleActiveChange(topic)}
                     />
+                    <CustomerReviewAnswer hasReviewed={topic.hasReviewed} />
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider variant="inset" />
@@ -256,6 +282,31 @@ class TopicListPage extends React.Component {
           }
         })}
       </div>
+    )
+  }
+}
+
+const CustomerReviewAnswer = ({ hasReviewed }) => {
+  if (hasReviewed === true) {
+    return (
+      <MuiThemeProvider theme={buttonTheme2}>
+        <Button
+          color="primary"
+          variant="outlined"
+          value="Answer-Yes"
+          style={reviewButtonStyle}
+        >
+          Answered
+        </Button>
+      </MuiThemeProvider>
+    )
+  } else {
+    return (
+      <MuiThemeProvider theme={buttonTheme2}>
+        <Button color="secondary" variant="outlined" value="Answer-No">
+          Not answered
+        </Button>
+      </MuiThemeProvider>
     )
   }
 }
