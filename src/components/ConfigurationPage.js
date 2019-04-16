@@ -19,7 +19,7 @@ import Divider from '@material-ui/core/Divider'
 import configurationService from '../services/configuration'
 import registrationQuestionSetService from '../services/registrationQuestionSet'
 import reviewQuestionSetService from '../services/peerReviewQuestionSet'
-
+import customerReviewQuestionService from '../services/customerReviewQuestionSet'
 // Actions
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -59,6 +59,9 @@ class ConfigurationPage extends React.Component {
 
       const reviewQuestions = await reviewQuestionSetService.getAll()
       this.props.setReviewQuestions(reviewQuestions)
+
+      const customerReviewQuestions = await customerReviewQuestionService.getAll()
+      this.props.setCustomerReviewQuestions(customerReviewQuestions)
     } catch (e) {
       console.log('error happened', e)
       this.props.setError('Error fetching question sets', 5000)
@@ -83,6 +86,8 @@ class ConfigurationPage extends React.Component {
       this.props.updateSelectedReviewQuestions1(event.target.value)
     } else if (event.target.name === 'review2') {
       this.props.updateSelectedReviewQuestions2(event.target.value)
+    } else if (event.target.name === 'customer-review') {
+      this.props.updateSelectedCustomerReviewQuestions(event.target.value)
     }
   }
 
@@ -130,6 +135,10 @@ class ConfigurationPage extends React.Component {
     this.props.history.push('/administration/peer-review-questions')
   }
 
+  goToAddCustomerReviewQuestions = () => {
+    this.props.history.push('/administration/customer-review-questions')
+  }
+
   render() {
     return (
       <div className="admin-page-container">
@@ -155,7 +164,7 @@ class ConfigurationPage extends React.Component {
           />
         </div>
         <h3>Questions</h3>
-        <div>
+        <div style={{ paddingBottom: 10 }}>
           <ExpansionPanel data-cy="expansion-registration-questions">
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <div
@@ -317,47 +326,58 @@ class ConfigurationPage extends React.Component {
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>
-        </div>
-        <h3>Customer emails</h3>
-        <div>
-          <TextField
-            fullWidth
-            label="Hyväksytty (Suomi)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hylätty (Suomi)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hyväksytty (Englanti)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            label="Hylätty (Englanti)"
-            type="text"
-            margin="normal"
-            value=""
-            //  onChange={(e) => this.props.updateEmail(e.target.value)}
-          />
+          <ExpansionPanel data-cy="expansion-customer-review-questions">
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <p>Customer review questions</p>
+              </div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <div>
+                <Divider />
+                {this.props.selectedCustomerReview && (
+                  <PeerReviewQuestionsTable
+                    questions={this.props.selectedCustomerReview.questions}
+                  />
+                )}
+              </div>
+            </ExpansionPanelDetails>
+            <ExpansionPanelActions>
+              <Select
+                name="customer-review"
+                value={
+                  this.props.selectedCustomerReview
+                    ? this.props.selectedCustomerReview
+                    : 'default'
+                }
+                onChange={this.handleQuestionSetChange}
+              >
+                <MenuItem value="default" disabled>
+                  Pick customer review questions
+                </MenuItem>
+                {this.props.allCustomerReviewQuestions.map((item) => (
+                  <MenuItem key={item.id} value={item}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                style={{ marginRight: '10px', height: '40px' }}
+                color="primary"
+                variant="contained"
+                onClick={this.goToAddCustomerReviewQuestions}
+              >
+                Configure
+              </Button>
+            </ExpansionPanelActions>
+          </ExpansionPanel>
         </div>
         <Button
           color="primary"
@@ -372,16 +392,32 @@ class ConfigurationPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const {
+    configurations,
+    selectedConfig,
+    allRegistrationQuestions,
+    allReviewQuestions,
+    allCustomerReviewQuestions,
+    selectedRegister,
+    selectedReview1,
+    selectedReview2,
+    selectedCustomerReview,
+    form,
+    isNew
+  } = state.configurationPage
+
   return {
-    configurations: state.configurationPage.configurations,
-    selectedConfig: state.configurationPage.selectedConfig,
-    allRegistrationQuestions: state.configurationPage.allRegistrationQuestions,
-    allReviewQuestions: state.configurationPage.allReviewQuestions,
-    selectedRegister: state.configurationPage.selectedRegister,
-    selectedReview1: state.configurationPage.selectedReview1,
-    selectedReview2: state.configurationPage.selectedReview2,
-    form: state.configurationPage.form,
-    isNew: state.configurationPage.isNew
+    configurations,
+    selectedConfig,
+    allRegistrationQuestions,
+    allReviewQuestions,
+    allCustomerReviewQuestions,
+    selectedRegister,
+    selectedReview1,
+    selectedReview2,
+    selectedCustomerReview,
+    form,
+    isNew
   }
 }
 
