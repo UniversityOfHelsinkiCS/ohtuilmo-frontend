@@ -33,8 +33,13 @@ export const loginToken = () => {
         dispatch({ type: 'LOGIN_TOKEN', payload: user })
       }
     } catch (error) {
-      // ??
-      dispatch({ type: 'LOGOUT_USER' })
+      if (error.response.status === 401) {
+        // token malformed
+        console.log('error logging in with token:', error)
+        dispatch({ type: 'LOGOUT_USER' })
+      } else {
+        console.log('error:', error.response)
+      }
     }
   }
 }

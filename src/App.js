@@ -76,26 +76,8 @@ class App extends Component {
     }
   }
 
-  /*   userCheck = async () => {
-    let token
-    try {
-      token = JSON.parse(window.localStorage.getItem('loggedInUser')).token
-      await tokenCheckService.userCheck(token)
-      this.props.updateUser(
-        JSON.parse(window.localStorage.getItem('loggedInUser'))
-      )
-      return true
-    } catch (e) {
-      console.log(e.response)
-      this.props.updateUser('')
-      return false
-    }
-  } */
-
   logout() {
     this.props.updateIsLoading(true)
-    /* window.localStorage.clear()
-    this.props.updateUser('') */
     this.props.logoutUser()
     this.props.clearRegistrations()
     this.props.updateIsLoading(false)
