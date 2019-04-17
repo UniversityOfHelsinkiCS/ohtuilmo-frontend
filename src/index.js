@@ -12,18 +12,18 @@ const theme = createMuiTheme({
     primary: {
       main: '#fdd835'
     },
-    secondary: amber,
+    secondary: amber
   },
   typography: {
-    useNextVariants: true,
-  },
+    useNextVariants: true
+  }
 })
 
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
       <App />
-    </ MuiThemeProvider>
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')
 )

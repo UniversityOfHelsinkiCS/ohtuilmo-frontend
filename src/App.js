@@ -28,9 +28,6 @@ import InstructorPage from './components/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
 
-// Services
-import tokenCheckService from './services/tokenCheck'
-
 // Actions
 import appActions from './reducers/actions/appActions'
 import * as notificationActions from './reducers/actions/notificationActions'
@@ -38,6 +35,7 @@ import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
+import * as userActions from './reducers/actions/userActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -58,9 +56,10 @@ class App extends Component {
 
   componentWillMount() {
     this.fetchRegistrationManagement()
+
     if (window.localStorage.getItem('loggedInUser')) {
       this.props.updateIsLoading(true)
-      this.userCheck()
+      this.props.loginWithToken()
       this.props.updateIsLoading(false)
     }
   }
@@ -77,7 +76,7 @@ class App extends Component {
     }
   }
 
-  userCheck = async () => {
+  /*   userCheck = async () => {
     let token
     try {
       token = JSON.parse(window.localStorage.getItem('loggedInUser')).token
@@ -91,12 +90,13 @@ class App extends Component {
       this.props.updateUser('')
       return false
     }
-  }
+  } */
 
   logout() {
     this.props.updateIsLoading(true)
-    window.localStorage.clear()
-    this.props.updateUser('')
+    /* window.localStorage.clear()
+    this.props.updateUser('') */
+    this.props.logoutUser()
     this.props.clearRegistrations()
     this.props.updateIsLoading(false)
     history.push('/login')
@@ -239,7 +239,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.loginPage.user
+    user: state.user
   }
 }
 
@@ -250,7 +250,10 @@ const mapDispatchToProps = {
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
-  ...peerReviewPageActions
+  ...peerReviewPageActions,
+  loginUser: userActions.loginUser,
+  logoutUser: userActions.logoutUser,
+  loginWithToken: userActions.loginToken
 }
 
 const ConnectedApp = connect(

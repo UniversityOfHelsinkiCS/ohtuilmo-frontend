@@ -302,7 +302,7 @@ class RegistrationPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.loginPage.user,
+    user: state.user,
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,

@@ -8,6 +8,7 @@ import loginService from '../services/login'
 import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
+import * as userActions from '../reducers/actions/userActions'
 import './LoginPage.css'
 
 class LoginPage extends React.Component {
@@ -28,8 +29,7 @@ class LoginPage extends React.Component {
         password
       })
 
-      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-      this.props.updateUser(JSON.parse(window.localStorage.getItem('loggedInUser')))
+      this.props.loginUser(user)
       this.props.setSuccess('Login successful!', 3000)
       this.props.clearForm()
       this.props.updateIsLoading(false)
@@ -53,30 +53,41 @@ class LoginPage extends React.Component {
     return (
       <div className="loginpage-container">
         <h1 className="loginpage-header">Login</h1>
-        <p className="loginpage-information">University of Helsinki account required for login.</p>
+        <p className="loginpage-information">
+          University of Helsinki account required for login.
+        </p>
         <form onSubmit={this.login} className="loginpage-form">
           <div>
             <TextField
               className="username-field"
               error={this.props.username.length > 20 ? true : false}
-              type='text'
-              name='username'
-              label='Username'
+              type="text"
+              name="username"
+              label="Username"
               value={this.props.username}
               onChange={(e) => this.props.updateUsername(e.target.value)}
             />
           </div>
           <div>
-            <TextField className="password-field"
+            <TextField
+              className="password-field"
               error={this.props.password.length > 20 ? true : false}
-              type='password'
-              name='password'
-              label='Password'
+              type="password"
+              name="password"
+              label="Password"
               value={this.props.password}
               onChange={(e) => this.props.updatePassword(e.target.value)}
             />
           </div>
-          <Button className="loginpage-button" style={{ marginTop: '30px' }} variant="outlined" color="default" type="submit">Log in</Button>
+          <Button
+            className="loginpage-button"
+            style={{ marginTop: '30px' }}
+            variant="outlined"
+            color="default"
+            type="submit"
+          >
+            Log in
+          </Button>
         </form>
       </div>
     )
@@ -96,7 +107,8 @@ const mapDispatchToProps = {
   ...loginPageActions,
   ...appActions,
   setError: notificationActions.setError,
-  setSuccess: notificationActions.setSuccess
+  setSuccess: notificationActions.setSuccess,
+  loginUser: userActions.loginUser
 }
 
 const ConnectedLoginPage = connect(

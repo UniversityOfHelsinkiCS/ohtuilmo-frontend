@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 import './LandingPage.css'
 
@@ -48,7 +49,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  fetchRegistrations: registrationActions.fetchRegistrations
+  fetchRegistrations: registrationActions.fetchRegistrations,
+  setError: notificationActions.setError,
+  setSuccess: notificationActions.setSuccess
 }
 
 const ConnectedLandingPage = connect(
