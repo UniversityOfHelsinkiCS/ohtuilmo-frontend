@@ -12,11 +12,12 @@ const create = async (instructorReview) => {
 
   return response.data
 }
-const get = async () => {
-  const response = await axios.get(url, {
+
+const getAllAnsweredGroupId = async () => {
+  const response = await axios.get(url + '/getAllAnsweredGroupId', {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
   return response.data
 }
 
-export default { get, create }
+export default { create, getAllAnsweredGroupId }

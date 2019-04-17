@@ -13,17 +13,11 @@ const updateAnswer = (answer, userId, questionId) => {
     question: questionId
   }
 }
-//Ei käytössä
-const createStudents = (students) => {
+
+const setGroups = (groups) => {
   return {
-    type: 'INSTRUCTOR_CREATE_STUDENTS',
-    payload: students
-  }
-}
-const setGroup = (group) => {
-  return {
-    type: 'SET_INSTRUCTOR_REVIEW_GROUP',
-    payload: group
+    type: 'SET_INSTRUCTOR_REVIEW_GROUPS',
+    payload: groups
   }
 }
 const setSubmittedReview = (submittedReview) => {
@@ -32,35 +26,18 @@ const setSubmittedReview = (submittedReview) => {
     payload: submittedReview
   }
 }
-//Ei käytössä
-const setLoading = (loading) => {
+
+const selectGroup = (groupId) => {
   return {
-    type: 'INSTRUCTOR_LOADING',
-    payload: loading
-  }
-}
-//Ei käytössä
-const setQuestions = (questions) => {
-  return {
-    type: 'INSTRUCTOR_SET_QUESTIONS',
-    payload: questions
-  }
-}
-//Ei käytössä
-const setConfiguration = (configurationId) => {
-  return {
-    type: 'INSTRUCTOR_SET_CONFIGURATION',
-    payload: configurationId
+    type: 'INSTRUCTOR_SELECT_GROUP',
+    payload: groupId
   }
 }
 
 export default {
   updateAnswer,
   initializeAnswerSheet,
-  createStudents,
   setSubmittedReview,
-  setLoading,
-  setQuestions,
-  setConfiguration,
-  setGroup
+  selectGroup,
+  setGroups
 }

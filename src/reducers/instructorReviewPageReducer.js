@@ -4,7 +4,8 @@ const initialState = {
   groupMembers: [],
   groupsLoading: true,
   submittedReview: false,
-  group: []
+  groups: [],
+  selectedGroup: 0
 }
 
 const updateQuestionAnswer = (question, answer) => ({ ...question, answer })
@@ -50,38 +51,23 @@ const instructorReviewReducer = (state = initialState, action) => {
       )
     }
   }
-  case 'SET_INSTRUCTOR_REVIEW_GROUP': {
+  case 'SET_INSTRUCTOR_REVIEW_GROUPS': {
     return {
       ...state,
-      group: action.payload
+      groups: action.payload
     }
   }
 
-  case 'INSTRUCTOR_CREATE_STUDENTS':
-    return {
-      ...state,
-      groupMembers: action.payload,
-      groupsLoading: false
-    }
   case 'INSTRUCTOR_SET_SUBMITTED_REVIEW':
     return {
       ...state,
       submittedReview: action.payload
     }
-  case 'INSTRUCTOR_LOADING':
+
+  case 'INSTRUCTOR_SELECT_GROUP':
     return {
       ...state,
-      isInitializing: action.payload
-    }
-  case 'INSTRUCTOR_SET_QUESTIONS':
-    return {
-      ...state,
-      questions: action.payload
-    }
-  case 'INSTRUCTOR_SET_CONFIGURATION':
-    return {
-      ...state,
-      configurationId: action.payload
+      selectedGroup: action.payload
     }
   default:
     return state

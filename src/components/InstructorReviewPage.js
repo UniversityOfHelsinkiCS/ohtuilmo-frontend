@@ -15,7 +15,10 @@ import instructorReviewPageActions from '../reducers/actions/instructorReviewPag
 import TextField from '@material-ui/core/TextField'
 
 import groupManagementService from '../services/groupManagement'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import instructorReviewService from '../services/instructorReview'
 
 class InstructorReviewPage extends React.Component {
@@ -25,21 +28,26 @@ class InstructorReviewPage extends React.Component {
         this.props.history.push('/')
       }
     } catch (e) {
-      console.log('error happened', e.response)
       this.props.setError('Some error happened')
     }
   }
   async componentDidMount() {
     try {
-      const group = await groupManagementService.getByInstructor()
-      if (group) {
-        this.props.setGroup(group)
-        this.fetchInstructorReviewQuestions(group[0].students, questionsJson)
-        const hasAnswered = await instructorReviewService.get()
-        if (hasAnswered.length > 0) {
-          console.log('set submitted true')
-          this.props.setSubmittedReview(true)
-        }
+      const groups = await groupManagementService.getByInstructor()
+      const answers = await instructorReviewService.getAllAnsweredGroupId()
+
+      const filteredGroups = groups.filter((group) => {
+        return !answers.includes(group.id)
+      })
+      if (groups.length > 0 && filteredGroups.length === 0) {
+        this.props.setSubmittedReview(true)
+      } else if (filteredGroups.length > 0) {
+        this.props.setGroups(filteredGroups)
+        this.fetchInstructorReviewQuestions(
+          filteredGroups[0].students,
+          questionsJson,
+          this.props.initializeAnswerSheet
+        )
       } else {
         this.props.setLoading(false)
       }
@@ -49,7 +57,11 @@ class InstructorReviewPage extends React.Component {
     }
   }
 
-  async fetchInstructorReviewQuestions(students, questions) {
+  async fetchInstructorReviewQuestions(
+    students,
+    questions,
+    initializeAnswerSheet
+  ) {
     const initializeNumberAnswer = (question, questionId) => {
       return {
         type: 'number',
@@ -87,19 +99,20 @@ class InstructorReviewPage extends React.Component {
     const tempAnswerSheet = students.map((student) => {
       return initializeStudent(student)
     })
-    this.props.initializeAnswerSheet(tempAnswerSheet)
+    initializeAnswerSheet(tempAnswerSheet)
   }
-  Submit = async (event, answerSheet, groupName) => {
+
+  Submit = async (event, answerSheet, groupName, groupId) => {
     event.preventDefault()
 
     const answer = window.confirm(
       'Answers can not be changed after submitting. Continue?'
     )
-    console.log(groupName)
     if (!answer) return
     try {
       await instructorReviewService.create({
         instructorReview: {
+          group_id: groupId,
           group_name: groupName,
           answer_sheet: answerSheet,
           user_id: getUser().student_number
@@ -107,25 +120,46 @@ class InstructorReviewPage extends React.Component {
       })
 
       this.props.setSuccess('Instructor review saved!')
-      this.props.history.push('/')
+      this.props.history.push('/instructorpage')
     } catch (e) {
-      // console.log('error happened', e)
-      // this.props.setError(e.response.data.error)
+      console.log('error happened', e)
+      this.props.setError(e.response.data.error)
     }
   }
+
   render() {
-    const { answerSheet, updateAnswer, submittedReview, group } = this.props
+    const {
+      answerSheet,
+      updateAnswer,
+      submittedReview,
+      groups,
+      selectedGroup,
+      selectGroup,
+      initializeAnswerSheet
+    } = this.props
 
     if (submittedReview === true) {
       return (
         <div>
-          <h3>Review sent.</h3>
+          <h3>You have reviewed every group you are instructing.</h3>
         </div>
       )
-    } else if (answerSheet && group.length > 0) {
+    } else if (answerSheet && groups.length > 0) {
       return (
         <div>
-          <h1>{group[0].groupName}</h1>
+          <ConfigurationSelectWrapper label="Select group">
+            <ConfigurationSelect
+              selectedGroup={selectedGroup}
+              groups={groups}
+              groupSelectHandler={groupSelectHandler}
+              selectGroup={selectGroup}
+              fetchInstructorReviewQuestions={
+                this.fetchInstructorReviewQuestions
+              }
+              initializeAnswerSheet={initializeAnswerSheet}
+            />
+          </ConfigurationSelectWrapper>
+          <h1>{groups[selectedGroup].groupName}</h1>
 
           <Reviews answerSheet={answerSheet} updateAnswer={updateAnswer} />
           <Button
@@ -134,7 +168,12 @@ class InstructorReviewPage extends React.Component {
             variant="contained"
             color="primary"
             onClick={(event) =>
-              this.Submit(event, answerSheet, group[0].groupName)
+              this.Submit(
+                event,
+                answerSheet,
+                groups[selectedGroup].groupName,
+                groups[selectedGroup].id
+              )
             }
           >
             Submit
@@ -144,17 +183,73 @@ class InstructorReviewPage extends React.Component {
     } else {
       return (
         <div>
-          <p>loading</p>
+          <p>Loading.</p>
         </div>
       )
     }
   }
 }
 
+const groupSelectHandler = (
+  value,
+  selectGroup,
+  fetchInstructorReviewQuestions,
+  groups,
+  initializeAnswerSheet
+) => {
+  selectGroup(value)
+  fetchInstructorReviewQuestions(
+    groups[value].students,
+    questionsJson,
+    initializeAnswerSheet
+  )
+}
+const ConfigurationSelectWrapper = ({ label, children }) => (
+  <div style={{ padding: 20 }}>
+    <Typography variant="caption">{label}</Typography>
+    {children}
+  </div>
+)
+
+const ConfigurationSelect = ({
+  selectedGroup,
+  groupSelectHandler,
+  groups,
+  fetchInstructorReviewQuestions,
+  selectGroup,
+  initializeAnswerSheet
+}) => {
+  return (
+    <Select
+      className="group-selector"
+      value={selectedGroup}
+      onChange={(e) =>
+        groupSelectHandler(
+          e.target.value,
+          selectGroup,
+          fetchInstructorReviewQuestions,
+          groups,
+          initializeAnswerSheet
+        )
+      }
+    >
+      {groups.map((group, index) => (
+        <MenuItem
+          key={selectedGroup}
+          value={index}
+          className={`group-${selectedGroup}`}
+          data-cy="group"
+        >
+          {group.groupName}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
 const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
     return (
-      <div key={index}>
+      <div key={student.name.first_names + ' ' + student.name.last_name}>
         <h1 className="student-name">
           {student.name.first_names + ' ' + student.name.last_name}
         </h1>
@@ -236,7 +331,8 @@ const mapStateToProps = (state) => {
   return {
     answerSheet: state.instructorReviewPage.answerSheet,
     submittedReview: state.instructorReviewPage.submittedReview,
-    group: state.instructorReviewPage.group
+    groups: state.instructorReviewPage.groups,
+    selectedGroup: state.instructorReviewPage.selectedGroup
   }
 }
 
