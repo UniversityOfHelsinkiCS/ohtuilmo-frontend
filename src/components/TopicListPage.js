@@ -125,7 +125,7 @@ class TopicListPage extends React.Component {
         topic.content.email,
         messageType,
         messageLang,
-        { topicName: topicTitle }
+        { topicName: topicTitle, topicId: topic.id }
       )
       this.props.setSuccess(`Email sent to ${ownerEmail}.`)
     } catch (e) {
