@@ -13,16 +13,9 @@ import { Input, Card, CardContent, Select, MenuItem } from '@material-ui/core'
 import TopicDialog from './TopicDialog'
 import CourseMaterial from './common/CourseMaterial'
 
-import './RegistrationDetailsPage.css'
+import { formatDate } from '../utils/functions'
 
-/**
- * Format datetime
- * eg. from 2019-02-07T10:57:19.122Z to 7.2.2019 12.57
- */
-const formatDate = (date) => {
-  const parsedDate = new Date(date).toLocaleString('fi-FI')
-  return parsedDate.slice(0, parsedDate.lastIndexOf('.')).replace('klo', '')
-}
+import './RegistrationDetailsPage.css'
 
 const extractCallingName = (firstNames) => {
   if (firstNames.includes('*')) {
