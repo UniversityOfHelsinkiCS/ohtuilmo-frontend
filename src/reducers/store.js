@@ -24,7 +24,11 @@ import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
 import customerReviewQuestionsPageReducer from './customerReviewQuestionsPageReducer'
 import instructorReviewPageReducer from './instructorReviewPageReducer'
+<<<<<<< ee0b49bdc93b266c810a6ba178befeb591df6e17
 import userReducer from './userReducer'
+=======
+import viewCustomerReviewsPageReducer from './viewCustomerReviewsPageReducer'
+>>>>>>> Front is now fetching customer review data from backend to reducer
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -49,7 +53,11 @@ const reducer = combineReducers({
   instructorPage: instructorPageReducer,
   customerReviewPage: customerReviewPageReducer,
   instructorReviewPage: instructorReviewPageReducer,
+<<<<<<< ee0b49bdc93b266c810a6ba178befeb591df6e17
   user: userReducer
+=======
+  viewCustomerReviewsPage: viewCustomerReviewsPageReducer
+>>>>>>> Front is now fetching customer review data from backend to reducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

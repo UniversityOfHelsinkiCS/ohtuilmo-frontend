@@ -31,7 +31,9 @@ const getDataForReview = async (secretId) => {
 
 const getCustomerReviewAnswers = async (configurationId) => {
   const response = await axios.get(
-    `${url}/all/forConfiguration/${configurationId}`
+    `${url}/all/forConfiguration/${configurationId}`,  {
+      headers: { Authorization: 'Bearer ' + getUserToken() }
+    }
   )
 
   return response.data

@@ -1,55 +1,29 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import configurationPageActions from '../../reducers/actions/configurationPageActions'
+import viewCustomerReviewsPageActions from '../../reducers/actions/viewCustomerReviewsPageActions'
+
+import customerReviewService from '../../services/customerReview'
 
 import LoadingCover from './../common/LoadingCover'
 
-const fakeData = [
-  {
-    group: {
-      id: 1,
-      name: 'Aihe B',
-      answerSheet: null
-    }
-  },
-  {
-    group: {
-      id: 2,
-      name: 'Aihe A',
-      answerSheet: [
-        {
-          id: 0,
-          type: 'text',
-          answer:
-            '5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä',
-          questionHeader: 'Mitä mieltä olit tykittelystä?'
-        },
-        {
-          id: 1,
-          type: 'number',
-          answer: 7,
-          questionHeader: 'Monta tuntia viikossa olit yhteydessä tiimiin?'
-        },
-        {
-          id: 2,
-          type: 'range',
-          answer: '4',
-          questionHeader: 'Minkä arvosanan antaisit tiimille?',
-          questionOptions: ['1', '2', '3', '4', '5']
-        }
-      ]
-    }
-  }
-]
+//ei toimi atm
+const ViewGroups = (reviewData) => {
+  console.log(reviewData)
+
+  /*   if(reviewData.length > 0){ */
+
+  return reviewData.map((group) => <div>{group.name}</div>)
+  /*   } else {
+    return null
+  } */
+}
 
 class ViewCustomerReviewsPage extends React.Component {
   async componentWillMount() {
@@ -73,7 +47,17 @@ class ViewCustomerReviewsPage extends React.Component {
   }
 
   render() {
-    const { isLoading } = this.props
+    const { isInitializing } = this.props
+
+    const handleConfiguartionChange = async (confId) => {
+      this.props.setLoading(true)
+      this.props.setConfiguration(confId)
+      console.log(confId)
+
+      this.props.setReviewData(
+        await customerReviewService.getCustomerReviewAnswers(confId)
+      )
+    }
 
     const configurationMenuItems = () => {
       const { configurations } = this.props
@@ -92,30 +76,56 @@ class ViewCustomerReviewsPage extends React.Component {
         )
     }
 
-    return (
-      <div className="topics-container">
-        {isLoading && (
-          <LoadingCover className="topics-container__loading-cover" />
-        )}
+    if (this.props.reviewFetched) {
+      return (
+        <div className="topics-container">
+          {isInitializing && (
+            <LoadingCover className="topics-container__loading-cover" />
+          )}
 
-        <Select
-        //value={filter}
-        //onChange={(event) => this.props.updateFilter(event.target.value)}
-        >
-          {configurationMenuItems()}
-        </Select>
-      </div>
-    )
+          <Select
+            value={this.props.configuration}
+            onChange={(event) => handleConfiguartionChange(event.target.value)}
+          >
+            {configurationMenuItems()}
+          </Select>
+
+          <ViewGroups reviewData={this.props.reviewData} />
+        </div>
+      )
+    } else {
+      return (
+        <div className="topics-container">
+          {isInitializing && (
+            <LoadingCover className="topics-container__loading-cover" />
+          )}
+
+          <Select
+            value={this.props.configuration}
+            onChange={(event) => handleConfiguartionChange(event.target.value)}
+          >
+            {configurationMenuItems()}
+          </Select>
+        </div>
+      )
+    }
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    reviewFetched: state.viewCustomerReviewsPage.reviewFetched,
+    isInitializing: state.viewCustomerReviewsPage.isInitializing,
+    reviewData: state.viewCustomerReviewsPage.reviewData,
+    configuration: state.viewCustomerReviewsPage.configurationId,
     configurations: state.configurationPage.configurations
   }
 }
 
 const mapDispatchToProps = {
+  setLoading: viewCustomerReviewsPageActions.setLoading,
+  setReviewData: viewCustomerReviewsPageActions.setReviewData,
+  setConfiguration: viewCustomerReviewsPageActions.setConfiguration,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations
