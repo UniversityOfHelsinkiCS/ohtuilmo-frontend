@@ -179,6 +179,9 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         </p>
       </TableCell>
       <TableCell padding="none">
+        {topic.hasReviewed ? 'Submitted' : '-'}
+      </TableCell>
+      <TableCell padding="none">
         <AcceptRejectEmailButtons onSendRequested={onEmailSendRequested} />
       </TableCell>
       <TableCell padding="checkbox" numeric>
@@ -198,6 +201,7 @@ const TopicTableHead = () => (
   <TableHead>
     <TableRow>
       <TableCell padding="dense">Topic</TableCell>
+      <TableCell padding="none">Customer review</TableCell>
       <TableCell padding="none">Send accept/reject email</TableCell>
       <TableCell numeric>Active</TableCell>
     </TableRow>
