@@ -261,7 +261,7 @@ class TopicListPage extends React.Component {
 }
 
 TopicListPage.propTypes = {
-  filter: PropTypes.string.isRequired,
+  filter: PropTypes.number.isRequired,
   topics: PropTypes.array.isRequired,
   emailTemplates: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
