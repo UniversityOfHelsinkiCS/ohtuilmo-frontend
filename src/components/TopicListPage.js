@@ -20,7 +20,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
-import emailService from '../services/email'
 import { getEmailTemplateRenderer, formatDate } from '../utils/functions'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
@@ -360,12 +359,12 @@ class TopicListPage extends React.Component {
     }
 
     try {
-      await emailService.sendCustomerEmail(
-        topic.content.email,
-        messageType,
-        messageLanguage,
-        { topicName: topicTitle, topicId: topic.id }
-      )
+      await this.props.sendCustomerEmail(topic.id, {
+        address: topic.content.email,
+        messageType: messageType,
+        messageLanguage: messageLanguage,
+        templateContext: { topicName: topicTitle, topicId: topic.id }
+      })
       this.props.setSuccess(`Email sent to ${ownerEmail}.`)
     } catch (e) {
       console.error(e)
@@ -456,6 +455,7 @@ const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
   setTopicActive: topicListPageActions.setTopicActive,
+  sendCustomerEmail: topicListPageActions.sendCustomerEmail,
   fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
