@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import Button from '@material-ui/core/Button'
@@ -160,6 +160,10 @@ AcceptRejectEmailButtons.propTypes = {
   rejectText: PropTypes.string
 }
 
+const TopicDetailsLink = ({ topicId, ...props }) => (
+  <Link {...props} to={`/topics/${topicId}`} />
+)
+
 const isTopicAcceptedMail = (sentMail) =>
   sentMail.email.type === 'topicAccepted'
 const isTopicRejectedMail = (sentMail) =>
@@ -178,7 +182,11 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
       data-cy-topic-name={topic.content.title}
     >
       <TableCell padding="dense">
-        <p className="topic-table-row__topic-title">{topic.content.title}</p>
+        <p className="topic-table-row__topic-title">
+          <TopicDetailsLink topicId={topic.id}>
+            {topic.content.title}
+          </TopicDetailsLink>
+        </p>
         <p className="topic-table-row__customer">
           {`${topic.content.customerName} (${topic.content.email})`}
         </p>
