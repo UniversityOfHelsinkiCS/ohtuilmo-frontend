@@ -160,10 +160,18 @@ AcceptRejectEmailButtons.propTypes = {
   rejectText: PropTypes.string
 }
 
+const isTopicAcceptedMail = (sentMail) =>
+  sentMail.email.type === 'topicAccepted'
+const isTopicRejectedMail = (sentMail) =>
+  sentMail.email.type === 'topicRejected'
+
 /**
  * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
  */
 const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
+  const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
+  const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
+
   return (
     <TableRow
       className="topic-table-row"
@@ -182,7 +190,11 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         {topic.hasReviewed ? 'Submitted' : '-'}
       </TableCell>
       <TableCell padding="none">
-        <AcceptRejectEmailButtons onSendRequested={onEmailSendRequested} />
+        <AcceptRejectEmailButtons
+          acceptText={hasAcceptMailBeenSent ? 'Resent Accept' : 'Accept'}
+          rejectText={hasRejectMailBeenSent ? 'Resend Reject' : 'Reject'}
+          onSendRequested={onEmailSendRequested}
+        />
       </TableCell>
       <TableCell padding="checkbox" numeric>
         <Switch checked={topic.active} onClick={onActiveToggle} />
