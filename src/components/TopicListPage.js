@@ -199,7 +199,7 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
       </TableCell>
       <TableCell padding="none">
         <AcceptRejectEmailButtons
-          acceptText={hasAcceptMailBeenSent ? 'Resent Accept' : 'Accept'}
+          acceptText={hasAcceptMailBeenSent ? 'Resend Accept' : 'Accept'}
           rejectText={hasRejectMailBeenSent ? 'Resend Reject' : 'Reject'}
           onSendRequested={onEmailSendRequested}
         />
