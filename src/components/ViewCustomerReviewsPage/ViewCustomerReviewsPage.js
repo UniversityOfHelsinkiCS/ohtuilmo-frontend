@@ -14,6 +14,45 @@ import customerReviewService from '../../services/customerReview'
 import LoadingCover from './../common/LoadingCover'
 
 //ei toimi atm
+
+const fakeData = [
+  {
+    group: {
+      id: 1,
+      name: 'Aihe B',
+      answerSheet: null
+    }
+  },
+  {
+    group: {
+      id: 2,
+      name: 'Aihe A',
+      answerSheet: [
+        {
+          id: 0,
+          type: 'text',
+          answer:
+            '5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä',
+          questionHeader: 'Mitä mieltä olit tykittelystä?'
+        },
+        {
+          id: 1,
+          type: 'number',
+          answer: 7,
+          questionHeader: 'Monta tuntia viikossa olit yhteydessä tiimiin?'
+        },
+        {
+          id: 2,
+          type: 'range',
+          answer: '4',
+          questionHeader: 'Minkä arvosanan antaisit tiimille?',
+          questionOptions: ['1', '2', '3', '4', '5']
+        }
+      ]
+    }
+  }
+]
+
 const ViewGroups = (reviewData) => {
   console.log(reviewData)
 
@@ -57,6 +96,30 @@ class ViewCustomerReviewsPage extends React.Component {
       this.props.setReviewData(
         await customerReviewService.getCustomerReviewAnswers(confId)
       )
+    }
+
+    const CustomerReviewsContainer = (props) => {
+      const { reviews } = props
+      reviews.map((review) => console.log(review.group))
+      return reviews.map((review) => <Group review={review} />)
+    }
+
+    const Group = ({ review }) => {
+      if (review.answerSheet === null || undefined) {
+        return (
+          <div>
+            <h1> {review.group.name} </h1>
+            <p> No review submitted for group {review.group.name}</p>
+          </div>
+        )
+      } else {
+        return (
+          <div>
+            <h1> {review.group.name} </h1>
+            <p>Return component which shows answer here {review.group.name}</p>
+          </div>
+        )
+      }
     }
 
     const configurationMenuItems = () => {
@@ -106,6 +169,7 @@ class ViewCustomerReviewsPage extends React.Component {
           >
             {configurationMenuItems()}
           </Select>
+          <CustomerReviewsContainer reviews={fakeData} />
         </div>
       )
     }
