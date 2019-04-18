@@ -67,7 +67,7 @@ class InstructorReviewPage extends React.Component {
         type: 'number',
         header: question.header,
         id: questionId,
-        answer: 0
+        answer: ''
       }
     }
 
@@ -197,6 +197,12 @@ const groupSelectHandler = (
   groups,
   initializeAnswerSheet
 ) => {
+  if (
+    !window.confirm('Changing group will wipe current inserted information.')
+  ) {
+    return
+  }
+
   selectGroup(value)
   fetchInstructorReviewQuestions(
     groups[value].students,
@@ -235,9 +241,9 @@ const ConfigurationSelect = ({
     >
       {groups.map((group, index) => (
         <MenuItem
-          key={selectedGroup}
+          key={index}
           value={index}
-          className={`group-${selectedGroup}`}
+          className={`group-${index}`}
           data-cy="group"
         >
           {group.groupName}
@@ -249,7 +255,7 @@ const ConfigurationSelect = ({
 const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
     return (
-      <div key={student.name.first_names + ' ' + student.name.last_name}>
+      <div key={index}>
         <h1 className="student-name">
           {student.name.first_names + ' ' + student.name.last_name}
         </h1>
@@ -267,7 +273,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
   return studentAnswers.map((question, questionId) => {
     if (question.type === 'text') {
       return (
-        <div className="peer-review-box">
+        <div key={questionId + userId} className="peer-review-box">
           <h3 className="peer-review-box__h3">{question.header}</h3>
           <p>{question.description}</p>
 
@@ -285,7 +291,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
       )
     } else if (question.type === 'number') {
       return (
-        <div className="peer-review-box">
+        <div key={questionId + userId} className="peer-review-box">
           <h3 className="peer-review-box__h3">{question.header}</h3>
           <p>{question.description}</p>
 
@@ -306,14 +312,14 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
       )
     } else if (question.type === 'info') {
       return (
-        <div className="peer-review-box">
+        <div key={questionId + userId} className="peer-review-box">
           <h3>{question.header}</h3>
           <p>{question.description}</p>
         </div>
       )
     } else {
       return (
-        <div>
+        <div key={questionId + userId}>
           <p>Incorrect question type</p>
         </div>
       )
