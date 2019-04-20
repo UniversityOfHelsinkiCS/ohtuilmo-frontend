@@ -385,3 +385,45 @@ Cypress.Commands.add('deleteSentEmails', () => {
     })
   })
 })
+
+Cypress.Commands.add('deleteCustomerReviewQuestions', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/customerReviewQuestions',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { questionSets } = res.body
+
+      for (const set of questionSets) {
+        cy.request({
+          url: `/api/customerReviewQuestions/${set.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createCustomerReviewQuestionSet', (name, questions) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/customerReviewQuestions',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        questions
+      }
+    })
+  })
+})
