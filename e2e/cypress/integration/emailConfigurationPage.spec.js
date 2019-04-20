@@ -177,40 +177,4 @@ describe('Email configuration page', () => {
       })
     })
   })
-
-  describe.skip('loading indicator', () => {
-    const initialTemplateText = 'Hei\n\nJotain hyväksyttiin {{topicName}}.'
-
-    beforeEach(() => {
-      cy.updateEmailTemplate('topicAccepted', 'finnish', initialTemplateText)
-      visitEmailTemplatesPage()
-    })
-
-    it('shows a loading indicator while templates are loading', () => {
-      assertIsLoading()
-
-      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
-        'have.value',
-        initialTemplateText
-      )
-      assertIsNotLoading()
-    })
-
-    it('shows a loading indicator while saving updated templates', () => {
-      const newTemplateText = 'uusi juttu jee'
-      assertIsLoading()
-      assertIsNotLoading()
-
-      clearTemplate('Topic proposal accepted', 'finnish')
-      writeToTemplate('Topic proposal accepted', 'finnish', newTemplateText)
-      clickSave()
-
-      assertIsLoading()
-      assertIsNotLoading()
-      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
-        'have.value',
-        newTemplateText
-      )
-    })
-  })
 })
