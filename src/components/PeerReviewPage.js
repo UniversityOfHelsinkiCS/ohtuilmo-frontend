@@ -15,17 +15,6 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 class PeerReview extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      }
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened')
-    }
-  }
-
   async componentDidMount() {
     try {
       const group = await groupManagementService.getByStudent()

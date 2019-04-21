@@ -65,4 +65,19 @@ const adminItems = (history) => {
   return items
 }
 
-export { regularItems, loggedInItems, adminItems }
+const instructorItems = (history) => {
+  const items = [
+    {
+      text: 'Home',
+      handler: () => history.push('/')
+    },
+    {
+      text: 'Intructor Page',
+      handler: () => history.push('/instructorpage')
+    }
+  ]
+
+  return items
+}
+
+export { regularItems, loggedInItems, adminItems, instructorItems }

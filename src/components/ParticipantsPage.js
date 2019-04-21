@@ -11,15 +11,15 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import * as notificationActions from '../reducers/actions/notificationActions'
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+    overflowX: 'auto'
   },
   table: {
-    minWidth: 700,
-  },
+    minWidth: 700
+  }
 })
 
 const testRows = [
@@ -114,23 +114,6 @@ const testRows = [
 ]
 
 class ParticipantsPage extends React.Component {
-
-  async componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if(!token.user.admin || token === undefined || token === null) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 3000)
-    }
-  }
-
   render() {
     return (
       <div className="participants-container">
@@ -150,7 +133,7 @@ class ParticipantsPage extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {testRows.map(row => {
+                {testRows.map((row) => {
                   return (
                     <TableRow key={row.id}>
                       <TableCell numeric component="th" scope="row">
@@ -171,16 +154,14 @@ class ParticipantsPage extends React.Component {
           </Paper>
         </div>
         <div className="export-cvs-button">
-          <Button variant="outlined">
-            Export CVS-file
-          </Button>
+          <Button variant="outlined">Export CVS-file</Button>
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     state: state
   }

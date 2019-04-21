@@ -7,7 +7,12 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import NavigationMenu from './NavigationMenu'
-import { regularItems, loggedInItems, adminItems } from './MenuItemLists'
+import {
+  regularItems,
+  loggedInItems,
+  adminItems,
+  instructorItems
+} from './MenuItemLists'
 import './NavigationBar.css'
 
 class NavigationBar extends React.Component {
@@ -21,7 +26,7 @@ class NavigationBar extends React.Component {
       return adminItems(this.props.history)
     }
     if (user.instructor) {
-      return loggedInItems(this.props.history) // instructor menu here!
+      return instructorItems(this.props.history)
     }
     return loggedInItems(this.props.history)
   }

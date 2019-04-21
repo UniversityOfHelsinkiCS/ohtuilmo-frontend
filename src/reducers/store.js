@@ -55,8 +55,9 @@ const reducer = combineReducers({
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 let initialStore
-if (window.localStorage.getItem('loggedInUser')) {
-  const user = JSON.parse(window.localStorage.getItem('loggedInUser'))
+let tokenString = window.localStorage.getItem('loggedInUser')
+if (tokenString) {
+  const user = JSON.parse(tokenString)
   initialStore = { user }
 }
 

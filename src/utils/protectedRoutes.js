@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 }
 
 export const AdminRoute = connect(mapStateToProps)(
-  ({ component: Component, user, ...rest }) => (
+  ({ render: Component, user, ...rest }) => (
     <Route
       {...rest}
       render={(props) => {
@@ -27,7 +27,7 @@ export const AdminRoute = connect(mapStateToProps)(
 )
 
 export const InstructorRoute = connect(mapStateToProps)(
-  ({ component: Component, user, ...rest }) => (
+  ({ render: Component, user, ...rest }) => (
     <Route
       {...rest}
       render={(props) => {
@@ -45,7 +45,7 @@ export const InstructorRoute = connect(mapStateToProps)(
 )
 
 export const LoginRoute = connect(mapStateToProps)(
-  ({ component: Component, user, ...rest }) => (
+  ({ render: Component, user, ...rest }) => (
     <Route
       {...rest}
       render={(props) => {

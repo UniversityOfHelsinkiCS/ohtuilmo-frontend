@@ -21,22 +21,6 @@ import './CustomerReviewQuestionsPage.css'
 const isValidationError = (e) => e.response && e.response.status === 400
 
 class CustomerReviewQuestionsPage extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (!token.user.admin || token === undefined || token === null) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.error('error happened', e.response)
-      this.props.setError('Some error happened', 5000)
-    }
-  }
-
   async componentDidMount() {
     try {
       await this.props.fetchCustomerReviewQuestionSets()

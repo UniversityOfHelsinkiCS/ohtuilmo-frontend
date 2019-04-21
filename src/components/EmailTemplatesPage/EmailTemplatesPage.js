@@ -14,22 +14,6 @@ import EmailTemplatesForm from './EmailTemplatesForm'
 import LoadingCover from '../common/LoadingCover'
 
 class EmailTemplatesPage extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (!token || !token.user || !token.user.admin) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.error('error happened', e.response)
-      this.props.setError('Some error happened', 5000)
-    }
-  }
-
   async componentDidMount() {
     try {
       await this.props.fetchEmailTemplates()

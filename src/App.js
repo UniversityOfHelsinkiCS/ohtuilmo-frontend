@@ -37,6 +37,13 @@ import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 import * as userActions from './reducers/actions/userActions'
 
+// Protected routes
+import {
+  AdminRoute,
+  LoginRoute,
+  InstructorRoute
+} from '../src/utils/protectedRoutes'
+
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
 const NotFound = () => (
@@ -58,6 +65,7 @@ class App extends Component {
     this.fetchRegistrationManagement()
 
     if (window.localStorage.getItem('loggedInUser')) {
+      // if (this.props.user)
       this.props.updateIsLoading(true)
       this.props.loginWithToken()
       this.props.updateIsLoading(false)
@@ -112,14 +120,12 @@ class App extends Component {
                   )
                 }
               />
-              <Route
+              <LoginRoute exact path="/" render={() => <LandingPage />} />
+              <AdminRoute
                 exact
-                path="/"
-                render={() =>
-                  this.props.user ? <LandingPage /> : <Redirect to="/login" />
-                }
+                path="/topics"
+                render={() => <TopicListPage />}
               />
-              <Route exact path="/topics" render={() => <TopicListPage />} />
               <Route
                 exact
                 path="/topics/create"
@@ -130,37 +136,37 @@ class App extends Component {
                 path="/topics/:id"
                 render={(props) => <ViewTopicPage {...props} />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/configuration"
                 render={() => <ConfigurationPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/participants"
                 render={() => <ParticipantsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/customer-review-questions"
                 render={() => <CustomerReviewQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/peer-review-questions"
                 render={() => <PeerReviewQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/registration-questions"
                 render={() => <RegistrationQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/groups"
                 render={() => <GroupManagementPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/email-templates"
                 render={() => <EmailTemplatesPage />}
@@ -170,24 +176,24 @@ class App extends Component {
                 path="/customer-review/:id"
                 render={(props) => <CustomerReviewPage {...props} />}
               />
-              <Route
+              <LoginRoute
                 exact
                 path="/register"
                 user={this.props.user}
                 render={() => <RegistrationPage />}
               />
-              <Route
+              <LoginRoute
                 exact
                 path="/peerreview"
                 user={this.props.user}
                 render={() => <PeerReviewPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/registrationmanagement"
                 render={() => <RegistrationManagementPage />}
               />
-              <Route
+              <InstructorRoute
                 exact
                 path="/instructorpage"
                 render={() => <InstructorPage />}
@@ -198,16 +204,10 @@ class App extends Component {
                 render={() => <InstructorReviewPage />}
               />
 
-              <Route
+              <LoginRoute
                 exact
                 path="/registrationdetails"
-                render={() =>
-                  this.props.user ? (
-                    <RegistrationDetailsPage />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
+                render={() => <RegistrationDetailsPage />}
               />
               <Route component={NotFound} />
             </Switch>

@@ -12,12 +12,7 @@ class ViewTopicPage extends React.Component {
     try {
       const topic = await topicService.getOne(id)
       this.props.setTopic(topic)
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'))
-      var admin = false
-      if (loggedInUser) {
-        admin = loggedInUser.user.admin === true
-      }
-      if (admin || isNaN(id)) {
+      if ((this.props.user && this.props.user.user.admin) || isNaN(id)) {
         this.props.setEditable(true)
       }
     } catch (e) {
@@ -57,7 +52,8 @@ const mapStateToProps = (state) => {
   return {
     topic: state.viewTopicPage.topic,
     isEditable: state.viewTopicPage.isEditable,
-    isOnEditMode: state.viewTopicPage.isOnEditMode
+    isOnEditMode: state.viewTopicPage.isOnEditMode,
+    user: state.user
   }
 }
 
