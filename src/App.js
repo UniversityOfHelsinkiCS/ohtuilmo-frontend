@@ -64,10 +64,9 @@ class App extends Component {
   componentWillMount() {
     this.fetchRegistrationManagement()
 
-    if (window.localStorage.getItem('loggedInUser')) {
-      // if (this.props.user)
+    if (this.props.user) {
       this.props.updateIsLoading(true)
-      this.props.loginWithToken()
+      this.props.checkToken(this.props.user)
       this.props.updateIsLoading(false)
     }
   }
@@ -235,7 +234,7 @@ const mapDispatchToProps = {
   ...peerReviewPageActions,
   loginUser: userActions.loginUser,
   logoutUser: userActions.logoutUser,
-  loginWithToken: userActions.loginToken
+  checkToken: userActions.checkToken
 }
 
 const ConnectedApp = connect(

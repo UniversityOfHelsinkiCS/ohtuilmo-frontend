@@ -19,13 +19,9 @@ export const logoutUser = () => {
   }
 }
 
-export const loginToken = () => {
+export const checkToken = (user) => {
   return async (dispatch) => {
-    let user = JSON.parse(window.localStorage.getItem('loggedInUser'))
-    dispatch({ type: 'LOGIN_TOKEN', payload: user }) // BUGFIX for slow logins causing problems with Cypress, initially accept token as it is and then check it below
-
     try {
-      //let user = JSON.parse(window.localStorage.getItem('loggedInUser'))
       const { isInstructor } = await userService.checkInstructor(user.token) // This also checks validity of the token
       if (user.user.instructor !== isInstructor) {
         // Only update localStorage if there are changes in the token
