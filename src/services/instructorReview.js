@@ -5,7 +5,6 @@ import { BACKEND_API_BASE } from '../utils/config'
 const url = `${BACKEND_API_BASE}/instructorreview`
 
 const create = async (instructorReview) => {
-  console.log('createen päästiin')
   const response = await axios.post(url, instructorReview, {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })

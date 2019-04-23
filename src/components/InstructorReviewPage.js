@@ -37,7 +37,7 @@ class InstructorReviewPage extends React.Component {
       const filteredGroups = groups.filter((group) => {
         return !answers.includes(group.id)
       })
-      if (groups.length > 0 && filteredGroups.length === 0) {
+      if (filteredGroups.length === 0) {
         this.props.setSubmittedReview(true)
       } else if (filteredGroups.length > 0) {
         this.props.setGroups(filteredGroups)
@@ -46,8 +46,6 @@ class InstructorReviewPage extends React.Component {
           questionsJson,
           this.props.initializeAnswerSheet
         )
-      } else {
-        this.props.setLoading(false)
       }
     } catch (e) {
       console.log('error happened', e.response)
@@ -107,6 +105,7 @@ class InstructorReviewPage extends React.Component {
       'Answers can not be changed after submitting. Continue?'
     )
     if (!answer) return
+    this.props.selectGroup(0)
     try {
       await instructorReviewService.create({
         instructorReview: {
@@ -118,7 +117,25 @@ class InstructorReviewPage extends React.Component {
       })
 
       this.props.setSuccess('Instructor review saved!')
-      this.props.history.push('/instructorpage')
+
+      const groups = await groupManagementService.getByInstructor()
+      const answers = await instructorReviewService.getAllAnsweredGroupId()
+
+      const filteredGroups = groups.filter((group) => {
+        return !answers.includes(group.id)
+      })
+      if (filteredGroups.length === 0) {
+        this.props.setSubmittedReview(true)
+      } else if (filteredGroups.length > 0) {
+        this.props.setGroups(filteredGroups)
+        this.fetchInstructorReviewQuestions(
+          filteredGroups[0].students,
+          questionsJson,
+          this.props.initializeAnswerSheet
+        )
+
+        console.log(this.props.selectedGroup)
+      }
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(e.response.data.error)
@@ -237,7 +254,7 @@ const ConfigurationSelect = ({
       }
     >
       {groups.map((group, index) => (
-        <MenuItem key={index} value={index} data-cy="group">
+        <MenuItem key={index} value={index}>
           {group.groupName}
         </MenuItem>
       ))}
@@ -287,7 +304,6 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
 
           <input
             type="number"
-            data-cy={`input_number_${question.header}`}
             value={question.answer}
             onChange={(e) =>
               numberFieldHandler(
