@@ -4,14 +4,16 @@ import { withRouter } from 'react-router-dom'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import Button from '@material-ui/core/Button'
 
 import * as notificationActions from '../../reducers/actions/notificationActions'
 import configurationPageActions from '../../reducers/actions/configurationPageActions'
 import viewCustomerReviewsPageActions from '../../reducers/actions/viewCustomerReviewsPageActions'
 
 import customerReviewService from '../../services/customerReview'
-
 import LoadingCover from './../common/LoadingCover'
+
+import './ViewCustomerReviewsPage.css'
 
 //ei toimi atm
 
@@ -47,6 +49,13 @@ const fakeData = [
           answer: '4',
           questionHeader: 'Minkä arvosanan antaisit tiimille?',
           questionOptions: ['1', '2', '3', '4', '5']
+        },
+        {
+          id: 4,
+          type: 'text',
+          answer:
+            'Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis',
+          questionHeader: 'Mikä fiilis?'
         }
       ]
     }
@@ -100,26 +109,61 @@ class ViewCustomerReviewsPage extends React.Component {
 
     const CustomerReviewsContainer = (props) => {
       const { reviews } = props
-      reviews.map((review) => console.log(review.group))
-      return reviews.map((review) => <Group review={review} />)
+      console.log(reviews)
+      return reviews.map((review) => (
+        <Group group={review.group} key={review.group.id} />
+      ))
     }
 
-    const Group = ({ review }) => {
-      if (review.answerSheet === null || undefined) {
+    const Group = ({ group }) => {
+      if (group.answerSheet === null || group.answerSheet === undefined) {
         return (
-          <div>
-            <h1> {review.group.name} </h1>
-            <p> No review submitted for group {review.group.name}</p>
+          <div className="customer-reviews-container__group">
+            <h2> {group.name} </h2>
+            <p> No review submitted for group {group.name}</p>
           </div>
         )
       } else {
         return (
-          <div>
-            <h1> {review.group.name} </h1>
-            <p>Return component which shows answer here {review.group.name}</p>
+          <div className="customer-reviews-container__group">
+            <h2> {group.name} </h2>
+            <Answers answerSheet={group.answerSheet} />
           </div>
         )
       }
+    }
+
+    const Answers = ({ answerSheet }) => {
+      return answerSheet.map((answer) => {
+        if (answer.type === 'text') {
+          return <TextAnswer answer={answer} key={answer.id} />
+        } else {
+          return <NumberAnswer answer={answer} key={answer.id} />
+        }
+      })
+    }
+
+    const TextAnswer = ({ answer }) => {
+      return (
+        <div className="customer-reviews-container__group__text-answer">
+          <h3> {answer.questionHeader} </h3>
+          <p>
+            <b>Customer's answer:</b> {answer.answer}
+          </p>
+        </div>
+      )
+    }
+
+    const NumberAnswer = ({ answer }) => {
+      return (
+        <div className="customer-reviews-container__group__number-answer">
+          <h3> {answer.questionHeader} </h3>
+          <p>
+            {' '}
+            <b>Customer's answer:</b> {answer.answer}{' '}
+          </p>
+        </div>
+      )
     }
 
     const configurationMenuItems = () => {
@@ -137,6 +181,24 @@ class ViewCustomerReviewsPage extends React.Component {
             </MenuItem>
           ))
         )
+    }
+
+    const DownloadButton = ({ jsonData, fileName }) => {
+      const data = `text/json;charset=utf-8,${encodeURIComponent(jsonData)}`
+      const href = `data:${data}`
+
+      return (
+        <Button
+          className="customer-review-download-button"
+          component="a"
+          href={href}
+          download={fileName}
+          variant="contained"
+          color="primary"
+        >
+          Download as JSON
+        </Button>
+      )
     }
 
     if (this.props.reviewFetched) {
@@ -169,6 +231,11 @@ class ViewCustomerReviewsPage extends React.Component {
           >
             {configurationMenuItems()}
           </Select>
+          <DownloadButton
+            jsonData={JSON.stringify(fakeData)}
+            fileName="customerReviews.json"
+          />
+          <h1 class="customer-reviews-h1">Customer reviews</h1>
           <CustomerReviewsContainer reviews={fakeData} />
         </div>
       )
