@@ -8,7 +8,6 @@ import questionsJson from './questions/instructor_data'
 import appActions from '../reducers/actions/appActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import instructorReviewPageActions from '../reducers/actions/instructorReviewPageActions.js'
-//import groupManagement from '../services/groupManagement'
 
 //Services
 import TextField from '@material-ui/core/TextField'
@@ -78,11 +77,11 @@ class InstructorReviewPage extends React.Component {
         answer: ''
       }
     }
-    const emptyAnswerSheet = questions.questions.map((question, questionID) => {
+    const emptyAnswerSheet = questions.questions.map((question, questionId) => {
       if (question.type === 'text') {
-        return initializeTextAnswer(question, questionID)
+        return initializeTextAnswer(question, questionId)
       } else if (question.type === 'number') {
-        return initializeNumberAnswer(question, questionID)
+        return initializeNumberAnswer(question, questionId)
       } else {
         return question
       }
