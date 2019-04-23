@@ -22,6 +22,7 @@ import emailTemplatesReducer from './emailTemplatesReducer'
 import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
 import customerReviewQuestionsPageReducer from './customerReviewQuestionsPageReducer'
+import instructorReviewPageReducer from './instructorReviewPageReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -44,7 +45,8 @@ const reducer = combineReducers({
   registrationDetails: myGroupReducer,
   emailTemplates: emailTemplatesReducer,
   instructorPage: instructorPageReducer,
-  customerReviewPage: customerReviewPageReducer
+  customerReviewPage: customerReviewPageReducer,
+  instructorReviewPage: instructorReviewPageReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
