@@ -23,36 +23,6 @@
     -->
     <title>Software engineering project</title>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
-
-    <script>
-      let gets = 0
-      let sets = 0
-
-      const oldGetItem = window.localStorage.__proto__.getItem
-      window.localStorage.__proto__.getItem = function(...args) {
-        console.group(`getItem ${++gets}`)
-        console.log(
-          new Error().stack
-            .split('\n')
-            .slice(2, 3)
-            .join('\n')
-        )
-        console.groupEnd()
-        return oldGetItem.apply(this, args)
-      }
-      const oldSetItem = window.localStorage.__proto__.setItem
-      window.localStorage.__proto__.setItem = function(...args) {
-        console.group(`setItem ${++sets}`)
-        console.log(
-          new Error().stack
-            .split('\n')
-            .slice(2, 3)
-            .join('\n')
-        )
-        console.groupEnd()
-        return oldSetItem.apply(this, args)
-      }
-    </script>
   </head>
   <body>
     <noscript>

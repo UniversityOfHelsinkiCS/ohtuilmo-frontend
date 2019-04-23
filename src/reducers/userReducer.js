@@ -4,8 +4,6 @@ const userReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'LOGIN_USER':
     return action.payload
-  case 'LOGIN_TOKEN':
-    return action.payload
   case 'LOGOUT_USER':
     return initialState
   default:
