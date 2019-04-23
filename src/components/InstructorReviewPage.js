@@ -133,8 +133,6 @@ class InstructorReviewPage extends React.Component {
           questionsJson,
           this.props.initializeAnswerSheet
         )
-
-        console.log(this.props.selectedGroup)
       }
     } catch (e) {
       console.log('error happened', e)
