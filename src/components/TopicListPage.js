@@ -57,34 +57,28 @@ const BritishFlag = (props) => (
   <img alt="Flag of Great Britain" {...props} src="/img/gb.svg" />
 )
 
-const AcceptButton = ({ value, text, onClick }) => (
+const AcceptButton = (props) => (
   <GreenButton
+    {...props}
     style={{
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0
     }}
     variant="outlined"
     size="small"
-    value={value}
-    onClick={onClick}
-  >
-    {text}
-  </GreenButton>
+  />
 )
 
-const RejectButton = ({ value, text, onClick }) => (
+const RejectButton = (props) => (
   <RedButton
+    {...props}
     style={{
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0
     }}
     variant="outlined"
     size="small"
-    value={value}
-    onClick={onClick}
-  >
-    {text}
-  </RedButton>
+  />
 )
 
 /**
@@ -120,29 +114,40 @@ const AcceptRejectEmailButtons = ({
   return (
     <>
       <AcceptButton
+        data-cy="send-accept-mail"
         value="topicAccepted"
-        text={acceptText}
         onClick={handleButtonClick}
-      />
+      >
+        {acceptText}
+      </AcceptButton>
       <RejectButton
+        data-cy="send-reject-mail"
         value="topicRejected"
-        text={rejectText}
         onClick={handleButtonClick}
-      />
+      >
+        {rejectText}
+      </RejectButton>
 
       <Menu
+        data-cy="email-language-menu"
         anchorEl={clickedButtonEl}
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
         <MenuItem disabled>Choose email language</MenuItem>
-        <MenuItem onClick={createHandleLanguageClicked('finnish')}>
+        <MenuItem
+          data-cy-send-mail-lang="finnish"
+          onClick={createHandleLanguageClicked('finnish')}
+        >
           <ListItemIcon>
             <FinnishFlag width="16px" />
           </ListItemIcon>
           <ListItemText>Finnish</ListItemText>
         </MenuItem>
-        <MenuItem onClick={createHandleLanguageClicked('english')}>
+        <MenuItem
+          data-cy-send-mail-lang="english"
+          onClick={createHandleLanguageClicked('english')}
+        >
           <ListItemIcon>
             <BritishFlag width="16px" />
           </ListItemIcon>
