@@ -226,7 +226,6 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
-      className="group-selector"
       value={selectedGroup}
       onChange={(e) =>
         groupSelectHandler(
@@ -239,12 +238,7 @@ const ConfigurationSelect = ({
       }
     >
       {groups.map((group, index) => (
-        <MenuItem
-          key={index}
-          value={index}
-          className={`group-${index}`}
-          data-cy="group"
-        >
+        <MenuItem key={index} value={index} data-cy="group">
           {group.groupName}
         </MenuItem>
       ))}
