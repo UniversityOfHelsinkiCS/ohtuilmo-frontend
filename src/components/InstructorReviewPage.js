@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { getUser } from '../utils/functions'
 
-import './InstructorReviewPage.css'
 import questionsJson from './questions/instructor_data'
 //Actions
 import appActions from '../reducers/actions/appActions'
@@ -256,9 +255,7 @@ const Reviews = ({ answerSheet, updateAnswer }) => {
   return answerSheet.map((student, index) => {
     return (
       <div key={index}>
-        <h1 className="student-name">
-          {student.name.first_names + ' ' + student.name.last_name}
-        </h1>
+        <h1>{student.name.first_names + ' ' + student.name.last_name}</h1>
         <Questions
           studentAnswers={student.answers}
           updateAnswer={updateAnswer}
@@ -273,14 +270,14 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
   return studentAnswers.map((question, questionId) => {
     if (question.type === 'text') {
       return (
-        <div key={questionId + userId} className="peer-review-box">
-          <h3 className="peer-review-box__h3">{question.header}</h3>
+        <div key={questionId + userId}>
+          <h3>{question.header}</h3>
           <p>{question.description}</p>
 
           <TextField
             value={question.answer}
-            rows="4"
-            style={{ width: 400 }}
+            rows="10"
+            style={{ width: 700 }}
             multiline
             variant="outlined"
             onChange={(e) =>
@@ -291,8 +288,8 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
       )
     } else if (question.type === 'number') {
       return (
-        <div key={questionId + userId} className="peer-review-box">
-          <h3 className="peer-review-box__h3">{question.header}</h3>
+        <div key={questionId + userId}>
+          <h3>{question.header}</h3>
           <p>{question.description}</p>
 
           <input
@@ -312,7 +309,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
       )
     } else if (question.type === 'info') {
       return (
-        <div key={questionId + userId} className="peer-review-box">
+        <div key={questionId + userId}>
           <h3>{question.header}</h3>
           <p>{question.description}</p>
         </div>
