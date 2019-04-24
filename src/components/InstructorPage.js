@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 import Select from '@material-ui/core/Select'
+import * as notificationActions from '../reducers/actions/notificationActions'
 
 import './InstructorPage.css'
 
@@ -272,15 +273,21 @@ const getUniqueConfigurations = (groups) => {
 
 class InstructorPage extends React.Component {
   async componentDidMount() {
-    const peerReviewData = await peerReviewService.getAnswersByInstructor()
-    const uniqueConfigurations = getUniqueConfigurations(
-      peerReviewData.map((data) => data.group)
-    )
+    try {
+      const peerReviewData = await peerReviewService.getAnswersByInstructor()
+      const uniqueConfigurations = getUniqueConfigurations(
+        peerReviewData.map((data) => data.group)
+      )
 
-    this.props.setAnswers(peerReviewData)
-    this.props.setConfigurations(uniqueConfigurations)
-    this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
+      this.props.setAnswers(peerReviewData)
+      this.props.setConfigurations(uniqueConfigurations)
+      this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Database error')
+    }
   }
+
   render() {
     const {
       answers,
@@ -326,7 +333,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setConfigurations: instructorPageActions.setConfigurations,
   setCurrentConfiguration: instructorPageActions.setCurrentConfiguration,
-  setAnswers: instructorPageActions.setAnswers
+  setAnswers: instructorPageActions.setAnswers,
+  setError: notificationActions.setError
 }
 
 const ConnectedInstructorPage = connect(
