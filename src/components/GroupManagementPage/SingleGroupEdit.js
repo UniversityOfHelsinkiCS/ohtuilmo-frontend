@@ -95,8 +95,11 @@ class SingleGroupEdit extends React.Component {
   }
 
   handleGroupDelete = async (e) => {
+    console.log(this.state.name)
     e.preventDefault()
-
+    if (!window.confirm(`Delete ${this.state.name}?`)) {
+      return
+    }
     const groupId = this.state.id
 
     try {
