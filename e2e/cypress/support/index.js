@@ -427,3 +427,60 @@ Cypress.Commands.add('createCustomerReviewQuestionSet', (name, questions) => {
     })
   })
 })
+
+Cypress.Commands.add(
+  'setCustomerReviewQuestionSetToConfiguration',
+  (configurationId) => {
+    withLoggedAdminToken((token) => {
+      const authHeaders = {
+        Authorization: 'Bearer ' + token
+      }
+
+      cy.request({
+        url: '/api/customerReviewQuestions',
+        method: 'GET',
+        headers: authHeaders
+      }).then((res) => {
+        const questionSet = res.body.questionSets[0]
+        cy.request({
+          url: `/api/configurations/${configurationId}`,
+          method: 'PUT',
+          headers: authHeaders,
+          body: {
+            content: null,
+            customer_review_question_set_id: questionSet.id,
+            name: 'Konfiguraatio 1',
+            registration_question_set_id: null,
+            review_question_set_1_id: null,
+            review_question_set_2_id: null
+          }
+        })
+      })
+    })
+  }
+)
+
+Cypress.Commands.add('deleteCustomerReviews', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/customerReview/',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { reviews } = res.body
+      if (reviews) {
+      }
+      for (const review of reviews) {
+        cy.request({
+          url: `/api/customerReview/${review.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})

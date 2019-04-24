@@ -51,7 +51,7 @@ const NumberInput = ({ value, onValueChange, ...inputProps }) => (
 const defaultOptions = ['1', '2', '3', '4', '5']
 
 /** @type {InputComponent} */
-const RangeInput = ({ value, onValueChange, options }) => {
+const RangeInput = ({ value, onValueChange, options, ...inputProps }) => {
   const makeRadio = () => <Radio color="primary" />
 
   const inputs = (options || defaultOptions).map((option) => (
@@ -66,6 +66,7 @@ const RangeInput = ({ value, onValueChange, options }) => {
 
   return (
     <RadioGroup
+      {...inputProps}
       value={`${value}`}
       onChange={passEventValueTo(onValueChange)}
       row
@@ -98,6 +99,7 @@ const Question = ({ question, answer, onAnswerChange }) => {
       onValueChange={onAnswerChange}
       options={question.options}
       required
+      data-cy={`${question.type}Input-${question.header}`}
     />
   )
 
@@ -217,7 +219,7 @@ class CustomerReviewPage extends React.Component {
       })
 
       this.props.setSuccess('Review saved!')
-      this.props.history.push('/')
+      this.props.setReview(true)
     } catch (e) {
       console.log('error happened', e)
       this.props.setError(e.response.data.error)
@@ -279,6 +281,7 @@ class CustomerReviewPage extends React.Component {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  data-cy="submit-customer-review-button"
                 >
                   Submit
                 </Button>
