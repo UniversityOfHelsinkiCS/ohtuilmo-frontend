@@ -109,8 +109,8 @@ class App extends Component {
                 path="/login"
                 render={() =>
                   this.props.user ? (
-                    this.props.user.admin ? (
-                      <Redirect to="/administration" />
+                    this.props.user.instructor ? (
+                      <Redirect to="/instructorpage" />
                     ) : (
                       <Redirect to="/" />
                     )
@@ -197,7 +197,7 @@ class App extends Component {
                 path="/instructorpage"
                 render={() => <InstructorPage />}
               />
-              <Route
+              <InstructorRoute
                 exact
                 path="/instructorreviewpage"
                 render={() => <InstructorReviewPage />}

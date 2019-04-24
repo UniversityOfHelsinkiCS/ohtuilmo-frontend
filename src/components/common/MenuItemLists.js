@@ -74,6 +74,10 @@ const instructorItems = (history) => {
     {
       text: 'Intructor Page',
       handler: () => history.push('/instructorpage')
+    },
+    {
+      text: 'Instructor Review',
+      handler: () => history.push('/instructorreviewpage')
     }
   ]
 
