@@ -15,8 +15,6 @@ import LoadingCover from './../common/LoadingCover'
 
 import './ViewCustomerReviewsPage.css'
 
-
-
 class ViewCustomerReviewsPage extends React.Component {
   async componentWillMount() {
     try {
@@ -42,9 +40,7 @@ class ViewCustomerReviewsPage extends React.Component {
     const { isInitializing } = this.props
 
     const handleConfiguartionChange = async (confId) => {
-      this.props.setLoading(true)
       this.props.setConfiguration(confId)
-      console.log(confId)
 
       this.props.setReviewData(
         await customerReviewService.getCustomerReviewAnswers(confId)
@@ -53,37 +49,39 @@ class ViewCustomerReviewsPage extends React.Component {
 
     const CustomerReviewsContainer = (props) => {
       const { reviews } = props
-      console.log(reviews)
       return reviews.map((review) => (
         <Group group={review.group} key={review.group.id} />
       ))
     }
 
     const Group = ({ group }) => {
-      if (group.answerSheet === null || group.answerSheet === undefined) {
-        return (
-          <div className="customer-reviews-container__group">
-            <h2> {group.name} </h2>
+      return (
+        <div
+          className="customer-reviews-container__group"
+          id={`review-${group.id}`}
+        >
+          <h2>{group.name}</h2>
+
+          {!group.answerSheet ? (
             <p> No review submitted for group {group.name}</p>
-          </div>
-        )
-      } else {
-        return (
-          <div className="customer-reviews-container__group">
-            <h2> {group.name} </h2>
+          ) : (
             <Answers answerSheet={group.answerSheet} />
-          </div>
-        )
-      }
+          )}
+        </div>
+      )
     }
 
     const Answers = ({ answerSheet }) => {
       return answerSheet.map((answer) => {
         if (answer.type === 'text') {
           return <TextAnswer answer={answer} key={answer.id} />
-        } else {
+        }
+
+        if (answer.type === 'number' || answer.type === 'range') {
           return <NumberAnswer answer={answer} key={answer.id} />
         }
+        //if there is something else, like instructions return null
+        return null
       })
     }
 
@@ -163,7 +161,7 @@ class ViewCustomerReviewsPage extends React.Component {
             fileName="customerReviews.json"
           />
 
-          <h1 class="customer-reviews-h1">Customer reviews</h1>
+          <h1 className="customer-reviews-h1">Customer reviews</h1>
           <CustomerReviewsContainer reviews={this.props.reviewData} />
         </div>
       )
@@ -180,8 +178,7 @@ class ViewCustomerReviewsPage extends React.Component {
           >
             {configurationMenuItems()}
           </Select>
-          <h1 class="customer-reviews-h1">Customer reviews</h1>
-          {/* <CustomerReviewsContainer reviews={fakeData} /> */}
+          <h1 className="customer-reviews-h1">Customer reviews</h1>
           <h3>No configuration selected!</h3>
           <h3>Please select a configuration!</h3>
         </div>
