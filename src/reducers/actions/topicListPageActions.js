@@ -63,7 +63,15 @@ const setTopicActive = (topic, newActiveState) => {
     }
     // don't catch error so UI can catch it and display proper error msg
     const updatedTopic = await topicService.update(stagedTopic)
-    dispatch(updateTopicSuccess(updatedTopic))
+    dispatch(
+      updateTopicSuccess({
+        ...updatedTopic,
+        // Copy over the hasReviewed and sentEmails fields since the PUT
+        // doesn't provide these computed values.
+        hasReviewed: topic.hasReviewed,
+        sentEmails: topic.sentEmails
+      })
+    )
   }
 }
 
