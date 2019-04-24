@@ -1,24 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import List from '@material-ui/core/List'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItem from '@material-ui/core/ListItemText'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import Switch from '@material-ui/core/Switch'
-import Divider from '@material-ui/core/Divider'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import Switch from '@material-ui/core/Switch'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
-import emailService from '../services/email'
-import { getEmailTemplateRenderer } from '../utils/functions'
+import { getEmailTemplateRenderer, formatDate } from '../utils/functions'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
 import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -27,12 +29,242 @@ import configurationPageActions from '../reducers/actions/configurationPageActio
 import LoadingCover from './common/LoadingCover'
 import './TopicListPage.css'
 
-const buttonTheme = createMuiTheme({
+const redGreenTheme = createMuiTheme({
   palette: {
     primary: green,
     secondary: red
   }
 })
+
+const ThemedButton = ({ theme, ...props }) => (
+  <MuiThemeProvider theme={theme}>
+    <Button {...props} />
+  </MuiThemeProvider>
+)
+
+const GreenButton = (props) => (
+  <ThemedButton {...props} theme={redGreenTheme} color="primary" />
+)
+const RedButton = (props) => (
+  <ThemedButton {...props} theme={redGreenTheme} color="secondary" />
+)
+
+const FinnishFlag = (props) => (
+  <img alt="Flag of Finland" {...props} src="/img/fi.svg" />
+)
+
+const BritishFlag = (props) => (
+  <img alt="Flag of Great Britain" {...props} src="/img/gb.svg" />
+)
+
+const AcceptButton = (props) => (
+  <GreenButton
+    {...props}
+    style={{
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0
+    }}
+    variant="outlined"
+    size="small"
+  />
+)
+
+const RejectButton = (props) => (
+  <RedButton
+    {...props}
+    style={{
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0
+    }}
+    variant="outlined"
+    size="small"
+  />
+)
+
+/**
+ * @typedef {{ messageType: string, messageLanguage: string }} EmailInfo
+ * @param {{ onSendRequested: (info: EmailInfo) => void, acceptText?: string, rejectText?: string }} props
+ */
+const AcceptRejectEmailButtons = ({
+  acceptText = 'Accept',
+  rejectText = 'Reject',
+  onSendRequested
+}) => {
+  const [clickedButtonEl, setClickedButtonEl] = useState(null)
+  const isMenuOpen = Boolean(clickedButtonEl)
+
+  const handleButtonClick = (e) => {
+    // use currentTarget instead of target because the click
+    // will otherwise most likely register the <span> inside the button
+    setClickedButtonEl(e.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setClickedButtonEl(null)
+  }
+
+  const createHandleLanguageClicked = (messageLanguage) => () => {
+    // get value before setting the element null (closing the menu)
+    const messageType = clickedButtonEl.value
+    handleMenuClose()
+    // call callback only after closing menu
+    onSendRequested({ messageType, messageLanguage })
+  }
+
+  return (
+    <>
+      <AcceptButton
+        data-cy="send-accept-mail"
+        value="topicAccepted"
+        onClick={handleButtonClick}
+      >
+        {acceptText}
+      </AcceptButton>
+      <RejectButton
+        data-cy="send-reject-mail"
+        value="topicRejected"
+        onClick={handleButtonClick}
+      >
+        {rejectText}
+      </RejectButton>
+
+      <Menu
+        data-cy="email-language-menu"
+        anchorEl={clickedButtonEl}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem disabled>Choose email language</MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="finnish"
+          onClick={createHandleLanguageClicked('finnish')}
+        >
+          <ListItemIcon>
+            <FinnishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>Finnish</ListItemText>
+        </MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="english"
+          onClick={createHandleLanguageClicked('english')}
+        >
+          <ListItemIcon>
+            <BritishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>English</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  )
+}
+
+AcceptRejectEmailButtons.propTypes = {
+  onSendRequested: PropTypes.func.isRequired,
+  acceptText: PropTypes.string,
+  rejectText: PropTypes.string
+}
+
+const TopicDetailsLink = ({ topicId, ...props }) => (
+  <Link {...props} to={`/topics/${topicId}`} />
+)
+
+const isTopicAcceptedMail = (sentMail) =>
+  sentMail.email.type === 'topicAccepted'
+const isTopicRejectedMail = (sentMail) =>
+  sentMail.email.type === 'topicRejected'
+
+/**
+ * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
+ */
+const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
+  const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
+  const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
+
+  return (
+    <TableRow
+      className="topic-table-row"
+      data-cy-topic-name={topic.content.title}
+    >
+      <TableCell padding="dense">
+        <p className="topic-table-row__topic-title">
+          <TopicDetailsLink topicId={topic.id}>
+            {topic.content.title}
+          </TopicDetailsLink>
+        </p>
+        <p className="topic-table-row__customer">
+          {`${topic.content.customerName} (${topic.content.email})`}
+        </p>
+        <p className="topic-table-row__submit-date">
+          Submitted {formatDate(topic.createdAt)}
+        </p>
+      </TableCell>
+      <TableCell padding="none">
+        {topic.hasReviewed ? 'Submitted' : '-'}
+      </TableCell>
+      <TableCell padding="none">
+        <AcceptRejectEmailButtons
+          acceptText={hasAcceptMailBeenSent ? 'Resend Accept' : 'Accept'}
+          rejectText={hasRejectMailBeenSent ? 'Resend Reject' : 'Reject'}
+          onSendRequested={onEmailSendRequested}
+        />
+      </TableCell>
+      <TableCell padding="checkbox" numeric>
+        <Switch
+          inputProps={{ 'data-cy': 'toggle-active' }}
+          checked={topic.active}
+          onClick={onActiveToggle}
+        />
+      </TableCell>
+    </TableRow>
+  )
+}
+
+TopicTableRow.propTypes = {
+  topic: PropTypes.object.isRequired,
+  onEmailSendRequested: PropTypes.func.isRequired,
+  onActiveToggle: PropTypes.func.isRequired
+}
+
+const TopicTableHead = () => (
+  <TableHead>
+    <TableRow>
+      <TableCell padding="dense">Topic</TableCell>
+      <TableCell padding="none">Customer review</TableCell>
+      <TableCell padding="none">Send accept/reject email</TableCell>
+      <TableCell numeric>Active</TableCell>
+    </TableRow>
+  </TableHead>
+)
+
+/**
+ * @typedef {{ topic: any } & EmailInfo} TopicEmailInfo
+ * @param {{ topics: any[], onEmailSendRequested: (info: TopicEmailInfo) => void, onActiveToggle: (topic: any) => void }} props
+ */
+const TopicTable = ({ topics, onEmailSendRequested, onActiveToggle }) => {
+  return (
+    <Table>
+      <TopicTableHead />
+      <TableBody>
+        {topics.map((topic) => (
+          <TopicTableRow
+            key={topic.id}
+            topic={topic}
+            onEmailSendRequested={(emailInfo) =>
+              onEmailSendRequested({ ...emailInfo, topic })
+            }
+            onActiveToggle={() => onActiveToggle(topic)}
+          />
+        ))}
+      </TableBody>
+    </Table>
+  )
+}
+
+TopicTable.propTypes = {
+  topics: PropTypes.array,
+  onEmailSendRequested: PropTypes.func.isRequired,
+  onActiveToggle: PropTypes.func.isRequired
+}
 
 class TopicListPage extends React.Component {
   async componentWillMount() {
@@ -83,6 +315,22 @@ class TopicListPage extends React.Component {
     }
   }
 
+  handleActiveToggle = async (topic) => {
+    try {
+      const newActiveState = !topic.active
+      await this.props.setTopicActive(topic, newActiveState)
+
+      const activeDescription = newActiveState ? 'active' : 'inactive'
+      this.props.setSuccess(
+        `Topic '${topic.content.title}' has been set ${activeDescription}.`,
+        3000
+      )
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Some error happened', 3000)
+    }
+  }
+
   showTopic = (topic) => {
     const filter = this.props.filter
     if (filter !== 0) {
@@ -92,12 +340,11 @@ class TopicListPage extends React.Component {
     }
   }
 
-  /**
-   * @param {object} topic
-   * @param {string} messageType
-   * @param {string} messageLang
-   */
-  handleEmailButtonPress = (topic, messageType, messageLang) => async () => {
+  handleEmailSendRequested = async ({
+    topic,
+    messageType,
+    messageLanguage
+  }) => {
     const { emailTemplates } = this.props
     const templateRenderer = getEmailTemplateRenderer(messageType)
 
@@ -107,7 +354,7 @@ class TopicListPage extends React.Component {
      *   english: ''
      * }
      */
-    const emailTemplate = emailTemplates[messageType][messageLang]
+    const emailTemplate = emailTemplates[messageType][messageLanguage]
     const renderedEmail = templateRenderer(topic, emailTemplate)
 
     const topicTitle = topic.content.title
@@ -121,12 +368,12 @@ class TopicListPage extends React.Component {
     }
 
     try {
-      await emailService.sendCustomerEmail(
-        topic.content.email,
-        messageType,
-        messageLang,
-        { topicName: topicTitle }
-      )
+      await this.props.sendCustomerEmail(topic.id, {
+        address: topic.content.email,
+        messageType: messageType,
+        messageLanguage: messageLanguage,
+        templateContext: { topicName: topicTitle, topicId: topic.id }
+      })
       this.props.setSuccess(`Email sent to ${ownerEmail}.`)
     } catch (e) {
       console.error(e)
@@ -161,6 +408,8 @@ class TopicListPage extends React.Component {
         )
     }
 
+    const shownTopics = topics.filter(this.showTopic)
+
     return (
       <div className="topics-container">
         {isLoading && (
@@ -173,95 +422,19 @@ class TopicListPage extends React.Component {
         >
           {configurationMenuItems()}
         </Select>
-        <Typography align="right" variant="subtitle1">
-          Active
-        </Typography>
 
-        {topics.map((topic) => {
-          if (this.showTopic(topic)) {
-            return (
-              <List key={topic.id} data-cy-topic-name={topic.content.title}>
-                <ListItem>
-                  <Link to={'/topics/' + topic.id}>
-                    <ListItemText primary={topic.content.title} />
-                  </Link>
-                  <ListItemText
-                    primary={`${topic.content.customerName} (${
-                      topic.content.email
-                    })`}
-                    secondary={`created: ${topic.createdAt}`}
-                  />
-                  <ListItemSecondaryAction>
-                    <MuiThemeProvider theme={buttonTheme}>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        value="Finnish-Yes"
-                        onClick={this.handleEmailButtonPress(
-                          topic,
-                          'topicAccepted',
-                          'finnish'
-                        )}
-                      >
-                        Finnish-Yes
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        value="Finnish-No"
-                        onClick={this.handleEmailButtonPress(
-                          topic,
-                          'topicRejected',
-                          'finnish'
-                        )}
-                      >
-                        Finnish-No
-                      </Button>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        value="English-Yes"
-                        onClick={this.handleEmailButtonPress(
-                          topic,
-                          'topicAccepted',
-                          'english'
-                        )}
-                      >
-                        English-Yes
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="outlined"
-                        value="English-No"
-                        onClick={this.handleEmailButtonPress(
-                          topic,
-                          'topicRejected',
-                          'english'
-                        )}
-                      >
-                        English-No
-                      </Button>
-                    </MuiThemeProvider>
-                    <Switch
-                      checked={topic.active}
-                      onChange={this.handleActiveChange(topic)}
-                    />
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <Divider variant="inset" />
-              </List>
-            )
-          } else {
-            return null
-          }
-        })}
+        <TopicTable
+          topics={shownTopics}
+          onEmailSendRequested={this.handleEmailSendRequested}
+          onActiveToggle={this.handleActiveToggle}
+        />
       </div>
     )
   }
 }
 
 TopicListPage.propTypes = {
-  filter: PropTypes.string.isRequired,
+  filter: PropTypes.number.isRequired,
   topics: PropTypes.array.isRequired,
   emailTemplates: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -291,6 +464,7 @@ const mapDispatchToProps = {
   fetchTopics: topicListPageActions.fetchTopics,
   updateFilter: topicListPageActions.updateFilter,
   setTopicActive: topicListPageActions.setTopicActive,
+  sendCustomerEmail: topicListPageActions.sendCustomerEmail,
   fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,

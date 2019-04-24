@@ -1,4 +1,5 @@
 import topicService from '../../services/topic'
+import emailService from '../../services/email'
 
 const updateFilter = (filter) => {
   return {
@@ -23,6 +24,14 @@ const fetchTopicsSuccess = (topics) => ({
 const updateTopicSuccess = (updatedTopic) => ({
   type: 'TOPIC_PAGE_UPDATE_TOPIC_SUCCESS',
   payload: updatedTopic
+})
+
+const updateSentEmail = (topicId, sentEmail) => ({
+  type: 'TOPIC_PAGE_TOPIC_ADD_SENT_EMAIL',
+  payload: {
+    topicId,
+    sentEmail
+  }
 })
 
 const fetchTopics = () => {
@@ -54,12 +63,35 @@ const setTopicActive = (topic, newActiveState) => {
     }
     // don't catch error so UI can catch it and display proper error msg
     const updatedTopic = await topicService.update(stagedTopic)
-    dispatch(updateTopicSuccess(updatedTopic))
+    dispatch(
+      updateTopicSuccess({
+        ...updatedTopic,
+        // Copy over the hasReviewed and sentEmails fields since the PUT
+        // doesn't provide these computed values.
+        hasReviewed: topic.hasReviewed,
+        sentEmails: topic.sentEmails
+      })
+    )
+  }
+}
+
+const sendCustomerEmail = (topicId, emailInfo) => {
+  const { address, messageType, messageLanguage, templateContext } = emailInfo
+
+  return async (dispatch) => {
+    const createdMail = await emailService.sendCustomerEmail(
+      address,
+      messageType,
+      messageLanguage,
+      templateContext
+    )
+    dispatch(updateSentEmail(topicId, createdMail))
   }
 }
 
 export default {
   fetchTopics,
   setTopicActive,
-  updateFilter
+  updateFilter,
+  sendCustomerEmail
 }

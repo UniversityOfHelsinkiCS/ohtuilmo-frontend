@@ -1,3 +1,4 @@
+/* globals cy Cypress */
 // ***********************************************************
 // This example support/index.js is processed and
 // loaded automatically before your test files.
@@ -367,6 +368,20 @@ Cypress.Commands.add('updateAllEmailTemplates', (body) => {
       method: 'POST',
       headers: authHeaders,
       body
+    })
+  })
+})
+
+Cypress.Commands.add('deleteSentEmails', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/email/sent-emails',
+      method: 'DELETE',
+      headers: authHeaders
     })
   })
 })
