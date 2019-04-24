@@ -30,13 +30,20 @@ const getDataForReview = async (secretId) => {
 }
 
 const getCustomerReviewAnswers = async (configurationId) => {
-  const response = await axios.get(
-    `${url}/all/forConfiguration/${configurationId}`,  {
+  if (configurationId === 0) {
+    const response = await axios.get(`${url}/all`, {
       headers: { Authorization: 'Bearer ' + getUserToken() }
-    }
-  )
-
-  return response.data
+    })
+    return response.data
+  } else {
+    const response = await axios.get(
+      `${url}/all/forConfiguration/${configurationId}`,
+      {
+        headers: { Authorization: 'Bearer ' + getUserToken() }
+      }
+    )
+    return response.data
+  }
 }
 
 

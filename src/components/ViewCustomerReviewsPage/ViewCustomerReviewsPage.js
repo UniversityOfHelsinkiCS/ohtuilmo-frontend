@@ -15,63 +15,7 @@ import LoadingCover from './../common/LoadingCover'
 
 import './ViewCustomerReviewsPage.css'
 
-//ei toimi atm
 
-const fakeData = [
-  {
-    group: {
-      id: 1,
-      name: 'Aihe B',
-      answerSheet: null
-    }
-  },
-  {
-    group: {
-      id: 2,
-      name: 'Aihe A',
-      answerSheet: [
-        {
-          id: 0,
-          type: 'text',
-          answer:
-            '5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä 5000 merkkiä',
-          questionHeader: 'Mitä mieltä olit tykittelystä?'
-        },
-        {
-          id: 1,
-          type: 'number',
-          answer: 7,
-          questionHeader: 'Monta tuntia viikossa olit yhteydessä tiimiin?'
-        },
-        {
-          id: 2,
-          type: 'range',
-          answer: '4',
-          questionHeader: 'Minkä arvosanan antaisit tiimille?',
-          questionOptions: ['1', '2', '3', '4', '5']
-        },
-        {
-          id: 4,
-          type: 'text',
-          answer:
-            'Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis Hyvä fiilis fiilis',
-          questionHeader: 'Mikä fiilis?'
-        }
-      ]
-    }
-  }
-]
-
-const ViewGroups = (reviewData) => {
-  console.log(reviewData)
-
-  /*   if(reviewData.length > 0){ */
-
-  return reviewData.map((group) => <div>{group.name}</div>)
-  /*   } else {
-    return null
-  } */
-}
 
 class ViewCustomerReviewsPage extends React.Component {
   async componentWillMount() {
@@ -203,26 +147,9 @@ class ViewCustomerReviewsPage extends React.Component {
 
     if (this.props.reviewFetched) {
       return (
-        <div className="topics-container">
+        <div className="customer-reviews-container">
           {isInitializing && (
-            <LoadingCover className="topics-container__loading-cover" />
-          )}
-
-          <Select
-            value={this.props.configuration}
-            onChange={(event) => handleConfiguartionChange(event.target.value)}
-          >
-            {configurationMenuItems()}
-          </Select>
-
-          <ViewGroups reviewData={this.props.reviewData} />
-        </div>
-      )
-    } else {
-      return (
-        <div className="topics-container">
-          {isInitializing && (
-            <LoadingCover className="topics-container__loading-cover" />
+            <LoadingCover className="customer-reviews-container__loading-cover" />
           )}
 
           <Select
@@ -232,11 +159,31 @@ class ViewCustomerReviewsPage extends React.Component {
             {configurationMenuItems()}
           </Select>
           <DownloadButton
-            jsonData={JSON.stringify(fakeData)}
+            jsonData={JSON.stringify(this.props.reviewData)}
             fileName="customerReviews.json"
           />
+
           <h1 class="customer-reviews-h1">Customer reviews</h1>
-          <CustomerReviewsContainer reviews={fakeData} />
+          <CustomerReviewsContainer reviews={this.props.reviewData} />
+        </div>
+      )
+    } else {
+      return (
+        <div className="customer-reviews-container">
+          {isInitializing && (
+            <LoadingCover className="customer-reviews-container__loading-cover" />
+          )}
+
+          <Select
+            value={this.props.configuration}
+            onChange={(event) => handleConfiguartionChange(event.target.value)}
+          >
+            {configurationMenuItems()}
+          </Select>
+          <h1 class="customer-reviews-h1">Customer reviews</h1>
+          {/* <CustomerReviewsContainer reviews={fakeData} /> */}
+          <h3>No configuration selected!</h3>
+          <h3>Please select a configuration!</h3>
         </div>
       )
     }
