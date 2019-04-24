@@ -3,11 +3,15 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
+import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
+import Select from '@material-ui/core/Select'
 
 import './InstructorPage.css'
 
 //Services
 import peerReviewService from '../services/peerReview'
+import instructorPageActions from '../reducers/actions/instructorPageActions'
 
 const GroupDetails = ({ myGroup }) => {
   if (!myGroup) {
@@ -31,7 +35,11 @@ const GroupDetails = ({ myGroup }) => {
   }
 }
 
-const Answers = ({ answers }) => {
+const Answers = ({ answers, currentConfiguration }) => {
+  answers = answers.filter(
+    (group) => group.group.configurationId === currentConfiguration
+  )
+
   return (
     <div>
       {answers.map((projectGroup, index) => {
@@ -61,8 +69,7 @@ const Answers = ({ answers }) => {
               </div>
             ) : (
               <h2>
-                This group hasn't answered to the second peer review round
-                yet.
+                This group hasn't answered to the second peer review round yet.
               </h2>
             )}
 
@@ -223,30 +230,90 @@ const DownloadButton = ({ jsonData, fileName }) => {
   )
 }
 
-class InstructorPage extends React.Component {
-  state = { answersJson: null }
+const ConfigurationSelectWrapper = ({ label, children }) => (
+  <div style={{ padding: 20 }}>
+    <Typography variant="caption">{label}</Typography>
+    {children}
+  </div>
+)
 
+const ConfigurationSelect = ({
+  currentConfiguration,
+  setCurrentConfiguration,
+  configurations
+}) => {
+  return (
+    <Select
+      value={currentConfiguration}
+      onChange={(e) => setCurrentConfiguration(e.target.value)}
+    >
+      {configurations.map((configuration) => (
+        <MenuItem key={configuration.id} value={configuration.id}>
+          {configuration.name}
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}
+
+const getUniqueConfigurations = (groups) => {
+  const uniqueLookup = groups.reduce((configurations, group) => {
+    return {
+      ...configurations,
+      [group.configurationId]: {
+        name: group.configurationName,
+        id: group.configurationId
+      }
+    }
+  }, {})
+
+  return Object.values(uniqueLookup)
+}
+
+class InstructorPage extends React.Component {
   async componentDidMount() {
+    console.log('hei')
+
     const peerReviewData = await peerReviewService.getAnswersByInstructor()
 
-    this.setState({
-      answersJson: peerReviewData
-    })
+    const uniqueConfigurations = getUniqueConfigurations(
+      peerReviewData.map((data) => data.group)
+    )
+
+    this.props.setAnswers(peerReviewData)
+    this.props.setConfigurations(uniqueConfigurations)
+    console.log(uniqueConfigurations[0].id)
+    this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
   }
   render() {
-    const { answersJson } = this.state
+    const {
+      answers,
+      currentConfiguration,
+      configurations,
+      setCurrentConfiguration
+    } = this.props
 
-    if (!answersJson) {
+    if (!answers) {
       return <div className="instructor-container">Loading</div>
     }
 
     return (
       <div className="instructor-container">
         <DownloadButton
-          jsonData={JSON.stringify(answersJson)}
+          jsonData={JSON.stringify(answers)}
           fileName="peerReviews.json"
         />
-        <Answers answers={answersJson} />
+        <ConfigurationSelectWrapper label="Select configuration">
+          <ConfigurationSelect
+            currentConfiguration={currentConfiguration}
+            setCurrentConfiguration={setCurrentConfiguration}
+            configurations={configurations}
+          />
+        </ConfigurationSelectWrapper>
+        <Answers
+          answers={answers}
+          currentConfiguration={currentConfiguration}
+        />
       </div>
     )
   }
@@ -255,10 +322,18 @@ class InstructorPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     configurations: state.instructorPage.configurations,
-    currentConfiguration: state.instructorPage.currentConfiguration
+    currentConfiguration: state.instructorPage.currentConfiguration,
+    answers: state.instructorPage.answers
   }
 }
 
-const ConnectedInstructorPage = connect(mapStateToProps)(InstructorPage)
+const mapDispatchToProps = {
+  ...instructorPageActions
+}
+
+const ConnectedInstructorPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InstructorPage)
 
 export default withRouter(ConnectedInstructorPage)

@@ -1,15 +1,21 @@
 const setConfigurations = (configurations) => {
   return {
-    type: 'SET_CONFIGURATIONS',
+    type: 'SET_INSTRUCTORPAGE_CONFIGURATIONS',
     payload: configurations
   }
 }
 
 const setCurrentConfiguration = (configurationNumber) => {
   return {
-    type: 'SET_CURRENT_CONFIGURATION',
+    type: 'SET_INSTRUCTORPAGE_CURRENT_CONFIGURATION',
     payload: configurationNumber
   }
 }
+const setAnswers = (answers) => {
+  return {
+    type: 'SET_INSTRUCTORPAGE_CURRENT_ANSWERS',
+    payload: answers
+  }
+}
 
-export default { setCurrentConfiguration, setConfigurations }
+export default { setCurrentConfiguration, setConfigurations, setAnswers }
