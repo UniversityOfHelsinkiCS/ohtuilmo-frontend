@@ -205,10 +205,15 @@ class RegistrationDetailsPage extends React.Component {
     /**
      * Show primarily peer review registration, secondarily project registration
      */
-    const { ownRegistrations, peerReviewConf, projectConf } = this.props
+    const {
+      ownRegistrations,
+      peerReviewConf,
+      projectRegistrationConf
+    } = this.props
 
     const projectReg = ownRegistrations.find(
-      (registration) => registration.configuration_id === projectConf
+      (registration) =>
+        registration.configuration_id === projectRegistrationConf
     )
 
     const reviewConf = ownRegistrations.find(
@@ -250,7 +255,8 @@ const mapStateToProps = (state) => {
     groupDetails: state.registrationDetails.myGroup,
     peerReviewRound: state.registrationManagement.peerReviewRound,
     peerReviewConf: state.registrationManagement.peerReviewConf,
-    projectConf: state.registrationManagement.projectConf
+    projectRegistrationConf:
+      state.registrationManagement.projectRegistrationConf
   }
 }
 
