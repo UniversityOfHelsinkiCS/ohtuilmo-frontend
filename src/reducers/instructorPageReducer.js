@@ -1,6 +1,6 @@
 const initialState = {
   configurations: [],
-  currentConfiguration: '',
+  currentConfiguration: null,
   answers: null
 }
 const instructorPageReducer = (state = initialState, action) => {

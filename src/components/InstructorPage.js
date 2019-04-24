@@ -272,17 +272,13 @@ const getUniqueConfigurations = (groups) => {
 
 class InstructorPage extends React.Component {
   async componentDidMount() {
-    console.log('hei')
-
     const peerReviewData = await peerReviewService.getAnswersByInstructor()
-
     const uniqueConfigurations = getUniqueConfigurations(
       peerReviewData.map((data) => data.group)
     )
 
     this.props.setAnswers(peerReviewData)
     this.props.setConfigurations(uniqueConfigurations)
-    console.log(uniqueConfigurations[0].id)
     this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
   }
   render() {
@@ -328,7 +324,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  ...instructorPageActions
+  setConfigurations: instructorPageActions.setConfigurations,
+  setCurrentConfiguration: instructorPageActions.setCurrentConfiguration,
+  setAnswers: instructorPageActions.setAnswers
 }
 
 const ConnectedInstructorPage = connect(
