@@ -1,6 +1,11 @@
 /* globals cy describe beforeEach it expect */
 const visitTopicsPage = (visitArgs) => cy.visit('/topics', visitArgs)
 
+const findTopicActiveCheckbox = (topicName) =>
+  cy
+    .get(`[data-cy-topic-name="${topicName}"]`)
+    .find('[data-cy="toggle-active"]')
+
 const getSendAcceptButton = (topicName) =>
   cy
     .get(`[data-cy-topic-name="${topicName}"]`)
@@ -25,11 +30,62 @@ const clickEmailLanguage = (language) =>
     .click()
 
 describe('Topic list page', () => {
-  const topicName = 'Aihe A'
+  beforeEach(() => {
+    cy.loginAsAdmin()
+  })
+
+  describe('topics', () => {
+    const toggleTestTopicName = 'Aihe C'
+
+    beforeEach(() => {
+      visitTopicsPage()
+    })
+
+    it('renders the topic names correctly', () => {
+      const topicTitles = ['Aihe A', 'Aihe B']
+
+      for (const topicTitle of topicTitles) {
+        cy.get(`[data-cy-topic-name="${topicTitle}"]`)
+          .find('.topic-table-row__topic-title')
+          .should('have.text', topicTitle)
+      }
+    })
+
+    it('renders the customer names and emails correctly', () => {
+      cy.get('[data-cy-topic-name="Aihe A"]')
+        .find('.topic-table-row__customer')
+        .contains('Aasiakas')
+      cy.get('[data-cy-topic-name="Aihe A"]')
+        .find('.topic-table-row__customer')
+        .contains('aasia@kas')
+    })
+
+    it('toggles topic active state correctly', () => {
+      // get initial checked state
+      findTopicActiveCheckbox(toggleTestTopicName).then(($input) => {
+        const desiredState = $input.prop('checked')
+          ? 'not.be.checked'
+          : 'be.checked'
+
+        // toggle active
+        findTopicActiveCheckbox(toggleTestTopicName).click()
+
+        // did it change state?
+        findTopicActiveCheckbox(toggleTestTopicName).should(desiredState)
+
+        visitTopicsPage()
+
+        // still in correct state after refresh?
+        findTopicActiveCheckbox(toggleTestTopicName).should(desiredState)
+      })
+    })
+  })
 
   describe('emails', () => {
+    const topicName = 'Aihe A'
+    const emailAddress = 'aasia@kas'
+
     beforeEach(() => {
-      cy.loginAsAdmin()
       cy.deleteSentEmails()
       cy.updateAllEmailTemplates({
         topicAccepted: {
@@ -48,8 +104,6 @@ describe('Topic list page', () => {
         }
       })
     })
-
-    const emailAddress = 'aasia@kas'
 
     it('shows email languages after clicking accept', () => {
       clickSendAcceptEmail(topicName)
