@@ -80,7 +80,7 @@ const saveGroup = async (event, props) => {
       studentIds: splitStudents
     })
     props.createGroupSuccsess(createdGroup)
-
+    props.onInstructorChange(null)
     props.setSuccess('Group saved!')
   } catch (e) {
     props.setError(`Failed to save! ${e.response.data.error}`)
@@ -120,7 +120,8 @@ const GroupCreationForm = ({
             groupConfigurationID,
             createGroupSuccsess,
             setSuccess,
-            setError
+            setError,
+            onInstructorChange
           })
         }
       >
