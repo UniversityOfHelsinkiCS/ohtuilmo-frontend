@@ -509,3 +509,18 @@ Cypress.Commands.add('deleteInstructorReviews', () => {
     })
   })
 })
+
+Cypress.Commands.add('createPeerReviews', (peerReviews) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/peerreview/insertTestData',
+      method: 'POST',
+      headers: authHeaders,
+      body: peerReviews
+    })
+  })
+})

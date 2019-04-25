@@ -280,7 +280,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
             style={{ width: 700 }}
             multiline
             variant="outlined"
-            data-cy={`textInput-${question.header}`}
+            data-cy={`textInput-${question.header} user:${userId}`}
             onChange={(e) =>
               textFieldHandler(e.target.value, userId, questionId, updateAnswer)
             }
@@ -296,7 +296,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
           <input
             type="number"
             value={question.answer}
-            data-cy={`numberInput-${question.header}`}
+            data-cy={`numberInput-${question.header} user:${userId}`}
             onChange={(e) =>
               numberFieldHandler(
                 e.target.value,

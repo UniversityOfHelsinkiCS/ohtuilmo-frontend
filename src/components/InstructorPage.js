@@ -209,7 +209,9 @@ const PeerRows = ({ member, answers, questionNumber }) => {
           {rating}
         </td>
       ))}
-      <td className="radio-button">{averageRating.toFixed(2)}</td>
+      <td data-cy="" className="radio-button">
+        {averageRating.toFixed(2)}
+      </td>
     </React.Fragment>
   )
 }
@@ -245,11 +247,12 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      data-cy="configuration-selector"
       value={currentConfiguration}
       onChange={(e) => setCurrentConfiguration(e.target.value)}
     >
       {configurations.map((configuration) => (
-        <MenuItem key={configuration.id} value={configuration.id}>
+        <MenuItem className="configuration-menu-item" value={configuration.id}>
           {configuration.name}
         </MenuItem>
       ))}
