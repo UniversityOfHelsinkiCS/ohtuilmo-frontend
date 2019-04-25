@@ -209,9 +209,7 @@ const PeerRows = ({ member, answers, questionNumber }) => {
           {rating}
         </td>
       ))}
-      <td data-cy="" className="radio-button">
-        {averageRating.toFixed(2)}
-      </td>
+      <td className="radio-button">{averageRating.toFixed(2)}</td>
     </React.Fragment>
   )
 }
