@@ -138,7 +138,7 @@ Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
 })
 
 Cypress.Commands.add('createGroup', (groupData) => {
-  withLoggedAdminToken().then((token) => {
+  return withLoggedAdminToken().then((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -150,18 +150,20 @@ Cypress.Commands.add('createGroup', (groupData) => {
       studentIds
     } = groupData
 
-    cy.request({
-      url: '/api/groups',
-      method: 'POST',
-      headers: authHeaders,
-      body: {
-        name,
-        topicId,
-        configurationId,
-        instructorId,
-        studentIds
-      }
-    })
+    return cy
+      .request({
+        url: '/api/groups',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          name,
+          topicId,
+          configurationId,
+          instructorId,
+          studentIds
+        }
+      })
+      .then((res) => res.body)
   })
 })
 
