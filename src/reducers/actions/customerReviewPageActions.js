@@ -16,7 +16,7 @@ const updateAnswer = (answer, questionId) => {
 const setLoading = (loading) => {
   return {
     type: 'CUSTOMER_REVIEW_LOADING',
-      payload: loading
+    payload: loading
   }
 }
 

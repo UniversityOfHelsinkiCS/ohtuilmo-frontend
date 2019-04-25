@@ -23,7 +23,7 @@ const GroupDetails = ({ myGroup }) => {
     )
   } else {
     return (
-        <div>
+      <div>
         {myGroup.map((member, index) => {
           return (
             <p key={index}>

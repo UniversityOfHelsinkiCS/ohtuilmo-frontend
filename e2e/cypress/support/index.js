@@ -652,3 +652,87 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
       .then((res) => res.body)
   })
 })
+
+
+Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `/api/customerreviews/delete/${customerReviewId}`,
+      method: 'DELETE',
+      headers: authHeaders
+    })
+  })
+})
+
+Cypress.Commands.add('createCustomerReview', (customerReview) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    //const { answerSheet, group_id, topic_id, configuration_id } = customerReview
+    cy.request({
+      url: '/api/customerReview',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        customerReview
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('findConifgurationId', (configurationName) => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    //const { answerSheet, group_id, topic_id, configuration_id } = customerReview
+    cy.request({
+      url: '/api/configurations',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { configurations } = res.body
+
+      for (const configuration of configurations) {
+        if (configuration.name === configurationName) return configuration.id
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createGroupAndReturnId', (groupData) => {
+  let groupId
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    cy.request({
+      url: '/api/groups',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        topicId,
+        configurationId,
+        instructorId,
+        studentIds
+      }
+    }).then((res) => {
+      console.log('RESPONSE', res.body.id)
+      groupId = res.body.id
+    })
+  })
+  return groupId
+})

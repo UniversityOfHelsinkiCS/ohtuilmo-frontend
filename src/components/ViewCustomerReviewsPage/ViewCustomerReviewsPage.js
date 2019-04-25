@@ -112,13 +112,17 @@ class ViewCustomerReviewsPage extends React.Component {
       const { configurations } = this.props
       return []
         .concat(
-          <MenuItem value={0} key={0}>
+          <MenuItem value={0} key={0} data-cy="all-configurations">
             All configurations
           </MenuItem>
         )
         .concat(
           configurations.map((configuration) => (
-            <MenuItem value={configuration.id} key={configuration.id}>
+            <MenuItem
+              value={configuration.id}
+              key={configuration.id}
+              data-cy={configuration.name}
+            >
               {configuration.name}
             </MenuItem>
           ))
@@ -153,6 +157,7 @@ class ViewCustomerReviewsPage extends React.Component {
           <Select
             value={this.props.configuration}
             onChange={(event) => handleConfiguartionChange(event.target.value)}
+            data-cy="customer-reviews-select"
           >
             {configurationMenuItems()}
           </Select>
@@ -171,10 +176,10 @@ class ViewCustomerReviewsPage extends React.Component {
           {isInitializing && (
             <LoadingCover className="customer-reviews-container__loading-cover" />
           )}
-
           <Select
             value={this.props.configuration}
             onChange={(event) => handleConfiguartionChange(event.target.value)}
+            data-cy="customer-reviews-select"
           >
             {configurationMenuItems()}
           </Select>
