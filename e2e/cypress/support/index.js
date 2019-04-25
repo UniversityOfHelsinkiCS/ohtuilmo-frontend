@@ -484,3 +484,28 @@ Cypress.Commands.add('deleteCustomerReviews', () => {
     })
   })
 })
+
+Cypress.Commands.add('deleteInstructorReviews', () => {
+  withLoggedAdminToken((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    cy.request({
+      url: '/api/instructorReview/',
+      method: 'GET',
+      headers: authHeaders
+    }).then((res) => {
+      const { reviews } = res.body
+      if (reviews) {
+      }
+      for (const review of reviews) {
+        cy.request({
+          url: `/api/instructorReview/${review.id}`,
+          method: 'DELETE',
+          headers: authHeaders
+        })
+      }
+    })
+  })
+})

@@ -6,24 +6,14 @@
       "description": "Anna jokaiselle jäbälle arvosana."
     },
     {
+      "header": " Osasko jaba tykitella.",
+      "description": "",
+      "type": "text"
+    },
+    {
       "header": " Anna tekninen arvosana.",
       "description": "",
       "type": "number"
-    },
-    {
-      "header": "Mitä kaikkea teknistä tää jäbä osas tehdä?",
-      "description": "Paljon avaava description teknisyydestä.",
-      "type": "text"
-    },
-    {
-      "header": "Kurssin arvosana",
-      "description": " Heitä jotain",
-      "type": "number"
-    },
-    {
-      "header": "Miten perustelet tämän arvosanan?",
-      "description": "Kuvaile omin sanoin.",
-      "type": "text"
     }
   ]
 }

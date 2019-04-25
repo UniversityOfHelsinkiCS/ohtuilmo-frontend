@@ -171,6 +171,7 @@ class InstructorReviewPage extends React.Component {
             margin-left="auto"
             variant="contained"
             color="primary"
+            data-cy="submit-instructor-review-button"
             onClick={(event) =>
               this.Submit(
                 event,
@@ -279,6 +280,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
             style={{ width: 700 }}
             multiline
             variant="outlined"
+            data-cy={`textInput-${question.header}`}
             onChange={(e) =>
               textFieldHandler(e.target.value, userId, questionId, updateAnswer)
             }
@@ -294,6 +296,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
           <input
             type="number"
             value={question.answer}
+            data-cy={`numberInput-${question.header}`}
             onChange={(e) =>
               numberFieldHandler(
                 e.target.value,
