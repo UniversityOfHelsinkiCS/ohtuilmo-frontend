@@ -194,15 +194,27 @@ describe('Customer review is shown', () => {
     cy.loginAsAdmin()
     cy.visit('/adminstration/customer-reviews')
     cy.get('[data-cy="customer-reviews-select"]').click()
+    cy.get('[data-cy="Konfiguraatio A"]').click()
 
-    // todo
+    const {
+      conf1_topic1_group,
+    } = locals
+
+    cy.contains(conf1_topic1_group.name)
   })
 
   it('customer reviews for configuration 2 are shown', () => {
     cy.loginAsAdmin()
     cy.visit('/adminstration/customer-reviews')
     cy.get('[data-cy="customer-reviews-select"]').click()
+    cy.get('[data-cy="Conf 2"]').click()
 
-    // todo
+    const {
+      conf2_topic1_group,
+      conf2_topic2_group
+    } = locals
+
+    cy.contains(conf2_topic1_group.name)
+    cy.contains('No review submitted for group '+ conf2_topic2_group.name)
   })
 })
