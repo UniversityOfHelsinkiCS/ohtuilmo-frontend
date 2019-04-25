@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Router, Route, Switch, Redirect, Link } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import './App.css'
 
@@ -40,6 +40,15 @@ import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
+
+const NotFound = () => (
+  <div className="not-found-page">
+    <h1>Page not found</h1>
+    <Link data-cy="return-link" to="/">
+      Return to the home page
+    </Link>
+  </div>
+)
 
 class App extends Component {
   constructor(props) {
@@ -218,6 +227,7 @@ class App extends Component {
                   )
                 }
               />
+              <Route component={NotFound} />
             </Switch>
           </div>
         </div>

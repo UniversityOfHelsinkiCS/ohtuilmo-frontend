@@ -228,4 +228,20 @@ describe('Page access and redirect tests', () => {
       cy.get('.topics-container').should('be.visible')
     })
   })
+
+  describe('404 handler', () => {
+    it('shows a 404 not found page when entering an url that is not found', () => {
+      cy.visit('/amksfmkafg-qfq435tefds')
+      cy.get('.not-found-page').contains('Page not found')
+    })
+
+    it('redirects to / when clicking the return link', () => {
+      cy.visit('/amksfmkafg-qfq435tefds')
+      cy.get('.not-found-page')
+        .find('[data-cy="return-link"]')
+        .click()
+
+      assertIsOnLoginPage()
+    })
+  })
 })
