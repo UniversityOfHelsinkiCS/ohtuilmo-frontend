@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
-import loginService from '../services/login'
 import appActions from '../reducers/actions/appActions'
 import loginPageActions from '../reducers/actions/loginPageActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
@@ -24,12 +23,7 @@ class LoginPage extends React.Component {
     let password = this.props.password
 
     try {
-      const user = await loginService.login({
-        username,
-        password
-      })
-
-      this.props.loginUser(user)
+      await this.props.loginUser({ username, password })
       this.props.setSuccess('Login successful!', 3000)
       this.props.clearForm()
       this.props.updateIsLoading(false)

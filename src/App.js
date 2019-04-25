@@ -63,12 +63,6 @@ class App extends Component {
 
   componentWillMount() {
     this.fetchRegistrationManagement()
-
-    if (this.props.user) {
-      this.props.updateIsLoading(true)
-      this.props.checkToken(this.props.user)
-      this.props.updateIsLoading(false)
-    }
   }
 
   fetchRegistrationManagement = async () => {
@@ -232,9 +226,7 @@ const mapDispatchToProps = {
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
   ...peerReviewPageActions,
-  loginUser: userActions.loginUser,
-  logoutUser: userActions.logoutUser,
-  checkToken: userActions.checkToken
+  logoutUser: userActions.logoutUser
 }
 
 const ConnectedApp = connect(

@@ -32,7 +32,7 @@ export const InstructorRoute = connect(mapStateToProps)(
       {...rest}
       render={(props) => {
         if (user) {
-          return user.user.instructor ? (
+          return user.user.instructor || user.user.admin ? (
             <Component {...props} />
           ) : (
             <Redirect to="/" />

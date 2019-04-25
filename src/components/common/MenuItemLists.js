@@ -59,6 +59,14 @@ const adminItems = (history) => {
       className: 'email-templates-menu-item',
       text: 'Email Templates',
       handler: () => history.push('/administration/email-templates')
+    },
+    {
+      text: 'Intructor Page',
+      handler: () => history.push('/instructorpage')
+    },
+    {
+      text: 'Instructor Review',
+      handler: () => history.push('/instructorreviewpage')
     }
   ]
 
