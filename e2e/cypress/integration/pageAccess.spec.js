@@ -26,6 +26,11 @@ describe('Page access and redirect tests', () => {
       assertIsOnLoginPage()
     })
 
+    it('/administration/customer-review-questions redirects user to login page', () => {
+      cy.visit('/administration/customer-review-questions')
+      assertIsOnLoginPage()
+    })
+
     it('/administration/groups redirects user to login page', () => {
       cy.visit('/administration/groups')
       assertIsOnLoginPage()
@@ -56,6 +61,11 @@ describe('Page access and redirect tests', () => {
       assertIsOnLoginPage()
     })
 
+    it('/peerreview redirects user to login page', () => {
+      cy.visit('/peerreview')
+      assertIsOnLoginPage()
+    })
+
     it('/registrationdetails redirects user to login page', () => {
       cy.visit('/registrationdetails')
       assertIsOnLoginPage()
@@ -80,6 +90,11 @@ describe('Page access and redirect tests', () => {
 
     it('/administration/configuration redirects user to landing page', () => {
       cy.visit('/administration/configuration')
+      assertIsOnLandingPage()
+    })
+
+    it('/administration/customer-review-questions redirects user to landing page', () => {
+      cy.visit('/administration/customer-review-questions')
       assertIsOnLandingPage()
     })
 
@@ -118,6 +133,12 @@ describe('Page access and redirect tests', () => {
       assertIsOnLandingPage()
     })
 
+    it('renders /peerreview when visited', () => {
+      cy.visit('/peerreview')
+      cy.url().should('include', '/peerreview')
+      cy.contains('You are not currently assigned to any group!')
+    })
+
     it('renders /register when visited', () => {
       cy.get('[data-cy=registrationlink]').click()
       cy.url().should('contain', '/register')
@@ -153,6 +174,12 @@ describe('Page access and redirect tests', () => {
       cy.get('.configuration-menu-item').click()
       cy.url().should('contain', '/administration/configuration')
       cy.contains('Change configuration')
+    })
+
+    it('renders /administration/customer-review-questions when visited', () => {
+      cy.visit('/administration/customer-review-questions')
+      cy.contains('Configure customer review questions')
+      cy.contains('Create question set')
     })
 
     it('renders /administration/groups when visited', () => {
