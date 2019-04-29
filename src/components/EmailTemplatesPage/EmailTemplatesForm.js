@@ -7,6 +7,7 @@ import { templatesShape } from './commonPropTypes'
 import EmailTemplate from './EmailTemplate'
 
 const topicAcceptRejectReplacements = ['{{topicName}}']
+const customerReviewLinkReplacements = ['{{topicName}}']
 
 const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
   const [templates, setTemplates] = useState(initialTemplates)
@@ -32,7 +33,7 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
     onSave(templates)
   }
 
-  const { topicAccepted, topicRejected } = templates
+  const { topicAccepted, topicRejected, customerReviewLink } = templates
 
   return (
     <form className="email-templates-form" onSubmit={handleSubmit}>
@@ -48,6 +49,12 @@ const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
           template={topicRejected}
           availableReplacements={topicAcceptRejectReplacements}
           onTemplateEdited={createHandleTemplateEdited('topicRejected')}
+        />
+        <EmailTemplate
+          name="Customer review link"
+          template={customerReviewLink}
+          availableReplacements={customerReviewLinkReplacements}
+          onTemplateEdited={createHandleTemplateEdited('customerReviewLink')}
         />
       </div>
       <hr />
