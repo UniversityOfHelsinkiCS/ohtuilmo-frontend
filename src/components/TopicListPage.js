@@ -353,6 +353,13 @@ TopicTable.propTypes = {
   onActiveToggle: PropTypes.func.isRequired
 }
 
+const activeFirstThenByTitle = (topicA, topicB) => {
+  if (topicA.active === topicB.active) {
+    return `${topicA.content.title}`.localeCompare(`${topicB.content.title}`)
+  }
+  return +topicB.active - +topicA.active
+}
+
 class TopicListPage extends React.Component {
   async componentDidMount() {
     try {
@@ -467,7 +474,9 @@ class TopicListPage extends React.Component {
         )
     }
 
-    const shownTopics = topics.filter(this.showTopic)
+    const shownTopics = topics
+      .filter(this.showTopic)
+      .sort(activeFirstThenByTitle)
 
     return (
       <div className="topics-container">
