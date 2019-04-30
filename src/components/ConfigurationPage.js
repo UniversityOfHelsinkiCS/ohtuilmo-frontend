@@ -29,22 +29,6 @@ import RegistrationQuestionsTable from './RegistrationQuestionsTable'
 import PeerReviewQuestionsTable from './PeerReviewQuestionsTable'
 
 class ConfigurationPage extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (!token.user.admin || token === undefined || token === null) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 5000)
-    }
-  }
-
   async componentDidMount() {
     this.setQuestions()
     if (this.props.configurations.length === 0) {

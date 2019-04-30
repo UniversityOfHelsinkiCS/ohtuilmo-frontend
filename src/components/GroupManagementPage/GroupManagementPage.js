@@ -25,22 +25,6 @@ const ConfigurationSelectWrapper = ({ label, children }) => (
 )
 
 class GroupManagementPage extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        window.location.replace(process.env.PUBLIC_URL + '/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (!token.user.admin || token === undefined || token === null) {
-          window.location.replace(process.env.PUBLIC_URL + '/')
-        }
-      }
-    } catch (e) {
-      console.log('error happened', e)
-      this.props.setError('Some error happened')
-    }
-  }
-
   async componentDidMount() {
     try {
       const fetchedConfiguration = await configurationService.getAll()

@@ -28,9 +28,6 @@ import InstructorPage from './components/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
 
-// Services
-import tokenCheckService from './services/tokenCheck'
-
 // Actions
 import appActions from './reducers/actions/appActions'
 import * as notificationActions from './reducers/actions/notificationActions'
@@ -38,6 +35,14 @@ import loginPageActions from './reducers/actions/loginPageActions'
 import registrationmanagementActions from './reducers/actions/registrationManagementActions'
 import registrationActions from './reducers/actions/registrationActions'
 import peerReviewPageActions from './reducers/actions/peerReviewPageActions'
+import * as userActions from './reducers/actions/userActions'
+
+// Protected routes
+import {
+  AdminRoute,
+  LoginRoute,
+  InstructorRoute
+} from '../src/utils/protectedRoutes'
 
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
@@ -58,11 +63,6 @@ class App extends Component {
 
   componentWillMount() {
     this.fetchRegistrationManagement()
-    if (window.localStorage.getItem('loggedInUser')) {
-      this.props.updateIsLoading(true)
-      this.userCheck()
-      this.props.updateIsLoading(false)
-    }
   }
 
   fetchRegistrationManagement = async () => {
@@ -77,26 +77,9 @@ class App extends Component {
     }
   }
 
-  userCheck = async () => {
-    let token
-    try {
-      token = JSON.parse(window.localStorage.getItem('loggedInUser')).token
-      await tokenCheckService.userCheck(token)
-      this.props.updateUser(
-        JSON.parse(window.localStorage.getItem('loggedInUser'))
-      )
-      return true
-    } catch (e) {
-      console.log(e.response)
-      this.props.updateUser('')
-      return false
-    }
-  }
-
   logout() {
     this.props.updateIsLoading(true)
-    window.localStorage.clear()
-    this.props.updateUser('')
+    this.props.logoutUser()
     this.props.clearRegistrations()
     this.props.updateIsLoading(false)
     history.push('/login')
@@ -120,8 +103,8 @@ class App extends Component {
                 path="/login"
                 render={() =>
                   this.props.user ? (
-                    this.props.user.admin ? (
-                      <Redirect to="/administration" />
+                    this.props.user.instructor ? (
+                      <Redirect to="/instructorpage" />
                     ) : (
                       <Redirect to="/" />
                     )
@@ -130,14 +113,12 @@ class App extends Component {
                   )
                 }
               />
-              <Route
+              <LoginRoute exact path="/" render={() => <LandingPage />} />
+              <AdminRoute
                 exact
-                path="/"
-                render={() =>
-                  this.props.user ? <LandingPage /> : <Redirect to="/login" />
-                }
+                path="/topics"
+                render={() => <TopicListPage />}
               />
-              <Route exact path="/topics" render={() => <TopicListPage />} />
               <Route
                 exact
                 path="/topics/create"
@@ -148,37 +129,37 @@ class App extends Component {
                 path="/topics/:id"
                 render={(props) => <ViewTopicPage {...props} />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/configuration"
                 render={() => <ConfigurationPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/participants"
                 render={() => <ParticipantsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/customer-review-questions"
                 render={() => <CustomerReviewQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/peer-review-questions"
                 render={() => <PeerReviewQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/registration-questions"
                 render={() => <RegistrationQuestionsPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/groups"
                 render={() => <GroupManagementPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/email-templates"
                 render={() => <EmailTemplatesPage />}
@@ -188,44 +169,38 @@ class App extends Component {
                 path="/customer-review/:id"
                 render={(props) => <CustomerReviewPage {...props} />}
               />
-              <Route
+              <LoginRoute
                 exact
                 path="/register"
                 user={this.props.user}
                 render={() => <RegistrationPage />}
               />
-              <Route
+              <LoginRoute
                 exact
                 path="/peerreview"
                 user={this.props.user}
                 render={() => <PeerReviewPage />}
               />
-              <Route
+              <AdminRoute
                 exact
                 path="/administration/registrationmanagement"
                 render={() => <RegistrationManagementPage />}
               />
-              <Route
+              <InstructorRoute
                 exact
                 path="/instructorpage"
                 render={() => <InstructorPage />}
               />
-              <Route
+              <InstructorRoute
                 exact
                 path="/instructorreviewpage"
                 render={() => <InstructorReviewPage />}
               />
 
-              <Route
+              <LoginRoute
                 exact
                 path="/registrationdetails"
-                render={() =>
-                  this.props.user ? (
-                    <RegistrationDetailsPage />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
+                render={() => <RegistrationDetailsPage />}
               />
               <Route component={NotFound} />
             </Switch>
@@ -239,7 +214,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.app.isLoading,
-    user: state.loginPage.user
+    user: state.user
   }
 }
 
@@ -250,7 +225,8 @@ const mapDispatchToProps = {
   fetchRegistrationManagement:
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
-  ...peerReviewPageActions
+  ...peerReviewPageActions,
+  logoutUser: userActions.logoutUser
 }
 
 const ConnectedApp = connect(

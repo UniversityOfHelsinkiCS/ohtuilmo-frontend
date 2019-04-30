@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -6,42 +7,39 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import NavigationMenu from './NavigationMenu'
-import { regularItems, loggedInItems, adminItems } from './MenuItemLists'
+import {
+  regularItems,
+  loggedInItems,
+  adminItems,
+  instructorItems
+} from './MenuItemLists'
 import './NavigationBar.css'
 
 class NavigationBar extends React.Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null
-  }
-
   getAppropriateMenuItemList() {
-    let itemList = []
-    let user = window.localStorage.getItem('loggedInUser')
-    user = user ? JSON.parse(user).user : null
-    if (!user) {
-      itemList = regularItems(this.props.history)
-    } else if (!user.admin) {
-      itemList = loggedInItems(this.props.history)
-    } else {
-      itemList = adminItems(this.props.history)
+    if (this.props.user === null) {
+      return regularItems(this.props.history)
     }
+    const user = this.props.user.user
 
-    return itemList
+    if (user.admin) {
+      return adminItems(this.props.history)
+    }
+    if (user.instructor) {
+      return instructorItems(this.props.history)
+    }
+    return loggedInItems(this.props.history)
   }
 
   render() {
     let loggedIn
     let username
     let logoutButton
-    if (window.localStorage.getItem('loggedInUser')) {
+    if (this.props.user) {
       loggedIn = <AccountCircle />
       username = (
         <h4 className="navigation-bar-username tracking-in-expand">
-          {
-            JSON.parse(window.localStorage.getItem('loggedInUser')).user
-              .username
-          }
+          {this.props.user.user.username}
         </h4>
       )
       logoutButton = (
@@ -81,4 +79,12 @@ class NavigationBar extends React.Component {
   }
 }
 
-export default withRouter(NavigationBar)
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const ConnectedNavigationBar = connect(mapStateToProps)(NavigationBar)
+
+export default withRouter(ConnectedNavigationBar)

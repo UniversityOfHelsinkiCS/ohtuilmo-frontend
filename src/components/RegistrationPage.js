@@ -28,22 +28,6 @@ import registrationActions from '../reducers/actions/registrationActions'
 import registrationmanagementActions from '../reducers/actions/registrationManagementActions'
 
 class RegistrationPage extends React.Component {
-  async componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (token === undefined || token === null) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 3000)
-    }
-  }
-
   async componentDidMount() {
     /**
      * If user goes straight to /register, registrationmanagement needs to be fetched first.
@@ -302,7 +286,7 @@ class RegistrationPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.loginPage.user,
+    user: state.user,
     isLoading: state.app.isLoading,
     topics: state.registrationPage.topics,
     questions: state.registrationPage.questions,

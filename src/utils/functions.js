@@ -1,19 +1,13 @@
+import store from '../reducers/store'
+
 export const getUserToken = () => {
-  const loggedInUser = localStorage.getItem('loggedInUser')
-  let token
-  if (loggedInUser) {
-    token = JSON.parse(loggedInUser).token
-  }
-  return token
+  const { user } = store.getState()
+  return user.token
 }
 
 export const getUser = () => {
-  const loggedInUser = localStorage.getItem('loggedInUser')
-  let user
-  if (loggedInUser) {
-    user = JSON.parse(loggedInUser).user
-  }
-  return user
+  const { user } = store.getState()
+  return user.user
 }
 
 const replaceTopicName = (template, replacement) =>

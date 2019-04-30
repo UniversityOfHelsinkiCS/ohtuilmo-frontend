@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+import userHandler from './middleware/userHandler'
 
 // Import all reducers here
 import appReducer from './appReducer'
@@ -23,6 +24,7 @@ import instructorPageReducer from './instructorPageReducer'
 import customerReviewPageReducer from './customerReviewPageReducer'
 import customerReviewQuestionsPageReducer from './customerReviewQuestionsPageReducer'
 import instructorReviewPageReducer from './instructorReviewPageReducer'
+import userReducer from './userReducer'
 
 // Combine imported reducers
 const reducer = combineReducers({
@@ -46,11 +48,23 @@ const reducer = combineReducers({
   emailTemplates: emailTemplatesReducer,
   instructorPage: instructorPageReducer,
   customerReviewPage: customerReviewPageReducer,
-  instructorReviewPage: instructorReviewPageReducer
+  instructorReviewPage: instructorReviewPageReducer,
+  user: userReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
+let initialStore
+let tokenString = window.localStorage.getItem('loggedInUser')
+if (tokenString) {
+  const user = JSON.parse(tokenString)
+  initialStore = { user }
+}
+
+const store = createStore(
+  reducer,
+  initialStore,
+  composeEnhancers(applyMiddleware(userHandler, thunk))
+)
 
 export default store

@@ -1,7 +1,6 @@
 const initialState = {
   username: '',
-  password: '',
-  user: null
+  password: ''
 }
 
 const loginPageReducer = (state = initialState, action) => {
@@ -15,11 +14,6 @@ const loginPageReducer = (state = initialState, action) => {
     return {
       ...state,
       password: action.payload
-    }
-  case 'UPDATE_LOGGED_IN':
-    return {
-      ...state,
-      user: action.payload
     }
   case 'CLEAR_FORM':
     return {

@@ -12,17 +12,10 @@ const updatePassword = (password) => {
   }
 }
 
-const updateUser = (user) => {
-  return {
-    type: 'UPDATE_LOGGED_IN',
-    payload: user
-  }
-}
-
 const clearForm = () => {
   return {
     type: 'CLEAR_FORM'
   }
 }
 
-export default { updateUsername, updatePassword, updateUser, clearForm }
+export default { updateUsername, updatePassword, clearForm }

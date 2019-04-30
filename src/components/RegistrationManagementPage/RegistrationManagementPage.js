@@ -18,22 +18,6 @@ import configurationPageActions from '../../reducers/actions/configurationPageAc
 import registrationManagementService from '../../services/registrationManagement'
 
 class RegistrationManagement extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      } else {
-        const token = JSON.parse(window.localStorage.getItem('loggedInUser'))
-        if (!token.user.admin || token === undefined || token === null) {
-          this.props.history.push('/')
-        }
-      }
-    } catch (e) {
-      console.log('error happened', e.response)
-      this.props.setError('Some error happened', 5000)
-    }
-  }
-
   async componentDidMount() {
     if (this.props.configurations.length === 0) {
       await this.props.fetchConfigurations()

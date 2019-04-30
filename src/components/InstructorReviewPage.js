@@ -20,15 +20,6 @@ import Typography from '@material-ui/core/Typography'
 import instructorReviewService from '../services/instructorReview'
 
 class InstructorReviewPage extends React.Component {
-  componentWillMount() {
-    try {
-      if (window.localStorage.getItem('loggedInUser') === null) {
-        this.props.history.push('/')
-      }
-    } catch (e) {
-      this.props.setError('Some error happened')
-    }
-  }
   async componentDidMount() {
     try {
       const groups = await groupManagementService.getByInstructor()
