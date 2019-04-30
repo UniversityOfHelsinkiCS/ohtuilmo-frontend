@@ -7,7 +7,7 @@ import { templatesShape } from './commonPropTypes'
 import EmailTemplate from './EmailTemplate'
 
 const topicAcceptRejectReplacements = ['{{topicName}}']
-const customerReviewLinkReplacements = ['{{topicName}}']
+const customerReviewLinkReplacements = ['{{topicName}}', '{{secretId}}']
 
 const EmailTemplatesForm = ({ initialTemplates, disabled, onSave }) => {
   const [templates, setTemplates] = useState(initialTemplates)

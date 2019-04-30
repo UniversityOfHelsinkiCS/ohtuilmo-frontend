@@ -19,6 +19,7 @@ import TableRow from '@material-ui/core/TableRow'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import orange from '@material-ui/core/colors/orange'
 
 import emailService from '../services/email'
 import { formatDate } from '../utils/functions'
@@ -36,6 +37,13 @@ const redGreenTheme = createMuiTheme({
   }
 })
 
+const orangeTheme = createMuiTheme({
+  palette: {
+    primary: orange,
+    secondary: orange
+  }
+})
+
 const ThemedButton = ({ theme, ...props }) => (
   <MuiThemeProvider theme={theme}>
     <Button {...props} />
@@ -47,6 +55,9 @@ const GreenButton = (props) => (
 )
 const RedButton = (props) => (
   <ThemedButton {...props} theme={redGreenTheme} color="secondary" />
+)
+const OrangeButton = (props) => (
+  <ThemedButton {...props} theme={orangeTheme} color="primary" />
 )
 
 const FinnishFlag = (props) => (
@@ -80,6 +91,70 @@ const RejectButton = (props) => (
     size="small"
   />
 )
+
+const CustomerReviewEmailButton = ({ text, onSendRequested }) => {
+  const [clickedButtonEl, setClickedButtonEl] = useState(null)
+  const isMenuOpen = Boolean(clickedButtonEl)
+
+  const handleButtonClick = (e) => {
+    // use currentTarget instead of target because the click
+    // will otherwise most likely register the <span> inside the button
+    setClickedButtonEl(e.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setClickedButtonEl(null)
+  }
+
+  const createHandleLanguageClicked = (messageLanguage) => () => {
+    // get value before setting the element null (closing the menu)
+    const messageType = clickedButtonEl.value
+    handleMenuClose()
+    // call callback only after closing menu
+    onSendRequested({ messageType, messageLanguage })
+  }
+
+  return (
+    <>
+      <OrangeButton
+        data-cy="send-customer-review-link-email"
+        value="customerReviewLink"
+        variant="outlined"
+        size="small"
+        onClick={handleButtonClick}
+      >
+        {text}
+      </OrangeButton>
+
+      <Menu
+        data-cy="email-language-menu"
+        anchorEl={clickedButtonEl}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem disabled>Choose email language</MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="finnish"
+          onClick={createHandleLanguageClicked('finnish')}
+        >
+          <ListItemIcon>
+            <FinnishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>Finnish</ListItemText>
+        </MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="english"
+          onClick={createHandleLanguageClicked('english')}
+        >
+          <ListItemIcon>
+            <BritishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>English</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  )
+}
 
 /**
  * @typedef {{ messageType: string, messageLanguage: string }} EmailInfo
@@ -172,6 +247,8 @@ const isTopicAcceptedMail = (sentMail) =>
   sentMail.email.type === 'topicAccepted'
 const isTopicRejectedMail = (sentMail) =>
   sentMail.email.type === 'topicRejected'
+const isCustomerReviewMail = (sentMail) =>
+  sentMail.email.type === 'customerReviewLink'
 
 /**
  * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
@@ -179,6 +256,9 @@ const isTopicRejectedMail = (sentMail) =>
 const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
   const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
+  const hasCustomerReviewMailBeenSent = topic.sentEmails.some(
+    isCustomerReviewMail
+  )
 
   return (
     <TableRow
@@ -199,7 +279,14 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         </p>
       </TableCell>
       <TableCell padding="none">
-        {topic.hasReviewed ? 'Submitted' : '-'}
+        {topic.hasReviewed ? (
+          'Submitted'
+        ) : (
+          <CustomerReviewEmailButton
+            text={hasCustomerReviewMailBeenSent ? 'Send reminder' : 'Send link'}
+            onSendRequested={onEmailSendRequested}
+          />
+        )}
       </TableCell>
       <TableCell padding="none">
         <AcceptRejectEmailButtons
