@@ -20,9 +20,9 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
-import { getEmailTemplateRenderer, formatDate } from '../utils/functions'
+import emailService from '../services/email'
+import { formatDate } from '../utils/functions'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
-import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 
@@ -269,10 +269,7 @@ TopicTable.propTypes = {
 class TopicListPage extends React.Component {
   async componentDidMount() {
     try {
-      await Promise.all([
-        this.props.fetchTopics(),
-        this.props.fetchEmailTemplates()
-      ])
+      await this.props.fetchTopics()
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('An error occurred while loading data!', 3000)
@@ -329,40 +326,31 @@ class TopicListPage extends React.Component {
     messageType,
     messageLanguage
   }) => {
-    const { emailTemplates } = this.props
-    const templateRenderer = getEmailTemplateRenderer(messageType)
-
-    /** e.g.
-     * topicAccepted: {   <-- messageType
-     *   finnish: '', <-- messageLang
-     *   english: ''
-     * }
-     */
-    const emailTemplate = emailTemplates[messageType][messageLanguage]
-    const renderedEmail = templateRenderer(topic, emailTemplate)
-
-    const topicTitle = topic.content.title
-    const ownerEmail = topic.content.email
-    const confirmMessage =
-      `Do you want to send the following email to the owner of '${topicTitle}' (${ownerEmail})?` +
-      `\n\n${renderedEmail}`
+    const preview = await emailService.previewCustomerEmail({
+      messageType,
+      messageLanguage,
+      topicId: topic.id
+    })
+    const confirmMessage = [
+      'Send the following email?',
+      '',
+      `Subject: ${preview.subject}`,
+      `To: ${preview.to}`,
+      '---',
+      preview.email
+    ].join('\n')
 
     if (!window.confirm(confirmMessage)) {
       return
     }
 
     try {
-      await this.props.sendCustomerEmail(topic.id, {
-        address: topic.content.email,
-        messageType: messageType,
-        messageLanguage: messageLanguage,
-        templateContext: { topicName: topicTitle, topicId: topic.id }
-      })
-      this.props.setSuccess(`Email sent to ${ownerEmail}.`)
+      await this.props.sendCustomerEmail(topic.id, messageType, messageLanguage)
+      this.props.setSuccess('Email sent!')
     } catch (e) {
       console.error(e)
       if (e.response && e.response.data && e.response.data.error) {
-        console.error(`Failed to send email to ${ownerEmail}`, e.response.data)
+        console.error('Failed to send email!', e.response.data)
 
         const msg = `Failed to send email. Check console for details. Error message: '${
           e.response.data.error
@@ -420,25 +408,22 @@ class TopicListPage extends React.Component {
 TopicListPage.propTypes = {
   filter: PropTypes.number.isRequired,
   topics: PropTypes.array.isRequired,
-  emailTemplates: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   fetchTopics: PropTypes.func.isRequired,
   setTopicActive: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
-  fetchEmailTemplates: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const { topicListPage, emailTemplates } = state
+  const { topicListPage } = state
   return {
     topics: topicListPage.topics,
     // don't show loading cover for update loadings; active state changes are
     // done in quick succession and their "loading" doesn't affect page usage
-    isLoading: topicListPage.isTopicsLoading || emailTemplates.isLoading,
-    emailTemplates: emailTemplates.templates,
+    isLoading: topicListPage.isTopicsLoading,
     filter: topicListPage.filter,
     configurations: state.configurationPage.configurations
   }
@@ -449,7 +434,6 @@ const mapDispatchToProps = {
   updateFilter: topicListPageActions.updateFilter,
   setTopicActive: topicListPageActions.setTopicActive,
   sendCustomerEmail: topicListPageActions.sendCustomerEmail,
-  fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations
