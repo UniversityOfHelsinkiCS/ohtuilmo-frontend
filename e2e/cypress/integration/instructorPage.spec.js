@@ -252,7 +252,6 @@ describe('Instructor review page', () => {
 
   beforeEach(() => {
     cy.loginAsAdmin()
-    cy.deleteInstructorReviews()
     cy.visit('/instructorpage')
   })
 
