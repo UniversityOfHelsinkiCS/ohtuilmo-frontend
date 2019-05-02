@@ -197,16 +197,12 @@ class App extends Component {
                 path="/instructorreviewpage"
                 render={() => <InstructorReviewPage />}
               />
-              <Route
+              <InstructorRoute
                 path="/adminstration/customer-reviews"
                 render={() => <ViewCustomerReviewsPage />}
               />
-<<<<<<< 873aff9b40055a81cd0db818c847eff3ef0ec2e8
 
               <LoginRoute
-=======
-              <Route
->>>>>>> Added menu item for admin and removed console logs
                 exact
                 path="/registrationdetails"
                 render={() => <RegistrationDetailsPage />}
