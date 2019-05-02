@@ -53,6 +53,7 @@ describe('Answering peer review', () => {
     cy.contains('Submit').click()
     cy.contains('You must answer all questions')
   })
+
   it('shows an error if only one of the fields is filled', () => {
     cy.loginAsRegisteredUser()
     cy.visit('/peerreview')
@@ -64,6 +65,7 @@ describe('Answering peer review', () => {
     cy.contains('Submit').click()
     cy.contains('You must answer all questions')
   })
+
   it('shows an error if not all of the radio button questions is answered', () => {
     cy.loginAsRegisteredUser()
     cy.visit('/peerreview')
@@ -81,6 +83,7 @@ describe('Answering peer review', () => {
     cy.contains('Submit').click()
     cy.contains('You must answer all questions')
   })
+
   it('shows a submit confimation when all field and butotns are filled properly', () => {
     cy.loginAsRegisteredUser()
     cy.visit('/peerreview')
@@ -100,5 +103,10 @@ describe('Answering peer review', () => {
       .click()
     cy.contains('Submit').click()
     cy.contains('Peer review saved!')
+  })
+
+  after(() => {
+    cy.deleteAllGroups()
+    cy.deleteAllPeerReviews()
   })
 })

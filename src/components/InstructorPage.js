@@ -245,11 +245,16 @@ const ConfigurationSelect = ({
 }) => {
   return (
     <Select
+      data-cy="configuration-selector"
       value={currentConfiguration}
       onChange={(e) => setCurrentConfiguration(e.target.value)}
     >
       {configurations.map((configuration) => (
-        <MenuItem key={configuration.id} value={configuration.id}>
+        <MenuItem
+          key={configuration.id}
+          className="configuration-menu-item"
+          value={configuration.id}
+        >
           {configuration.name}
         </MenuItem>
       ))}
@@ -296,7 +301,7 @@ class InstructorPage extends React.Component {
       setCurrentConfiguration
     } = this.props
 
-    if (!answers) {
+    if (!answers || !currentConfiguration) {
       return <div className="instructor-container">Loading</div>
     }
 
