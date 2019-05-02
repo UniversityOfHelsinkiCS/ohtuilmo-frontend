@@ -190,19 +190,34 @@ const RegistrationAnswers = ({ questions }) => {
 class RegistrationDetailsPage extends React.Component {
   async componentDidMount() {
     await this.props.initializeMyGroup()
+    if (this.props.ownRegistrations.length === 0) {
+      await this.fetchOwnregistrations()
+    }
+  }
+
+  fetchOwnregistrations = async () => {
+    try {
+      await this.props.fetchRegistrations()
+    } catch (e) {
+      console.log('error happened', e.response)
+      this.props.setError('Error fetching own registration', 3000)
+    }
   }
 
   render() {
-    const { groupDetails } = this.props
-
     /**
      * Show primarily peer review registration, secondarily project registration
      */
     const {
+      groupDetails,
       ownRegistrations,
       peerReviewConf,
       projectRegistrationConf
     } = this.props
+
+    if (ownRegistrations.length === 0) {
+      return <h2>loading...</h2>
+    }
 
     const projectReg = ownRegistrations.find(
       (registration) =>
