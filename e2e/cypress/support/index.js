@@ -485,7 +485,6 @@ Cypress.Commands.add('deleteCustomerReviews', () => {
   })
 })
 
-<<<<<<< 27bfe09aac61e67013191959a6066eb1bbaffd78
 Cypress.Commands.add('deleteInstructorReviews', () => {
   withLoggedAdminToken((token) => {
     const authHeaders = {
@@ -526,8 +525,6 @@ Cypress.Commands.add('createPeerReviews', (peerReviews) => {
   })
 })
 
-=======
->>>>>>> Fixed hack to work only in viewing customer reviews
 const withLoggedAdminTokenSuperHack = () => {
   return postLogin(TEST_ADMIN).then((res) => res.body.token)
 }
@@ -598,7 +595,6 @@ Cypress.Commands.add('deleteConfiguration', (configurationId) => {
 
 Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
   withLoggedAdminTokenSuperHack().then((token) => {
-<<<<<<< 27bfe09aac61e67013191959a6066eb1bbaffd78
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -660,8 +656,6 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
 
 Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
   withLoggedAdminToken().then((token) => {
-=======
->>>>>>> Fixed hack to work only in viewing customer reviews
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
