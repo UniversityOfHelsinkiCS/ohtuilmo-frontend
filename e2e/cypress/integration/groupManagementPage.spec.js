@@ -40,7 +40,7 @@ describe('Group Management Page', () => {
   describe('Viewing a group', () => {
     beforeEach(() => {
       cy.get('.configuration-selector').click()
-      cy.get('[data-cy=configuration]').click()
+      cy.get('.configuration-1').click()
     })
 
     it('deletes a student', () => {

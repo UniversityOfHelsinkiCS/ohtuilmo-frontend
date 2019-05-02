@@ -267,7 +267,7 @@ describe('Instructor review page', () => {
     // submit not successfull, still on same page
     cy.get('[data-cy=configuration-selector]').click()
     cy.get('.configuration-menu-item')
-      .contains('Konfiguraatio2')
+      .contains('Konfiguraatio 2')
       .click()
     cy.contains('Kämmäilijät')
     cy.contains(
