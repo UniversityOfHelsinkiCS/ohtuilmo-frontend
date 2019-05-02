@@ -197,14 +197,12 @@ describe('Customer review questions page', () => {
     })
 
     it('does not save changes if both name and questions are empty', () => {
-      it('does not save changes if name is empty', () => {
-        clearEditingQuestionSet('.question-set-item-editor')
-        // "required" attr should prevent submit now
-        saveEditingQuestionSet('.question-set-item-editor')
-        // since the submit was prevented, the component is still
-        // .question-set-item-editor and not .question-set-item
-        cy.get('.question-set-item-editor')
-      })
+      clearEditingQuestionSetInputs('.question-set-item-editor')
+      // "required" attr should prevent submit now
+      saveEditingQuestionSet('.question-set-item-editor')
+      // since the submit was prevented, the component is still
+      // .question-set-item-editor and not .question-set-item
+      cy.get('.question-set-item-editor')
     })
 
     it('shows error if new JSON is invalid', () => {
