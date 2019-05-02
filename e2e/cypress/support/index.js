@@ -49,12 +49,15 @@ Cypress.Commands.add('loginAsAdmin', () => {
   loginAsUser(TEST_ADMIN)
 })
 
-const withLoggedAdminToken = () => {
-  return postLogin(TEST_ADMIN).then((res) => res.body.token)
+const withLoggedAdminToken = (fn) => {
+  postLogin(TEST_ADMIN).then((res) => {
+    const { token } = res.body
+    fn(token)
+  })
 }
 
 Cypress.Commands.add('deleteRegistrationQuestions', () => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -78,7 +81,7 @@ Cypress.Commands.add('deleteRegistrationQuestions', () => {
 })
 
 Cypress.Commands.add('createRegistrationQuestionSet', (name, questions) => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -96,7 +99,7 @@ Cypress.Commands.add('createRegistrationQuestionSet', (name, questions) => {
 })
 
 Cypress.Commands.add('deleteReviewQuestions', () => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -120,7 +123,7 @@ Cypress.Commands.add('deleteReviewQuestions', () => {
 })
 
 Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -138,7 +141,7 @@ Cypress.Commands.add('createReviewQuestionSet', (name, questions) => {
 })
 
 Cypress.Commands.add('createGroup', (groupData) => {
-  return withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -150,25 +153,23 @@ Cypress.Commands.add('createGroup', (groupData) => {
       studentIds
     } = groupData
 
-    return cy
-      .request({
-        url: '/api/groups',
-        method: 'POST',
-        headers: authHeaders,
-        body: {
-          name,
-          topicId,
-          configurationId,
-          instructorId,
-          studentIds
-        }
-      })
-      .then((res) => res.body)
+    cy.request({
+      url: '/api/groups',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        name,
+        topicId,
+        configurationId,
+        instructorId,
+        studentIds
+      }
+    })
   })
 })
 
 Cypress.Commands.add('deleteAllGroups', () => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -192,7 +193,7 @@ Cypress.Commands.add('deleteAllGroups', () => {
 Cypress.Commands.add(
   'createNewTopic',
   (newTopicName, customerName, topicDescription) => {
-    withLoggedAdminToken().then((token) => {
+    withLoggedAdminToken((token) => {
       const authHeaders = {
         Authorization: 'Bearer ' + token
       }
@@ -218,7 +219,7 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('setTopicActive', (topicId) => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -238,7 +239,7 @@ Cypress.Commands.add('setTopicActive', (topicId) => {
 Cypress.Commands.add(
   'setPeerReviewOneActive',
   (configurationName, configurationId, questionSetName) => {
-    withLoggedAdminToken().then((token) => {
+    withLoggedAdminToken((token) => {
       const authHeaders = {
         Authorization: 'Bearer ' + token
       }
@@ -278,7 +279,7 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('deleteAllPeerReviews', () => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -318,7 +319,7 @@ const findReviewQuestionId = (authHeaders, questionSetName) => {
 }
 
 Cypress.Commands.add('deleteAllEmailTemplates', () => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -338,7 +339,7 @@ const defaultEmailTemplates = () => ({
 Cypress.Commands.add(
   'updateEmailTemplate',
   (templateName, templateLanguage, text) => {
-    withLoggedAdminToken().then((token) => {
+    withLoggedAdminToken((token) => {
       const authHeaders = {
         Authorization: 'Bearer ' + token
       }
@@ -357,7 +358,7 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('updateAllEmailTemplates', (body) => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminToken((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -484,6 +485,7 @@ Cypress.Commands.add('deleteCustomerReviews', () => {
   })
 })
 
+<<<<<<< 27bfe09aac61e67013191959a6066eb1bbaffd78
 Cypress.Commands.add('deleteInstructorReviews', () => {
   withLoggedAdminToken((token) => {
     const authHeaders = {
@@ -524,6 +526,8 @@ Cypress.Commands.add('createPeerReviews', (peerReviews) => {
   })
 })
 
+=======
+>>>>>>> Fixed hack to work only in viewing customer reviews
 const withLoggedAdminTokenSuperHack = () => {
   return postLogin(TEST_ADMIN).then((res) => res.body.token)
 }
@@ -594,6 +598,7 @@ Cypress.Commands.add('deleteConfiguration', (configurationId) => {
 
 Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
   withLoggedAdminTokenSuperHack().then((token) => {
+<<<<<<< 27bfe09aac61e67013191959a6066eb1bbaffd78
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -655,6 +660,8 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
 
 Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
   withLoggedAdminToken().then((token) => {
+=======
+>>>>>>> Fixed hack to work only in viewing customer reviews
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -667,7 +674,7 @@ Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
 })
 
 Cypress.Commands.add('createCustomerReview', (customerReview) => {
-  withLoggedAdminToken().then((token) => {
+  withLoggedAdminTokenSuperHack().then((token) => {
     const authHeaders = {
       Authorization: 'Bearer ' + token
     }
@@ -680,5 +687,35 @@ Cypress.Commands.add('createCustomerReview', (customerReview) => {
         customerReview
       }
     })
+  })
+})
+
+Cypress.Commands.add('createGroupHack', (groupData) => {
+  return withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    return cy
+      .request({
+        url: '/api/groups',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          name,
+          topicId,
+          configurationId,
+          instructorId,
+          studentIds
+        }
+      })
+      .then((res) => res.body)
   })
 })

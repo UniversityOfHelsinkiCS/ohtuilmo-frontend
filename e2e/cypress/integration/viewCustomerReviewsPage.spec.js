@@ -83,7 +83,7 @@ describe('Customer review is shown', () => {
       ).as('conf1_topic1')
 
       cy.get('@conf1_topic1').then((topic1) => {
-        cy.createGroup({
+        cy.createGroupHack({
           name: 'Group of Konfiguraatio A Topic A',
           topicId: topic1.id,
           configurationId: configuration1.id,
@@ -121,7 +121,7 @@ describe('Customer review is shown', () => {
       ).as('conf2_topic2')
 
       getAll('@conf2_topic1', '@conf2_topic2').spread((topic1, topic2) => {
-        cy.createGroup({
+        cy.createGroupHack({
           name: 'Group of Conf 2 Topic A',
           topicId: topic1.id,
           configurationId: configuration2.id,
@@ -129,7 +129,7 @@ describe('Customer review is shown', () => {
           studentIds: ['012345678', '012345698']
         }).as('conf2_topic1_group')
 
-        cy.createGroup({
+        cy.createGroupHack({
           name: 'Group of Conf 2 Topic B',
           topicId: topic2.id,
           configurationId: configuration2.id,
