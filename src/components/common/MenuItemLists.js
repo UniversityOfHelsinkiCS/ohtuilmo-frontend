@@ -91,6 +91,11 @@ const instructorItems = (history) => {
     {
       text: 'Instructor Review',
       handler: () => history.push('/instructorreviewpage')
+    },
+    {
+      className: 'customer-review-menu-item',
+      text: 'Customer reviews',
+      handler: () => history.push('/adminstration/customer-reviews')
     }
   ]
 
