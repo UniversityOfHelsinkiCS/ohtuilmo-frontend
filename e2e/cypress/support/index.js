@@ -586,7 +586,7 @@ Cypress.Commands.add('deleteConfiguration', (configurationId) => {
       Authorization: 'Bearer ' + token
     }
     cy.request({
-      url: `/api/configurations/delete/${configurationId}`,
+      url: `/api/configurations/${configurationId}`,
       method: 'DELETE',
       headers: authHeaders
     })
@@ -652,7 +652,6 @@ Cypress.Commands.add('createGroupHack', (groupData) => {
       .then((res) => res.body)
   })
 })
-
 
 Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
   withLoggedAdminToken().then((token) => {

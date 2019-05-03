@@ -196,9 +196,7 @@ describe('Customer review is shown', () => {
     cy.get('[data-cy="customer-reviews-select"]').click()
     cy.get('[data-cy="Konfiguraatio A"]').click()
 
-    const {
-      conf1_topic1_group,
-    } = locals
+    const { conf1_topic1_group } = locals
 
     cy.contains(conf1_topic1_group.name)
   })
@@ -209,12 +207,11 @@ describe('Customer review is shown', () => {
     cy.get('[data-cy="customer-reviews-select"]').click()
     cy.get('[data-cy="Conf 2"]').click()
 
-    const {
-      conf2_topic1_group,
-      conf2_topic2_group
-    } = locals
+    const { conf1, conf2, conf2_topic1_group, conf2_topic2_group } = locals
 
     cy.contains(conf2_topic1_group.name)
-    cy.contains('No review submitted for group '+ conf2_topic2_group.name)
+    cy.contains('No review submitted for group ' + conf2_topic2_group.name)
+    cy.deleteConfiguration(conf1.id)
+    cy.deleteConfiguration(conf2.id)
   })
 })
