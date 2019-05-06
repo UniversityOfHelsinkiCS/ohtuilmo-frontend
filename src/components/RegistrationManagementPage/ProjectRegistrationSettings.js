@@ -30,7 +30,7 @@ const ProjectRegistrationSettings = ({
   return (
     <Card style={{ marginBottom: '10px' }}>
       <CardContent>
-        <h4>Project registration</h4>
+        <h4>Student registration</h4>
         <FormControlLabel
           control={
             <Switch
@@ -38,7 +38,7 @@ const ProjectRegistrationSettings = ({
               onChange={() => updateProjectOpen(!projectOpen)}
             />
           }
-          label="Project registration open"
+          label="Student registration open"
         />
         <p />
         <FormControl>

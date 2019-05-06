@@ -211,7 +211,7 @@ class ConfigurationPage extends React.Component {
                   alignItems: 'center'
                 }}
               >
-                <p>Review questions 1</p>
+                <p>Peer review questions 1</p>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -268,7 +268,7 @@ class ConfigurationPage extends React.Component {
                   alignItems: 'center'
                 }}
               >
-                <p>Review questions 2</p>
+                <p>Peer review questions 2</p>
               </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
