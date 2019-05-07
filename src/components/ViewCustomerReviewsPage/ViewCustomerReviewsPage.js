@@ -16,7 +16,6 @@ import LoadingCover from './../common/LoadingCover'
 import './ViewCustomerReviewsPage.css'
 
 class ViewCustomerReviewsPage extends React.Component {
-
   async componentDidMount() {
     await this.props.fetchConfigurations()
   }
@@ -24,7 +23,7 @@ class ViewCustomerReviewsPage extends React.Component {
   render() {
     const { isInitializing } = this.props
 
-    const handleConfiguartionChange = async (confId) => {
+    const handleConfigurationChange = async (confId) => {
       this.props.setConfiguration(confId)
 
       this.props.setReviewData(
@@ -141,7 +140,7 @@ class ViewCustomerReviewsPage extends React.Component {
 
           <Select
             value={this.props.configuration}
-            onChange={(event) => handleConfiguartionChange(event.target.value)}
+            onChange={(event) => handleConfigurationChange(event.target.value)}
             data-cy="customer-reviews-select"
           >
             {configurationMenuItems()}
@@ -163,7 +162,7 @@ class ViewCustomerReviewsPage extends React.Component {
           )}
           <Select
             value={this.props.configuration}
-            onChange={(event) => handleConfiguartionChange(event.target.value)}
+            onChange={(event) => handleConfigurationChange(event.target.value)}
             data-cy="customer-reviews-select"
           >
             {configurationMenuItems()}
