@@ -524,3 +524,191 @@ Cypress.Commands.add('createPeerReviews', (peerReviews) => {
     })
   })
 })
+
+const withLoggedAdminTokenSuperHack = () => {
+  return postLogin(TEST_ADMIN).then((res) => res.body.token)
+}
+
+Cypress.Commands.add('createConfiguration', (configurationData) => {
+  return withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      content,
+      registration_question_set_id,
+      review_question_set_1_id,
+      review_question_set_2_id,
+      customer_review_question_set_id
+    } = configurationData
+
+    return cy
+      .request({
+        url: '/api/configurations',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          name,
+          content,
+          registration_question_set_id,
+          review_question_set_1_id,
+          review_question_set_2_id,
+          customer_review_question_set_id
+        }
+      })
+      .then((res) => res.body.configuration)
+  })
+})
+
+Cypress.Commands.add('createTopic', (topicContent, topicConfigurationId) => {
+  return withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    return cy
+      .request({
+        url: '/api/topics',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          content: topicContent,
+          configuration_id: topicConfigurationId
+        }
+      })
+      .then((res) => res.body.topic)
+  })
+})
+
+Cypress.Commands.add('deleteConfiguration', (configurationId) => {
+  withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `/api/configurations/${configurationId}`,
+      method: 'DELETE',
+      headers: authHeaders
+    })
+  })
+})
+
+Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
+  withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `/api/customerreviews/delete/${customerReviewId}`,
+      method: 'DELETE',
+      headers: authHeaders
+    })
+  })
+})
+
+Cypress.Commands.add('createCustomerReview', (customerReview) => {
+  withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    //const { answerSheet, group_id, topic_id, configuration_id } = customerReview
+    cy.request({
+      url: '/api/customerReview',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        customerReview
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createGroupHack', (groupData) => {
+  return withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    return cy
+      .request({
+        url: '/api/groups',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          name,
+          topicId,
+          configurationId,
+          instructorId,
+          studentIds
+        }
+      })
+      .then((res) => res.body)
+  })
+})
+
+Cypress.Commands.add('deleteCustomerReview', (customerReviewId) => {
+  withLoggedAdminToken().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    cy.request({
+      url: `/api/customerreviews/delete/${customerReviewId}`,
+      method: 'DELETE',
+      headers: authHeaders
+    })
+  })
+})
+
+Cypress.Commands.add('createCustomerReview', (customerReview) => {
+  withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    //const { answerSheet, group_id, topic_id, configuration_id } = customerReview
+    cy.request({
+      url: '/api/customerReview',
+      method: 'POST',
+      headers: authHeaders,
+      body: {
+        customerReview
+      }
+    })
+  })
+})
+
+Cypress.Commands.add('createGroupHack', (groupData) => {
+  return withLoggedAdminTokenSuperHack().then((token) => {
+    const authHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+    const {
+      name,
+      topicId,
+      configurationId,
+      instructorId,
+      studentIds
+    } = groupData
+
+    return cy
+      .request({
+        url: '/api/groups',
+        method: 'POST',
+        headers: authHeaders,
+        body: {
+          name,
+          topicId,
+          configurationId,
+          instructorId,
+          studentIds
+        }
+      })
+      .then((res) => res.body)
+  })
+})

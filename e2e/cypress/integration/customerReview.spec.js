@@ -104,5 +104,6 @@ describe('Customer review page', () => {
 
   after(() => {
     cy.deleteAllGroups()
+    cy.deleteCustomerReviews()
   })
 })

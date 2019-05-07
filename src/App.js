@@ -27,6 +27,7 @@ import EmailTemplatesPage from './components/EmailTemplatesPage'
 import InstructorPage from './components/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
+import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -195,6 +196,10 @@ class App extends Component {
                 exact
                 path="/instructorreviewpage"
                 render={() => <InstructorReviewPage />}
+              />
+              <InstructorRoute
+                path="/adminstration/customer-reviews"
+                render={() => <ViewCustomerReviewsPage />}
               />
 
               <LoginRoute
