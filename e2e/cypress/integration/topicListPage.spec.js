@@ -95,6 +95,12 @@ describe('Topic list page', () => {
         topicRejected: {
           finnish: 'Projekti {{topicName}} hylätty.',
           english: 'Project {{topicName}} was rejected.'
+        },
+        customerReviewLink: {
+          finnish:
+            'Arviointi on nyt auki projektille {{topicName}} osoitteessa {{secretLink}}',
+          english:
+            'Review is now open for project {{topicName}}, go to {{secretLink}}'
         }
       })
       visitTopicsPage({
@@ -127,17 +133,17 @@ describe('Topic list page', () => {
       clickSendAcceptEmail(topicName)
       clickEmailLanguage('finnish')
 
-      cy.get('.notification').contains(`Email sent to ${emailAddress}.`)
+      cy.get('.notification').contains('Email sent!')
     })
 
     it('shows a success popup after re-sending an email', () => {
       clickSendAcceptEmail(topicName)
       clickEmailLanguage('finnish')
-      cy.get('.notification').contains(`Email sent to ${emailAddress}.`)
+      cy.get('.notification').contains('Email sent!')
 
       clickSendAcceptEmail(topicName)
       clickEmailLanguage('finnish')
-      cy.get('.notification').contains(`Email sent to ${emailAddress}.`)
+      cy.get('.notification').contains('Email sent!')
     })
 
     describe('accept/reject buttons', () => {
