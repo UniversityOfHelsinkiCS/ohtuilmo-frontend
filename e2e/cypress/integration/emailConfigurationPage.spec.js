@@ -14,23 +14,10 @@ const writeToTemplate = (templateTitle, templateLanguage, text) =>
     escapeCurlyBracesForCypress(text)
   )
 
-const clearTemplate = (templateTitle, templateLanguage) =>
-  findTemplateTextarea(templateTitle, templateLanguage).clear()
-
 const clickSave = () => cy.get('.email-templates-form__submit-button').click()
 
 const visitEmailTemplatesPage = () =>
   cy.visit('/administration/email-templates')
-
-const assertIsLoading = () => {
-  cy.get('.loading-cover').should('be.visible')
-  cy.get('.email-templates-form__submit-button').should('be.disabled')
-}
-
-const assertIsNotLoading = () => {
-  cy.get('.loading-cover').should('not.be.visible')
-  cy.get('.email-templates-form__submit-button').should('not.be.disabled')
-}
 
 describe('Email configuration page', () => {
   beforeEach(() => {
@@ -56,6 +43,8 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
       )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
     })
 
     it('updates only topic proposal accepted (finnish) successfully', () => {
@@ -77,6 +66,8 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
       )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
     })
 
     it('updates only topic proposal accepted (english) successfully', () => {
@@ -98,6 +89,8 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
       )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
     })
 
     it('updates only topic proposal rejected (finnish) successfully', () => {
@@ -119,6 +112,8 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
       )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
     })
 
     it('updates only topic proposal rejected (english) successfully', () => {
@@ -137,6 +132,61 @@ describe('Email configuration page', () => {
         'be.empty'
       )
       findTemplateTextarea('Topic proposal rejected', 'english').should(
+        'have.value',
+        templateText
+      )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
+    })
+
+    it('updates only customer review link (finnish) successfully', () => {
+      const templateText =
+        'Hei, vastaathan loppuarviointiin osoitteessa {{secretLink}}'
+      writeToTemplate('Customer review link', 'finnish', templateText)
+      clickSave()
+
+      visitEmailTemplatesPage()
+      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal accepted', 'english').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal rejected', 'finnish').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal rejected', 'english').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Customer review link', 'finnish').should(
+        'have.value',
+        templateText
+      )
+      findTemplateTextarea('Customer review link', 'english').should('be.empty')
+    })
+
+    it('updates only customer review link (english) successfully', () => {
+      const templateText =
+        'Hello, please answer the final review at {{secretLink}}'
+      writeToTemplate('Customer review link', 'english', templateText)
+      clickSave()
+
+      visitEmailTemplatesPage()
+
+      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal accepted', 'english').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal rejected', 'finnish').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Topic proposal rejected', 'english').should(
+        'be.empty'
+      )
+      findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
+      findTemplateTextarea('Customer review link', 'english').should(
         'have.value',
         templateText
       )
@@ -163,6 +213,16 @@ describe('Email configuration page', () => {
           'Topic proposal rejected',
           'english',
           'Hello,\n\nProject "{{topicName}}" was not accepted.'
+        ],
+        [
+          'Customer review link',
+          'finnish',
+          'Hei, vastaathan loppuarviointiin osoitteessa {{secretLink}}'
+        ],
+        [
+          'Customer review link',
+          'english',
+          'Hello, please answer the final review at {{secretLink}}'
         ]
       ]
 
