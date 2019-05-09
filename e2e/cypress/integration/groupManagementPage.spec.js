@@ -91,11 +91,15 @@ describe('Group Management Page', () => {
     })
 
     it('changes topic', () => {
-      cy.get('.edit-group-form-topic__selector').click()
-      cy.get('.topic-menu-item').within(() => {
-        cy.wait(500)
-        cy.contains('Aihe B').click()
-      })
+      cy.get('.edit-group-form-topic__selector')
+        .should('be.visible')
+        .click()
+      cy.get('.topic-menu-item')
+        .should('be.visible')
+        .within(() => {
+          cy.wait(500)
+          cy.contains('Aihe B').click()
+        })
       cy.get('[data-cy=edit-group-name-field]')
         .clear()
         .type('Ryhmä B')

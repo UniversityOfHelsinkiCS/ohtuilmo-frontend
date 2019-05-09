@@ -75,16 +75,13 @@ const setTopicActive = (topic, newActiveState) => {
   }
 }
 
-const sendCustomerEmail = (topicId, emailInfo) => {
-  const { address, messageType, messageLanguage, templateContext } = emailInfo
-
+const sendCustomerEmail = (topicId, messageType, messageLanguage) => {
   return async (dispatch) => {
-    const createdMail = await emailService.sendCustomerEmail(
-      address,
+    const createdMail = await emailService.sendCustomerEmail({
       messageType,
       messageLanguage,
-      templateContext
-    )
+      topicId
+    })
     dispatch(updateSentEmail(topicId, createdMail))
   }
 }

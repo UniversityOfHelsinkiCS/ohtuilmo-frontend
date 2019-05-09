@@ -19,10 +19,11 @@ import TableRow from '@material-ui/core/TableRow'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
+import orange from '@material-ui/core/colors/orange'
 
-import { getEmailTemplateRenderer, formatDate } from '../utils/functions'
+import emailService from '../services/email'
+import { formatDate } from '../utils/functions'
 import topicListPageActions from '../reducers/actions/topicListPageActions'
-import emailTemplatesActions from '../reducers/actions/emailTemplatesActions'
 import * as notificationActions from '../reducers/actions/notificationActions'
 import configurationPageActions from '../reducers/actions/configurationPageActions'
 
@@ -33,6 +34,13 @@ const redGreenTheme = createMuiTheme({
   palette: {
     primary: green,
     secondary: red
+  }
+})
+
+const orangeTheme = createMuiTheme({
+  palette: {
+    primary: orange,
+    secondary: orange
   }
 })
 
@@ -47,6 +55,9 @@ const GreenButton = (props) => (
 )
 const RedButton = (props) => (
   <ThemedButton {...props} theme={redGreenTheme} color="secondary" />
+)
+const OrangeButton = (props) => (
+  <ThemedButton {...props} theme={orangeTheme} color="primary" />
 )
 
 const FinnishFlag = (props) => (
@@ -80,6 +91,70 @@ const RejectButton = (props) => (
     size="small"
   />
 )
+
+const CustomerReviewEmailButton = ({ text, onSendRequested }) => {
+  const [clickedButtonEl, setClickedButtonEl] = useState(null)
+  const isMenuOpen = Boolean(clickedButtonEl)
+
+  const handleButtonClick = (e) => {
+    // use currentTarget instead of target because the click
+    // will otherwise most likely register the <span> inside the button
+    setClickedButtonEl(e.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setClickedButtonEl(null)
+  }
+
+  const createHandleLanguageClicked = (messageLanguage) => () => {
+    // get value before setting the element null (closing the menu)
+    const messageType = clickedButtonEl.value
+    handleMenuClose()
+    // call callback only after closing menu
+    onSendRequested({ messageType, messageLanguage })
+  }
+
+  return (
+    <>
+      <OrangeButton
+        data-cy="send-customer-review-link-email"
+        value="customerReviewLink"
+        variant="outlined"
+        size="small"
+        onClick={handleButtonClick}
+      >
+        {text}
+      </OrangeButton>
+
+      <Menu
+        data-cy="email-language-menu"
+        anchorEl={clickedButtonEl}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem disabled>Choose email language</MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="finnish"
+          onClick={createHandleLanguageClicked('finnish')}
+        >
+          <ListItemIcon>
+            <FinnishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>Finnish</ListItemText>
+        </MenuItem>
+        <MenuItem
+          data-cy-send-mail-lang="english"
+          onClick={createHandleLanguageClicked('english')}
+        >
+          <ListItemIcon>
+            <BritishFlag width="16px" />
+          </ListItemIcon>
+          <ListItemText>English</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  )
+}
 
 /**
  * @typedef {{ messageType: string, messageLanguage: string }} EmailInfo
@@ -172,6 +247,8 @@ const isTopicAcceptedMail = (sentMail) =>
   sentMail.email.type === 'topicAccepted'
 const isTopicRejectedMail = (sentMail) =>
   sentMail.email.type === 'topicRejected'
+const isCustomerReviewMail = (sentMail) =>
+  sentMail.email.type === 'customerReviewLink'
 
 /**
  * @param {{ topic: any, onEmailSendRequested: (info: EmailInfo) => void, onActiveToggle: () => void }} props
@@ -179,6 +256,9 @@ const isTopicRejectedMail = (sentMail) =>
 const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
   const hasAcceptMailBeenSent = topic.sentEmails.some(isTopicAcceptedMail)
   const hasRejectMailBeenSent = topic.sentEmails.some(isTopicRejectedMail)
+  const hasCustomerReviewMailBeenSent = topic.sentEmails.some(
+    isCustomerReviewMail
+  )
 
   return (
     <TableRow
@@ -199,7 +279,14 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
         </p>
       </TableCell>
       <TableCell padding="none">
-        {topic.hasReviewed ? 'Submitted' : '-'}
+        {topic.hasReviewed ? (
+          'Submitted'
+        ) : (
+          <CustomerReviewEmailButton
+            text={hasCustomerReviewMailBeenSent ? 'Send reminder' : 'Send link'}
+            onSendRequested={onEmailSendRequested}
+          />
+        )}
       </TableCell>
       <TableCell padding="none">
         <AcceptRejectEmailButtons
@@ -266,13 +353,23 @@ TopicTable.propTypes = {
   onActiveToggle: PropTypes.func.isRequired
 }
 
+const activeFirstThenByTitle = (topicA, topicB) => {
+  if (topicA.active === topicB.active) {
+    return `${topicA.content.title}`.localeCompare(`${topicB.content.title}`)
+  }
+  return +topicB.active - +topicA.active
+}
+
+const isAxiosError = (e) => !!e.response
+
+const getApiError = (e) => {
+  return isAxiosError(e) && e.response.data && e.response.data.error
+}
+
 class TopicListPage extends React.Component {
   async componentDidMount() {
     try {
-      await Promise.all([
-        this.props.fetchTopics(),
-        this.props.fetchEmailTemplates()
-      ])
+      await this.props.fetchTopics()
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('An error occurred while loading data!', 3000)
@@ -324,51 +421,65 @@ class TopicListPage extends React.Component {
     }
   }
 
+  confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
+    try {
+      const preview = await emailService.previewCustomerEmail({
+        messageType,
+        messageLanguage,
+        topicId
+      })
+      const confirmMessage = [
+        'Send the following email?',
+        '',
+        `Subject: ${preview.subject}`,
+        `To: ${preview.to}`,
+        '---',
+        preview.email
+      ].join('\n')
+
+      return window.confirm(confirmMessage)
+    } catch (e) {
+      console.error(e)
+      if (isAxiosError(e)) {
+        console.error(e.response.data)
+      }
+      const errorMsg = getApiError(e) || 'server error, see console for details'
+      this.props.setError(
+        `Failed to generate preview. See console for details. Error: ${errorMsg}`,
+        10000
+      )
+      return false
+    }
+  }
+
   handleEmailSendRequested = async ({
     topic,
     messageType,
     messageLanguage
   }) => {
-    const { emailTemplates } = this.props
-    const templateRenderer = getEmailTemplateRenderer(messageType)
+    const userConfirmedPreview = await this.confirmEmailPreview(
+      messageType,
+      messageLanguage,
+      topic.id
+    )
 
-    /** e.g.
-     * topicAccepted: {   <-- messageType
-     *   finnish: '', <-- messageLang
-     *   english: ''
-     * }
-     */
-    const emailTemplate = emailTemplates[messageType][messageLanguage]
-    const renderedEmail = templateRenderer(topic, emailTemplate)
-
-    const topicTitle = topic.content.title
-    const ownerEmail = topic.content.email
-    const confirmMessage =
-      `Do you want to send the following email to the owner of '${topicTitle}' (${ownerEmail})?` +
-      `\n\n${renderedEmail}`
-
-    if (!window.confirm(confirmMessage)) {
+    if (!userConfirmedPreview) {
       return
     }
 
     try {
-      await this.props.sendCustomerEmail(topic.id, {
-        address: topic.content.email,
-        messageType: messageType,
-        messageLanguage: messageLanguage,
-        templateContext: { topicName: topicTitle, topicId: topic.id }
-      })
-      this.props.setSuccess(`Email sent to ${ownerEmail}.`)
+      await this.props.sendCustomerEmail(topic.id, messageType, messageLanguage)
+      this.props.setSuccess('Email sent!')
     } catch (e) {
       console.error(e)
-      if (e.response && e.response.data && e.response.data.error) {
-        console.error(`Failed to send email to ${ownerEmail}`, e.response.data)
-
-        const msg = `Failed to send email. Check console for details. Error message: '${
-          e.response.data.error
-        }'`
-        this.props.setError(msg, 10000)
+      if (isAxiosError(e)) {
+        console.error(e.response.data)
       }
+      const errorMsg = getApiError(e) || 'server error, see console for details'
+      this.props.setError(
+        `Failed to send email. See console for details. Error: '${errorMsg}'`,
+        10000
+      )
     }
   }
 
@@ -392,7 +503,9 @@ class TopicListPage extends React.Component {
         )
     }
 
-    const shownTopics = topics.filter(this.showTopic)
+    const shownTopics = topics
+      .filter(this.showTopic)
+      .sort(activeFirstThenByTitle)
 
     return (
       <div className="topics-container">
@@ -420,25 +533,22 @@ class TopicListPage extends React.Component {
 TopicListPage.propTypes = {
   filter: PropTypes.number.isRequired,
   topics: PropTypes.array.isRequired,
-  emailTemplates: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   fetchTopics: PropTypes.func.isRequired,
   setTopicActive: PropTypes.func.isRequired,
   updateFilter: PropTypes.func.isRequired,
-  fetchEmailTemplates: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setSuccess: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
-  const { topicListPage, emailTemplates } = state
+  const { topicListPage } = state
   return {
     topics: topicListPage.topics,
     // don't show loading cover for update loadings; active state changes are
     // done in quick succession and their "loading" doesn't affect page usage
-    isLoading: topicListPage.isTopicsLoading || emailTemplates.isLoading,
-    emailTemplates: emailTemplates.templates,
+    isLoading: topicListPage.isTopicsLoading,
     filter: topicListPage.filter,
     configurations: state.configurationPage.configurations
   }
@@ -449,7 +559,6 @@ const mapDispatchToProps = {
   updateFilter: topicListPageActions.updateFilter,
   setTopicActive: topicListPageActions.setTopicActive,
   sendCustomerEmail: topicListPageActions.sendCustomerEmail,
-  fetchEmailTemplates: emailTemplatesActions.fetchEmailTemplates,
   setError: notificationActions.setError,
   setSuccess: notificationActions.setSuccess,
   fetchConfigurations: configurationPageActions.fetchConfigurations

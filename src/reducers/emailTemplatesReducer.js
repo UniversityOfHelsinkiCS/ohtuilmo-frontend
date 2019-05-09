@@ -23,6 +23,10 @@ const initialTemplatesState = {
   topicRejected: {
     finnish: '',
     english: ''
+  },
+  customerReviewLink: {
+    finnish: '',
+    english: ''
   }
 }
 

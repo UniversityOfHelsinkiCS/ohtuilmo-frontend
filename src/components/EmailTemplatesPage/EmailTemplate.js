@@ -36,7 +36,14 @@ const EmailTemplate = ({
     onTemplateEdited(newTemplate)
   }
 
-  const helperText = `Available parameters: ${availableReplacements.join(', ')}`
+  const helperText = (
+    <span>
+      Available parameters:{' '}
+      <span className="email-template__replacements">
+        {availableReplacements.join(', ')}
+      </span>
+    </span>
+  )
 
   return (
     <div

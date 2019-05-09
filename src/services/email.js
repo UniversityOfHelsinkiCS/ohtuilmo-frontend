@@ -8,25 +8,39 @@ const getAuthHeaders = () => ({
   Authorization: 'Bearer ' + getUserToken()
 })
 
-const sendCustomerEmail = async (
-  address,
-  messageType,
-  messageLanguage,
-  templateContext
-) => {
+const sendCustomerEmail = async ({ messageType, messageLanguage, topicId }) => {
   const response = await axios.post(
     url + '/send',
     {
-      address,
       messageType,
       messageLanguage,
-      templateContext
+      topicId
     },
     {
       headers: getAuthHeaders()
     }
   )
   return response.data
+}
+
+const previewCustomerEmail = async ({
+  messageType,
+  messageLanguage,
+  topicId
+}) => {
+  const res = await axios.post(
+    `${url}/preview`,
+    {
+      messageType,
+      messageLanguage,
+      topicId
+    },
+    {
+      headers: getAuthHeaders()
+    }
+  )
+
+  return res.data
 }
 
 const getTemplates = async () => {
@@ -43,4 +57,9 @@ const updateTemplates = async (templates) => {
   return res.data
 }
 
-export default { sendCustomerEmail, getTemplates, updateTemplates }
+export default {
+  sendCustomerEmail,
+  previewCustomerEmail,
+  getTemplates,
+  updateTemplates
+}

@@ -7,12 +7,6 @@ export const templateShape = PropTypes.shape({
 
 export const templatesShape = PropTypes.shape({
   topicAccepted: templateShape,
-  topicRejected: templateShape
+  topicRejected: templateShape,
+  customerReviewLink: templateShape
 })
-
-export const replacementsShape = PropTypes.arrayOf(
-  PropTypes.shape({
-    token: PropTypes.string,
-    replacer: PropTypes.func
-  })
-)
