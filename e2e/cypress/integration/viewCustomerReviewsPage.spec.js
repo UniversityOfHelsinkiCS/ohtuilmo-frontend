@@ -33,6 +33,12 @@ const mockAnswers = [
       'Your satisfaction to the resulting product compared to your intial expectations:Your satisfaction to the resulting product compared to your intial expectations:',
     questionHeader:
       'What was the technical skill level of the team compared to your expectations?'
+  },
+  {
+    id: 5,
+    type: 'oneliner',
+    answer: 'spammyspam@spam.sp',
+    questionHeader: 'Your email adderess?'
   }
 ]
 

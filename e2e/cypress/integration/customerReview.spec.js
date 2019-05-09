@@ -7,6 +7,11 @@ const initTests = () => {
       description: 'Vastaa lyhyesti 5000 merkillä'
     },
     {
+      type: 'oneliner',
+      header: 'Minne spämmi?',
+      description: 'Max 7 päivässä.'
+    },
+    {
       type: 'number',
       header: 'Monta tuntia viikossa olit yhteydessä tiimiin?'
     },
@@ -35,6 +40,12 @@ const submitCustomerReview = () => {
 const answerTextInput = (text) => {
   cy.get('[data-cy="textInput-Mitä mieltä olit tykittelystä?"]').within(() => {
     cy.get('textarea').type(text)
+  })
+}
+
+const answerOnelinerInput = (text) => {
+  cy.get('[data-cy="onelinerInput-Minne spämmi?"]').within(() => {
+    cy.get('input').type(text)
   })
 }
 
@@ -79,14 +90,25 @@ describe('Customer review page', () => {
 
   it('shows error when text fields are under 30 characters long', () => {
     answerTextInput('foobar')
+    answerOnelinerInput('spammiosoite')
     submitCustomerReview()
     expectNotification('Text answers must be over 30 characters long.')
+  })
+
+  it('shows error when oneliner fields are under 5 characters long', () => {
+    answerTextInput(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
+    )
+    answerOnelinerInput('spam')
+    submitCustomerReview()
+    expectNotification('Short text answers must be over 5 characters long.')
   })
 
   it('shows error when text fields are filled but there are other unfilled fields', () => {
     answerTextInput(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at.'
     )
+    answerOnelinerInput('spammiosoite')
     submitCustomerReview()
     expectNotification('You must answer all questions')
   })
@@ -97,6 +119,7 @@ describe('Customer review page', () => {
     )
     answerNumberInput(1337)
     answerRangeInput(3)
+    answerOnelinerInput('spammittanne@helsinki.foo')
     submitCustomerReview()
     expectNotification('Review saved!')
     cy.contains('You have given a review already')

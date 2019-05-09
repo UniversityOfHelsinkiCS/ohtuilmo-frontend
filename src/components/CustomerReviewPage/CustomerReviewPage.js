@@ -37,6 +37,16 @@ const TextInput = ({ value, onValueChange, ...textFieldProps }) => (
 )
 
 /** @type {InputComponent} */
+const OnelinerInput = ({ value, onValueChange, ...textFieldProps }) => (
+  <TextField
+    {...textFieldProps}
+    value={value}
+    variant="outlined"
+    onChange={passEventValueTo(onValueChange)}
+  />
+)
+
+/** @type {InputComponent} */
 const NumberInput = ({ value, onValueChange, ...inputProps }) => (
   <input
     {...inputProps}
@@ -85,7 +95,8 @@ const getQuestionInputComponent = (type) => {
   const typeToComponent = {
     text: TextInput,
     number: NumberInput,
-    range: RangeInput
+    range: RangeInput,
+    oneliner: OnelinerInput
   }
   return typeToComponent[type]
 }
@@ -179,6 +190,15 @@ class CustomerReviewPage extends React.Component {
       }
     }
 
+    const initializeOnelinerAnswer = (question, questionId) => {
+      return {
+        type: 'oneliner',
+        questionHeader: question.header,
+        id: questionId,
+        answer: ''
+      }
+    }
+
     const initializeRangeAnswer = (question, questionId) => ({
       type: 'range',
       questionHeader: question.header,
@@ -190,7 +210,8 @@ class CustomerReviewPage extends React.Component {
     const initializers = {
       number: initializeNumberAnswer,
       text: initializeTextAnswer,
-      range: initializeRangeAnswer
+      range: initializeRangeAnswer,
+      oneliner: initializeOnelinerAnswer
     }
 
     const tempAnswerSheet = questionObject.map((question, questionID) => {

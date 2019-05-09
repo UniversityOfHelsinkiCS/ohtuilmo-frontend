@@ -57,7 +57,7 @@ class ViewCustomerReviewsPage extends React.Component {
 
     const Answers = ({ answerSheet }) => {
       return answerSheet.map((answer) => {
-        if (answer.type === 'text') {
+        if (answer.type === 'text' || answer.type === 'oneliner') {
           return <TextAnswer answer={answer} key={answer.id} />
         }
 
