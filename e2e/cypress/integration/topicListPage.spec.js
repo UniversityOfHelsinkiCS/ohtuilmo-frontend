@@ -16,11 +16,19 @@ const getSendRejectButton = (topicName) =>
     .get(`[data-cy-topic-name="${topicName}"]`)
     .find('[data-cy="send-reject-mail"]')
 
+const getSendReviewLinkButton = (topicName) =>
+  cy
+    .get(`[data-cy-topic-name="${topicName}"]`)
+    .find('[data-cy="send-customer-review-link-email"]')
+
 const clickSendAcceptEmail = (topicName) =>
   getSendAcceptButton(topicName).click()
 
 const clickSendRejectEmail = (topicName) =>
   getSendRejectButton(topicName).click()
+
+const clickSendReviewLinkEmail = (topicName) =>
+  getSendReviewLinkButton(topicName).click()
 
 /** @param {'finnish' | 'english'} language */
 const clickEmailLanguage = (language) =>
@@ -82,8 +90,11 @@ describe('Topic list page', () => {
   })
 
   describe('emails', () => {
+    // from seed "page-access-seeds"
     const topicName = 'Aihe A'
+    const topicSecretId = 'eec0neeT0jo0ae9F'
     const emailAddress = 'aasia@kas'
+    const secretReviewLink = `https://studies.cs.helsinki.fi/projekti/customer-review/${topicSecretId}`
 
     beforeEach(() => {
       cy.deleteSentEmails()
@@ -122,6 +133,15 @@ describe('Topic list page', () => {
 
     it('shows email languages after clicking reject', () => {
       clickSendRejectEmail(topicName)
+
+      cy.get('[data-cy="email-language-menu"]')
+        .should('be.visible')
+        .and('have.descendants', '[data-cy-send-mail-lang="finnish"]')
+        .and('have.descendants', '[data-cy-send-mail-lang="english"]')
+    })
+
+    it('shows email languages after clicking send customer review link', () => {
+      clickSendReviewLinkEmail(topicName)
 
       cy.get('[data-cy="email-language-menu"]')
         .should('be.visible')
@@ -179,6 +199,26 @@ describe('Topic list page', () => {
       })
     })
 
+    describe('customer review button', () => {
+      it('changes send link text to send reminder after sending', () => {
+        getSendReviewLinkButton(topicName).should('have.text', 'Send link')
+
+        clickSendReviewLinkEmail(topicName)
+        clickEmailLanguage('finnish')
+
+        getSendReviewLinkButton(topicName).should('have.text', 'Send reminder')
+      })
+
+      it('does not change the buttons of another topic after sending link', () => {
+        getSendReviewLinkButton('Aihe B').should('have.text', 'Send link')
+
+        clickSendReviewLinkEmail('Aihe A')
+        clickEmailLanguage('english')
+
+        getSendReviewLinkButton('Aihe B').should('have.text', 'Send link')
+      })
+    })
+
     describe('email preview', () => {
       it('shows the correctly rendered email confirm for topic accepted (finnish) template', () => {
         clickSendAcceptEmail(topicName)
@@ -228,6 +268,32 @@ describe('Topic list page', () => {
             expect(confirmSpy).to.be.calledOnce
             expect(confirmSpy.getCall(0).args[0]).to.contain(
               `Project ${topicName} was rejected.`
+            )
+          })
+      })
+
+      it('shows the correctly rendered email confirm for customer review link (finnish)', () => {
+        clickSendReviewLinkEmail(topicName)
+        clickEmailLanguage('finnish')
+        cy.window()
+          .its('confirm')
+          .should((confirmSpy) => {
+            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.getCall(0).args[0]).to.contain(
+              `Arviointi on nyt auki projektille ${topicName} osoitteessa ${secretReviewLink}`
+            )
+          })
+      })
+
+      it('shows the correctly rendered email confirm for customer review link (english)', () => {
+        clickSendReviewLinkEmail(topicName)
+        clickEmailLanguage('english')
+        cy.window()
+          .its('confirm')
+          .should((confirmSpy) => {
+            expect(confirmSpy).to.be.calledOnce
+            expect(confirmSpy.getCall(0).args[0]).to.contain(
+              `Review is now open for project ${topicName}, go to ${secretReviewLink}`
             )
           })
       })
