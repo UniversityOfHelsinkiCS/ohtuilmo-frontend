@@ -53,10 +53,12 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+
       findTemplateTextarea('Topic proposal accepted', 'finnish').should(
         'have.value',
         templateText
       )
+
       findTemplateTextarea('Topic proposal accepted', 'english').should(
         'be.empty'
       )
@@ -76,12 +78,14 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
-      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
-        'be.empty'
-      )
+
       findTemplateTextarea('Topic proposal accepted', 'english').should(
         'have.value',
         templateText
+      )
+
+      findTemplateTextarea('Topic proposal accepted', 'finnish').should(
+        'be.empty'
       )
       findTemplateTextarea('Topic proposal rejected', 'finnish').should(
         'be.empty'
@@ -99,15 +103,17 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+
+      findTemplateTextarea('Topic proposal rejected', 'finnish').should(
+        'have.value',
+        templateText
+      )
+
       findTemplateTextarea('Topic proposal accepted', 'finnish').should(
         'be.empty'
       )
       findTemplateTextarea('Topic proposal accepted', 'english').should(
         'be.empty'
-      )
-      findTemplateTextarea('Topic proposal rejected', 'finnish').should(
-        'have.value',
-        templateText
       )
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
@@ -122,6 +128,12 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+
+      findTemplateTextarea('Topic proposal rejected', 'english').should(
+        'have.value',
+        templateText
+      )
+
       findTemplateTextarea('Topic proposal accepted', 'finnish').should(
         'be.empty'
       )
@@ -130,10 +142,6 @@ describe('Email configuration page', () => {
       )
       findTemplateTextarea('Topic proposal rejected', 'finnish').should(
         'be.empty'
-      )
-      findTemplateTextarea('Topic proposal rejected', 'english').should(
-        'have.value',
-        templateText
       )
       findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
       findTemplateTextarea('Customer review link', 'english').should('be.empty')
@@ -146,6 +154,12 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+
+      findTemplateTextarea('Customer review link', 'finnish').should(
+        'have.value',
+        templateText
+      )
+
       findTemplateTextarea('Topic proposal accepted', 'finnish').should(
         'be.empty'
       )
@@ -158,10 +172,6 @@ describe('Email configuration page', () => {
       findTemplateTextarea('Topic proposal rejected', 'english').should(
         'be.empty'
       )
-      findTemplateTextarea('Customer review link', 'finnish').should(
-        'have.value',
-        templateText
-      )
       findTemplateTextarea('Customer review link', 'english').should('be.empty')
     })
 
@@ -172,6 +182,11 @@ describe('Email configuration page', () => {
       clickSave()
 
       visitEmailTemplatesPage()
+
+      findTemplateTextarea('Customer review link', 'english').should(
+        'have.value',
+        templateText
+      )
 
       findTemplateTextarea('Topic proposal accepted', 'finnish').should(
         'be.empty'
@@ -186,10 +201,6 @@ describe('Email configuration page', () => {
         'be.empty'
       )
       findTemplateTextarea('Customer review link', 'finnish').should('be.empty')
-      findTemplateTextarea('Customer review link', 'english').should(
-        'have.value',
-        templateText
-      )
     })
 
     it('simultaneously updates all email templates successfully', () => {
