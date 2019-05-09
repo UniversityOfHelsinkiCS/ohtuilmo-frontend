@@ -360,6 +360,12 @@ const activeFirstThenByTitle = (topicA, topicB) => {
   return +topicB.active - +topicA.active
 }
 
+const isAxiosError = (e) => !!e.response
+
+const getApiError = (e) => {
+  return isAxiosError(e) && e.response.data && e.response.data.error
+}
+
 class TopicListPage extends React.Component {
   async componentDidMount() {
     try {
@@ -415,26 +421,49 @@ class TopicListPage extends React.Component {
     }
   }
 
+  confirmEmailPreview = async (messageType, messageLanguage, topicId) => {
+    try {
+      const preview = await emailService.previewCustomerEmail({
+        messageType,
+        messageLanguage,
+        topicId
+      })
+      const confirmMessage = [
+        'Send the following email?',
+        '',
+        `Subject: ${preview.subject}`,
+        `To: ${preview.to}`,
+        '---',
+        preview.email
+      ].join('\n')
+
+      return window.confirm(confirmMessage)
+    } catch (e) {
+      console.error(e)
+      if (isAxiosError(e)) {
+        console.error(e.response.data)
+      }
+      const errorMsg = getApiError(e) || 'server error, see console for details'
+      this.props.setError(
+        `Failed to generate preview. See console for details. Error: ${errorMsg}`,
+        10000
+      )
+      return false
+    }
+  }
+
   handleEmailSendRequested = async ({
     topic,
     messageType,
     messageLanguage
   }) => {
-    const preview = await emailService.previewCustomerEmail({
+    const userConfirmedPreview = await this.confirmEmailPreview(
       messageType,
       messageLanguage,
-      topicId: topic.id
-    })
-    const confirmMessage = [
-      'Send the following email?',
-      '',
-      `Subject: ${preview.subject}`,
-      `To: ${preview.to}`,
-      '---',
-      preview.email
-    ].join('\n')
+      topic.id
+    )
 
-    if (!window.confirm(confirmMessage)) {
+    if (!userConfirmedPreview) {
       return
     }
 
@@ -443,14 +472,14 @@ class TopicListPage extends React.Component {
       this.props.setSuccess('Email sent!')
     } catch (e) {
       console.error(e)
-      if (e.response && e.response.data && e.response.data.error) {
-        console.error('Failed to send email!', e.response.data)
-
-        const msg = `Failed to send email. Check console for details. Error message: '${
-          e.response.data.error
-        }'`
-        this.props.setError(msg, 10000)
+      if (isAxiosError(e)) {
+        console.error(e.response.data)
       }
+      const errorMsg = getApiError(e) || 'server error, see console for details'
+      this.props.setError(
+        `Failed to send email. See console for details. Error: '${errorMsg}'`,
+        10000
+      )
     }
   }
 
