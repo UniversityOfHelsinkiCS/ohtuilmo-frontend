@@ -6,6 +6,26 @@ Registration, administration and review tool for University of Helsinki's softwa
 
 - [Backend](https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend)
 
+## Table of Contents
+
+* [ohtuilmo](#ohtuilmo)
+    * [Development](#development)
+        * [Local development](#local-development)
+        * [Test users](#test-users)
+        * [Accessing the database](#accessing-the-database)
+            * [Directly with psql](#directly-with-psql)
+            * [With the dbscript](#with-the-dbscript)
+        * [Writing and running tests locally](#writing-and-running-tests-locally)
+            * [Writing tests](#writing-tests)
+            * [If you're writing a frontend-only feature which works with the Docker image in DockerHub](#if-youre-writing-a-frontend-only-feature-which-works-with-the-docker-image-in-dockerhub)
+            * [If you're writing a feature that touches both the frontend and backend](#if-youre-writing-a-feature-that-touches-both-the-frontend-and-backend)
+        * [Running end-to-end tests](#running-end-to-end-tests)
+    * [CI, Docker](#ci-docker)
+        * [Available tags](#available-tags)
+    * [Deployment: staging and production](#deployment-staging-and-production)
+    * [Design compromises and things we didn't have time to fix](#design-compromises-and-things-we-didnt-have-time-to-fix)
+    * [Docker cheatsheet](#docker-cheatsheet)
+
 ## Development
 
 ### Local development
