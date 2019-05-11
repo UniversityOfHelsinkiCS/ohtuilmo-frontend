@@ -311,7 +311,7 @@ const Questions = ({ studentAnswers, updateAnswer, userId }) => {
     } else if (question.type === 'info') {
       return (
         <div key={questionId + userId}>
-          <h3>{question.header}</h3>
+          <h2>{question.header}</h2>
           <p>{question.description}</p>
         </div>
       )
