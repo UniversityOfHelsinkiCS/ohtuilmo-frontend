@@ -122,7 +122,7 @@ describe('Customer review page', () => {
     answerOnelinerInput('spammittanne@helsinki.foo')
     submitCustomerReview()
     expectNotification('Review saved!')
-    cy.contains('You have given a review already')
+    cy.contains('Thank you for the review')
   })
 
   after(() => {

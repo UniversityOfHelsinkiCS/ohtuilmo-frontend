@@ -269,7 +269,7 @@ class CustomerReviewPage extends React.Component {
       return (
         <div className="customer-review-container">
           <h1 className="customer-review-container__h1">
-            You have given a review already
+            Thank you for the review
           </h1>
         </div>
       )
