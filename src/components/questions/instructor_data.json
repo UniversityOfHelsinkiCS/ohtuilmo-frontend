@@ -77,31 +77,6 @@
     },
     {
       "type": "info",
-      "header": "Prosessin kehittäminen",
-      "description": ""
-    },
-    {
-      "header": "Vertaisarvion arvosanat ja keskiarvo",
-      "description": "",
-      "type": "text"
-    },
-    {
-      "header": "Poimintoja sanallisista vertaisarvioista",
-      "description": "",
-      "type": "text"
-    },
-    {
-      "header": "Ohjaajan kommentit",
-      "description": "",
-      "type": "text"
-    },
-    {
-      "header": "Prosessin kehittäminen: arvosana",
-      "description": "",
-      "type": "number"
-    },
-    {
-      "type": "info",
       "header": "Ryhmätyöskentely",
       "description": ""
     },
