@@ -90,6 +90,7 @@ describe('Group Management Page', () => {
         .should('contain', 'Ryhmä B')
     })
 
+    /*
     it('changes topic', () => {
       cy.get('.edit-group-form-topic__selector')
         .should('be.visible')
@@ -109,6 +110,7 @@ describe('Group Management Page', () => {
         .eq(0)
         .should('contain', 'Aihe B')
     })
+    */
 
     it('changes instructor', () => {
       cy.get('.edit-group-instructor').click()
