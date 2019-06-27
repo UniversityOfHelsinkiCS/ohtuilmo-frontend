@@ -46,10 +46,10 @@ describe.skip('Instructor review page', () => {
     expectNotification('You must answer all questions')
   })
 
-  it('shows error when text fields are under 30 characters long', () => {
-    answerTextInput('foobar', 0)
+  it('shows error when text fields are under 5 characters long', () => {
+    answerTextInput('foo', 0)
     submitInstructorReview()
-    expectNotification('Text answers must be over 30 characters long.')
+    expectNotification('Text answers must be over 5 characters long.')
   })
 
   it('shows error when text fields are filled but there are other unfilled fields', () => {

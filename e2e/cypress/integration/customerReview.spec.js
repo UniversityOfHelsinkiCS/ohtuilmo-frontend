@@ -88,11 +88,11 @@ describe('Customer review page', () => {
     cy.contains('Customer review')
   })
 
-  it('shows error when text fields are under 30 characters long', () => {
-    answerTextInput('foobar')
+  it('shows error when text fields are under 5 characters long', () => {
+    answerTextInput('foo')
     answerOnelinerInput('spammiosoite')
     submitCustomerReview()
-    expectNotification('Text answers must be over 30 characters long.')
+    expectNotification('Text answers must be over 5 characters long.')
   })
 
   it('shows error when oneliner fields are under 5 characters long', () => {
