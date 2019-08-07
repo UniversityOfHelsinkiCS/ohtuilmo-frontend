@@ -63,6 +63,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.props.loginUser()
     this.fetchRegistrationManagement()
   }
 
@@ -231,7 +232,8 @@ const mapDispatchToProps = {
     registrationmanagementActions.fetchRegistrationManagement,
   clearRegistrations: registrationActions.clearRegistrations,
   ...peerReviewPageActions,
-  logoutUser: userActions.logoutUser
+  logoutUser: userActions.logoutUser,
+  loginUser: userActions.loginUser
 }
 
 const ConnectedApp = connect(
