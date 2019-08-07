@@ -19,14 +19,11 @@ import './commands'
 import { TEST_USER, TEST_USER2, TEST_ADMIN } from '../common'
 
 const postLogin = (user) => {
-  const { username, password } = user
+  const { headers } = user
   return cy.request({
     url: '/api/login',
     method: 'POST',
-    body: {
-      username,
-      password
-    }
+    headers
   })
 }
 
@@ -54,6 +51,10 @@ const withLoggedAdminToken = (fn) => {
     const { token } = res.body
     fn(token)
   })
+}
+
+const withLoggedAdminTokenSuperHack = () => {
+  return postLogin(TEST_ADMIN).then((res) => res.body.token)
 }
 
 Cypress.Commands.add('deleteRegistrationQuestions', () => {
@@ -524,10 +525,6 @@ Cypress.Commands.add('createPeerReviews', (peerReviews) => {
     })
   })
 })
-
-const withLoggedAdminTokenSuperHack = () => {
-  return postLogin(TEST_ADMIN).then((res) => res.body.token)
-}
 
 Cypress.Commands.add('createConfiguration', (configurationData) => {
   return withLoggedAdminTokenSuperHack().then((token) => {
