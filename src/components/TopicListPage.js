@@ -15,6 +15,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Icon from '@material-ui/icons/Input'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
@@ -270,6 +271,9 @@ const TopicTableRow = ({ topic, onEmailSendRequested, onActiveToggle }) => {
           <TopicDetailsLink topicId={topic.id}>
             {topic.content.title}
           </TopicDetailsLink>
+          <Link to={`/topics/${topic.secret_id}`} style={{ 'padding': 10 }} >
+            <Icon />
+          </Link>
         </p>
         <p className="topic-table-row__customer">
           {`${topic.content.customerName} (${topic.content.email})`}

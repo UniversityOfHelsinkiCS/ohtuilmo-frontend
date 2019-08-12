@@ -23,7 +23,7 @@ const Markdown = ({ children }) => (
   <ReactMarkdown renderers={markdownRenderers}>{children}</ReactMarkdown>
 )
 
-const Topic = ({ content, isEditable, onPageChange }) => {
+const Topic = ({ content, isEditable, onPageChange, isAdmin, copyToConfiguration }) => {
   return (
     <div className="single-topic-container">
       <div className="block">
@@ -63,6 +63,13 @@ const Topic = ({ content, isEditable, onPageChange }) => {
         <div className="topic-edit-button">
           <Button variant="contained" color="primary" onClick={onPageChange}>
             Edit
+          </Button>
+        </div>
+      )}
+      {isAdmin && (
+        <div className="topic-edit-button">
+          <Button variant="contained" color="default" onClick={copyToConfiguration}>
+            Copy to most recent configuration
           </Button>
         </div>
       )}

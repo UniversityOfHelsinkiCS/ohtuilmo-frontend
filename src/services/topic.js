@@ -9,6 +9,11 @@ const create = async (content) => {
   return response.data.topic
 }
 
+const copy = async (id) => {
+  const response = await axios.post(url + '/' + id + '/copy')
+  return response.data.topic
+}
+
 const getAll = async () => {
   const config = {
     headers: { 'Authorization': 'bearer ' + getUserToken() }
@@ -35,4 +40,4 @@ const getOne = async (id) => {
   return response.data.topic
 }
 
-export default { create, getAll, getAllActive, getOne , update }
+export default { create, getAll, getAllActive, getOne, update, copy }
