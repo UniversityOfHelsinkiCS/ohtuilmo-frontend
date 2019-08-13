@@ -28,4 +28,12 @@ const getOwn = async () => {
   return response.data.registrations
 }
 
-export default { create, getOwn }
+const current = async () => {
+  const response = await axios.get(url + '/current', {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+
+  return response.data.registrations
+}
+
+export default { create, getOwn, current }

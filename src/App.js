@@ -28,6 +28,7 @@ import InstructorPage from './components/InstructorPage'
 import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
 import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
+import Registrations from './components/Registrations'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -165,6 +166,11 @@ class App extends Component {
                 exact
                 path="/administration/email-templates"
                 render={() => <EmailTemplatesPage />}
+              />
+              <AdminRoute
+                exact
+                path="/administration/registrations"
+                render={() => <Registrations />}
               />
               <Route
                 exact
