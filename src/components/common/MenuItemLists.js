@@ -47,11 +47,6 @@ const adminItems = (history) => {
     },
     {
       className: 'registration-management-menu-item',
-      text: 'Registrations',
-      handler: () => history.push('/administration/registrations')
-    },
-    {
-      className: 'registration-management-menu-item',
       text: 'Registration Management',
       handler: () => history.push('/administration/registrationmanagement')
     },
@@ -77,7 +72,12 @@ const adminItems = (history) => {
     {
       text: 'Instructor Review',
       handler: () => history.push('/instructorreviewpage')
-    }
+    },
+    {
+      className: 'registration-management-menu-item',
+      text: 'Registrations',
+      handler: () => history.push('/administration/registrations')
+    },
   ]
 
   return items
