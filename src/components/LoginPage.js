@@ -92,7 +92,6 @@ const mapStateToProps = (state) => {
   return {
     username: state.loginPage.username,
     password: state.loginPage.password,
-    user: state.loginPage.user,
     isLoading: state.app.isLoading
   }
 }
