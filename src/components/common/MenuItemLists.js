@@ -73,11 +73,13 @@ const adminItems = (history) => {
       text: 'Instructor Review',
       handler: () => history.push('/instructorreviewpage')
     },
+    /*
     {
       className: 'registration-management-menu-item',
       text: 'Current regstrations',
       handler: () => history.push('/administration/registrations')
     },
+    */
   ]
 
   return items
