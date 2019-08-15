@@ -75,7 +75,7 @@ const adminItems = (history) => {
     },
     {
       className: 'registration-management-menu-item',
-      text: 'Registrations',
+      text: 'Current regstrations',
       handler: () => history.push('/administration/registrations')
     },
   ]
