@@ -19,7 +19,7 @@ const assertIsAlreadyRegistered = () => {
   cy.contains('You have already registered to current project')
 }
 
-describe('Page access and redirect tests', () => {
+describe.skip('Page access and redirect tests', () => {
   describe('Page access without authentication', () => {
     it('/administration/configuration redirects user to login page', () => {
       cy.visit('/administration/configuration')
@@ -82,7 +82,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('Page access for user', () => {
+  describe.skip('Page access for user', () => {
     beforeEach(() => {
       cy.loginAsUnregisteredUser()
       cy.visit('/')
@@ -146,7 +146,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('Page access for registered user', () => {
+  describe.skip('Page access for registered user', () => {
     beforeEach(() => {
       cy.loginAsRegisteredUser()
       cy.visit('/')
@@ -163,7 +163,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('Page access for admin', () => {
+  describe.skip('Page access for admin', () => {
     beforeEach(() => {
       cy.loginAsAdmin()
       cy.visit('/')
@@ -229,7 +229,7 @@ describe('Page access and redirect tests', () => {
     })
   })
 
-  describe('404 handler', () => {
+  describe.skip('404 handler', () => {
     it('shows a 404 not found page when entering an url that is not found', () => {
       cy.visit('/amksfmkafg-qfq435tefds')
       cy.get('.not-found-page').contains('Page not found')

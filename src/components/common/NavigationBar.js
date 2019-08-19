@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-//import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import NavigationMenu from './NavigationMenu'
@@ -34,7 +34,6 @@ class NavigationBar extends React.Component {
   render() {
     let loggedIn
     let username
-    //    let logoutButton
     if (this.props.user) {
       loggedIn = <AccountCircle />
       username = (
@@ -42,16 +41,6 @@ class NavigationBar extends React.Component {
           {this.props.user.user.username}
         </h4>
       )
-      /*    logoutButton = (
-        <Button
-          className="navigation-bar-logout-button"
-          style={{ marginLeft: '10px' }}
-          variant="outlined"
-          onClick={this.props.logout}
-        >
-          Log out
-        </Button>
-      )*/
     } else {
       loggedIn = ''
     }
@@ -71,7 +60,14 @@ class NavigationBar extends React.Component {
             </Typography>
             {loggedIn}
             {username}
-            {/*logoutButton*/}
+            <Button
+              className="navigation-bar-logout-button"
+              style={{ marginLeft: '10px' }}
+              variant="outlined"
+              onClick={this.props.logout}
+            >
+              Log out
+            </Button>
           </Toolbar>
         </AppBar>
       </div>
