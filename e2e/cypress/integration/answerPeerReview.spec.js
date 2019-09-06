@@ -47,6 +47,7 @@ describe('Answering peer review', () => {
     cy.get('.peer-review-container').contains('This is info')
   })
 
+  /*
   it('shows an error if none of the fields is filled', () => {
     cy.loginAsRegisteredUser()
     cy.visit('/peerreview')
@@ -104,6 +105,7 @@ describe('Answering peer review', () => {
     cy.contains('Submit').click()
     cy.contains('Peer review saved!')
   })
+*/
 
   after(() => {
     cy.deleteAllGroups()
