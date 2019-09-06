@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router, Route, Switch, Redirect, Link } from 'react-router-dom'
+import { Router, Route, Switch, Link } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import './App.css'
 
 // Components
 import ConfigurationPage from './components/ConfigurationPage'
-import LoginPage from './components/LoginPage'
 import LandingPage from './components/LandingPage'
 import TopicFormPage from './components/TopicFormPage'
 import TopicListPage from './components/TopicListPage'
@@ -64,7 +63,7 @@ class App extends Component {
     this.logout = this.logout.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.loginUser()
     this.fetchRegistrationManagement()
   }
@@ -86,7 +85,6 @@ class App extends Component {
     this.props.logoutUser()
     this.props.clearRegistrations()
     this.props.updateIsLoading(false)
-    history.push('/login')
   }
 
   render() {
@@ -103,20 +101,7 @@ class App extends Component {
           <div id="app-content">
             {loadingSpinner}
             <Switch>
-              <Route
-                path="/login"
-                render={() =>
-                  this.props.user ? (
-                    this.props.user.instructor ? (
-                      <Redirect to="/instructorpage" />
-                    ) : (
-                      <Redirect to="/" />
-                    )
-                  ) : (
-                    <LoginPage />
-                  )
-                }
-              />
+              <Route path="/login" render={() => null} />
               <LoginRoute exact path="/" render={() => <LandingPage />} />
               <AdminRoute
                 exact

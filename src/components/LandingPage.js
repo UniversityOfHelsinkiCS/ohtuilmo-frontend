@@ -19,7 +19,7 @@ class LandingPage extends React.Component {
         this.props.history.push('/registrationdetails')
       }
     } catch (e) {
-      console.log('error happened', e.response)
+      console.log('error happened', e)
       this.props.setError('Error fetching own registration', 3000)
     }
   }

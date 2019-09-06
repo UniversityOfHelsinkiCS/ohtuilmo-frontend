@@ -38,6 +38,7 @@ class RegistrationPage extends React.Component {
     this.fetchOwnregistrations()
     this.fetchTopics()
     this.fetchQuestions()
+    this.props.updateEmail(this.props.user.user.email)
   }
 
   async fetchRegistrationManagement() {

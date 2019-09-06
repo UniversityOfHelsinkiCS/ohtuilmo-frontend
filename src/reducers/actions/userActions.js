@@ -1,5 +1,6 @@
 import loginService from '../../services/login'
 import userService from '../../services/user'
+import logoutService from '../../services/logout'
 
 const updateIsInstructor = (user, isInstructor) => ({
   ...user,
@@ -23,7 +24,10 @@ export const loginUser = (userCredentials) => {
 }
 
 export const logoutUser = () => {
-  return {
-    type: 'LOGOUT_USER'
+  return async () => {
+    const logoutUrl = await logoutService.logout()
+    //dispatch({ type: 'LOGOUT_USER' })
+    localStorage.clear()
+    window.location = logoutUrl
   }
 }
