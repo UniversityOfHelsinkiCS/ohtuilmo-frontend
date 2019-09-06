@@ -19,4 +19,11 @@ const getAllAnsweredGroupId = async () => {
   return response.data
 }
 
-export default { create, getAllAnsweredGroupId }
+const getAll = async () => {
+  const response = await axios.get(url + '/getAllAnsweredGroupId', {
+    headers: { Authorization: 'Bearer ' + getUserToken() }
+  })
+  return response.data
+}
+
+export default { create, getAllAnsweredGroupId, getAll }

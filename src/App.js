@@ -29,6 +29,7 @@ import CustomerReviewPage from './components/CustomerReviewPage'
 import InstructorReviewPage from './components/InstructorReviewPage'
 import ViewCustomerReviewsPage from './components/ViewCustomerReviewsPage'
 import Registrations from './components/Registrations'
+import InstructorReviews from './components/InstructorReviews'
 
 // Actions
 import appActions from './reducers/actions/appActions'
@@ -171,6 +172,11 @@ class App extends Component {
                 exact
                 path="/administration/registrations"
                 render={() => <Registrations />}
+              />
+              <AdminRoute
+                exact
+                path="/administration/reviews"
+                render={() => <InstructorReviews />}
               />
               <Route
                 exact
