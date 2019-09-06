@@ -64,8 +64,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.props.updateIsLoading(true)
     this.props.loginUser()
     this.fetchRegistrationManagement()
+    this.props.updateIsLoading(false)
   }
 
   fetchRegistrationManagement = async () => {
