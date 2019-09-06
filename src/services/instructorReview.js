@@ -20,7 +20,7 @@ const getAllAnsweredGroupId = async () => {
 }
 
 const getAll = async () => {
-  const response = await axios.get(url + '/getAllAnsweredGroupId', {
+  const response = await axios.get(url + '/', {
     headers: { Authorization: 'Bearer ' + getUserToken() }
   })
   return response.data
