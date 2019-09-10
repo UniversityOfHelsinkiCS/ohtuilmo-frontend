@@ -219,7 +219,7 @@ For both frontend and backend, the `latest` tag is built from the latest commit 
 
 ## Deployment: staging and production
 
-The staging and production servers run on the University of Helsinki's CS department's servers. The production server is public at `https://studies.cs.helsinki.fi/projekti`, but the staging server is behind the CS department's internal network's firewall. Connect via melkki or melkinkari etc.
+The staging and production servers run on the University of Helsinki's CS department's servers. The production server is public at `https://study.cs.helsinki.fi/projekti`, but the staging server is behind the CS department's internal network's firewall. Connect via melkki or melkinkari etc.
 
 Both services are behind a reverse proxy (nginx). It proxies `/projekti` to the frontend and `/projekti/api` to the backend. See the [`e2e-nginx` image's nginx.conf](https://github.com/ohtuprojekti-ilmo/e2e-nginx/blob/master/nginx.conf) for a sample.
 
