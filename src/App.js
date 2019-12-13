@@ -46,6 +46,8 @@ import {
   InstructorRoute
 } from '../src/utils/protectedRoutes'
 
+import loginService from './services/login'
+
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL })
 
 const NotFound = () => (
@@ -68,6 +70,9 @@ class App extends Component {
     this.props.loginUser()
     this.fetchRegistrationManagement()
     this.props.updateIsLoading(false)
+    setInterval(() => {
+      loginService.login()
+    }, 60 * 1000)
   }
 
   fetchRegistrationManagement = async () => {
@@ -235,9 +240,6 @@ const mapDispatchToProps = {
   loginUser: userActions.loginUser
 }
 
-const ConnectedApp = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
 export default ConnectedApp
