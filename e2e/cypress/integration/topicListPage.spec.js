@@ -94,7 +94,7 @@ describe('Topic list page', () => {
     const topicName = 'Aihe A'
     const topicSecretId = 'eec0neeT0jo0ae9F'
     const emailAddress = 'aasia@kas'
-    const secretReviewLink = `https://studies.cs.helsinki.fi/projekti/customer-review/${topicSecretId}`
+    const secretReviewLink = `https://study.cs.helsinki.fi/projekti/customer-review/${topicSecretId}`
 
     beforeEach(() => {
       cy.deleteSentEmails()
