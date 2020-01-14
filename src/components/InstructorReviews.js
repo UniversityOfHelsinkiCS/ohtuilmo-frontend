@@ -127,9 +127,6 @@ const InstructorReviews = () => {
   return (
     <div>
       {reviews.map(data => <Review key={data.id} review={data.answer_sheet}/>)}
-      <pre>
-        {JSON.stringify(reviews, null, 2)}
-      </pre>
     </div>
   )
 }
