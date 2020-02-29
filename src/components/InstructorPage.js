@@ -55,7 +55,7 @@ const Answers = ({ answers, currentConfiguration }) => {
             {projectGroup.round1Answers.length > 0 ? (
               <div>
                 <h2>Peer review answers from the first round.</h2>
-                <GroupAnswers answers={projectGroup.round1Answers} />
+                <GroupAnswers answers={projectGroup.round1Answers} students={projectGroup.group.studentNames} />
               </div>
             ) : (
               <h2>
@@ -66,7 +66,7 @@ const Answers = ({ answers, currentConfiguration }) => {
             {projectGroup.round2Answers.length > 0 ? (
               <div>
                 <h2>Peer review answers from the second round.</h2>
-                <GroupAnswers answers={projectGroup.round2Answers} />
+                <GroupAnswers answers={projectGroup.round2Answers} students={projectGroup.group.studentNames}/>
               </div>
             ) : (
               <h2>
@@ -100,7 +100,7 @@ const Question = ({ title, children }) => (
   </div>
 )
 
-const GroupAnswers = ({ answers }) => {
+const GroupAnswers = ({ answers, students }) => {
   return (
     <div>
       {getQuestions(answers).map((question, index) => {
@@ -113,7 +113,7 @@ const GroupAnswers = ({ answers }) => {
         } else if (question.type === 'radio') {
           return (
             <Question key={index} title={question.questionHeader}>
-              <RadioAnswer answers={answers} questionNumber={index} />
+              <RadioAnswer answers={answers} questionNumber={index} students={students} />
             </Question>
           )
         } else {
@@ -139,10 +139,13 @@ const TextNumberAnswer = ({ answers, questionNumber }) => {
   )
 }
 
-const RadioAnswer = ({ answers, questionNumber }) => {
+const RadioAnswer = ({ answers, questionNumber, students }) => {
+  /*
   const peers = answers.map((member) => {
     return member.student.first_names + ' ' + member.student.last_name
-  })
+  })*/
+  const peers = students
+
   return (
     <div>
       <table className="radio-button-table">
@@ -195,10 +198,15 @@ const PeerHeaders = ({ peers }) => {
 const sum = (arr) => arr.reduce((sum, value) => sum + value, 0)
 const average = (arr) => sum(arr) / arr.length
 
-const PeerRows = ({ member, answers, questionNumber }) => {
+const PeerRows = ({ member, answers, questionNumber, numberOfPeers }) => {
   const otherPeersRatingOfMember = answers
     .map((peersSubmission) => peersSubmission.answer_sheet)
     .map((peersAnswerSheet) => peersAnswerSheet[questionNumber].peers[member])
+
+  const missing = []
+  for( let i=0; i<numberOfPeers - answers.length; i++) {
+    missing.push(i)
+  }
 
   const averageRating = average(otherPeersRatingOfMember)
 
@@ -209,6 +217,13 @@ const PeerRows = ({ member, answers, questionNumber }) => {
           {rating}
         </td>
       ))}
+
+      {missing.map((_, index) => (
+        <td className="radio-button" key={`peer-row-${index}`}>
+          -
+        </td>
+      ))}
+
       <td className="radio-button">{averageRating.toFixed(2)}</td>
     </React.Fragment>
   )
