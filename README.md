@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/ohtuprojekti-ilmo/ohtuilmo-frontend.svg?branch=master)](https://travis-ci.org/ohtuprojekti-ilmo/ohtuilmo-frontend)
+[![Build Status](https://travis-ci.org/UniversityOfHelsinkiCS/ohtuilmo-frontend.svg?branch=master)](https://travis-ci.org/UniversityOfHelsinkiCS/ohtuilmo-frontend)
 
 # ohtuilmo
 
 Registration, administration and review tool for University of Helsinki's software engineering project course.
 
-- [Backend](https://github.com/ohtuprojekti-ilmo/ohtuilmo-backend)
+- [Backend](https://github.com/UniversityOfHelsinkiCS/ohtuilmo-backend)
 
 ## Table of Contents
 
