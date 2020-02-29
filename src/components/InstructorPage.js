@@ -140,11 +140,14 @@ const TextNumberAnswer = ({ answers, questionNumber }) => {
 }
 
 const RadioAnswer = ({ answers, questionNumber, students }) => {
-  /*
   const peers = answers.map((member) => {
     return member.student.first_names + ' ' + member.student.last_name
-  })*/
-  const peers = students
+  })
+  students.forEach(s => {
+    if (!peers.includes(s)) {
+      peers.push(s)
+    }
+  })
 
   return (
     <div>
