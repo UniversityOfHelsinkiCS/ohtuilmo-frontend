@@ -91,7 +91,7 @@ const TopicForm = (props) => {
         <div>
           <TextField
             fullWidth
-            label="Additional info / Lisätietoja"
+            label="Additional info / Lisätietoja (kerro tässä sopivatko molemmat ajankohdat 11.5.-26.6 tiivisprojekti ja 11.5.-30.8)"
             multiline
             rows={props.isEditForm ? '' : 7}
             margin="normal"
