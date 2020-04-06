@@ -99,6 +99,14 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateAdditionalInfo(e.target.value)}
           />
         </div>
+        <div>
+          <div style={{ padding: 10 }}>
+            As a customer I promise to be flexible enough with my schedule so that I can be available for the group often enough, especially at the start of the project.
+          </div>
+          <div style={{ padding: 10 }}>
+            Lupaan joustaa omien aikataulujeni suhteen riittävästi, erityisesti projektin alkuvaiheessa, jotta kommunikointi ryhmän kanssa sujuu riittävällä tasolla.
+          </div>
+        </div>
         <div className="form-buttons">
           <div className="form-button">
             <Button
