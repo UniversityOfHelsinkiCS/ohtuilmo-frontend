@@ -128,7 +128,7 @@ const Registrations = () => {
             </td>
             {preferred_of(reg)}
             <td>
-              {JSON.stringify(reg.questions[1])}
+              {JSON.stringify(reg.questions[0])}
             </td>
           </tr>
         )}
