@@ -127,6 +127,9 @@ const Registrations = () => {
               {reg.email}
             </td>
             {preferred_of(reg)}
+            <td>
+              {JSON.stringify(reg)}
+            </td>
           </tr>
         )}
       </table>
