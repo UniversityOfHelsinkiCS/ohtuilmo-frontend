@@ -130,6 +130,9 @@ const Registrations = () => {
             <td>
               {JSON.stringify(reg.questions[0].answer)}
             </td>
+            <td>
+              {JSON.stringify(reg.questions[0].answer)}
+            </td>
           </tr>
         )}
       </table>
