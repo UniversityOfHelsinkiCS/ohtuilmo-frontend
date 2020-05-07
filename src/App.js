@@ -67,11 +67,18 @@ class App extends Component {
 
   componentDidMount() {
     this.props.updateIsLoading(true)
-    this.props.loginUser()
+    console.log(window.location.href)
+    if (!window.location.href.includes('customer-review/')){
+      this.props.loginUser()
+    }
+
     this.fetchRegistrationManagement()
     this.props.updateIsLoading(false)
     setInterval(() => {
-      loginService.login()
+      console.log('timeout')
+      if (!window.location.href.includes('customer-review/')){
+        loginService.login()
+      }
     }, 60 * 1000)
   }
 
