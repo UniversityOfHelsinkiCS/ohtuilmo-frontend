@@ -128,7 +128,7 @@ const Registrations = () => {
             </td>
             {preferred_of(reg)}
             <td>
-              {JSON.parse(reg.questions[0]).answer}
+              
             </td>
           </tr>
         )}
