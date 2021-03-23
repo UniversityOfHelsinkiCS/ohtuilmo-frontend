@@ -167,6 +167,7 @@ class CustomerReviewPage extends React.Component {
         this.props.setNoGroup(true)
       }
     } catch (e) {
+      console.log(e)
       this.props.setError('Some error happened')
     }
   }

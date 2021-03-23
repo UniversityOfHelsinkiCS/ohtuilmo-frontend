@@ -128,7 +128,6 @@ const Registrations = () => {
             </td>
             {preferred_of(reg)}
             <td>
-              
             </td>
           </tr>
         )}

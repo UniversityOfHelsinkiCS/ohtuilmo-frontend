@@ -38,6 +38,7 @@ class InstructorReviewPage extends React.Component {
           this.props.initializeAnswerSheet
         )
       }
+
     } catch (e) {
       console.log('error happened', e.response)
       this.props.setError('Database error')

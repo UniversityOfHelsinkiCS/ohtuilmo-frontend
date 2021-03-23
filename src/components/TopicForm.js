@@ -89,6 +89,13 @@ const TopicForm = (props) => {
           />
         </div>
         <div>
+          Kerro seuraavassa kohdassa myös sopivat ajankohdat / tell also what is the suitable timing for your project
+          <ul>
+            <li>alkukesä / early summer 17.5.-2.7.</li>
+            <li>koko kesän projekti / whole summer 17.5.-30.8.</li>
+          </ul>
+        </div>
+        <div>
           <TextField
             fullWidth
             label="Additional info / Lisätietoja"
