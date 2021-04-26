@@ -236,7 +236,7 @@ class RegistrationPage extends React.Component {
               }}
             >
               Huomaa, että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi aineopintojen harjoitustyötä
-              (tai avoimen yliopiston opiskelijoilla Full stack -websovelluskehitys) on suoritettu projektin alkuun mennessä.
+              (tai avoimen yliopiston opiskelijoilla Full stack -websovelluskehitys) on tehtynä (suoritettu tai palautettu arvosteltavaksi) projektin alkuun mennessä.
             </div>
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
