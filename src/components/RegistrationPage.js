@@ -226,8 +226,6 @@ class RegistrationPage extends React.Component {
           <div className="section registration-form">
             <CourseMaterial />
             <br />
-            <h2 className="landingpage-header">User details</h2>
-            <UserDetails />
             <div
               style={{
                 fontWeight: 'bold',
@@ -240,6 +238,8 @@ class RegistrationPage extends React.Component {
               Huomaa että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi aineopintojen harjoitustyötä
               on suoritettu projektin alkuun mennessä.
             </div>
+            <h2 className="landingpage-header">User details</h2>
+            <UserDetails />
             <p>Please fill your email</p>
             <div>
               <TextField
