@@ -113,7 +113,7 @@ class RegistrationPage extends React.Component {
     e.preventDefault()
 
     const answer = window.confirm(
-      'Are you sure that you have ordered topics according to your preference?'
+      'Are you sure that you have ordered topics according to your preference and that you have done all the prerequisite courses (Ohjelmistotuotanto ja kaksi aineopintotojen harjoitustyötä) by the start of the project?'
     )
     if (!answer) return
 
@@ -239,6 +239,12 @@ class RegistrationPage extends React.Component {
                 value={this.props.email}
                 onChange={(e) => this.props.updateEmail(e.target.value)}
               />
+            </div>
+            <div>
+              <strong>
+                Huomaa että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi aineopintojen harjoitustyötä
+                on suoritettu projektin alkuun mennessä.
+              </strong>
             </div>
             <h2>Topics</h2>
             <div
