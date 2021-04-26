@@ -228,6 +228,18 @@ class RegistrationPage extends React.Component {
             <br />
             <h2 className="landingpage-header">User details</h2>
             <UserDetails />
+            <div
+              style={{
+                fontWeight: 'bold',
+                marginBottom: 20,
+                border: 'solid',
+                padding: 10,
+                borderRadius: 10
+              }}
+            >
+              Huomaa että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi aineopintojen harjoitustyötä
+              on suoritettu projektin alkuun mennessä.
+            </div>
             <p>Please fill your email</p>
             <div>
               <TextField
@@ -239,12 +251,6 @@ class RegistrationPage extends React.Component {
                 value={this.props.email}
                 onChange={(e) => this.props.updateEmail(e.target.value)}
               />
-            </div>
-            <div>
-              <strong>
-                Huomaa että projektiin osallistuminen edellyttää että kaikki esitietona olevat opintojaksot eli kurssi Ohjelmistotuotanto sekä kaksi aineopintojen harjoitustyötä
-                on suoritettu projektin alkuun mennessä.
-              </strong>
             </div>
             <h2>Topics</h2>
             <div
