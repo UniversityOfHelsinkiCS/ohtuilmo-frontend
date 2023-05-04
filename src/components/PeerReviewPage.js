@@ -37,7 +37,7 @@ class PeerReview extends React.Component {
       }
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Database error')
+      this.props.setError('Something is wrong... try reloading the page')
     }
   }
 

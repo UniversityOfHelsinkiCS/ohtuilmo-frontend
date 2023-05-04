@@ -307,7 +307,7 @@ class InstructorPage extends React.Component {
       this.props.setCurrentConfiguration(uniqueConfigurations[0].id)
     } catch (e) {
       console.error('error happened', e, e.response)
-      this.props.setError('Database error')
+      this.props.setError('Something is wrong... try reloading the page')
     }
   }
 

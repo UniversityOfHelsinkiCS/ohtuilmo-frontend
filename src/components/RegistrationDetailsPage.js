@@ -200,7 +200,7 @@ class RegistrationDetailsPage extends React.Component {
       await this.props.fetchRegistrations()
     } catch (e) {
       console.log('error happened', e.response)
-      this.props.setError('Error fetching own registration', 3000)
+      this.props.setError('Error fetching own registration... try reloading the page', 3000)
     }
   }
 
