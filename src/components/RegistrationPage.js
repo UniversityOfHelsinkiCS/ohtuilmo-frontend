@@ -71,7 +71,6 @@ class RegistrationPage extends React.Component {
       this.props.updateQuestions(questions)
     } catch (e) {
       console.log('error happened', e.response)
-      console.log(e)
       this.props.setError('Error fetching questions', 3000)
     }
   }
