@@ -88,7 +88,7 @@ const TopicForm = (props) => {
             onChange={(e) => props.updateSpecialRequests(e.target.value)}
           />
         </div>
-        {true&&<div >
+        {false&&<div >
           Kerro seuraavassa kohdassa myös sopivat ajankohdat / tell also what is the suitable timing for your project
           <ul>
             <li>alkukesä / early summer 15.5.-30.6.</li>
